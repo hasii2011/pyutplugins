@@ -4,8 +4,6 @@
 
 # Introduction
 
-A simple python console script to let me convert [Pyut](https://github.com/hasii2011/PyUt) files to XML.
 
 # Overview
 
-The basic command structure is:
