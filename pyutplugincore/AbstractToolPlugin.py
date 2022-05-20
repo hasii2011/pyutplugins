@@ -25,7 +25,7 @@ class AbstractToolPlugin(AbstractPlugin, ABC):
         be overridden
         """
         if self.setOptions() is True:
-            selectedShapes = self._communicator.getSelectedShapes()
+            selectedShapes = self._communicator.selectedOglObjects
             self.doAction(self._oglObjects, selectedShapes)
 
     @property

@@ -25,8 +25,8 @@ class PluginManager:
 
     The following are valid plugin specifications
 
-    ToolPlugin=arrangelinks.ToolArrangeLinks
-    IOPlugin=-iopython.IOPython
+    ToolPlugin=arrangeLinks.ToolArrangeLinks
+    IOPlugin=-ioPython.IOPython
 
     """
 
