@@ -3,7 +3,7 @@ from typing import cast
 
 from wx import Frame
 
-from pyutplugincore.coretypes.Helper import OglObjects
+from pyutplugincore.coretypes.Helper import OglClasses
 
 
 class ICommunicator:
@@ -31,5 +31,5 @@ class ICommunicator:
         return cast(Frame, None)
 
     @property
-    def selectedOglObjects(self) -> OglObjects:
-        return cast(OglObjects, None)
+    def selectedOglObjects(self) -> OglClasses:
+        return cast(OglClasses, None)

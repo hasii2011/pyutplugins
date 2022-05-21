@@ -5,7 +5,7 @@ from abc import abstractmethod
 
 from pyutplugincore.AbstractPlugin import AbstractPlugin
 from pyutplugincore.ICommunicator import ICommunicator
-from pyutplugincore.coretypes.Helper import OglObjects
+from pyutplugincore.coretypes.Helper import OglClasses
 from pyutplugincore.coretypes.OutputFormat import OutputFormat
 
 
@@ -33,11 +33,11 @@ class AbstractIOPlugin(AbstractPlugin, ABC):
         `doExport`
 
     """
-    def __init__(self, communicator: ICommunicator, oglObjects: OglObjects):
+    def __init__(self, communicator: ICommunicator, oglClasses: OglClasses):
 
-        super().__init__(communicator, oglObjects)
+        super().__init__(communicator, oglClasses)
 
-        self._oglObjects: OglObjects = oglObjects
+        self._oglObjects: OglClasses = oglClasses
 
     def executeImport(self):
         """
@@ -105,7 +105,7 @@ class AbstractIOPlugin(AbstractPlugin, ABC):
         pass
 
     @abstractmethod
-    def read(self) -> OglObjects:
+    def read(self) -> OglClasses:
         """
         Read data from a file;  Presumably, the file was specified on the call
         to setImportOptions
@@ -113,13 +113,13 @@ class AbstractIOPlugin(AbstractPlugin, ABC):
         pass
 
     @abstractmethod
-    def write(self, oglObjects: OglObjects):
+    def write(self, oglClasses: OglClasses):
         """
          Write data to a file;  Presumably, the file was specified on the call
         to setExportOptions
 
          Args:
-            oglObjects:  list of exported objects
+            oglClasses:  list of exported objects
 
         """
         pass

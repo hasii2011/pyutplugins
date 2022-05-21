@@ -6,7 +6,7 @@ from pyutplugincore.AbstractPlugin import AbstractPlugin
 
 from pyutplugincore.ICommunicator import ICommunicator
 
-from pyutplugincore.coretypes.Helper import OglObjects
+from pyutplugincore.coretypes.Helper import OglClasses
 
 
 class AbstractToolPlugin(AbstractPlugin, ABC):
@@ -15,7 +15,7 @@ class AbstractToolPlugin(AbstractPlugin, ABC):
     plugins must implement.
     """
 
-    def __init__(self, communicator: ICommunicator, oglObjects: OglObjects):
+    def __init__(self, communicator: ICommunicator, oglObjects: OglClasses):
 
         super().__init__(communicator, oglObjects)
 
@@ -26,7 +26,7 @@ class AbstractToolPlugin(AbstractPlugin, ABC):
         """
         if self.setOptions() is True:
             selectedShapes = self._communicator.selectedOglObjects
-            self.doAction(self._oglObjects, selectedShapes)
+            self.doAction(self._oglClasses, selectedShapes)
 
     @property
     @abstractmethod
@@ -44,7 +44,7 @@ class AbstractToolPlugin(AbstractPlugin, ABC):
         pass
 
     @abstractmethod
-    def doAction(self, oglObjects: OglObjects, selectedObjects: OglObjects):
+    def doAction(self, oglObjects: OglClasses, selectedObjects: OglClasses):
         """
         Do the tool's action
 

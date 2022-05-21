@@ -9,7 +9,7 @@ from unittest import main as unitTestMain
 
 from pyutplugincore.AbstractPlugin import AbstractPlugin
 from pyutplugincore.ICommunicator import ICommunicator
-from pyutplugincore.coretypes.Helper import OglObjects
+from pyutplugincore.coretypes.Helper import OglClasses
 
 from tests.TestBase import TestBase
 
@@ -43,9 +43,9 @@ class TestAbstractPlugin(TestBase):
     def _instantiateAbstractClass(self):
 
         communicator: ICommunicator = cast(ICommunicator, None)
-        oglObjects:   OglObjects    = cast(OglObjects, None)
+        oglObjects:   OglClasses    = cast(OglClasses, None)
         # noinspection PyUnusedLocal
-        abc: AbstractPlugin = AbstractPlugin(communicator=communicator, oglObjects=oglObjects)
+        abc: AbstractPlugin = AbstractPlugin(communicator=communicator, oglClasses=oglObjects)
 
 
 def suite() -> TestSuite:

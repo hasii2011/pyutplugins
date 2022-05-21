@@ -2,6 +2,6 @@
 from typing import List
 from typing import NewType
 
-from ogl.OglObject import OglObject
+from ogl.OglClass import OglClass
 
-OglObjects = NewType('OglObjects', List[OglObject])
+OglClasses = NewType('OglClasses', List[OglClass])

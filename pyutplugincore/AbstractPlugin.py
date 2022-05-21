@@ -21,7 +21,7 @@ from wx import FileSelector
 from wx import MessageDialog
 from wx import Yield as wxYield
 
-from pyutplugincore.coretypes.Helper import OglObjects
+from pyutplugincore.coretypes.Helper import OglClasses
 
 from pyutplugincore.ICommunicator import ICommunicator
 
@@ -46,15 +46,15 @@ class AbstractPlugin(ABC):
     There should be no implementations of this interface
     """
 
-    def __init__(self, communicator: ICommunicator, oglObjects: OglObjects):
+    def __init__(self, communicator: ICommunicator, oglClasses: OglClasses):
         """
 
         Args:
             communicator:   A class that implements ICommunicator
-            oglObjects:     The Pyut Ogl graphical objects that plugins manipulate
+            oglClasses:     The Pyut Ogl graphical classes that plugins manipulate
         """
         self._communicator: ICommunicator = communicator
-        self._oglObjects:   OglObjects    = oglObjects
+        self._oglClasses:   OglClasses    = oglClasses
 
     @property
     @abstractmethod

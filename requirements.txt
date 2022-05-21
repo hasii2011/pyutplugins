@@ -13,4 +13,4 @@ types-Deprecated==1.2.8
 types-setuptools==57.4.14
 typing_extensions==4.2.0
 wxPython~=4.1.1
-ogl~=0.5
+ogl~=0.51
