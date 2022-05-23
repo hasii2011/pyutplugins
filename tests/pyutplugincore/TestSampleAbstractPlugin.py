@@ -21,7 +21,7 @@ from pyutplugincore.coretypes.ImportDirectoryResponse import ImportDirectoryResp
 from pyutplugincore.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
 from pyutplugincore.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
-from tests.pyutplugincore.SampleAbstractPlugin import SamplePluginInterface
+from tests.pyutplugincore.SamplePluginInterface import SamplePluginInterface
 
 from tests.pyutplugincore.SampleICommunicator import SampleICommunicator
 

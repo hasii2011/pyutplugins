@@ -20,7 +20,7 @@ from pyutplugincore.CoreTypes import BaseFormat
 """
 
 
-class TestAbstractPlugin(TestBase):
+class TestPluginInterface(TestBase):
     """
     """
     clsLogger: Logger = cast(Logger, None)
@@ -28,10 +28,10 @@ class TestAbstractPlugin(TestBase):
     @classmethod
     def setUpClass(cls):
         TestBase.setUpLogging()
-        TestAbstractPlugin.clsLogger = getLogger(__name__)
+        TestPluginInterface.clsLogger = getLogger(__name__)
 
     def setUp(self):
-        self.logger: Logger = TestAbstractPlugin.clsLogger
+        self.logger: Logger = TestPluginInterface.clsLogger
 
     def tearDown(self):
         pass
@@ -54,7 +54,7 @@ def suite() -> TestSuite:
 
     testSuite: TestSuite = TestSuite()
     # noinspection PyUnresolvedReferences
-    testSuite.addTest(unittest.makeSuite(TestAbstractPlugin))
+    testSuite.addTest(unittest.makeSuite(TestPluginInterface))
 
     return testSuite
 
