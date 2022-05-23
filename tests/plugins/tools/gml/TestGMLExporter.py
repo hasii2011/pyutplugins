@@ -67,7 +67,7 @@ class TestGMLExporter(TestBase):
         gml: str = self.exporter.gml
 
         self.assertIsNotNone(gml, 'Generate Something!!')
-        self.logger.info(f'Generated GML:\n{gml}')
+        self.logger.debug(f'Generated GML:\n{gml}')
         self.exporter.write(TestGMLExporter.UNIT_TEST_FILENAME)
 
     def _generateMockNodes(self, nbrToGenerate) -> List[MagicMock]:

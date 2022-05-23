@@ -62,10 +62,10 @@ class TestBaseFormat(TestBase):
     def testAny(self):
         string = r"/\?%"
         test = "This is my string % my string ?"
-        print(any(elem in test for elem in string))
+        self.logger.debug(any(elem in test for elem in string))
 
         test2 = "Just a test string"
-        print(any(elem in test2 for elem in string))
+        self.logger.debug(any(elem in test2 for elem in string))
 
     def __testBadName(self, nameToTest: PluginName):
         extension:   PluginExtension   = PluginExtension('put')
@@ -93,10 +93,10 @@ class TestBaseFormat(TestBase):
     def testSpecialGood(self):
         string = r"/\?%"
         test = "This is my string % my string ?"
-        print(self.containsSpecialCharacters(string, test))
+        self.logger.warning(f"{string=} {test=} {self.containsSpecialCharacters(string, test)=}")
 
         test2 = "Just a test string"
-        print(self.containsSpecialCharacters(string, test2))
+        self.logger.warning(f"{self.containsSpecialCharacters(string, test2)=}")
 
     def containsSpecialCharacters(self, string: str, test: str) -> bool:
         for special in string:

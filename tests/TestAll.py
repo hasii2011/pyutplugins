@@ -25,11 +25,12 @@ class TestAll:
     """
     The class that can run our unit tests in various formats
     """
-    NOT_TESTS: List[str] = ['TestAll', 'TestBase', 'TestTemplate',
+    NOT_TESTS: List[str] = ['TestAll', 'TestBase',
+                            'TestTemplate', 'TestAPlugin', 'TestDiagramLoader', 'TestPluginFrame',
                             'pyutplugincore/TestSampleAbstractPlugin']
 
     VERBOSITY_QUIET:   int = 0  # Print the total numbers of tests executed and the global result
-    VERBOSITY_DEFAULT: int = 1  # VERBOSITY_QUIET plus a dot for every successful test or a F for every failure
+    VERBOSITY_DEFAULT: int = 1  # VERBOSITY_QUIET plus a dot for every successful test or an F for every failure
     VERBOSITY_VERBOSE: int = 2  # Print help string of every test and the result
     VERBOSITY_LOUD:    int = 3  # ??
 
@@ -100,7 +101,11 @@ class TestAll:
         self.logger.debug(f'{allModules=}')
 
         for doNotTest in TestAll.NOT_TESTS:
-            allModules.remove(f'tests/{doNotTest}')
+            try:
+                allModules.remove(f'tests/{doNotTest}')
+            except ValueError as ve:
+                self.logger.error(f'Missing non-test. {ve} did you forget to update "NOT_TESTS" with "{doNotTest}"')
+                raise ve
 
         return allModules
 

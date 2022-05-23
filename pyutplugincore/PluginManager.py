@@ -21,7 +21,7 @@ class PluginManager:
     IOPlugin=packageName.PluginModule
 
     By convention prefix the plugin tool module name with the characters 'Tool'
-    By convention prefix the plugin I/O module with the characters "IO"
+    By convention prefix the plugin I/O module with the characters 'IO'
 
     The following are valid plugin specifications
 
