@@ -34,7 +34,7 @@ from pyutplugincore.coretypes.MultipleFileRequestResponse import MultipleFileReq
 from pyutplugincore.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 
-class AbstractPlugin(ABC):
+class PluginInterface(ABC):
     """
     This is meant to provide base properties and methods for the Input/Output
     plugins and the Tool Plugins

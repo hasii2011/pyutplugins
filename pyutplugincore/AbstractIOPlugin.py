@@ -3,13 +3,13 @@ from abc import ABC
 from abc import abstractmethod
 
 
-from pyutplugincore.AbstractPlugin import AbstractPlugin
+from pyutplugincore.PluginInterface import PluginInterface
 from pyutplugincore.ICommunicator import ICommunicator
 from pyutplugincore.coretypes.Helper import OglClasses
 from pyutplugincore.coretypes.OutputFormat import OutputFormat
 
 
-class AbstractIOPlugin(AbstractPlugin, ABC):
+class IOPluginInterface(PluginInterface, ABC):
     """
     Abstract class for input/output plug-ins.
 

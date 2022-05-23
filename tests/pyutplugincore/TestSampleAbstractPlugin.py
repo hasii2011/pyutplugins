@@ -21,7 +21,7 @@ from pyutplugincore.coretypes.ImportDirectoryResponse import ImportDirectoryResp
 from pyutplugincore.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
 from pyutplugincore.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
-from tests.pyutplugincore.SampleAbstractPlugin import SampleAbstractPlugin
+from tests.pyutplugincore.SampleAbstractPlugin import SamplePluginInterface
 
 from tests.pyutplugincore.SampleICommunicator import SampleICommunicator
 
@@ -43,7 +43,7 @@ class TestSampleAbstractPlugin(App):
         oglObjects:   OglClasses          = OglClasses([])
         communicator: SampleICommunicator = SampleICommunicator()
 
-        self._plugin: SampleAbstractPlugin = SampleAbstractPlugin(communicator, oglObjects)
+        self._plugin: SamplePluginInterface = SamplePluginInterface(communicator, oglObjects)
 
     def OnInit(self):
 
@@ -87,11 +87,11 @@ class TestSampleAbstractPlugin(App):
 
     # noinspection PyUnusedLocal
     def _displayNoUmlFrameDialog(self, event: CommandEvent):
-        SampleAbstractPlugin.displayNoUmlFrame()
+        SamplePluginInterface.displayNoUmlFrame()
 
     # noinspection PyUnusedLocal
     def _displayNoSelectionDialog(self, event: CommandEvent):
-        SampleAbstractPlugin.displayNoSelectedOglObjects()
+        SamplePluginInterface.displayNoSelectedOglObjects()
 
     # noinspection PyUnusedLocal
     def _displayFileImportDialog(self, event: CommandEvent):

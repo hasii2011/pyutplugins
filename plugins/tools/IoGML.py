@@ -7,7 +7,7 @@ from logging import getLogger
 
 from plugins.tools.gml.GMLExporter import GMLExporter
 
-from pyutplugincore.AbstractIOPlugin import AbstractIOPlugin
+from pyutplugincore.AbstractIOPlugin import IOPluginInterface
 from pyutplugincore.ICommunicator import ICommunicator
 
 from pyutplugincore.coretypes.Helper import OglClasses
@@ -19,7 +19,7 @@ from pyutplugincore.coretypes.PluginDataTypes import PluginName
 from pyutplugincore.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 
-class IoGML(AbstractIOPlugin):
+class IoGML(IOPluginInterface):
     """
     Sample class for input/output plug-ins.
     """

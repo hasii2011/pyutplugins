@@ -2,14 +2,14 @@
 from abc import ABC
 from abc import abstractmethod
 
-from pyutplugincore.AbstractPlugin import AbstractPlugin
+from pyutplugincore.PluginInterface import PluginInterface
 
 from pyutplugincore.ICommunicator import ICommunicator
 
 from pyutplugincore.coretypes.Helper import OglClasses
 
 
-class AbstractToolPlugin(AbstractPlugin, ABC):
+class ToolPluginInterface(PluginInterface, ABC):
     """
     This interface defines the methods and properties that Pyut Tool
     plugins must implement.

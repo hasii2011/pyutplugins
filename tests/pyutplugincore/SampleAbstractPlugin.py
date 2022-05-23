@@ -1,5 +1,5 @@
 
-from pyutplugincore.AbstractPlugin import AbstractPlugin
+from pyutplugincore.PluginInterface import PluginInterface
 
 from pyutplugincore.coretypes.PluginDataTypes import PluginDescription
 from pyutplugincore.coretypes.PluginDataTypes import PluginExtension
@@ -12,7 +12,7 @@ from pyutplugincore.coretypes.InputFormat import InputFormat
 from pyutplugincore.coretypes.OutputFormat import OutputFormat
 
 
-class SampleAbstractPlugin(AbstractPlugin):
+class SamplePluginInterface(PluginInterface):
 
     def __init__(self, communicator: ICommunicator, oglObjects: OglClasses):
         super().__init__(communicator, oglObjects)

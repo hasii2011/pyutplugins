@@ -7,7 +7,7 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from pyutplugincore.AbstractPlugin import AbstractPlugin
+from pyutplugincore.PluginInterface import PluginInterface
 from pyutplugincore.ICommunicator import ICommunicator
 from pyutplugincore.coretypes.Helper import OglClasses
 
@@ -45,7 +45,7 @@ class TestAbstractPlugin(TestBase):
         communicator: ICommunicator = cast(ICommunicator, None)
         oglObjects:   OglClasses    = cast(OglClasses, None)
         # noinspection PyUnusedLocal
-        abc: AbstractPlugin = AbstractPlugin(communicator=communicator, oglClasses=oglObjects)
+        abc: PluginInterface = PluginInterface(communicator=communicator, oglClasses=oglObjects)
 
 
 def suite() -> TestSuite:
