@@ -9,7 +9,7 @@ from tests.plugintester.TestPluginFrame import TestPluginFrame
 from tests.plugintester.UmlTestFrame import UmlTestFrame
 
 
-class TestAPlugin(App):
+class PluginTester(App):
 
     MINI_GAP:         int = 3
     NOTHING_SELECTED: int = -1
@@ -33,5 +33,5 @@ class TestAPlugin(App):
         return True
 
 
-testApp: App = TestAPlugin(redirect=False)
+testApp: App = PluginTester(redirect=False)
 testApp.MainLoop()

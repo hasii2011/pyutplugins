@@ -69,7 +69,7 @@ OglTextShapes  = NewType('OglTextShapes',  List[OglText])
 
 class MiniDomToOgl:
     """
-    This is a cut down version of the original from Pyut;
+    This is a cut down version of the original V10 version from Pyut;
     TODO:  Come up with a common version that can be used by both
     """
     def __init__(self):
