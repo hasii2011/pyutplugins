@@ -26,8 +26,10 @@ before_install:
 
 # command to install dependencies
 install:
-  - pip install -r requirements.txt
-
+  - python3 --version
+  - pip install html-testRunner
+  - pip install python-interface
+  - pip install ogl
 
 # command to run tests
 script: ${TRAVIS_BUILD_DIR}/scripts/runtests.sh
