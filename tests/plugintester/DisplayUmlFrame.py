@@ -6,6 +6,7 @@ from typing import Union
 from logging import Logger
 from logging import getLogger
 
+from miniogl.Diagram import Diagram
 from wx import EVT_CLOSE
 from wx import EVT_PAINT
 from wx import Frame
@@ -28,7 +29,7 @@ UmlObject  = Union[OglObject, OglLink, OglSDMessage, OglInterface2]
 UmlObjects = NewType('UmlObjects', List[UmlObject])
 
 
-class UmlTestFrame(DiagramFrame):
+class DisplayUmlFrame(DiagramFrame):
     """
     Represents a minimal canvas for drawing diagrams.
     Used for the manual testing of Plugins that need to display their results
@@ -54,11 +55,11 @@ class UmlTestFrame(DiagramFrame):
         self.maxWidth:  int  = DEFAULT_WIDTH
         self.maxHeight: int = int(self.maxWidth / A4_FACTOR)  # 1.41 is for A4 support
 
-        nbrUnitsX: int = int(self.maxWidth / UmlTestFrame.PIXELS_PER_UNIT_X)
-        nbrUnitsY: int = int(self.maxHeight / UmlTestFrame.PIXELS_PER_UNIT_Y)
+        nbrUnitsX: int = int(self.maxWidth / DisplayUmlFrame.PIXELS_PER_UNIT_X)
+        nbrUnitsY: int = int(self.maxHeight / DisplayUmlFrame.PIXELS_PER_UNIT_Y)
         initPosX:  int = 0
         initPosY:  int = 0
-        self.SetScrollbars(UmlTestFrame.PIXELS_PER_UNIT_X, UmlTestFrame.PIXELS_PER_UNIT_Y, nbrUnitsX, nbrUnitsY, initPosX, initPosY, False)
+        self.SetScrollbars(DisplayUmlFrame.PIXELS_PER_UNIT_X, DisplayUmlFrame.PIXELS_PER_UNIT_Y, nbrUnitsX, nbrUnitsY, initPosX, initPosY, False)
 
         # Close event
         self.Bind(EVT_CLOSE, self.evtClose)
@@ -67,6 +68,7 @@ class UmlTestFrame(DiagramFrame):
         self.SetInfinite(True)
 
         self._defaultCursor = self.GetCursor()
+        self.Layout()
 
     def cleanUp(self):
         """
@@ -119,9 +121,10 @@ class UmlTestFrame(DiagramFrame):
         self._diagram.DeleteAllShapes()
         self.Refresh()
 
-    def getDiagram(self):
+    @property
+    def diagram(self) -> Diagram:
         """
-        Return the diagram of this frame.
+        Return this frame's diagram
         """
         return self._diagram
 
@@ -168,3 +171,6 @@ class UmlTestFrame(DiagramFrame):
                 if shape.pyutObject.id == objectId:
                     return shape
         return None
+
+    def addShape(self, oglObject: OglObject):
+        self._diagram.AddShape(oglObject)

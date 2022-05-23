@@ -3,10 +3,14 @@ from logging import Logger
 from logging import getLogger
 
 from wx import App
+from wx import BOTTOM
+from wx import BoxSizer
+from wx import EXPAND
+from wx import VERTICAL
 
 from tests.TestBase import TestBase
 from tests.plugintester.PluginFrame import TestPluginFrame
-from tests.plugintester.UmlTestFrame import UmlTestFrame
+from tests.plugintester.DisplayUmlFrame import DisplayUmlFrame
 
 
 class PluginTester(App):
@@ -24,10 +28,15 @@ class PluginTester(App):
 
         self.SetTopWindow(pluginFrame)
 
-        pluginFrame.SetAutoLayout(True)
-        # pluginFrame.SetSizer(mainSizer)
+        displayUmlFrame: DisplayUmlFrame = DisplayUmlFrame(parent=pluginFrame, frame=pluginFrame)
 
-        self._umlTestFrame: UmlTestFrame = UmlTestFrame(parent=pluginFrame, frame=pluginFrame)
+        mainSizer: BoxSizer = BoxSizer(orient=VERTICAL)
+
+        mainSizer.Add(displayUmlFrame, 1, EXPAND | BOTTOM, 10)
+        pluginFrame.SetSizer(mainSizer)
+
+        pluginFrame.displayUmlFrame = displayUmlFrame
+
         pluginFrame.Show(True)
 
         return True

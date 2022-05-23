@@ -1,4 +1,6 @@
 
+from typing import cast
+
 from wx import DEFAULT_FRAME_STYLE
 from wx import EVT_MENU
 from wx import FRAME_EX_METAL
@@ -7,10 +9,14 @@ from wx import ID_ANY
 from wx import ID_EXIT
 from wx import Menu
 from wx import MenuBar
+from wx import MenuEvent
 
 from wx import NewIdRef as wxNewIdRef
 
 from tests.plugintester.DiagramLoader import DiagramLoader
+from tests.plugintester.DisplayUmlFrame import DisplayUmlFrame
+from tests.plugintester.MiniDomToOgl import OglClasses
+from tests.plugintester.OglModel import OglModel
 
 
 class TestPluginFrame(Frame):
@@ -37,9 +43,27 @@ class TestPluginFrame(Frame):
 
         self.SetMenuBar(menuBar)
 
-    def _displayOglDiagram(self, event):
+        self._displayUmlFrame: DisplayUmlFrame = cast(DisplayUmlFrame, None)
+
+    @property
+    def displayUmlFrame(self) -> DisplayUmlFrame:
+        return self._displayUmlFrame
+
+    @displayUmlFrame.setter
+    def displayUmlFrame(self, newValue: DisplayUmlFrame):
+        self._displayUmlFrame = newValue
+
+    # noinspection PyUnusedLocal
+    def _displayOglDiagram(self, event: MenuEvent):
 
         tdl: DiagramLoader = DiagramLoader()
 
-        tdl.retrieveOglModel()
+        oglModel: OglModel = tdl.retrieveOglModel()
 
+        oglClasses: OglClasses = oglModel.oglClasses
+
+        for oglClass in oglClasses.values():
+            self._displayUmlFrame.addShape(oglClass)
+
+        self._displayUmlFrame.Refresh()
+        
