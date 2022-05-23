@@ -10,7 +10,7 @@ from wx import MenuBar
 
 from wx import NewIdRef as wxNewIdRef
 
-from tests.TestDiagramLoader import TestDiagramLoader
+from tests.plugintester.TestDiagramLoader import TestDiagramLoader
 
 
 class TestPluginFrame(Frame):

@@ -10,10 +10,10 @@ from pkg_resources import resource_filename
 from xml.dom.minidom import Document
 from xml.dom.minidom import parseString
 
-from tests.MiniDomToOglV10 import MiniDomToOgl
-from tests.MiniDomToOglV10 import OglClasses
-from tests.MiniDomToOglV10 import OglLinks
-from tests.MiniDomToOglV10 import OglObjects
+from tests.plugintester.MiniDomToOglV10 import MiniDomToOgl
+from tests.plugintester.MiniDomToOglV10 import OglClasses
+from tests.plugintester.MiniDomToOglV10 import OglLinks
+from tests.plugintester.MiniDomToOglV10 import OglObjects
 from tests.OglToMiniDomConstants import OglToMiniDomConstants
 
 

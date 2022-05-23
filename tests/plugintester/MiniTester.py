@@ -1,7 +1,7 @@
 from wx import App
 
 from tests.TestBase import TestBase
-from tests.TestDiagramLoader import TestDiagramLoader
+from tests.plugintester.TestDiagramLoader import TestDiagramLoader
 
 TestBase.setUpLogging()
 app: App = App()

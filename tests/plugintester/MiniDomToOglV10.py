@@ -52,7 +52,7 @@ from ogl.sd.OglSDInstance import OglSDInstance
 
 from ogl.OglTextFontFamily import OglTextFontFamily
 
-from tests.MiniDomToOglUtils import PyutUtils
+from tests.plugintester.MiniDomToOglUtils import PyutUtils
 from tests.OglToMiniDomConstants import OglToMiniDomConstants
 
 OglObjects     = NewType('OglObjects',     Dict[int, OglObject])

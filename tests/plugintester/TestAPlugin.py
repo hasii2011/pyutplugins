@@ -5,8 +5,8 @@ from logging import getLogger
 from wx import App
 
 from tests.TestBase import TestBase
-from tests.TestPluginFrame import TestPluginFrame
-from tests.UmlTestFrame import UmlTestFrame
+from tests.plugintester.TestPluginFrame import TestPluginFrame
+from tests.plugintester.UmlTestFrame import UmlTestFrame
 
 
 class TestAPlugin(App):

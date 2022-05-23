@@ -28,7 +28,7 @@ from tests.pyutplugincore.SampleICommunicator import SampleICommunicator
 from tests.TestBase import TestBase
 
 
-class TestSampleAbstractPlugin(App):
+class TestSamplePluginInterface(App):
 
     FRAME_ID:      int = ID_ANY
     WINDOW_WIDTH:  int = 480
@@ -48,9 +48,9 @@ class TestSampleAbstractPlugin(App):
     def OnInit(self):
 
         frameTop: Frame = Frame(parent=None,
-                                id=TestSampleAbstractPlugin.FRAME_ID,
+                                id=TestSamplePluginInterface.FRAME_ID,
                                 title="Test Abstract Plugin",
-                                size=(TestSampleAbstractPlugin.WINDOW_WIDTH, TestSampleAbstractPlugin.WINDOW_HEIGHT),
+                                size=(TestSamplePluginInterface.WINDOW_WIDTH, TestSamplePluginInterface.WINDOW_HEIGHT),
                                 style=DEFAULT_FRAME_STYLE)
 
         menuBar:     MenuBar = MenuBar()
@@ -130,7 +130,7 @@ class TestSampleAbstractPlugin(App):
 
 # noinspection PyUnusedLocal
 def main(sysArgv):
-    testApp: App = TestSampleAbstractPlugin()
+    testApp: App = TestSamplePluginInterface()
     testApp.MainLoop()
 
 
