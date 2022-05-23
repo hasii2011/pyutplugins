@@ -1,11 +1,11 @@
 from wx import App
 
 from tests.TestBase import TestBase
-from tests.plugintester.DiagramLoader import TestDiagramLoader
+from tests.plugintester.DiagramLoader import DiagramLoader
 
 TestBase.setUpLogging()
 app: App = App()
 
-tdl: TestDiagramLoader = TestDiagramLoader()
+tdl: DiagramLoader = DiagramLoader()
 
-tdl.retrieveOglObjects()
+tdl.retrieveOglModel()

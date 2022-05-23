@@ -171,7 +171,7 @@ class MiniDomToOgl:
         Extract the link for the OglClasses
 
         Args:
-            xmlOglLinks:    A DOM node list of links
+            xmlOglLinks:  A DOM node list of links
             oglClasses:  The OglClasses
 
         Returns:

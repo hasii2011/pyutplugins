@@ -10,7 +10,7 @@ from wx import MenuBar
 
 from wx import NewIdRef as wxNewIdRef
 
-from tests.plugintester.DiagramLoader import TestDiagramLoader
+from tests.plugintester.DiagramLoader import DiagramLoader
 
 
 class TestPluginFrame(Frame):
@@ -39,7 +39,7 @@ class TestPluginFrame(Frame):
 
     def _displayOglDiagram(self, event):
 
-        tdl: TestDiagramLoader = TestDiagramLoader()
+        tdl: DiagramLoader = DiagramLoader()
 
-        tdl.retrieveOglObjects()
+        tdl.retrieveOglModel()
 

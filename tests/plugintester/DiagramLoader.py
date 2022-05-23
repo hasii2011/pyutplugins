@@ -10,14 +10,16 @@ from pkg_resources import resource_filename
 from xml.dom.minidom import Document
 from xml.dom.minidom import parseString
 
-from tests.plugintester.MiniDomToOglV10 import MiniDomToOgl
-from tests.plugintester.MiniDomToOglV10 import OglClasses
-from tests.plugintester.MiniDomToOglV10 import OglLinks
-from tests.plugintester.MiniDomToOglV10 import OglObjects
+from tests.plugintester.MiniDomToOgl import MiniDomToOgl
+from tests.plugintester.MiniDomToOgl import OglClasses
+from tests.plugintester.MiniDomToOgl import OglLinks
+from tests.plugintester.MiniDomToOgl import OglObjects
 from tests.OglToMiniDomConstants import OglToMiniDomConstants
 
+from tests.plugintester.OglModel import OglModel
 
-class TestDiagramLoader:
+
+class DiagramLoader:
 
     RESOURCES_PACKAGE_NAME: str = 'tests.resources.testdata'
     OGL_FILE_NAME:          str = 'Ogl.xml'
@@ -27,9 +29,9 @@ class TestDiagramLoader:
 
         self.logger: Logger = getLogger(__name__)
 
-    def retrieveOglObjects(self) -> OglObjects:
+    def retrieveOglModel(self) -> OglModel:
 
-        oglXml:      str = self._loadDiagram(TestDiagramLoader.OGL_FILE_NAME)
+        oglXml:      str = self._loadDiagram(DiagramLoader.OGL_FILE_NAME)
         oglDocument: Document = parseString(oglXml)
         self.logger.info(f'{oglDocument}')
 
@@ -38,7 +40,7 @@ class TestDiagramLoader:
         version: int = int(root.getAttribute(OglToMiniDomConstants.ATTR_VERSION))
         assert version == 10, 'Incorrect version'
 
-        oglObjects: OglObjects = cast(OglObjects, None)
+        oglModel: OglModel = cast(OglModel, None)
         for element in oglDocument.getElementsByTagName(OglToMiniDomConstants.ELEMENT_DOCUMENT):
 
             documentNode: Element = cast(Element, element)
@@ -47,20 +49,21 @@ class TestDiagramLoader:
             self.logger.info(f'{docTypeStr=}')
             assert docTypeStr == 'CLASS_DIAGRAM', 'We only do class diagrams'
 
-            oglObjects = self._extractOglObjects(documentNode=documentNode)
+            oglModel = self._extractOglObjects(documentNode=documentNode)
 
-        assert oglObjects is not None, 'The test XML is FUBAR'
-        return oglObjects
+        assert oglModel is not None, 'The test XML is FUBAR'
 
-    def retrievePyutObjects(self):
+        return oglModel
 
-        pyutXml:      str      = self._loadDiagram(TestDiagramLoader.PYUT_FILE_NAME)
+    def retrievePyutModel(self):
+
+        pyutXml:      str      = self._loadDiagram(DiagramLoader.PYUT_FILE_NAME)
         pyutDocument: Document = parseString(pyutXml)
         self.logger.debug(f'{pyutDocument}')
 
     def _loadDiagram(self, baseFileName: str) -> str:
 
-        fqFileName = resource_filename(TestDiagramLoader.RESOURCES_PACKAGE_NAME, baseFileName)
+        fqFileName = resource_filename(DiagramLoader.RESOURCES_PACKAGE_NAME, baseFileName)
 
         try:
             f: TextIO = open(fqFileName, 'r')
@@ -73,12 +76,14 @@ class TestDiagramLoader:
                 f.close()
                 return xmlStr
 
-    def _extractOglObjects(self, documentNode: Element) -> OglObjects:
+    def _extractOglObjects(self, documentNode: Element) -> OglModel:
 
         toOgl: MiniDomToOgl = MiniDomToOgl()
 
-        oglClasses:       OglClasses = toOgl.getOglClasses(documentNode.getElementsByTagName(OglToMiniDomConstants.ELEMENT_GRAPHIC_CLASS))
-        mergedOglObjects: OglObjects = cast(OglObjects, oglClasses.copy())
-        oglLinks:         OglLinks   = toOgl.getOglLinks(documentNode.getElementsByTagName(OglToMiniDomConstants.ELEMENT_GRAPHIC_LINK), mergedOglObjects)
+        oglClasses:     OglClasses = toOgl.getOglClasses(documentNode.getElementsByTagName(OglToMiniDomConstants.ELEMENT_GRAPHIC_CLASS))
+        oglObjectsCopy: OglObjects = cast(OglObjects, oglClasses.copy())
+        oglLinks:       OglLinks   = toOgl.getOglLinks(documentNode.getElementsByTagName(OglToMiniDomConstants.ELEMENT_GRAPHIC_LINK), oglObjectsCopy)
 
-        return mergedOglObjects
+        oglModel: OglModel = OglModel(oglClasses=oglClasses, oglLinks=oglLinks)
+
+        return oglModel
