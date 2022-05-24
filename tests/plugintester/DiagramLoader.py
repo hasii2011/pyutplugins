@@ -30,8 +30,21 @@ class DiagramLoader:
         self.logger: Logger = getLogger(__name__)
 
     def retrieveOglModel(self) -> OglModel:
+        oglModel: OglModel = self._retrieveModel(baseFileName=DiagramLoader.OGL_FILE_NAME)
+        return oglModel
 
-        oglXml:      str = self._loadDiagram(DiagramLoader.OGL_FILE_NAME)
+    def retrievePyutModel(self):
+        oglModel: OglModel = self._retrieveModel(baseFileName=DiagramLoader.PYUT_FILE_NAME)
+        return oglModel
+
+    def _retrieveModel(self, baseFileName: str) -> OglModel:
+        """
+
+        Args:
+            baseFileName:  The Pyut file name in XML format
+        """
+        oglXml:      str = self._readTheDiagramFile(baseFileName)
+
         oglDocument: Document = parseString(oglXml)
         self.logger.info(f'{oglDocument}')
 
@@ -49,19 +62,20 @@ class DiagramLoader:
             self.logger.info(f'{docTypeStr=}')
             assert docTypeStr == 'CLASS_DIAGRAM', 'We only do class diagrams'
 
-            oglModel = self._extractOglObjects(documentNode=documentNode)
+            oglModel = self._extractOglModel(documentNode=documentNode)
 
         assert oglModel is not None, 'The test XML is FUBAR'
 
         return oglModel
 
-    def retrievePyutModel(self):
+    def _readTheDiagramFile(self, baseFileName: str) -> str:
+        """
+        Does the actual I/O
+        May throw exception
 
-        pyutXml:      str      = self._loadDiagram(DiagramLoader.PYUT_FILE_NAME)
-        pyutDocument: Document = parseString(pyutXml)
-        self.logger.debug(f'{pyutDocument}')
-
-    def _loadDiagram(self, baseFileName: str) -> str:
+        Args:
+            baseFileName:  The Pyut file name in XML forma
+        """
 
         fqFileName = resource_filename(DiagramLoader.RESOURCES_PACKAGE_NAME, baseFileName)
 
@@ -76,7 +90,7 @@ class DiagramLoader:
                 f.close()
                 return xmlStr
 
-    def _extractOglObjects(self, documentNode: Element) -> OglModel:
+    def _extractOglModel(self, documentNode: Element) -> OglModel:
 
         toOgl: MiniDomToOgl = MiniDomToOgl()
 

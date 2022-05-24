@@ -114,7 +114,7 @@ class DisplayUmlFrame(DiagramFrame):
         # DiagramFrame.OnLeftDClick(self, event)
         super().OnLeftDClick(event)
 
-    def newDiagram(self):
+    def clearDiagram(self):
         """
         Remove all shapes, get a brand new empty diagram.
         """
