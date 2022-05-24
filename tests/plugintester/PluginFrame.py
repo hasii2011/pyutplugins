@@ -66,4 +66,3 @@ class TestPluginFrame(Frame):
             self._displayUmlFrame.addShape(oglClass)
 
         self._displayUmlFrame.Refresh()
-        

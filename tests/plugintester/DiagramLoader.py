@@ -14,7 +14,7 @@ from tests.plugintester.MiniDomToOgl import MiniDomToOgl
 from tests.plugintester.MiniDomToOgl import OglClasses
 from tests.plugintester.MiniDomToOgl import OglLinks
 from tests.plugintester.MiniDomToOgl import OglObjects
-from tests.OglToMiniDomConstants import OglToMiniDomConstants
+from tests.plugintester.OglToMiniDomConstants import OglToMiniDomConstants
 
 from tests.plugintester.OglModel import OglModel
 
