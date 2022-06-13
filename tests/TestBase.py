@@ -15,6 +15,8 @@ TEST_DIRECTORY:               str = 'tests'
 class TestBase(TestCase):
 
     RESOURCES_PACKAGE_NAME:                   str = 'tests.resources'
+    RESOURCES_TEST_DATA_PACKAGE_NAME:         str = f'{RESOURCES_PACKAGE_NAME}.testdata'
+
     """
     A base unit test class to initialize some logging stuff we need
     """

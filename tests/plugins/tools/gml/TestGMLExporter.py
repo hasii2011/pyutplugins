@@ -105,13 +105,13 @@ class TestGMLExporter(TestBase):
             parentClass: MagicMock = oglClasses[currentIdx]
             childClass:  MagicMock = oglClasses[currentIdx + 1]
 
-            self.logger.info(f'parentID: {parentClass.GetID()} childID: {childClass.GetID()}')
+            self.logger.debug(f'parentID: {parentClass.GetID()} childID: {childClass.GetID()}')
             self.__createMockLink(parentClass, childClass)
             currentIdx += 2
             if currentIdx >= len(oglClasses):
                 break
 
-    def __createMockLink(self, src: MagicMock, dest: MagicMock) -> MagicMock:
+    def __createMockLink(self, src: MagicMock, dst: MagicMock) -> MagicMock:
         """
         pyutLink = PyutLink("", linkType=linkType, source=src.getPyutObject(), destination=dst.getPyutObject())
 
@@ -124,7 +124,7 @@ class TestGMLExporter(TestBase):
 
         Args:
             src:    Mock OglClass
-            dest:   Mock OglClass
+            dst:   Mock OglClass
 
         Returns:
             Mocked OglLink
@@ -143,13 +143,13 @@ class TestGMLExporter(TestBase):
         oglLink.destinationAnchor.return_value = mockDestinationAnchor
 
         oglLink.getSourceShape.return_value      = src
-        oglLink.getDestinationShape.return_value = dest
+        oglLink.getDestinationShape.return_value = dst
         #
         # PyutLink object simple enough so create real one
-        pyutLink: PyutLink = PyutLink("", linkType=PyutLinkType.INHERITANCE, source=src.getPyutObject(), destination=dest.getPyutObject())
+        pyutLink: PyutLink = PyutLink("", linkType=PyutLinkType.INHERITANCE, source=src.getPyutObject(), destination=dst.getPyutObject())
 
         src.getLinks.return_value  = [oglLink]
-        dest.getLinks.return_value = [oglLink]
+        dst.getLinks.return_value = [oglLink]
 
         mockPyutClass = src.getPyutObject()
         mockPyutClass.getLinks.return_value = [pyutLink]
