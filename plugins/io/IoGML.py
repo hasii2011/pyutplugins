@@ -5,7 +5,7 @@ from logging import Logger
 from logging import getLogger
 
 
-from plugins.tools.gml.GMLExporter import GMLExporter
+from plugins.io.gml.GMLExporter import GMLExporter
 
 from pyutplugincore.IOPluginInterface import IOPluginInterface
 from pyutplugincore.ICommunicator import ICommunicator

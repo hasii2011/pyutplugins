@@ -1,9 +1,6 @@
 
 from typing import Optional
 
-from abc import ABC
-from abc import abstractmethod
-
 from wx import DD_NEW_DIR_BUTTON
 from wx import FD_OPEN
 from wx import FD_MULTIPLE
@@ -31,17 +28,23 @@ from pyutplugincore.coretypes.OutputFormat import OutputFormat
 from pyutplugincore.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
 from pyutplugincore.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
 from pyutplugincore.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
+from pyutplugincore.coretypes.PluginDataTypes import PluginDescription
+from pyutplugincore.coretypes.PluginDataTypes import PluginExtension
+from pyutplugincore.coretypes.PluginDataTypes import PluginName
 from pyutplugincore.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 
-class PluginInterface(ABC):
+UNSPECIFIED_NAME:        PluginName        = PluginName('Unspecified Plugin Name')
+UNSPECIFIED_EXTENSION:   PluginExtension   = PluginExtension('*')
+UNSPECIFIED_DESCRIPTION: PluginDescription = PluginDescription('Unspecified Plugin Description')
+
+
+class PluginInterface:
     """
     This is meant to provide base properties and methods for the Input/Output
     plugins and the Tool Plugins
 
-    Implementations of them should override the abstract
-    properties as well as any other abstract methods or properties that those plugin
-    types define
+    Implementations set the protected variables at class construction
 
     There should be no implementations of this interface
     """
@@ -55,58 +58,60 @@ class PluginInterface(ABC):
         """
         self._communicator: ICommunicator = communicator
         self._oglClasses:   OglClasses    = oglClasses
+        #
+        # To be set by implementor constructor and read by property
+        self._name:         str = 'Implementor must provide the plugin name'
+        self._author:       str = 'Implementor must provide the plugin author'
+        self._version:      str = 'Implementor must provide the version'
+        self._inputFormat:  InputFormat  = InputFormat(name=UNSPECIFIED_NAME,  extension=UNSPECIFIED_EXTENSION, description=UNSPECIFIED_DESCRIPTION)
+        self._outputFormat: OutputFormat = OutputFormat(name=UNSPECIFIED_NAME, extension=UNSPECIFIED_EXTENSION, description=UNSPECIFIED_DESCRIPTION)
 
     @property
-    @abstractmethod
     def name(self) -> str:
         """
-        Implementations must override this property
+        Implementations set the protected variable at class construction
 
         Returns:  The plugin name
         """
-        pass
+        return self._name
 
     @property
-    @abstractmethod
     def author(self) -> str:
         """
-        Implementations must override this property
+        Implementations set the protected variable at class construction
 
         Returns:  The author's name
         """
-        pass
+        return self._author
 
     @property
-    @abstractmethod
     def version(self) -> str:
         """
-        Implementations must override this property
+        Implementations set the protected variable at class construction
 
         Returns: The plugin version string
         """
-        pass
+        return self._version
 
     @property
-    @abstractmethod
     def inputFormat(self) -> InputFormat:
         """
-        Implementations must override this property
+        Implementations set the protected variable at class construction
 
         Returns: The input format type; Plugins should return `None` if they do
         not support input operations
         """
-        pass
+        return self._inputFormat
 
     @property
-    @abstractmethod
     def outputFormat(self) -> OutputFormat:
         """
-        Implementations must override this property
+        Implementations set the protected variable at class construction
 
         Returns: The output format type;  Plugins should return `None` if they do
         not support output operations
         """
-        pass
+        return self._outputFormat
 
     @classmethod
     def displayNoUmlFrame(cls):

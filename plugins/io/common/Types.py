@@ -1,4 +1,5 @@
 
+from typing import cast
 from typing import Dict
 from typing import List
 from typing import NewType
@@ -19,4 +20,4 @@ PyutLinks = NewType('PyutLinks', List[PyutLink])
 class ClassPair:
 
     pyutClass: PyutClass = None
-    oglClass:  OglClass  = None
+    oglClass:  OglClass  = cast(OglClass, None)

@@ -19,7 +19,7 @@ from ogl.OglNote import OglNote
 
 from pyutplugincore.coretypes.Helper import OglClasses
 
-from plugins.tools.gml.UnsupportedOperation import UnsupportedOperation
+from plugins.io.gml.UnsupportedOperation import UnsupportedOperation
 
 
 class GMLExporter:
