@@ -14,10 +14,11 @@ from importlib import import_module
 from wx import NewIdRef
 
 from pyutplugincore.coretypes.PluginDataTypes import PluginList
-from pyutplugincore.coretypes.PluginDataTypes import PluginMap
+from pyutplugincore.coretypes.PluginDataTypes import PluginIDMap
 
 import plugins.io
 import plugins.tools
+from pyutplugincore.coretypes.PluginDataTypes import PluginType
 
 TOOL_PLUGIN_NAME_PREFIX: str = 'Tool'
 IO_PLUGIN_NAME_PREFIX:   str = 'IO'
@@ -47,8 +48,8 @@ class PluginManager:
         self.logger: Logger = getLogger(__name__)
 
         # These are built later on
-        self._toolPluginsMenu: PluginMap = cast(PluginMap, None)
-        self._ioPluginsMenu:   PluginMap = cast(PluginMap, None)
+        self._toolPluginsMenu: PluginIDMap = cast(PluginIDMap, None)
+        self._ioPluginsMenu:   PluginIDMap = cast(PluginIDMap, None)
 
         self._ioPluginClasses:   PluginList = PluginList([])
         self._toolPluginClasses: PluginList = PluginList([])
@@ -65,10 +66,11 @@ class PluginManager:
         """
 
         pluginList = cast(PluginList, [])
-        for plug in self._ioPluginClasses:
-            obj = plug(None, None)
-            if obj.getInputFormat() is not None:
-                pluginList.append(plug)
+        for plugin in self._ioPluginClasses:
+            pluginClass = cast(type, plugin)
+            classInstance = pluginClass(None, None)
+            if classInstance.inputFormat is not None:
+                pluginList.append(plugin)
         return pluginList
 
     @property
@@ -79,10 +81,11 @@ class PluginManager:
         Returns:  A list of classes (the plugins classes).
         """
         pluginList = cast(PluginList, [])
-        for plug in self._ioPluginClasses:
-            obj = plug(None, None)
-            if obj.getOutputFormat() is not None:
-                pluginList.append(plug)
+        for plugin in self._ioPluginClasses:
+            pluginClass = cast(type, plugin)
+            classInstance = pluginClass(None, None)
+            if classInstance.outputFormat() is not None:
+                pluginList.append(plugin)
         return pluginList
 
     @property
@@ -95,13 +98,13 @@ class PluginManager:
         return self._toolPluginClasses
 
     @property
-    def toolPluginsMenu(self) -> PluginMap:
+    def toolPluginsMenu(self) -> PluginIDMap:
         if self._toolPluginsMenu is None:
             self._toolPluginsMenu = self.__mapWxIdsToPlugins(self._toolPluginClasses)
         return self._toolPluginsMenu
 
     @property
-    def ioPluginsMenu(self) -> PluginMap:
+    def ioPluginsMenu(self) -> PluginIDMap:
         return self._ioPluginsMenu
 
     def _loadIOPlugins(self):
@@ -129,7 +132,7 @@ class PluginManager:
                 pluginClass: Callable = getattr(loadedModule, className)
 
                 self.logger.warning(f'{type(pluginClass)=}')
-                pluginList.append(type(pluginClass))
+                pluginList.append(cast(PluginType, pluginClass))
         return pluginList
 
     def __computePluginClassNameFromModuleName(self, moduleName: str) -> str:
@@ -148,9 +151,9 @@ class PluginManager:
 
         return className
 
-    def __mapWxIdsToPlugins(self, pluginList: List[type]) -> PluginMap:
+    def __mapWxIdsToPlugins(self, pluginList: PluginList) -> PluginIDMap:
 
-        pluginMap: PluginMap = cast(PluginMap, {})
+        pluginMap: PluginIDMap = cast(PluginIDMap, {})
 
         nb: int = len(pluginList)
 

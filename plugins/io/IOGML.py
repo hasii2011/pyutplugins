@@ -19,6 +19,11 @@ from pyutplugincore.coretypes.PluginDataTypes import PluginName
 from pyutplugincore.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 
+PLUGIN_NAME:        PluginName = PluginName('GML')
+PLUGIN_EXTENSION:   PluginExtension = PluginExtension('gml')
+PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Graph Modeling Language - Portable Format for Graphs')
+
+
 class IOGML(IOPluginInterface):
     """
     Sample class for input/output plug-ins.
@@ -34,47 +39,14 @@ class IOGML(IOPluginInterface):
 
         self.logger: Logger = getLogger(__name__)
 
+        self._name    = 'Output GML'
+        self._author  = "Humberto A. Sanchez II"
+        self._version = GMLExporter.VERSION
+
         self._exportResponse: SingleFileRequestResponse = cast(SingleFileRequestResponse, None)
 
-    @property
-    def name(self) -> str:
-        """
-        Returns: the name of the plugin.
-        """
-        return "Output GML"
-
-    @property
-    def author(self) -> str:
-        """
-        Returns: The author's name
-        """
-        return "Humberto A. Sanchez II"
-
-    @property
-    def version(self) -> str:
-        """
-        Returns: The plugin version string
-        """
-        return GMLExporter.VERSION
-
-    @property
-    def inputFormat(self) -> InputFormat:
-        """
-        Returns:
-            None, I don't read GML
-        """
-        return cast(InputFormat, None)
-
-    @property
-    def outputFormat(self) -> OutputFormat:
-        """
-
-        Returns:
-            Return a specification tuple.
-        """
-        return OutputFormat(name=PluginName('GML'),
-                            extension=PluginExtension('gml'),
-                            description=PluginDescription('Graph Modeling Language - Portable Format for Graphs'))
+        self._inputFormat  = cast(InputFormat, None)
+        self._outputFormat = OutputFormat(name=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 
     def setImportOptions(self) -> bool:
         """
