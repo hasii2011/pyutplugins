@@ -11,4 +11,4 @@ PluginDescription = NewType('PluginDescription', str)
 #  Both of these hold the class types for the Plugins
 #
 PluginMap    = NewType('PluginMap',    Dict[int, type])
-PluginList   = NewType('PluginList',   List[type])
+PluginList   = NewType('PluginList',   List[type])          # Plugin Classes are Callable

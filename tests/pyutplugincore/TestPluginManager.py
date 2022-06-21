@@ -8,6 +8,7 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from pyutplugincore.PluginManager import PluginManager
+from pyutplugincore.coretypes.PluginDataTypes import PluginMap
 
 from tests.TestBase import TestBase
 
@@ -40,6 +41,11 @@ class TestPluginManager(TestBase):
         """Another test"""
         toolPlugins = self.pluginManager.toolPlugins
         self.assertIsNotNone(toolPlugins, 'Where are my tool plugins')
+
+    def testToolPluginsWxIdGenerated(self):
+
+        pluginMap: PluginMap = self.pluginManager.toolPluginsMenu
+        self.assertIsNotNone(pluginMap, 'Where is my map')
 
 
 def suite() -> TestSuite:

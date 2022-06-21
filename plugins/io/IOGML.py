@@ -19,7 +19,7 @@ from pyutplugincore.coretypes.PluginDataTypes import PluginName
 from pyutplugincore.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 
-class IoGML(IOPluginInterface):
+class IOGML(IOPluginInterface):
     """
     Sample class for input/output plug-ins.
     """

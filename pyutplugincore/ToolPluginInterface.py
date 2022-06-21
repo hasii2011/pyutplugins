@@ -19,6 +19,8 @@ class ToolPluginInterface(PluginInterface, ABC):
 
         super().__init__(communicator, oglObjects)
 
+        self._menuTitle: str = 'Not Set'
+
     def executeTool(self):
         """
         This is used by Pyut to invoke the tool.  This should NOT
@@ -29,9 +31,8 @@ class ToolPluginInterface(PluginInterface, ABC):
             self.doAction(self._oglClasses, selectedShapes)
 
     @property
-    @abstractmethod
     def menuTitle(self) -> str:
-        pass
+        return self._menuTitle
 
     @abstractmethod
     def setOptions(self) -> bool:
