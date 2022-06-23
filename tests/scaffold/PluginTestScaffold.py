@@ -1,9 +1,7 @@
 
 from wx import App
 
-from miniogl.DiagramFrame import DiagramFrame
-
-from tests.PluginTestFrame import PluginTestFrame
+from tests.scaffold.PluginTestFrame import PluginTestFrame
 
 
 class PluginTestScaffold(App):
