@@ -28,14 +28,13 @@ class IOGML(IOPluginInterface):
     """
     Sample class for input/output plug-ins.
     """
-    def __init__(self, communicator: ICommunicator, oglClasses: OglClasses):
+    def __init__(self, communicator: ICommunicator):
         """
 
         Args:
             communicator:   A class that implements ICommunicator
-            oglClasses:     The Pyut Ogl graphical classes that plugins manipulate
         """
-        super().__init__(communicator=communicator, oglClasses=oglClasses)
+        super().__init__(communicator=communicator)
 
         self.logger: Logger = getLogger(__name__)
 

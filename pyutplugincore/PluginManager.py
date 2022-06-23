@@ -13,6 +13,7 @@ from importlib import import_module
 
 from wx import NewIdRef
 
+from pyutplugincore.Singleton import Singleton
 from pyutplugincore.coretypes.PluginDataTypes import PluginList
 from pyutplugincore.coretypes.PluginDataTypes import PluginIDMap
 
@@ -24,7 +25,7 @@ TOOL_PLUGIN_NAME_PREFIX: str = 'Tool'
 IO_PLUGIN_NAME_PREFIX:   str = 'IO'
 
 
-class PluginManager:
+class PluginManager(Singleton):
     """
     Is responsible for:
 
@@ -43,7 +44,7 @@ class PluginManager:
 
     """
 
-    def __init__(self):
+    def init(self,  *args, **kwargs):
 
         self.logger: Logger = getLogger(__name__)
 
@@ -68,7 +69,7 @@ class PluginManager:
         pluginList = cast(PluginList, [])
         for plugin in self._ioPluginClasses:
             pluginClass = cast(type, plugin)
-            classInstance = pluginClass(None, None)
+            classInstance = pluginClass(None)
             if classInstance.inputFormat is not None:
                 pluginList.append(plugin)
         return pluginList

@@ -1,6 +1,7 @@
 
 from typing import cast
 
+from miniogl.DiagramFrame import DiagramFrame
 from wx import Frame
 
 from pyutplugincore.coretypes.Helper import OglClasses
@@ -11,20 +12,18 @@ class ICommunicator:
     This the interface specification that allows the plugins to manipulate the Pyut UML Frame
     The Pyut application must implement this
     """
+    def __init__(self, currentDirectory: str, umlFrame: DiagramFrame):
 
-    def refreshFrame(self):
-        pass
-
-    def deselectAllOglObjects(self):
-        pass
+        self._umlFrame:         DiagramFrame = umlFrame
+        self._currentDirectory: str          = currentDirectory
 
     @property
     def currentDirectory(self) -> str:
-        return ''
+        return self._currentDirectory
 
     @currentDirectory.setter
-    def currentDirectory(self, newValue: str):
-        pass
+    def currentDirectory(self, theNewValue: str):
+        self._currentDirectory = theNewValue
 
     @property
     def umlFrame(self) -> Frame:
@@ -32,4 +31,10 @@ class ICommunicator:
 
     @property
     def selectedOglObjects(self) -> OglClasses:
-        return cast(OglClasses, None)
+        return self._umlFrame.GetSelectedShapes()
+
+    def refreshFrame(self):
+        self._umlFrame.Refresh()
+
+    def deselectAllOglObjects(self):
+        self._umlFrame.DeselectAllShapes()

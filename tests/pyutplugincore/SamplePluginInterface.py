@@ -5,8 +5,6 @@ from pyutplugincore.coretypes.PluginDataTypes import PluginDescription
 from pyutplugincore.coretypes.PluginDataTypes import PluginExtension
 from pyutplugincore.coretypes.PluginDataTypes import PluginName
 
-from pyutplugincore.coretypes.Helper import OglClasses
-
 from pyutplugincore.ICommunicator import ICommunicator
 from pyutplugincore.coretypes.InputFormat import InputFormat
 from pyutplugincore.coretypes.OutputFormat import OutputFormat
@@ -14,8 +12,8 @@ from pyutplugincore.coretypes.OutputFormat import OutputFormat
 
 class SamplePluginInterface(PluginInterface):
 
-    def __init__(self, communicator: ICommunicator, oglObjects: OglClasses):
-        super().__init__(communicator, oglObjects)
+    def __init__(self, communicator: ICommunicator):
+        super().__init__(communicator)
 
     @property
     def name(self) -> str:

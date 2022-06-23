@@ -20,8 +20,8 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('W3C DTD 1.0 file form
 
 class IODTD(IOPluginInterface):
 
-    def __init__(self, communicator: ICommunicator, oglClasses: OglClasses):
-        super().__init__(communicator, oglClasses)
+    def __init__(self, communicator: ICommunicator):
+        super().__init__(communicator)
 
         # from super class
         self._name    = "IoDTD"

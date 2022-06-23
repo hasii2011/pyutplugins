@@ -18,8 +18,6 @@ from wx import FileSelector
 from wx import MessageDialog
 from wx import Yield as wxYield
 
-from pyutplugincore.coretypes.Helper import OglClasses
-
 from pyutplugincore.ICommunicator import ICommunicator
 
 from pyutplugincore.coretypes.InputFormat import InputFormat
@@ -49,15 +47,13 @@ class PluginInterface:
     There should be no implementations of this interface
     """
 
-    def __init__(self, communicator: ICommunicator, oglClasses: OglClasses):
+    def __init__(self, communicator: ICommunicator):
         """
 
         Args:
             communicator:   A class that implements ICommunicator
-            oglClasses:     The Pyut Ogl graphical classes that plugins manipulate
         """
         self._communicator: ICommunicator = communicator
-        self._oglClasses:   OglClasses    = oglClasses
         #
         # To be set by implementor constructor and read by property
         self._name:         str = 'Implementor must provide the plugin name'

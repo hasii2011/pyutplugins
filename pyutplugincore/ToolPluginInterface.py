@@ -15,9 +15,9 @@ class ToolPluginInterface(PluginInterface, ABC):
     plugins must implement.
     """
 
-    def __init__(self, communicator: ICommunicator, oglObjects: OglClasses):
+    def __init__(self, communicator: ICommunicator):
 
-        super().__init__(communicator, oglObjects)
+        super().__init__(communicator)
 
         self._menuTitle: str = 'Not Set'
 
@@ -45,12 +45,8 @@ class ToolPluginInterface(PluginInterface, ABC):
         pass
 
     @abstractmethod
-    def doAction(self, oglObjects: OglClasses, selectedObjects: OglClasses):
+    def doAction(self):
         """
         Do the tool's action
-
-        Args:
-            oglObjects:         list of the uml objects in the diagram
-            selectedObjects:    list of the selected objects
         """
         pass

@@ -33,11 +33,9 @@ class IOPluginInterface(PluginInterface, ABC):
         `doExport`
 
     """
-    def __init__(self, communicator: ICommunicator, oglClasses: OglClasses):
+    def __init__(self, communicator: ICommunicator):
 
-        super().__init__(communicator, oglClasses)
-
-        self._oglObjects: OglClasses = oglClasses
+        super().__init__(communicator)
 
     @property
     def name(self) -> str:

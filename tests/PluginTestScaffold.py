@@ -13,19 +13,19 @@ class PluginTestScaffold(App):
 
     def OnInit(self):
 
-        frameTop: PluginTestFrame = PluginTestFrame(title="Plugin Test Scaffold",
-                                                    size=(PluginTestScaffold.WINDOW_WIDTH, PluginTestScaffold.WINDOW_HEIGHT))
+        frameTop: PluginTestFrame = PluginTestFrame(title="Plugin Test Scaffold")
+                                                    # size=(PluginTestScaffold.WINDOW_WIDTH, PluginTestScaffold.WINDOW_HEIGHT))
         frameTop.Show(True)
 
-        diagramFrame: DiagramFrame = DiagramFrame(frameTop)
-        diagramFrame.SetSize((PluginTestScaffold.WINDOW_WIDTH, PluginTestScaffold.WINDOW_HEIGHT))
-        diagramFrame.SetScrollbars(10, 10, 100, 100)
+        # diagramFrame: DiagramFrame = DiagramFrame(frameTop)
+        # diagramFrame.SetSize((PluginTestScaffold.WINDOW_WIDTH, PluginTestScaffold.WINDOW_HEIGHT))
+        # diagramFrame.SetScrollbars(10, 10, 100, 100)
+        #
+        # diagramFrame.Show(True)
 
-        diagramFrame.Show(True)
+        # self.SetTopWindow(diagramFrame)
 
-        self.SetTopWindow(diagramFrame)
-
-        self._diagramFrame: DiagramFrame = diagramFrame
+        # self._diagramFrame: DiagramFrame = diagramFrame
 
         return True
 
