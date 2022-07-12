@@ -1,9 +1,17 @@
+
 from logging import Logger
 from logging import getLogger
 
-from miniogl.DiagramFrame import DiagramFrame
+from dataclasses import dataclass
+
+from os import getcwd
+
 from wx import DEFAULT_FRAME_STYLE
 from wx import EVT_MENU
+from wx import FD_CHANGE_DIR
+from wx import FD_FILE_MUST_EXIST
+from wx import FD_OPEN
+from wx import FileSelector
 from wx import ID_EXIT
 
 from wx import Frame
@@ -13,11 +21,25 @@ from wx import MenuBar
 from wx import BeginBusyCursor
 from wx import EndBusyCursor
 
-from pyutplugincore.ICommunicator import ICommunicator
+from wx import NewIdRef
+
+from untanglepyut.UnTangler import Document
+from untanglepyut.UnTangler import UnTangler
+from untanglepyut.UnTangler import UntangledOglClasses
+
+
 from pyutplugincore.PluginManager import PluginManager
 from pyutplugincore.ToolPluginInterface import ToolPluginInterface
 from pyutplugincore.coretypes.PluginDataTypes import PluginIDMap
+from tests.plugintester.DisplayUmlFrame import DisplayUmlFrame
+
 from tests.scaffold.ScaffoldCommunicator import ScaffoldCommunicator
+
+
+@dataclass
+class RequestResponse:
+    cancelled:     bool      = False
+    fileName: str = ''
 
 
 class PluginTestFrame(Frame):
@@ -30,18 +52,21 @@ class PluginTestFrame(Frame):
 
         super().__init__(parent=parent, id=wxId,  size=size, style=DEFAULT_FRAME_STYLE, title=title)
 
-        diagramFrame: DiagramFrame = DiagramFrame(self)
+        diagramFrame: DisplayUmlFrame = DisplayUmlFrame(self, self)
         diagramFrame.SetSize((PluginTestFrame.WINDOW_WIDTH, PluginTestFrame.WINDOW_HEIGHT))
         diagramFrame.SetScrollbars(10, 10, 100, 100)
 
         diagramFrame.Show(True)
 
-        self.logger:         Logger                = getLogger(__name__)
+        self.logger:         Logger               = getLogger(__name__)
         self._pluginManager: PluginManager        = PluginManager()
         self._communicator:  ScaffoldCommunicator = ScaffoldCommunicator(umlFrame=diagramFrame)
 
         self._status = self.CreateStatusBar()
         self._status.SetStatusText('Ready!')
+
+        self._loadXmlFileWxId: int             = NewIdRef()
+        self._displayUmlFrame: DisplayUmlFrame = diagramFrame
 
         self._createApplicationMenuBar()
 
@@ -51,6 +76,7 @@ class PluginTestFrame(Frame):
         fileMenu:  Menu = Menu()
         toolsMenu: Menu = Menu()
 
+        fileMenu  = self._makeFileMenu(fileMenu)
         toolsMenu = self._makeToolsMenu(toolsMenu)
 
         menuBar.Append(fileMenu, 'File')
@@ -59,6 +85,14 @@ class PluginTestFrame(Frame):
         self.SetMenuBar(menuBar)
 
         self.Bind(EVT_MENU, self.Close, id=ID_EXIT)
+
+    def _makeFileMenu(self, fileMenu: Menu) -> Menu:
+
+        fileMenu.Append(self._loadXmlFileWxId, 'Load Xml Diagram')
+
+        self.Bind(EVT_MENU, self._onLoadXmlFile, id=self._loadXmlFileWxId)
+
+        return fileMenu
 
     def _makeToolsMenu(self, toolsMenu: Menu) -> Menu:
         """
@@ -73,7 +107,7 @@ class PluginTestFrame(Frame):
             pluginInstance: ToolPluginInterface = clazz(None)
             toolsMenu.Append(wxId, pluginInstance.menuTitle)
 
-            self.Bind(EVT_MENU, self.onTools, id=wxId)
+            self.Bind(EVT_MENU, self._onTools, id=wxId)
 
         return toolsMenu
 
@@ -81,7 +115,7 @@ class PluginTestFrame(Frame):
     def Close(self, force=False):
         self.Destroy()
 
-    def onTools(self, event):
+    def _onTools(self, event):
 
         wxId: int = event.GetId()
         self.logger.warning(f'{wxId=}')
@@ -99,6 +133,48 @@ class PluginTestFrame(Frame):
                 pluginInstance.doAction()
                 self.logger.debug(f"After tool plugin do action")
             except (ValueError, Exception) as e:
-                # PyutUtils.displayError(An error occurred while executing the selected plugin"), "Error...")
                 self.logger.error(f'{e}')
             EndBusyCursor()
+
+    # noinspection PyUnusedLocal
+    def _onLoadXmlFile(self, event):
+
+        response: RequestResponse = self._askForXMLFileToImport()
+        self.logger.info(f'{response=}')
+
+        untangler: UnTangler = UnTangler(fqFileName=response.fileName)
+
+        untangler.untangle()
+
+        assert untangler.documents is not None, 'Bug!'
+        documentNames = list(untangler.documents.keys())
+        document: Document = untangler.documents[documentNames[0]]
+        oglClasses: UntangledOglClasses = document.oglClasses
+
+        for oglClass in oglClasses:
+            oglClass.SetDraggable(True)
+            self._displayUmlFrame.addShape(oglObject=oglClass)
+
+        self._displayUmlFrame.Refresh()
+
+    def _askForXMLFileToImport(self) -> RequestResponse:
+        """
+        Called to ask for a file to import
+
+        Returns:  The request response named tuple
+        """
+        file: str = FileSelector(
+            "Choose a file to import",
+            default_path=getcwd(),
+            default_extension='xml',
+            flags=FD_OPEN | FD_FILE_MUST_EXIST | FD_CHANGE_DIR
+        )
+        response: RequestResponse = RequestResponse()
+        if file == '':
+            response.cancelled = True
+            response.fileName = ''
+        else:
+            response.cancelled = False
+            response.fileName = file
+
+        return response
