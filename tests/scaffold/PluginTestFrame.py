@@ -72,6 +72,14 @@ class PluginTestFrame(Frame):
 
         self._createApplicationMenuBar()
 
+    def loadXmlFile(self, fqFileName: str):
+        """
+
+        Args:
+            fqFileName: full qualified file name
+        """
+        self._loadXmlFile(fqFileName=fqFileName)
+
     def _createApplicationMenuBar(self):
 
         menuBar:   MenuBar = MenuBar()
@@ -134,7 +142,8 @@ class PluginTestFrame(Frame):
 
         pluginMap: PluginIDMap = self._pluginManager.toolPluginsMenu
 
-        clazz: type = pluginMap[wxId]
+        # TODO: Fix this later for mypy
+        clazz: type = pluginMap[wxId]   # type: ignore
         # Create a plugin instance
         pluginInstance: ToolPluginInterface = clazz(communicator=self._communicator)
 
@@ -164,20 +173,7 @@ class PluginTestFrame(Frame):
         response: RequestResponse = self._askForXMLFileToImport()
         self.logger.info(f'{response=}')
 
-        untangler: UnTangler = UnTangler(fqFileName=response.fileName)
-
-        untangler.untangle()
-
-        assert untangler.documents is not None, 'Bug!'
-        documentNames = list(untangler.documents.keys())
-        document: Document = untangler.documents[documentNames[0]]
-        oglClasses: UntangledOglClasses = document.oglClasses
-
-        for oglClass in oglClasses:
-            oglClass.SetDraggable(True)
-            self._displayUmlFrame.addShape(oglObject=oglClass)
-
-        self._displayUmlFrame.Refresh()
+        self._loadXmlFile(fqFileName=response.fileName)
 
     def _askForXMLFileToImport(self) -> RequestResponse:
         """
@@ -200,3 +196,24 @@ class PluginTestFrame(Frame):
             response.fileName = file
 
         return response
+
+    def _loadXmlFile(self, fqFileName: str):
+        """
+
+        Args:
+            fqFileName: Fully qualified file name
+        """
+        untangler: UnTangler = UnTangler(fqFileName=fqFileName)
+
+        untangler.untangle()
+
+        assert untangler.documents is not None, 'Bug!'
+        documentNames = list(untangler.documents.keys())
+        document: Document = untangler.documents[documentNames[0]]
+        oglClasses: UntangledOglClasses = document.oglClasses
+
+        for oglClass in oglClasses:
+            oglClass.SetDraggable(True)
+            self._displayUmlFrame.addShape(oglObject=oglClass)
+
+        self._displayUmlFrame.Refresh()
