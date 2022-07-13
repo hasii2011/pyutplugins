@@ -153,7 +153,9 @@ class PluginTestFrame(Frame):
         shapes = self._displayUmlFrame.GetDiagram().GetShapes()
         for shape in shapes:
             shape.SetSelected(True)
+            self._displayUmlFrame.GetSelectedShapes()
 
+        self._displayUmlFrame.SetSelectedShapes(shapes)
         self._displayUmlFrame.Refresh()
 
     # noinspection PyUnusedLocal

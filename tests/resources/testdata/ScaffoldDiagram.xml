@@ -2,7 +2,7 @@
 <PyutProject version="10" CodePath="/Users/humberto.a.sanchez.ii/PycharmProjects/PyUt/src">
     <PyutDocument type="CLASS_DIAGRAM" title="UnitTest" scrollPositionX="100" scrollPositionY="100" pixelsPerUnitX="1" pixelsPerUnitY="1">
         <GraphicClass width="0" height="0" x="175" y="100">
-            <Class id="1" name="ClassName0" filename="/Users/humberto.a.sanchez.ii/PycharmProjects/PyUt/src/UnitTest.py" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+            <Class id="1" name="ClassName0" stereotype="MyStereoType" filename="/Users/humberto.a.sanchez.ii/PycharmProjects/PyUt/src/UnitTest.py" description="Simple Scaffold Test" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
                 <Method name="OzzeeElGatoDiablo" visibility="PUBLIC">
                     <Modifier name="static"/>
                     <Modifier name="bogus"/>

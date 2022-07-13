@@ -1,15 +1,30 @@
 
+from typing import cast
+from typing import TextIO
+
 from logging import Logger
 from logging import getLogger
 
+from math import floor
+from math import ceil
+
+from os import sep as osSep
+
+from ogl.OglClass import OglClass
+from pyutmodel.PyutClass import PyutClass
+from pyutmodel.PyutStereotype import PyutStereotype
+
 from pyutplugincore.ToolPluginInterface import ToolPluginInterface
+from pyutplugincore.ICommunicator import ICommunicator
+
 from pyutplugincore.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
 from pyutplugincore.coretypes.Helper import OglClasses
 
-from pyutplugincore.ICommunicator import ICommunicator
-
 
 class ToolAscii(ToolPluginInterface):
+    """
+    UML objects to an ASCII representation
+    """
 
     def __init__(self, communicator: ICommunicator):
 
@@ -51,3 +66,47 @@ class ToolAscii(ToolPluginInterface):
         Args:
             oglObjects:   The objects to export
         """
+
+        for oglObject in oglObjects:
+
+            if not isinstance(oglObject, OglClass):
+                continue
+
+            pyutClass: PyutClass = cast(PyutClass, oglObject.pyutObject)
+            filename:  str       = pyutClass.name
+
+            fqFileName: str = f'{self._exportDirectory}{osSep}{filename}.acl'
+
+            file: TextIO = open(f'{fqFileName}', "w")
+
+            base = [pyutClass.name]
+            pyutStereotype: PyutStereotype = pyutClass.getStereotype()
+            if pyutStereotype is not None and pyutStereotype.name != '':
+                base.append(str(pyutClass.getStereotype()))
+
+            fields = [str(x) for x in pyutClass.fields]
+            methods = [str(x) for x in pyutClass.methods]
+
+            lineLength = max([len(x) for x in base + fields + methods]) + 4
+
+            file.write(lineLength * "-" + "\n")
+
+            for line in base:
+                spaces = lineLength - 4 - len(line)
+                file.write("| " + int(floor(spaces / 2.0)) * " " + line + int(ceil(spaces / 2.0)) * " " + " |\n")
+
+            file.write("|" + (lineLength - 2) * "-" + "|\n")
+
+            for line in fields:
+                file.write("| " + line + (lineLength - len(line) - 4) * " " + " |\n")
+
+            file.write("|" + (lineLength - 2) * "-" + "|\n")
+
+            for line in methods:
+                file.write("| " + line + (lineLength - len(line) - 4) * " " + " |\n")
+
+            file.write(lineLength * "-" + "\n\n")
+
+            file.write(pyutClass.description)
+
+            file.close()

@@ -36,5 +36,8 @@ class ICommunicator:
     def refreshFrame(self):
         self._umlFrame.Refresh()
 
+    def selectAllOglObjects(self):
+        pass
+
     def deselectAllOglObjects(self):
         self._umlFrame.DeselectAllShapes()
