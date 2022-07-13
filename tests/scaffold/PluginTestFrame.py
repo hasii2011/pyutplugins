@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 from os import getcwd
 
+from wx import CommandEvent
 from wx import DEFAULT_FRAME_STYLE
 from wx import EVT_MENU
 from wx import FD_CHANGE_DIR
@@ -66,6 +67,7 @@ class PluginTestFrame(Frame):
         self._status.SetStatusText('Ready!')
 
         self._loadXmlFileWxId: int             = NewIdRef()
+        self._selectAllWxId:   int             = NewIdRef()
         self._displayUmlFrame: DisplayUmlFrame = diagramFrame
 
         self._createApplicationMenuBar()
@@ -74,12 +76,15 @@ class PluginTestFrame(Frame):
 
         menuBar:   MenuBar = MenuBar()
         fileMenu:  Menu = Menu()
+        editMenu:  Menu = Menu()
         toolsMenu: Menu = Menu()
 
         fileMenu  = self._makeFileMenu(fileMenu)
+        editMenu  = self._makeEditMenu(editMenu)
         toolsMenu = self._makeToolsMenu(toolsMenu)
 
         menuBar.Append(fileMenu, 'File')
+        menuBar.Append(editMenu, 'Edit')
         menuBar.Append(toolsMenu, 'Tools')
 
         self.SetMenuBar(menuBar)
@@ -93,6 +98,13 @@ class PluginTestFrame(Frame):
         self.Bind(EVT_MENU, self._onLoadXmlFile, id=self._loadXmlFileWxId)
 
         return fileMenu
+
+    def _makeEditMenu(self, editMenu: Menu) -> Menu:
+
+        editMenu.Append(self._selectAllWxId, 'Select All')
+
+        self.Bind(EVT_MENU, self._onSelectAll, id=self._selectAllWxId)
+        return editMenu
 
     def _makeToolsMenu(self, toolsMenu: Menu) -> Menu:
         """
@@ -115,7 +127,7 @@ class PluginTestFrame(Frame):
     def Close(self, force=False):
         self.Destroy()
 
-    def _onTools(self, event):
+    def _onTools(self, event: CommandEvent):
 
         wxId: int = event.GetId()
         self.logger.warning(f'{wxId=}')
@@ -137,7 +149,15 @@ class PluginTestFrame(Frame):
             EndBusyCursor()
 
     # noinspection PyUnusedLocal
-    def _onLoadXmlFile(self, event):
+    def _onSelectAll(self, event: CommandEvent):
+        shapes = self._displayUmlFrame.GetDiagram().GetShapes()
+        for shape in shapes:
+            shape.SetSelected(True)
+
+        self._displayUmlFrame.Refresh()
+
+    # noinspection PyUnusedLocal
+    def _onLoadXmlFile(self, event: CommandEvent):
 
         response: RequestResponse = self._askForXMLFileToImport()
         self.logger.info(f'{response=}')
