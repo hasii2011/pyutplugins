@@ -2,7 +2,6 @@ wheel~=0.37.1
 setuptools==63.1.0
 twine==4.0.1
 build==0.8.0
-python-interface~=1.6.1
 html-testRunner~=1.2.1
 
 pkgversions==0.2.2
