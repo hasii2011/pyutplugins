@@ -1,3 +1,4 @@
+
 import pathlib
 from setuptools import setup
 
@@ -6,6 +7,7 @@ HERE = pathlib.Path(__file__).parent
 
 # The text of the README file
 README = (HERE / "README.md").read_text()
+LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
     name="pyutplugincore",
@@ -16,6 +18,7 @@ setup(
     maintainer_email='humberto.a.sanchez.ii@gmail.com',
     description='Pyut Plugins',
     long_description=README,
+    license=LICENSE,
     long_description_content_type="text/markdown",
     url="https://github.com/hasii2011/pyutplugincore",
     package_data={

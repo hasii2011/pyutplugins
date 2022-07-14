@@ -49,8 +49,9 @@ class PluginManager(Singleton):
         self.logger: Logger = getLogger(__name__)
 
         # These are built later on
-        self._toolPluginsMenu: PluginIDMap = cast(PluginIDMap, None)
-        self._ioPluginsMenu:   PluginIDMap = cast(PluginIDMap, None)
+        self._toolPluginsMap:  PluginIDMap  = cast(PluginIDMap, None)
+        self._inputPluginsMap: PluginIDMap  = cast(PluginIDMap, None)
+        self._outputPluginsMap: PluginIDMap = cast(PluginIDMap, None)
 
         self._ioPluginClasses:   PluginList = PluginList([])
         self._toolPluginClasses: PluginList = PluginList([])
@@ -84,8 +85,8 @@ class PluginManager(Singleton):
         pluginList = cast(PluginList, [])
         for plugin in self._ioPluginClasses:
             pluginClass = cast(type, plugin)
-            classInstance = pluginClass(None, None)
-            if classInstance.outputFormat() is not None:
+            classInstance = pluginClass(None)
+            if classInstance.outputFormat is not None:
                 pluginList.append(plugin)
         return pluginList
 
@@ -99,14 +100,22 @@ class PluginManager(Singleton):
         return self._toolPluginClasses
 
     @property
-    def toolPluginsMenu(self) -> PluginIDMap:
-        if self._toolPluginsMenu is None:
-            self._toolPluginsMenu = self.__mapWxIdsToPlugins(self._toolPluginClasses)
-        return self._toolPluginsMenu
+    def toolPluginsMap(self) -> PluginIDMap:
+        if self._toolPluginsMap is None:
+            self._toolPluginsMap = self.__mapWxIdsToPlugins(self._toolPluginClasses)
+        return self._toolPluginsMap
 
     @property
-    def ioPluginsMenu(self) -> PluginIDMap:
-        return self._ioPluginsMenu
+    def inputPluginsMap(self) -> PluginIDMap:
+        if self._inputPluginsMap is None:
+            self._inputPluginsMap = self.__mapWxIdsToPlugins(self.inputPlugins)
+        return self._inputPluginsMap
+
+    @property
+    def outputPluginsMap(self) -> PluginIDMap:
+        if self._outputPluginsMap is None:
+            self._outputPluginsMap = self.__mapWxIdsToPlugins(self.outputPlugins)
+        return self._outputPluginsMap
 
     def _loadIOPlugins(self):
         self._ioPluginClasses = self.__loadPlugins(plugins.io)

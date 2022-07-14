@@ -1,8 +1,5 @@
 
-from typing import cast
-
 from miniogl.DiagramFrame import DiagramFrame
-from wx import Frame
 
 from pyutplugincore.coretypes.Helper import OglClasses
 
@@ -26,8 +23,8 @@ class ICommunicator:
         self._currentDirectory = theNewValue
 
     @property
-    def umlFrame(self) -> Frame:
-        return cast(Frame, None)
+    def umlFrame(self) -> DiagramFrame:
+        return self._umlFrame
 
     @property
     def selectedOglObjects(self) -> OglClasses:

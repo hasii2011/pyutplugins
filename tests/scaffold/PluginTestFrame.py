@@ -1,4 +1,6 @@
 
+from typing import Callable
+
 from logging import Logger
 from logging import getLogger
 
@@ -13,6 +15,7 @@ from wx import FD_CHANGE_DIR
 from wx import FD_FILE_MUST_EXIST
 from wx import FD_OPEN
 from wx import FileSelector
+from wx import ICON_ERROR
 from wx import ID_EXIT
 
 from wx import Frame
@@ -21,14 +24,17 @@ from wx import MenuBar
 
 from wx import BeginBusyCursor
 from wx import EndBusyCursor
+from wx import MessageDialog
 
 from wx import NewIdRef
+from wx import OK
+from wx import Yield as wxYield
 
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import UnTangler
 from untanglepyut.UnTangler import UntangledOglClasses
 
-
+from pyutplugincore.IOPluginInterface import IOPluginInterface
 from pyutplugincore.PluginManager import PluginManager
 from pyutplugincore.ToolPluginInterface import ToolPluginInterface
 from pyutplugincore.coretypes.PluginDataTypes import PluginIDMap
@@ -80,6 +86,10 @@ class PluginTestFrame(Frame):
         """
         self._loadXmlFile(fqFileName=fqFileName)
 
+    # noinspection PyUnusedLocal
+    def Close(self, force=False):
+        self.Destroy()
+
     def _createApplicationMenuBar(self):
 
         menuBar:   MenuBar = MenuBar()
@@ -103,6 +113,11 @@ class PluginTestFrame(Frame):
 
         fileMenu.Append(self._loadXmlFileWxId, 'Load Xml Diagram')
 
+        importSubMenu: Menu = self._makeImportSubMenu()
+        exportSubMenu: Menu = self._makeExportSubMenu()
+
+        fileMenu.AppendSubMenu(importSubMenu, 'Import')
+        fileMenu.AppendSubMenu(exportSubMenu, 'Export')
         self.Bind(EVT_MENU, self._onLoadXmlFile, id=self._loadXmlFileWxId)
 
         return fileMenu
@@ -113,49 +128,6 @@ class PluginTestFrame(Frame):
 
         self.Bind(EVT_MENU, self._onSelectAll, id=self._selectAllWxId)
         return editMenu
-
-    def _makeToolsMenu(self, toolsMenu: Menu) -> Menu:
-        """
-        Make the Tools submenu.
-        """
-        pluginMap: PluginIDMap = self._pluginManager.toolPluginsMenu
-
-        for wxId in pluginMap:
-
-            clazz: type = pluginMap[wxId]   # type: ignore
-
-            pluginInstance: ToolPluginInterface = clazz(None)
-            toolsMenu.Append(wxId, pluginInstance.menuTitle)
-
-            self.Bind(EVT_MENU, self._onTools, id=wxId)
-
-        return toolsMenu
-
-    # noinspection PyUnusedLocal
-    def Close(self, force=False):
-        self.Destroy()
-
-    def _onTools(self, event: CommandEvent):
-
-        wxId: int = event.GetId()
-        self.logger.warning(f'{wxId=}')
-
-        pluginMap: PluginIDMap = self._pluginManager.toolPluginsMenu
-
-        # TODO: Fix this later for mypy
-        clazz: type = pluginMap[wxId]   # type: ignore
-        # Create a plugin instance
-        pluginInstance: ToolPluginInterface = clazz(communicator=self._communicator)
-
-        if pluginInstance.setOptions() is True:
-            # Do plugin functionality
-            BeginBusyCursor()
-            try:
-                pluginInstance.doAction()
-                self.logger.debug(f"After tool plugin do action")
-            except (ValueError, Exception) as e:
-                self.logger.error(f'{e}')
-            EndBusyCursor()
 
     # noinspection PyUnusedLocal
     def _onSelectAll(self, event: CommandEvent):
@@ -217,3 +189,106 @@ class PluginTestFrame(Frame):
             self._displayUmlFrame.addShape(oglObject=oglClass)
 
         self._displayUmlFrame.Refresh()
+
+    def _makeToolsMenu(self, toolsMenu: Menu) -> Menu:
+        """
+        Make the Tools submenu.
+        """
+        pluginMap: PluginIDMap = self._pluginManager.toolPluginsMap
+
+        for wxId in pluginMap:
+
+            clazz: type = pluginMap[wxId]   # type: ignore
+
+            pluginInstance: ToolPluginInterface = clazz(None)
+            toolsMenu.Append(wxId, pluginInstance.menuTitle)
+
+            self.Bind(EVT_MENU, self._onTools, id=wxId)
+
+        return toolsMenu
+
+    def _makeImportSubMenu(self) -> Menu:
+        """
+        Returns: The import submenu.
+        """
+        pluginMap: PluginIDMap = self._pluginManager.inputPluginsMap
+
+        return self._makeIOSubMenu(pluginMap=pluginMap)
+
+    def _makeExportSubMenu(self) -> Menu:
+        """
+        Returns:  The export submenu
+        """
+        pluginMap: PluginIDMap = self._pluginManager.outputPluginsMap
+
+        return self._makeIOSubMenu(pluginMap=pluginMap)
+
+    def _makeIOSubMenu(self, pluginMap: PluginIDMap) -> Menu:
+
+        subMenu: Menu = Menu()
+
+        for wxId in pluginMap:
+            clazz:          type = pluginMap[wxId]   # type: ignore
+            pluginInstance: IOPluginInterface = clazz(None)
+
+            if pluginInstance.inputFormat is not None:
+                pluginName: str = pluginInstance.inputFormat.name
+                subMenu = self.__makeSubMenuEntry(subMenu=subMenu, wxId=wxId, pluginName=pluginName, callback=self._onImport)
+            elif pluginInstance.outputFormat is not None:
+                pluginName = pluginInstance.outputFormat.name
+                subMenu = self.__makeSubMenuEntry(subMenu=subMenu, wxId=wxId, pluginName=pluginName, callback=self._onExport)
+            else:
+                assert False, 'Unknown Plugin Type'
+
+        return subMenu
+
+    def __makeSubMenuEntry(self, subMenu: Menu, wxId: int, pluginName: str, callback: Callable) -> Menu:
+
+        subMenu.Append(wxId, pluginName)
+        self.Bind(EVT_MENU, callback, id=wxId)
+
+        return subMenu
+
+    def _onTools(self, event: CommandEvent):
+
+        wxId: int = event.GetId()
+        self.logger.warning(f'{wxId=}')
+
+        pluginMap: PluginIDMap = self._pluginManager.toolPluginsMap
+
+        # TODO: Fix this later for mypy
+        clazz: type = pluginMap[wxId]   # type: ignore
+        # Create a plugin instance
+        pluginInstance: ToolPluginInterface = clazz(communicator=self._communicator)
+
+        if pluginInstance.setOptions() is True:
+            # Do plugin functionality
+            BeginBusyCursor()
+            try:
+                pluginInstance.doAction()
+                self.logger.debug(f"After tool plugin do action")
+            except (ValueError, Exception) as e:
+                self.logger.error(f'{e}')
+            EndBusyCursor()
+
+    def _onImport(self, event: CommandEvent):
+
+        wxId: int = event.GetId()
+        self.logger.info(f'Import: {wxId=}')
+
+    def _onExport(self, event: CommandEvent):
+
+        wxId: int = event.GetId()
+        self.logger.info(f'Export: {wxId=}')
+
+        clazz:        type              = self._pluginManager.outputPluginsMap[wxId]     # type: ignore
+        plugInstance: IOPluginInterface = clazz(communicator=self._communicator)
+        try:
+            wxYield()
+            plugInstance.executeExport()
+        except (ValueError, Exception) as e:
+            self.logger.error(f'{e}')
+            booBoo: MessageDialog = MessageDialog(parent=None,
+                                                  message=f'An error occurred while executing the selected plugin - {e}',
+                                                  caption='Error!', style=OK | ICON_ERROR)
+            booBoo.ShowModal()

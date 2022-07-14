@@ -81,7 +81,7 @@ class IOPluginInterface(PluginInterface, ABC):
         if self._communicator.umlFrame is None:
             self.displayNoUmlFrame()
         else:
-            outputFormat: OutputFormat = self.outputFormat
+            outputFormat: OutputFormat = self.outputFormat      # TODO this is probably not needed Pyut groups appropriately
             if outputFormat is None:
                 pass
             else:
@@ -91,11 +91,11 @@ class IOPluginInterface(PluginInterface, ABC):
                     # prefs: PyutPreferences = PyutPreferences()
                     # if prefs.pyutIoPluginAutoSelectAll is True:       TODO:  Need plugin preferences
                     #    mediator.selectAllShapes()
-                    self.__oglObjects = self._communicator.selectedOglObjects
-                    if len(self.__oglObjects) == 0:
+                    oglObjects = self._communicator.selectedOglObjects
+                    if len(oglObjects) == 0:
                         self.displayNoSelectedOglObjects()
                     else:
-                        self.write(self._oglObjects)
+                        self.write(oglObjects)
                         self._communicator.deselectAllOglObjects()
 
     @abstractmethod
