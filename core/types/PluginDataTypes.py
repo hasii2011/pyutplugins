@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from core.IOPluginInterface import IOPluginInterface
     from core.ToolPluginInterface import ToolPluginInterface
 
-PluginName        = NewType('PluginName', str)
+FormatName        = NewType('FormatName', str)
 PluginExtension   = NewType('PluginExtension', str)
 PluginDescription = NewType('PluginDescription', str)
 

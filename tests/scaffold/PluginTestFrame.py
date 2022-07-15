@@ -232,10 +232,10 @@ class PluginTestFrame(Frame):
             pluginInstance: IOPluginInterface = clazz(None)
 
             if pluginInstance.inputFormat is not None:
-                pluginName: str = pluginInstance.inputFormat.name
+                pluginName: str = pluginInstance.inputFormat.formatName
                 subMenu = self.__makeSubMenuEntry(subMenu=subMenu, wxId=wxId, pluginName=pluginName, callback=self._onImport)
             elif pluginInstance.outputFormat is not None:
-                pluginName = pluginInstance.outputFormat.name
+                pluginName = pluginInstance.outputFormat.formatName
                 subMenu = self.__makeSubMenuEntry(subMenu=subMenu, wxId=wxId, pluginName=pluginName, callback=self._onExport)
             else:
                 assert False, 'Unknown Plugin Type'

@@ -28,11 +28,11 @@ from core.types.ImportDirectoryResponse import ImportDirectoryResponse
 from core.types.MultipleFileRequestResponse import MultipleFileRequestResponse
 from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
-from core.types.PluginDataTypes import PluginName
+from core.types.PluginDataTypes import FormatName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 
 
-UNSPECIFIED_NAME:        PluginName        = PluginName('Unspecified Plugin Name')
+UNSPECIFIED_NAME:        FormatName        = FormatName('Unspecified Plugin Name')
 UNSPECIFIED_EXTENSION:   PluginExtension   = PluginExtension('*')
 UNSPECIFIED_DESCRIPTION: PluginDescription = PluginDescription('Unspecified Plugin Description')
 
@@ -59,8 +59,8 @@ class PluginInterface:
         self._name:         str = 'Implementor must provide the plugin name'
         self._author:       str = 'Implementor must provide the plugin author'
         self._version:      str = 'Implementor must provide the version'
-        self._inputFormat:  InputFormat  = InputFormat(name=UNSPECIFIED_NAME,  extension=UNSPECIFIED_EXTENSION, description=UNSPECIFIED_DESCRIPTION)
-        self._outputFormat: OutputFormat = OutputFormat(name=UNSPECIFIED_NAME, extension=UNSPECIFIED_EXTENSION, description=UNSPECIFIED_DESCRIPTION)
+        self._inputFormat:  InputFormat  = InputFormat(formatName=UNSPECIFIED_NAME, extension=UNSPECIFIED_EXTENSION, description=UNSPECIFIED_DESCRIPTION)
+        self._outputFormat: OutputFormat = OutputFormat(formatName=UNSPECIFIED_NAME, extension=UNSPECIFIED_EXTENSION, description=UNSPECIFIED_DESCRIPTION)
 
     @property
     def name(self) -> str:
@@ -192,7 +192,7 @@ class PluginInterface:
 
         outputFormat: OutputFormat = self.outputFormat
 
-        wildCard:    str = f'{outputFormat.name} (*.{outputFormat.extension}) |*.{outputFormat.extension}'
+        wildCard:    str = f'{outputFormat.formatName} (*.{outputFormat.extension}) |*.{outputFormat.extension}'
         fileName:    str = FileSelector("Choose export file name",
                                         default_filename=defaultFileName,
                                         wildcard=wildCard,
@@ -267,7 +267,7 @@ class PluginInterface:
 
         # wildcard: str = inputFormat.name + " (*." + inputFormat.extension + ")|*." + inputFormat.description
         wildcard: str = (
-            f'{inputFormat.name} '
+            f'{inputFormat.formatName} '
             f' (*, {inputFormat.extension}) '
             f'|*.{inputFormat.extension}'
         )

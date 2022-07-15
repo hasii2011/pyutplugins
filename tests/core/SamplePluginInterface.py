@@ -3,7 +3,7 @@ from core.PluginInterface import PluginInterface
 
 from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
-from core.types.PluginDataTypes import PluginName
+from core.types.PluginDataTypes import FormatName
 
 from core.ICommunicator import ICommunicator
 from core.types.InputFormat import InputFormat
@@ -44,7 +44,7 @@ class SamplePluginInterface(PluginInterface):
         Returns:
             The input format type
         """
-        return InputFormat(PluginName('TestPlugin'), PluginExtension('xml'), PluginDescription('A Test Plugin'))
+        return InputFormat(FormatName('TestPlugin'), PluginExtension('xml'), PluginDescription('A Test Plugin'))
 
     @property
     def outputFormat(self) -> OutputFormat:
@@ -62,4 +62,4 @@ class SamplePluginInterface(PluginInterface):
         Returns:
             Return a specification tuple.  None if the plugin can not write.
         """
-        return OutputFormat(PluginName('TestPlugin'), PluginExtension('xml'), PluginDescription('A Test Plugin'))
+        return OutputFormat(FormatName('TestPlugin'), PluginExtension('xml'), PluginDescription('A Test Plugin'))

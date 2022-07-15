@@ -13,10 +13,10 @@ from core.types.OutputFormat import OutputFormat
 
 from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
-from core.types.PluginDataTypes import PluginName
+from core.types.PluginDataTypes import FormatName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 
-PLUGIN_NAME:        PluginName        = PluginName("DTD")
+PLUGIN_NAME:        FormatName        = FormatName("DTD")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('dtd')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('W3C DTD 1.0 file format')
 
@@ -27,17 +27,17 @@ class IODTD(IOPluginInterface):
         super().__init__(communicator)
 
         # from super class
-        self._name    = "IoDTD"
+        self._name    = 'IoDTD'
         self._author  = "C.Dutoit <dutoitc@hotmail.com>"
         self._version = '1.0'
-        self._inputFormat  = InputFormat(name=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
+        self._inputFormat  = InputFormat(formatName=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
         self._outputFormat = cast(OutputFormat, None)
 
         self._fileToImport: str = ''
 
     def setImportOptions(self) -> bool:
         """
-        We do not need to ask any questions
+        We do need to ask for the input file name
 
         Returns:  'True', we support import
         """

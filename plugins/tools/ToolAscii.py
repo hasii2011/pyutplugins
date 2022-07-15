@@ -32,7 +32,7 @@ class ToolAscii(ToolPluginInterface):
 
         self.logger: Logger = getLogger(__name__)
 
-        self._name      = 'ASCII Class export'
+        self._name      = 'ASCII Class Export'
         self._author    = 'Philippe Waelti <pwaelti@eivd.ch>'
         self._version   = '1.0'
 

@@ -14,11 +14,11 @@ from core.types.InputFormat import InputFormat
 from core.types.OutputFormat import OutputFormat
 from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
-from core.types.PluginDataTypes import PluginName
+from core.types.PluginDataTypes import FormatName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 
 
-PLUGIN_NAME:        PluginName = PluginName('GML')
+PLUGIN_NAME:        FormatName = FormatName('GML')
 PLUGIN_EXTENSION:   PluginExtension = PluginExtension('gml')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Graph Modeling Language - Portable Format for Graphs')
 
@@ -37,14 +37,14 @@ class IOGML(IOPluginInterface):
 
         self.logger: Logger = getLogger(__name__)
 
-        self._name    = 'Output GML'
+        self._name    = FormatName('Output GML')
         self._author  = "Humberto A. Sanchez II"
         self._version = GMLExporter.VERSION
 
         self._exportResponse: SingleFileRequestResponse = cast(SingleFileRequestResponse, None)
 
         self._inputFormat  = cast(InputFormat, None)
-        self._outputFormat = OutputFormat(name=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
+        self._outputFormat = OutputFormat(formatName=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 
     def setImportOptions(self) -> bool:
         """

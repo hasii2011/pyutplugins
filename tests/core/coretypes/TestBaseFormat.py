@@ -9,7 +9,7 @@ from unittest import main as unitTestMain
 
 from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
-from core.types.PluginDataTypes import PluginName
+from core.types.PluginDataTypes import FormatName
 
 from core.types.BaseFormat import BaseFormat
 
@@ -36,7 +36,7 @@ class TestBaseFormat(TestBase):
         pass
 
     def testBasicInstantiation(self):
-        name:        PluginName        = PluginName('BasicPlugin')
+        name:        FormatName        = FormatName('BasicPlugin')
         extension:   PluginExtension   = PluginExtension('put')
         description: PluginDescription = PluginDescription('I am a basic plugin')
 
@@ -48,15 +48,15 @@ class TestBaseFormat(TestBase):
         self.assertRaises(InvalidPluginExtensionException, lambda: self._badExtension())
 
     def testFileNameContainsSingleQuote(self):
-        nameToTest: PluginName = PluginName('Basic\'Plugin')
+        nameToTest: FormatName = FormatName('Basic\'Plugin')
         self.assertRaises(InvalidPluginNameException, lambda: self.__testBadName(nameToTest))
 
     def testFileNameContainsDoubleQuote(self):
-        nameToTest: PluginName = PluginName('Basic\"Plugin')
+        nameToTest: FormatName = FormatName('Basic\"Plugin')
         self.assertRaises(InvalidPluginNameException, lambda: self.__testBadName(nameToTest))
 
     def testFileContainsOtherInvalid(self):
-        nameToTest: PluginName = PluginName('Basic$Plugin')
+        nameToTest: FormatName = FormatName('Basic$Plugin')
         self.assertRaises(InvalidPluginNameException, lambda: self.__testBadName(nameToTest))
 
     def testAny(self):
@@ -67,7 +67,7 @@ class TestBaseFormat(TestBase):
         test2 = "Just a test string"
         self.logger.debug(any(elem in test2 for elem in string))
 
-    def __testBadName(self, nameToTest: PluginName):
+    def __testBadName(self, nameToTest: FormatName):
         extension:   PluginExtension   = PluginExtension('put')
         description: PluginDescription = PluginDescription('I am a basic plugin')
 
@@ -75,7 +75,7 @@ class TestBaseFormat(TestBase):
         baseFormat: BaseFormat = BaseFormat(nameToTest, extension, description)
 
     def _badExtension(self):
-        name:        PluginName        = PluginName('BasicPlugin')
+        name:        FormatName        = FormatName('BasicPlugin')
         extension:   PluginExtension   = PluginExtension('.put')
         description: PluginDescription = PluginDescription('I am a basic plugin')
 

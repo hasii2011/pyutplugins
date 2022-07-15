@@ -1,13 +1,13 @@
 
 from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
-from core.types.PluginDataTypes import PluginName
+from core.types.PluginDataTypes import FormatName
 
 from core.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
 from core.exceptions.InvalidPluginNameException import InvalidPluginNameException
 
 DOT:                str = '.'
-SPECIAL_CHARACTERS: str = '!@#$%^&*()_+-=[]{};:,.<>?/|\'\"'
+SPECIAL_CHARACTERS: str = '!@#$%^&*_+-=[]{};:,.<>?/|\'\"'
 
 
 class BaseFormat:
@@ -15,20 +15,20 @@ class BaseFormat:
     Provides the basic capabilities;  Should not be directly instantiated;
     TODO:  Figure out how to prevent that
     """
-    def __init__(self, name: PluginName, extension: PluginExtension, description: PluginDescription):
+    def __init__(self, formatName: FormatName, extension: PluginExtension, description: PluginDescription):
 
-        if self.__containsSpecialCharacters(name):  # TODO Must be a better way
-            raise InvalidPluginNameException(f'{name}')
+        if self.__containsSpecialCharacters(formatName):  # TODO Must be a better way
+            raise InvalidPluginNameException(f'{formatName}')
 
         if DOT in extension:             # TODO when internet back up do not this method
             raise InvalidPluginExtensionException(f'{extension}')
 
-        self._name:        PluginName        = name
+        self._name:        FormatName        = formatName
         self._extension:   PluginExtension   = extension
         self._description: PluginDescription = description
 
     @property
-    def name(self) -> PluginName:
+    def formatName(self) -> FormatName:
         """
         No special characters allowed
 
@@ -50,7 +50,7 @@ class BaseFormat:
         """
         return self._description
 
-    def __containsSpecialCharacters(self, name: PluginName) -> bool:
+    def __containsSpecialCharacters(self, name: FormatName) -> bool:
         for special in SPECIAL_CHARACTERS:
             if special in name:
                 return True
