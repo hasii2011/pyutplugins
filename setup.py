@@ -29,14 +29,14 @@ setup(
         'plugins.io.gml':            ['py.typed'],
         'plugins.tools':             ['py.typed'],
         'core':            ['py.typed'],
-        'core.coretypes':  ['py.typed'],
+        'core.types':  ['py.typed'],
         'core.exceptions': ['py.typed'],
     },
     packages=[
         'plugins', 'plugins.common',
         'plugins.io', 'plugins.io.dtd', 'plugins.io.gml',
         'plugins.tools',
-        'core', 'core.coretypes', 'core.exceptions',
+        'core', 'core.types', 'core.exceptions',
     ],
     install_requires=['click~=8.1.3', 'ogl==0.53.1', 'pyutmodel', 'untanglepyut==0.1.3', 'wxPython~=4.1.1']
 )

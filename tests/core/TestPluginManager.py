@@ -8,7 +8,7 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from core.PluginManager import PluginManager
-from core.coretypes.PluginDataTypes import PluginIDMap
+from core.types.PluginDataTypes import PluginIDMap
 
 from tests.TestBase import TestBase
 

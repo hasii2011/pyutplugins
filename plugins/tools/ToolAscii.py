@@ -18,7 +18,7 @@ from plugins.common.Types import OglClasses
 from core.ToolPluginInterface import ToolPluginInterface
 from core.ICommunicator import ICommunicator
 
-from core.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
+from core.types.ExportDirectoryResponse import ExportDirectoryResponse
 
 
 class ToolAscii(ToolPluginInterface):

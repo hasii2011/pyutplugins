@@ -14,12 +14,12 @@ from importlib import import_module
 from wx import NewIdRef
 
 from core.Singleton import Singleton
-from core.coretypes.PluginDataTypes import PluginList
-from core.coretypes.PluginDataTypes import PluginIDMap
+from core.types.PluginDataTypes import PluginList
+from core.types.PluginDataTypes import PluginIDMap
 
 import plugins.io
 import plugins.tools
-from core.coretypes.PluginDataTypes import PluginType
+from core.types.PluginDataTypes import PluginType
 
 TOOL_PLUGIN_NAME_PREFIX: str = 'Tool'
 IO_PLUGIN_NAME_PREFIX:   str = 'IO'

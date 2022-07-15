@@ -20,16 +20,16 @@ from wx import Yield as wxYield
 
 from core.ICommunicator import ICommunicator
 
-from core.coretypes.InputFormat import InputFormat
-from core.coretypes.OutputFormat import OutputFormat
+from core.types.InputFormat import InputFormat
+from core.types.OutputFormat import OutputFormat
 
-from core.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
-from core.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
-from core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
-from core.coretypes.PluginDataTypes import PluginDescription
-from core.coretypes.PluginDataTypes import PluginExtension
-from core.coretypes.PluginDataTypes import PluginName
-from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+from core.types.ExportDirectoryResponse import ExportDirectoryResponse
+from core.types.ImportDirectoryResponse import ImportDirectoryResponse
+from core.types.MultipleFileRequestResponse import MultipleFileRequestResponse
+from core.types.PluginDataTypes import PluginDescription
+from core.types.PluginDataTypes import PluginExtension
+from core.types.PluginDataTypes import PluginName
+from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 
 
 UNSPECIFIED_NAME:        PluginName        = PluginName('Unspecified Plugin Name')

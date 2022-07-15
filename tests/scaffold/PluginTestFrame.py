@@ -37,7 +37,7 @@ from untanglepyut.UnTangler import UntangledOglClasses
 from core.IOPluginInterface import IOPluginInterface
 from core.PluginManager import PluginManager
 from core.ToolPluginInterface import ToolPluginInterface
-from core.coretypes.PluginDataTypes import PluginIDMap
+from core.types.PluginDataTypes import PluginIDMap
 from tests.plugintester.DisplayUmlFrame import DisplayUmlFrame
 
 from tests.scaffold.ScaffoldCommunicator import ScaffoldCommunicator

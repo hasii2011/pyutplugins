@@ -4,7 +4,7 @@ from typing import List
 from dataclasses import dataclass
 from dataclasses import field
 
-from core.coretypes.BaseRequestResponse import BaseRequestResponse
+from core.types.BaseRequestResponse import BaseRequestResponse
 
 
 @dataclass

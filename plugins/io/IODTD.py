@@ -8,13 +8,13 @@ from plugins.io.dtd.DTDParser import DTDParser
 from core.ICommunicator import ICommunicator
 from core.IOPluginInterface import IOPluginInterface
 
-from core.coretypes.InputFormat import InputFormat
-from core.coretypes.OutputFormat import OutputFormat
+from core.types.InputFormat import InputFormat
+from core.types.OutputFormat import OutputFormat
 
-from core.coretypes.PluginDataTypes import PluginDescription
-from core.coretypes.PluginDataTypes import PluginExtension
-from core.coretypes.PluginDataTypes import PluginName
-from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+from core.types.PluginDataTypes import PluginDescription
+from core.types.PluginDataTypes import PluginExtension
+from core.types.PluginDataTypes import PluginName
+from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 
 PLUGIN_NAME:        PluginName        = PluginName("DTD")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('dtd')
