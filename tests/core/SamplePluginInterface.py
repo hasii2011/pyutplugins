@@ -1,13 +1,13 @@
 
-from pyutplugincore.PluginInterface import PluginInterface
+from core.PluginInterface import PluginInterface
 
-from pyutplugincore.coretypes.PluginDataTypes import PluginDescription
-from pyutplugincore.coretypes.PluginDataTypes import PluginExtension
-from pyutplugincore.coretypes.PluginDataTypes import PluginName
+from core.coretypes.PluginDataTypes import PluginDescription
+from core.coretypes.PluginDataTypes import PluginExtension
+from core.coretypes.PluginDataTypes import PluginName
 
-from pyutplugincore.ICommunicator import ICommunicator
-from pyutplugincore.coretypes.InputFormat import InputFormat
-from pyutplugincore.coretypes.OutputFormat import OutputFormat
+from core.ICommunicator import ICommunicator
+from core.coretypes.InputFormat import InputFormat
+from core.coretypes.OutputFormat import OutputFormat
 
 
 class SamplePluginInterface(PluginInterface):

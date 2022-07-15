@@ -3,9 +3,9 @@ from abc import ABC
 from abc import abstractmethod
 
 from plugins.common.Types import OglClasses
-from pyutplugincore.PluginInterface import PluginInterface
-from pyutplugincore.ICommunicator import ICommunicator
-from pyutplugincore.coretypes.OutputFormat import OutputFormat
+from core.PluginInterface import PluginInterface
+from core.ICommunicator import ICommunicator
+from core.coretypes.OutputFormat import OutputFormat
 
 
 class IOPluginInterface(PluginInterface, ABC):

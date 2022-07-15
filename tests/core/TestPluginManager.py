@@ -7,8 +7,8 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from pyutplugincore.PluginManager import PluginManager
-from pyutplugincore.coretypes.PluginDataTypes import PluginIDMap
+from core.PluginManager import PluginManager
+from core.coretypes.PluginDataTypes import PluginIDMap
 
 from tests.TestBase import TestBase
 

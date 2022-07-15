@@ -5,7 +5,7 @@ from typing import cast
 
 from wx import Frame
 
-from pyutplugincore.ICommunicator import ICommunicator
+from core.ICommunicator import ICommunicator
 
 
 class SampleICommunicator(ICommunicator):

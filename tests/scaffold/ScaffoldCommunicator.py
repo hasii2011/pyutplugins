@@ -3,7 +3,7 @@ from os import getcwd
 
 from miniogl.DiagramFrame import DiagramFrame
 
-from pyutplugincore.ICommunicator import ICommunicator
+from core.ICommunicator import ICommunicator
 
 
 class ScaffoldCommunicator(ICommunicator):

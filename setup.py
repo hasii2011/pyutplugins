@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
-    name="pyutplugincore",
+    name="core",
     version="0.1.0",
     author='Humberto A. Sanchez II',
     author_email='humberto.a.sanchez.ii@gmail.com',
@@ -28,15 +28,15 @@ setup(
         'plugins.io.dtd':            ['py.typed'],
         'plugins.io.gml':            ['py.typed'],
         'plugins.tools':             ['py.typed'],
-        'pyutplugincore':            ['py.typed'],
-        'pyutplugincore.coretypes':  ['py.typed'],
-        'pyutplugincore.exceptions': ['py.typed'],
+        'core':            ['py.typed'],
+        'core.coretypes':  ['py.typed'],
+        'core.exceptions': ['py.typed'],
     },
     packages=[
         'plugins', 'plugins.common',
         'plugins.io', 'plugins.io.dtd', 'plugins.io.gml',
         'plugins.tools',
-        'pyutplugincore', 'pyutplugincore.coretypes', 'pyutplugincore.exceptions',
+        'core', 'core.coretypes', 'core.exceptions',
     ],
     install_requires=['click~=8.1.3', 'ogl==0.53.1', 'pyutmodel', 'untanglepyut==0.1.3', 'wxPython~=4.1.1']
 )

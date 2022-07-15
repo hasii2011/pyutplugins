@@ -2,9 +2,9 @@
 from abc import ABC
 from abc import abstractmethod
 
-from pyutplugincore.PluginInterface import PluginInterface
+from core.PluginInterface import PluginInterface
 
-from pyutplugincore.ICommunicator import ICommunicator
+from core.ICommunicator import ICommunicator
 
 
 class ToolPluginInterface(PluginInterface, ABC):

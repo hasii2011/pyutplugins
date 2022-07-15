@@ -34,10 +34,10 @@ from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import UnTangler
 from untanglepyut.UnTangler import UntangledOglClasses
 
-from pyutplugincore.IOPluginInterface import IOPluginInterface
-from pyutplugincore.PluginManager import PluginManager
-from pyutplugincore.ToolPluginInterface import ToolPluginInterface
-from pyutplugincore.coretypes.PluginDataTypes import PluginIDMap
+from core.IOPluginInterface import IOPluginInterface
+from core.PluginManager import PluginManager
+from core.ToolPluginInterface import ToolPluginInterface
+from core.coretypes.PluginDataTypes import PluginIDMap
 from tests.plugintester.DisplayUmlFrame import DisplayUmlFrame
 
 from tests.scaffold.ScaffoldCommunicator import ScaffoldCommunicator

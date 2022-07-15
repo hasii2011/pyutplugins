@@ -17,13 +17,13 @@ from wx import MenuBar
 from wx import MenuItem
 
 from plugins.common.Types import OglClasses
-from pyutplugincore.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
-from pyutplugincore.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
-from pyutplugincore.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+from core.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
+from core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
+from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
-from tests.pyutplugincore.SamplePluginInterface import SamplePluginInterface
+from tests.core.SamplePluginInterface import SamplePluginInterface
 
-from tests.pyutplugincore.SampleICommunicator import SampleICommunicator
+from tests.core.SampleICommunicator import SampleICommunicator
 
 from tests.TestBase import TestBase
 

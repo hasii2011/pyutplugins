@@ -1,10 +1,10 @@
 
-from pyutplugincore.coretypes.PluginDataTypes import PluginDescription
-from pyutplugincore.coretypes.PluginDataTypes import PluginExtension
-from pyutplugincore.coretypes.PluginDataTypes import PluginName
+from core.coretypes.PluginDataTypes import PluginDescription
+from core.coretypes.PluginDataTypes import PluginExtension
+from core.coretypes.PluginDataTypes import PluginName
 
-from pyutplugincore.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
-from pyutplugincore.exceptions.InvalidPluginNameException import InvalidPluginNameException
+from core.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
+from core.exceptions.InvalidPluginNameException import InvalidPluginNameException
 
 DOT:                str = '.'
 SPECIAL_CHARACTERS: str = '!@#$%^&*()_+-=[]{};:,.<>?/|\'\"'

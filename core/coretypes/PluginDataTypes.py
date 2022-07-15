@@ -8,8 +8,8 @@ from typing import Union
 from wx import NewIdRef
 
 if TYPE_CHECKING:
-    from pyutplugincore.IOPluginInterface import IOPluginInterface
-    from pyutplugincore.ToolPluginInterface import ToolPluginInterface
+    from core.IOPluginInterface import IOPluginInterface
+    from core.ToolPluginInterface import ToolPluginInterface
 
 PluginName        = NewType('PluginName', str)
 PluginExtension   = NewType('PluginExtension', str)

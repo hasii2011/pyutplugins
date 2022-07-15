@@ -7,15 +7,15 @@ from logging import getLogger
 from plugins.common.Types import OglClasses
 from plugins.io.gml.GMLExporter import GMLExporter
 
-from pyutplugincore.IOPluginInterface import IOPluginInterface
-from pyutplugincore.ICommunicator import ICommunicator
+from core.IOPluginInterface import IOPluginInterface
+from core.ICommunicator import ICommunicator
 
-from pyutplugincore.coretypes.InputFormat import InputFormat
-from pyutplugincore.coretypes.OutputFormat import OutputFormat
-from pyutplugincore.coretypes.PluginDataTypes import PluginDescription
-from pyutplugincore.coretypes.PluginDataTypes import PluginExtension
-from pyutplugincore.coretypes.PluginDataTypes import PluginName
-from pyutplugincore.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+from core.coretypes.InputFormat import InputFormat
+from core.coretypes.OutputFormat import OutputFormat
+from core.coretypes.PluginDataTypes import PluginDescription
+from core.coretypes.PluginDataTypes import PluginExtension
+from core.coretypes.PluginDataTypes import PluginName
+from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 
 PLUGIN_NAME:        PluginName = PluginName('GML')

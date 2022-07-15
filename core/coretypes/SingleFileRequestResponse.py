@@ -1,7 +1,7 @@
 
 from dataclasses import dataclass
 
-from pyutplugincore.coretypes.BaseRequestResponse import BaseRequestResponse
+from core.coretypes.BaseRequestResponse import BaseRequestResponse
 
 
 @dataclass

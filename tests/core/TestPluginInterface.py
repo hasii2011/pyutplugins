@@ -8,15 +8,15 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from plugins.common.Types import OglClasses
-from pyutplugincore.PluginInterface import PluginInterface
-from pyutplugincore.ICommunicator import ICommunicator
+from core.PluginInterface import PluginInterface
+from core.ICommunicator import ICommunicator
 
 from tests.TestBase import TestBase
 
 # noinspection SpellCheckingInspection
 """
 import the class you want to test here
-from pyutplugincore.CoreTypes import BaseFormat
+from core.CoreTypes import BaseFormat
 """
 
 

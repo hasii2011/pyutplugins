@@ -18,18 +18,18 @@ from wx import FileSelector
 from wx import MessageDialog
 from wx import Yield as wxYield
 
-from pyutplugincore.ICommunicator import ICommunicator
+from core.ICommunicator import ICommunicator
 
-from pyutplugincore.coretypes.InputFormat import InputFormat
-from pyutplugincore.coretypes.OutputFormat import OutputFormat
+from core.coretypes.InputFormat import InputFormat
+from core.coretypes.OutputFormat import OutputFormat
 
-from pyutplugincore.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
-from pyutplugincore.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
-from pyutplugincore.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
-from pyutplugincore.coretypes.PluginDataTypes import PluginDescription
-from pyutplugincore.coretypes.PluginDataTypes import PluginExtension
-from pyutplugincore.coretypes.PluginDataTypes import PluginName
-from pyutplugincore.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+from core.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
+from core.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
+from core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
+from core.coretypes.PluginDataTypes import PluginDescription
+from core.coretypes.PluginDataTypes import PluginExtension
+from core.coretypes.PluginDataTypes import PluginName
+from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 
 UNSPECIFIED_NAME:        PluginName        = PluginName('Unspecified Plugin Name')
