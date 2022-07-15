@@ -14,11 +14,11 @@ from ogl.OglClass import OglClass
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutStereotype import PyutStereotype
 
+from plugins.common.Types import OglClasses
 from pyutplugincore.ToolPluginInterface import ToolPluginInterface
 from pyutplugincore.ICommunicator import ICommunicator
 
 from pyutplugincore.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
-from pyutplugincore.coretypes.Helper import OglClasses
 
 
 class ToolAscii(ToolPluginInterface):

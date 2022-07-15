@@ -20,8 +20,10 @@ from miniogl.AnchorPoint import AnchorPoint
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 
+from plugins.common.Types import OglClasses
+
 from plugins.io.gml.GMLExporter import GMLExporter
-from pyutplugincore.coretypes.Helper import OglClasses
+
 from tests.TestBase import TestBase
 
 

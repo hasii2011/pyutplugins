@@ -7,9 +7,9 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from plugins.common.Types import OglClasses
 from pyutplugincore.PluginInterface import PluginInterface
 from pyutplugincore.ICommunicator import ICommunicator
-from pyutplugincore.coretypes.Helper import OglClasses
 
 from tests.TestBase import TestBase
 

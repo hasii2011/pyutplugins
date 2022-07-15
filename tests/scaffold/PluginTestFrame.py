@@ -276,6 +276,10 @@ class PluginTestFrame(Frame):
         wxId: int = event.GetId()
         self.logger.info(f'Import: {wxId=}')
 
+        clazz:        type              = self._pluginManager.inputPluginsMap[wxId]     # type: ignore
+        plugInstance: IOPluginInterface = clazz(communicator=self._communicator)
+        self._doIOAction(methodToCall=plugInstance.executeImport)
+
     def _onExport(self, event: CommandEvent):
 
         wxId: int = event.GetId()
@@ -283,9 +287,13 @@ class PluginTestFrame(Frame):
 
         clazz:        type              = self._pluginManager.outputPluginsMap[wxId]     # type: ignore
         plugInstance: IOPluginInterface = clazz(communicator=self._communicator)
+        self._doIOAction(methodToCall=plugInstance.executeExport)
+
+    def _doIOAction(self, methodToCall: Callable):
+
         try:
             wxYield()
-            plugInstance.executeExport()
+            methodToCall()
         except (ValueError, Exception) as e:
             self.logger.error(f'{e}')
             booBoo: MessageDialog = MessageDialog(parent=None,

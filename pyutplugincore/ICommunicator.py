@@ -1,7 +1,11 @@
+from typing import Union
 
 from miniogl.DiagramFrame import DiagramFrame
+from ogl.OglLink import OglLink
 
-from pyutplugincore.coretypes.Helper import OglClasses
+from ogl.OglObject import OglObject
+
+from plugins.common.Types import OglClasses
 
 
 class ICommunicator:
@@ -38,3 +42,8 @@ class ICommunicator:
 
     def deselectAllOglObjects(self):
         self._umlFrame.DeselectAllShapes()
+
+    def addShape(self, shape: Union[OglObject, OglLink]):
+
+        diagram = self._umlFrame.GetDiagram()
+        diagram.AddShape(shape)

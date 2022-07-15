@@ -1,10 +1,13 @@
 
 from typing import cast
 
+from plugins.common.Types import OglClasses
+from plugins.common.Types import OglLinks
+from plugins.io.dtd.DTDParser import DTDParser
+
 from pyutplugincore.ICommunicator import ICommunicator
 from pyutplugincore.IOPluginInterface import IOPluginInterface
 
-from pyutplugincore.coretypes.Helper import OglClasses
 from pyutplugincore.coretypes.InputFormat import InputFormat
 from pyutplugincore.coretypes.OutputFormat import OutputFormat
 
@@ -49,8 +52,28 @@ class IODTD(IOPluginInterface):
     def setExportOptions(self) -> bool:
         return False
 
-    def read(self) -> OglClasses:
-        pass
+    def read(self) -> bool:
+        """
+
+        Returns:  True if import succeeded, False if error or cancelled
+        """
+        filename: str = self._fileToImport
+
+        dtdParser: DTDParser = DTDParser()
+
+        dtdParser.open(filename=filename)
+
+        oglClasses: OglClasses = dtdParser.oglClasses
+        for oglClass in oglClasses:
+            self._communicator.addShape(oglClass)
+
+        oglLinks: OglLinks = dtdParser.links
+        for oglLink in oglLinks:
+            self._communicator.addShape(oglLink)
+
+        self._communicator.refreshFrame()
+
+        return True
 
     def write(self, oglClasses: OglClasses):
         """
@@ -61,4 +84,4 @@ class IODTD(IOPluginInterface):
         Returns:  False, write not supported
 
         """
-        return None
+        return False

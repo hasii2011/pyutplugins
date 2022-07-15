@@ -38,5 +38,5 @@ setup(
         'plugins.tools',
         'pyutplugincore', 'pyutplugincore.coretypes', 'pyutplugincore.exceptions',
     ],
-    install_requires=['click~=8.1.3', 'ogl==0.53.1', 'untanglepyut==0.1.3', 'wxPython~=4.1.1']
+    install_requires=['click~=8.1.3', 'ogl==0.53.1', 'pyutmodel', 'untanglepyut==0.1.3', 'wxPython~=4.1.1']
 )

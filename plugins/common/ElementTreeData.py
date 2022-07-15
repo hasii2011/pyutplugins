@@ -21,13 +21,13 @@ class ElementTreeData:
     def addChild(self, childClassName: str):
         self._childElementNames.append(childClassName)
 
-    def getChildElementNames(self) -> List[str]:
+    @property
+    def childElementNames(self) -> List[str]:
         return self._childElementNames
 
-    def setChildElementNames(self, theNewValues: List[str]):
+    @childElementNames.setter
+    def childElementNames(self, theNewValues: List[str]):
         self._childElementNames = theNewValues
-
-    childElementNames = property(getChildElementNames, setChildElementNames)
 
     def __str__(self):
         retStr: str = f'ElementTreeData - ClassName: {self.pyutClass.name} oglClass position: {self.oglClass.GetPosition()}\n'

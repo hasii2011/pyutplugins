@@ -6,8 +6,6 @@ from pyutplugincore.PluginInterface import PluginInterface
 
 from pyutplugincore.ICommunicator import ICommunicator
 
-from pyutplugincore.coretypes.Helper import OglClasses
-
 
 class ToolPluginInterface(PluginInterface, ABC):
     """

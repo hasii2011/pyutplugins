@@ -16,7 +16,7 @@ from wx import Menu
 from wx import MenuBar
 from wx import MenuItem
 
-from pyutplugincore.coretypes.Helper import OglClasses
+from plugins.common.Types import OglClasses
 from pyutplugincore.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
 from pyutplugincore.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
 from pyutplugincore.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
@@ -43,7 +43,7 @@ class TestSamplePluginInterface(App):
         oglObjects:   OglClasses          = OglClasses([])
         communicator: SampleICommunicator = SampleICommunicator()
 
-        self._plugin: SamplePluginInterface = SamplePluginInterface(communicator, oglObjects)
+        self._plugin: SamplePluginInterface = SamplePluginInterface(communicator)
 
     def OnInit(self):
 

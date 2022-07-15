@@ -2,10 +2,9 @@
 from abc import ABC
 from abc import abstractmethod
 
-
+from plugins.common.Types import OglClasses
 from pyutplugincore.PluginInterface import PluginInterface
 from pyutplugincore.ICommunicator import ICommunicator
-from pyutplugincore.coretypes.Helper import OglClasses
 from pyutplugincore.coretypes.OutputFormat import OutputFormat
 
 
@@ -121,7 +120,7 @@ class IOPluginInterface(PluginInterface, ABC):
         pass
 
     @abstractmethod
-    def read(self) -> OglClasses:
+    def read(self) -> bool:
         """
         Read data from a file;  Presumably, the file was specified on the call
         to setImportOptions

@@ -4,13 +4,12 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-
+from plugins.common.Types import OglClasses
 from plugins.io.gml.GMLExporter import GMLExporter
 
 from pyutplugincore.IOPluginInterface import IOPluginInterface
 from pyutplugincore.ICommunicator import ICommunicator
 
-from pyutplugincore.coretypes.Helper import OglClasses
 from pyutplugincore.coretypes.InputFormat import InputFormat
 from pyutplugincore.coretypes.OutputFormat import OutputFormat
 from pyutplugincore.coretypes.PluginDataTypes import PluginDescription
@@ -72,11 +71,11 @@ class IOGML(IOPluginInterface):
         else:
             return True
 
-    def read(self) -> OglClasses:
+    def read(self) -> bool:
         """
         Read data from filename.
         """
-        pass
+        return False
 
     def write(self, oglClasses: OglClasses):
         """

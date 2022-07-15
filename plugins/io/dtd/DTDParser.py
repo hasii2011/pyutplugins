@@ -25,6 +25,8 @@ from ogl.OglClass import OglClass
 from plugins.common.ElementTreeData import ElementTreeData
 from plugins.common.Types import ClassPair
 from plugins.common.Types import ClassTree
+from plugins.common.Types import OglClasses
+from plugins.common.Types import OglLinks
 from plugins.common.Types import PyutLinks
 
 from plugins.io.dtd.DTDAttribute import DTDAttribute
@@ -42,7 +44,6 @@ class DTDParser:
 
     MODEL_CHILDREN_INDEX:           int = 3
 
-    # def __init__(self, umlFrame: UmlClassDiagramsFrame):
     def __init__(self):
         """
         Also, I use the pycharm noinspection pragma because I cannot get the correct
@@ -56,7 +57,8 @@ class DTDParser:
         self._elementTypes:   DTDElements    = DTDElements({})
         self._attributes:     DTDAttributes  = DTDAttributes([])
         self._classTree:      ClassTree      = ClassTree({})
-        self._links:          PyutLinks      = PyutLinks([])
+        self._links:          OglLinks       = OglLinks([])
+        self._oglClasses:     OglClasses     = OglClasses([])
         self._oglLinkFactory: OglLinkFactory = OglLinkFactory()
 
         # noinspection SpellCheckingInspection
@@ -92,6 +94,26 @@ class DTDParser:
             self._dtdParser.Parse(dtdData)
 
         return True
+
+    @property
+    def classTree(self) -> ClassTree:
+        assert len(self._classTree) != 0, 'You should call open first'
+        return self._classTree
+
+    @property
+    def oglClasses(self) -> OglClasses:
+        if len(self._oglClasses) == 0:
+            classTree: ClassTree = self.classTree
+            for className in classTree.keys():
+                elementTreeData: ElementTreeData = classTree[className]
+                self._oglClasses.append(elementTreeData.oglClass)
+
+        return self._oglClasses
+
+    @property
+    def links(self) -> OglLinks:
+        assert len(self._classTree) != 0, 'You should call open first'  # Maybe does not have any links
+        return self._links
 
     def startDocumentTypeHandler(self, docTypeName, sysId, pubId, hasInternalSubset):
 

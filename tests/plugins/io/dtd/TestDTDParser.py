@@ -44,8 +44,8 @@ class TestDTDParser(TestBase):
 
         dtdParser: DTDParser = self._readDTD()
 
-        actualClassCount: int = len(dtdParser._classTree)
-        actualLinkCount:  int = len(dtdParser._links)
+        actualClassCount: int = len(dtdParser.classTree)
+        actualLinkCount:  int = len(dtdParser.links)
 
         self.assertEqual(TestDTDParser.EXPECTED_CLASS_COUNT, actualClassCount, 'Created class count does not match')
         self.assertEqual(TestDTDParser.EXPECTED_LINK_COUNT,  actualLinkCount,  'Incorrect number of links')
@@ -54,9 +54,9 @@ class TestDTDParser(TestBase):
 
         dtdParser: DTDParser = self._readDTD()
 
-        emailTreeData: ElementTreeData = dtdParser._classTree['email']
-        phoneTreeData: ElementTreeData = dtdParser._classTree['phone']
-        eventTreeData: ElementTreeData = dtdParser._classTree['event']
+        emailTreeData: ElementTreeData = dtdParser.classTree['email']
+        phoneTreeData: ElementTreeData = dtdParser.classTree['phone']
+        eventTreeData: ElementTreeData = dtdParser.classTree['event']
 
         self.assertIsNotNone(emailTreeData, 'Missing Pyut Information')
         self.assertIsNotNone(phoneTreeData, 'Missing Pyut Information')
@@ -66,9 +66,9 @@ class TestDTDParser(TestBase):
 
         dtdParser: DTDParser = self._readDTD()
 
-        emailTreeData: ElementTreeData = dtdParser._classTree['email']
-        phoneTreeData: ElementTreeData = dtdParser._classTree['phone']
-        eventTreeData: ElementTreeData = dtdParser._classTree['event']
+        emailTreeData: ElementTreeData = dtdParser.classTree['email']
+        phoneTreeData: ElementTreeData = dtdParser.classTree['phone']
+        eventTreeData: ElementTreeData = dtdParser.classTree['event']
 
         self._testFieldPresence(treeData=emailTreeData, fieldName='requiredAttr')
         self._testFieldPresence(treeData=phoneTreeData, fieldName='impliedAttr')
