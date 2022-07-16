@@ -13,7 +13,8 @@ changeToProjectRoot
 
 echo "current: $(pwd)"
 
-mypy --config-file .mypi.ini --pretty --no-color-output --show-error-codes --no-incremental core plugins tests
+mypy --config-file .mypi.ini --pretty --no-color-output --show-error-codes  core plugins tests
+# mypy --config-file .mypi.ini --pretty --no-color-output --show-error-codes --no-incremental core plugins tests
 # mypy --config-file .mypi.ini --pretty  --show-error-codes core plugins tests
 status=$?
 
