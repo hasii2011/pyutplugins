@@ -15,7 +15,7 @@ class PluginTestScaffold(App):
     WINDOW_WIDTH:  int = 900
     WINDOW_HEIGHT: int = 500
 
-    def OnInit(self):
+    def OnInit(self) -> bool:
 
         self._frameTop: PluginTestFrame = PluginTestFrame(title="Plugin Test Scaffold")
 

@@ -33,6 +33,11 @@
         "tests": {
             "level": "INFO",
             "propagate": "False"
+        },
+        "plugins.io.pythonsupport.ReverseEngineerPython2": {
+            "level": "INFO",
+            "propagate": "False"
         }
+
     }
 }

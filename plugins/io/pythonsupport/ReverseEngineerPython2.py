@@ -13,11 +13,14 @@ from os import sep as osSep
 
 from antlr4 import CommonTokenStream
 from antlr4 import FileStream
+from ogl.OglLink import OglLink
+from pyutmodel.PyutLink import PyutLink
+from pyutmodel.PyutLinkType import PyutLinkType
 
-from wx import PD_APP_MODAL
-from wx import PD_ELAPSED_TIME
-
-from wx import ProgressDialog
+# from wx import PD_APP_MODAL
+# from wx import PD_ELAPSED_TIME
+#
+# from wx import ProgressDialog
 
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutField import PyutField
@@ -28,7 +31,10 @@ from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
 from ogl.OglClass import OglClass
+from ogl.OglLinkFactory import OglLinkFactory
 
+from plugins.common.Types import OglClasses
+from plugins.common.Types import OglLinks
 from plugins.io.pythonsupport.PythonParseException import PythonParseException
 
 from plugins.io.pythonsupport.PyutPythonVisitor import ChildName
@@ -47,9 +53,9 @@ from plugins.io.pythonsupport.PyutPythonVisitor import PyutPythonVisitor
 from plugins.io.pythonsupport.pyantlrparser.Python3Lexer import Python3Lexer
 from plugins.io.pythonsupport.pyantlrparser.Python3Parser import Python3Parser
 
-PyutClassName = NewType('PyutClassName', str)
-PyutClasses   = NewType('PyutClasses', Dict[PyutClassName, PyutClass])
-OglClasses    = NewType('OglClasses', Dict[Union[PyutClassName, ParentName, ChildName, ClassName], OglClass])
+PyutClassName  = NewType('PyutClassName', str)
+PyutClasses    = NewType('PyutClasses', Dict[PyutClassName, PyutClass])
+OglClassesDict = NewType('OglClassesDict', Dict[Union[PyutClassName, ParentName, ChildName, ClassName], OglClass])
 
 
 class ReverseEngineerPython2:
@@ -62,10 +68,13 @@ class ReverseEngineerPython2:
 
         self.logger: Logger = getLogger(__name__)
 
-        self.visitor: PyutPythonVisitor = cast(PyutPythonVisitor, None)
+        self._oglLinkFactory: OglLinkFactory  = OglLinkFactory()
+        self._pyutClasses:    PyutClasses     = PyutClasses({})
+        self._oglClassesDict: OglClassesDict  = OglClassesDict({})
+        self._oglClasses:     OglClasses      = cast(OglClasses, None)
+        self._oglLinks:       OglLinks        = OglLinks([])
 
-        self._pyutClasses: PyutClasses = PyutClasses({})
-        self._oglClasses:  OglClasses  = OglClasses({})
+        self.visitor: PyutPythonVisitor = cast(PyutPythonVisitor, None)
 
     def reversePython(self,  directoryName: str, files: List[str]):
         """
@@ -75,9 +84,10 @@ class ReverseEngineerPython2:
             directoryName:  The directory name where the selected files reside
             files:          A list of files to parse
         """
-        fileCount: int            = len(files)
-        dlg:       ProgressDialog = ProgressDialog('Parsing Files', 'Starting',  parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
-        dlg.SetRange(fileCount)
+        # REPLACE THIS WITH A CALLBACK
+        # fileCount: int            = len(files)
+        # dlg:       ProgressDialog = ProgressDialog('Parsing Files', 'Starting',  parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
+        # dlg.SetRange(fileCount)
         currentFileCount: int = 0
 
         onGoingParents: Parents = Parents({})
@@ -86,7 +96,8 @@ class ReverseEngineerPython2:
             try:
                 fqFileName: str = f'{directoryName}{osSep}{fileName}'
                 self.logger.info(f'Processing file: {fqFileName}')
-                dlg.Update(currentFileCount, f'Processing: {fileName}')
+                # REPLACE THIS WITH A CALLBACK
+                # dlg.Update(currentFileCount, f'Processing: {fileName}')
 
                 fileStream: FileStream   = FileStream(fqFileName)
                 lexer:      Python3Lexer = Python3Lexer(fileStream)
@@ -110,12 +121,35 @@ class ReverseEngineerPython2:
             except (ValueError, Exception) as e:
                 eMsg: str = f'file: {fileName}\n{e} - {e}'
                 self.logger.error(eMsg)
-                dlg.Destroy()
+                # dlg.Destroy()     REPLACE THIS WITH A CALLBACK
                 raise PythonParseException(eMsg)
-        dlg.Destroy()
+        # dlg.Destroy()         REPLACE THIS WITH A CALLBACK
         self._generateOglClasses()
         # self._layoutUmlClasses()      TODO This needs to be in the plugin itself
         self._generateInheritanceLinks()
+
+    @property
+    def oglClasses(self) -> OglClasses:
+        if self._oglClasses is None:
+            self._oglClasses = self._oglClassesDict.values()
+
+        return self._oglClasses
+
+    def oglLinks(self) -> OglLinks:
+        return self._oglLinks
+
+    def _generateOglClasses(self):
+
+        for pyutClassName in self._pyutClasses:
+            try:
+                pyutClass: PyutClass = self._pyutClasses[pyutClassName]
+                oglClass:  OglClass = OglClass(pyutClass)
+                # umlFrame.addShape(oglClass, 0, 0)
+                # oglClass.autoResize()
+
+                self._oglClassesDict[pyutClassName] = oglClass
+            except (ValueError, Exception) as e:
+                self.logger.error(f"Error while creating class {pyutClassName},  {e}")
 
     def _generatePyutClasses(self):
 
@@ -241,19 +275,6 @@ class ReverseEngineerPython2:
 
         return pyutClass
 
-    def _generateOglClasses(self):
-
-        for pyutClassName in self._pyutClasses:
-            try:
-                pyutClass: PyutClass = self._pyutClasses[pyutClassName]
-                oglClass:  OglClass = OglClass(pyutClass)
-                # umlFrame.addShape(oglClass, 0, 0)
-                # oglClass.autoResize()
-
-                self._oglClasses[pyutClassName] = oglClass
-            except (ValueError, Exception) as e:
-                self.logger.error(f"Error while creating class {pyutClassName},  {e}")
-
     def _generateInheritanceLinks(self):
 
         parents: Parents = self.visitor.parents
@@ -263,9 +284,10 @@ class ReverseEngineerPython2:
             for childName in children:
 
                 try:
-                    parentOglClass: OglClass = self._oglClasses[parentName]
-                    childOglClass:  OglClass = self._oglClasses[childName]
-                    self.__createInheritanceLink(child=childOglClass, parent=parentOglClass)
+                    parentOglClass: OglClass = self._oglClassesDict[parentName]
+                    childOglClass:  OglClass = self._oglClassesDict[childName]
+                    oglLink: OglLink = self.__createLink(src=childOglClass, dst=parentOglClass, linkType=PyutLinkType.INHERITANCE)
+                    self._oglLinks.append(oglLink)
                 except KeyError as ke:        # Probably there is no parent we are tracking
                     self.logger.warning(f'Apparently we are not tracking this parent:  {ke}')
                     continue
@@ -469,23 +491,28 @@ class ReverseEngineerPython2:
 
         return fieldAndComment[0]
 
-    def __createInheritanceLink(self, child: OglClass, parent: OglClass):
+    def __createLink(self, src: OglClass, dst: OglClass, linkType: PyutLinkType = PyutLinkType.INHERITANCE):
         """
         Add a paternity link between child and father.
 
         Args:
-            child:  A child
-            parent: The daddy!!
+            src:  subclass
+            dst: Base Class
 
-        Returns: an OgLink
+        Returns: an OglLink
 
         """
-        # cmdGroup: CommandGroup         = CommandGroup('Creating an inheritance link')
-        # # inheritance points back to parent
-        # cmd: CreateOglLinkCommand = CreateOglLinkCommand(src=child, dst=parent)
-        # cmdGroup.addCommand(cmd)
-        #
-        # historyManager: HistoryManager = umlFrame.getHistory()
-        # historyManager.addCommandGroup(cmdGroup)
-        #
-        # cmd.execute()
+        sourceClass:      PyutClass = cast(PyutClass, src.pyutObject)
+        destinationClass: PyutClass = cast(PyutClass, dst.pyutObject)
+
+        pyutLink: PyutLink = PyutLink("", linkType=linkType, source=sourceClass, destination=destinationClass)
+
+        oglLink = self._oglLinkFactory.getOglLink(src, pyutLink, dst, linkType)
+
+        src.addLink(oglLink)
+        dst.addLink(oglLink)
+
+        pyutClass: PyutClass = cast(PyutClass, src.pyutObject)
+        pyutClass.addLink(pyutLink)
+
+        return oglLink

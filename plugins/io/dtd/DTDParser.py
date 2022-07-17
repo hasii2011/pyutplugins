@@ -27,7 +27,6 @@ from plugins.common.Types import ClassPair
 from plugins.common.Types import ClassTree
 from plugins.common.Types import OglClasses
 from plugins.common.Types import OglLinks
-from plugins.common.Types import PyutLinks
 
 from plugins.io.dtd.DTDAttribute import DTDAttribute
 from plugins.io.dtd.DTDElementTypes import DTDElementTypes

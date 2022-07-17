@@ -6,6 +6,11 @@ from typing import List
 from logging import Logger
 from logging import getLogger
 
+from miniogl.DiagramFrame import DiagramFrame
+from pkg_resources import resource_filename
+
+from wx import App
+
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
@@ -19,7 +24,11 @@ from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
+from wx import ID_ANY
+from wx.py.frame import Frame
 
+from plugins.common.Types import OglClasses
+from plugins.common.Types import OglLinks
 from plugins.io.pythonsupport.PyutPythonVisitor import DataClassProperties
 from plugins.io.pythonsupport.PyutPythonVisitor import DataClassProperty
 from plugins.io.pythonsupport.PyutPythonVisitor import MultiParameterNames
@@ -28,6 +37,11 @@ from plugins.io.pythonsupport.PyutPythonVisitor import PyutPythonVisitor
 from plugins.io.pythonsupport.ReverseEngineerPython2 import ReverseEngineerPython2
 
 from tests.TestBase import TestBase
+
+
+class BogusApp(App):
+    def OnInit(self) -> bool:
+        return True
 
 
 class TestReverseEngineerPython2(TestBase):
@@ -47,8 +61,37 @@ class TestReverseEngineerPython2(TestBase):
         self.logger:          Logger                 = TestReverseEngineerPython2.clsLogger
         self.reverseEngineer: ReverseEngineerPython2 = ReverseEngineerPython2()
 
+        self._app: BogusApp = BogusApp()
+
+        baseFrame: Frame = Frame(None, ID_ANY, "", size=(10, 10))
+        # noinspection PyTypeChecker
+        umlFrame = DiagramFrame(baseFrame)
+        umlFrame.Show(True)
+
+        self._umlFrame: DiagramFrame = umlFrame
+
     def tearDown(self):
-        pass
+        self._app.OnExit()
+        del self._app
+        del self._umlFrame
+
+    def testFullClassInput(self):
+
+        from os import path as osPath
+        from os.path import dirname
+
+        fqFileName = resource_filename(TestBase.RESOURCES_TEST_CLASSES_PACKAGE_NAME, 'SimpleClass.py')
+
+        fileName:      str = osPath.basename(fqFileName)
+        directoryName: str = dirname(fqFileName)
+        files:         List[str] = ['GraphElement.py', fileName]
+        self.reverseEngineer.reversePython(directoryName=directoryName, files=files)
+
+        oglClasses: OglClasses = self.reverseEngineer.oglClasses
+        oglLinks:   OglLinks   = self.reverseEngineer.oglLinks()
+
+        self.assertEqual(2, len(oglClasses), 'Should have gotten a simple class')
+        self.assertEqual(1, len(oglLinks),   'There should be a single link')
 
     def testParseFieldToPyutMinimal(self):
 
