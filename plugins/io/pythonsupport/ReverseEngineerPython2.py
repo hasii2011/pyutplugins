@@ -131,7 +131,7 @@ class ReverseEngineerPython2:
     @property
     def oglClasses(self) -> OglClasses:
         if self._oglClasses is None:
-            self._oglClasses = self._oglClassesDict.values()
+            self._oglClasses = list(self._oglClassesDict.values())
 
         return self._oglClasses
 

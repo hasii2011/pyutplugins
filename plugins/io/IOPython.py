@@ -4,8 +4,6 @@ from typing import List
 from logging import Logger
 from logging import getLogger
 
-from json import dumps as jsonDumps
-
 from wx import BeginBusyCursor
 from wx import EndBusyCursor
 from wx import ICON_ERROR
@@ -25,6 +23,7 @@ from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import FormatName
 
 from plugins.common.Types import OglClasses
+from plugins.common.Types import OglLinks
 from plugins.io.pythonsupport.ReverseEngineerPython2 import ReverseEngineerPython2
 
 PLUGIN_NAME:        FormatName        = FormatName("Python File(s)")
@@ -80,10 +79,14 @@ class IOPython(IOPluginInterface):
         try:
             reverseEngineer: ReverseEngineerPython2 = ReverseEngineerPython2()
             reverseEngineer.reversePython(directoryName=self._importDirectoryName, files=self._filesToImport)
-            # TODO: Don't expose the internals
-            self.logger.debug(f'classNames: {jsonDumps(reverseEngineer.visitor.classMethods, indent=4)}')
-            self.logger.debug(f'methods: {jsonDumps(reverseEngineer.visitor.parameters, indent=4)}')
+            oglClasses: OglClasses = reverseEngineer.oglClasses
+            oglLinks:   OglLinks   = reverseEngineer.oglLinks()
 
+            self.logger.warning(f'Classes: {oglClasses}')
+            self.logger.warning(f'Links:   {oglLinks}')
+
+            self._layoutUmlClasses(oglClasses=oglClasses)
+            self._layoutLinks(oglLinks=oglLinks)
         except (ValueError, Exception) as e:
             MessageBox(f'{e}', 'Error', OK | ICON_ERROR)
             status = False
@@ -93,3 +96,40 @@ class IOPython(IOPluginInterface):
 
     def write(self, oglClasses: OglClasses):
         pass
+
+    def _layoutUmlClasses(self, oglClasses: OglClasses):
+        """
+        Organize by vertical descending sizes
+
+        Args:
+            oglClasses
+        """
+        # Sort by descending height
+        # noinspection PyProtectedMember
+        sortedOglClasses = sorted(oglClasses, key=lambda oglClassToSort: oglClassToSort._height, reverse=True)
+
+        x: int = 20
+        y: int = 20
+
+        incY: int = 0
+        for oglClass in sortedOglClasses:
+            incX, sy = oglClass.GetSize()
+            incX += 20
+            sy += 20
+            incY = max(incY, int(sy))
+            # find good coordinates
+            if x + incX >= 3000:
+                x = 20
+                y += incY
+                incY = int(sy)
+            oglClass.SetPosition(x, y)
+            x += incX
+            self._communicator.addShape(shape=oglClass)
+        self._communicator.refreshFrame()
+
+    def _layoutLinks(self, oglLinks: OglLinks):
+
+        for oglLink in oglLinks:
+            self._communicator.addShape(oglLink)
+
+        self._communicator.refreshFrame()

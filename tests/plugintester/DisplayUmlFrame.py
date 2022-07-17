@@ -7,6 +7,7 @@ from logging import Logger
 from logging import getLogger
 
 from miniogl.Diagram import Diagram
+from ogl.events.OglEventEngine import OglEventEngine
 from wx import EVT_CLOSE
 from wx import EVT_PAINT
 from wx import Frame
@@ -69,6 +70,13 @@ class DisplayUmlFrame(DiagramFrame):
 
         self._defaultCursor = self.GetCursor()
         self.Layout()
+        #
+        # We won't forward anything just yet
+        self._eventEngine: OglEventEngine = OglEventEngine(listeningWindow=self)
+
+    @property
+    def eventEngine(self) -> OglEventEngine:
+        return self._eventEngine
 
     def cleanUp(self):
         """
