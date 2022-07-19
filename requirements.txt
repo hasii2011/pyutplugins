@@ -16,6 +16,6 @@ antlr4-python3-runtime==4.9.3
 
 wxPython~=4.1.1
 click~=8.1.3
-ogl==0.53.1
+ogl==0.53.2
 pyutmodel==1.0.3
-untanglepyut==0.1.3
+untanglepyut==0.2.55

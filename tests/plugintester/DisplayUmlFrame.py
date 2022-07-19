@@ -50,9 +50,6 @@ class DisplayUmlFrame(DiagramFrame):
         self._frame: Window = frame
         self.logger: Logger = getLogger(__name__)
 
-        w, h = frame.GetSize()
-        self.SetSize(w, h)
-
         self.maxWidth:  int  = DEFAULT_WIDTH
         self.maxHeight: int = int(self.maxWidth / A4_FACTOR)  # 1.41 is for A4 support
 
@@ -69,7 +66,7 @@ class DisplayUmlFrame(DiagramFrame):
         self.SetInfinite(True)
 
         self._defaultCursor = self.GetCursor()
-        self.Layout()
+        # self.Layout()
         #
         # We won't forward anything just yet
         self._eventEngine: OglEventEngine = OglEventEngine(listeningWindow=self)

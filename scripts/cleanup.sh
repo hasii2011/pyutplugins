@@ -16,4 +16,4 @@ rm -rf dist build
 find . -type d -name '*'.egg-info -delete
 
 rm -rf .eggs
-rm -rfv pyutplugincore.egg-info
+rm -rfv core.egg-info

@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 from os import getcwd
 
+from untanglepyut.UnTangler import UntangledOglLinks
 from wx import CommandEvent
 from wx import DEFAULT_FRAME_STYLE
 from wx import EVT_MENU
@@ -180,13 +181,22 @@ class PluginTestFrame(Frame):
         untangler.untangle()
 
         assert untangler.documents is not None, 'Bug!'
+
         documentNames = list(untangler.documents.keys())
         document: Document = untangler.documents[documentNames[0]]
+
+        self._communicator.umlFrame.Scroll(document.scrollPositionX, document.scrollPositionY)
+        self._communicator.umlFrame.SetScrollRate(document.pixelsPerUnitX, document.pixelsPerUnitY)
+
         oglClasses: UntangledOglClasses = document.oglClasses
+        oglLinks:   UntangledOglLinks   = document.oglLinks
 
         for oglClass in oglClasses:
             oglClass.SetDraggable(True)
             self._displayUmlFrame.addShape(oglObject=oglClass)
+
+        for oglLink in oglLinks:
+            self._displayUmlFrame.addShape(oglObject=oglLink)
 
         self._displayUmlFrame.Refresh()
 
