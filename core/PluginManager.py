@@ -14,12 +14,14 @@ from importlib import import_module
 from wx import NewIdRef
 
 from core.Singleton import Singleton
+from core.types.PluginDataTypes import IOPluginMap
+from core.types.PluginDataTypes import IOPluginMapType
 from core.types.PluginDataTypes import PluginList
 from core.types.PluginDataTypes import PluginIDMap
+from core.types.PluginDataTypes import PluginType
 
 import plugins.io
 import plugins.tools
-from core.types.PluginDataTypes import PluginType
 
 TOOL_PLUGIN_NAME_PREFIX: str = 'Tool'
 IO_PLUGIN_NAME_PREFIX:   str = 'IO'
@@ -49,9 +51,9 @@ class PluginManager(Singleton):
         self.logger: Logger = getLogger(__name__)
 
         # These are built later on
-        self._toolPluginsMap:  PluginIDMap  = cast(PluginIDMap, None)
-        self._inputPluginsMap: PluginIDMap  = cast(PluginIDMap, None)
-        self._outputPluginsMap: PluginIDMap = cast(PluginIDMap, None)
+        self._toolPluginsMap:   PluginIDMap  = cast(PluginIDMap, None)
+        self._inputPluginsMap:  IOPluginMap  = cast(IOPluginMap, None)
+        self._outputPluginsMap: IOPluginMap  = cast(IOPluginMap, None)
 
         self._ioPluginClasses:   PluginList = PluginList([])
         self._toolPluginClasses: PluginList = PluginList([])
@@ -106,15 +108,25 @@ class PluginManager(Singleton):
         return self._toolPluginsMap
 
     @property
-    def inputPluginsMap(self) -> PluginIDMap:
+    def inputPluginsMap(self) -> IOPluginMap:
+
         if self._inputPluginsMap is None:
-            self._inputPluginsMap = self.__mapWxIdsToPlugins(self.inputPlugins)
+            self._inputPluginsMap = IOPluginMap()
+
+            self._inputPluginsMap.mapType     = IOPluginMapType.INPUT_MAP
+            self._inputPluginsMap.pluginIdMap = self.__mapWxIdsToPlugins(self.inputPlugins)
+
         return self._inputPluginsMap
 
     @property
-    def outputPluginsMap(self) -> PluginIDMap:
+    def outputPluginsMap(self) -> IOPluginMap:
+
         if self._outputPluginsMap is None:
-            self._outputPluginsMap = self.__mapWxIdsToPlugins(self.outputPlugins)
+            self._outputPluginsMap = IOPluginMap()
+
+            self._outputPluginsMap.mapType     = IOPluginMapType.OUTPUT_MAP
+            self._outputPluginsMap.pluginIdMap = self.__mapWxIdsToPlugins(self.outputPlugins)
+
         return self._outputPluginsMap
 
     def _loadIOPlugins(self):
@@ -141,7 +153,7 @@ class PluginManager(Singleton):
 
                 pluginClass: Callable = getattr(loadedModule, className)
 
-                self.logger.warning(f'{type(pluginClass)=}')
+                self.logger.debug(f'{type(pluginClass)=}')
                 pluginList.append(cast(PluginType, pluginClass))
         return pluginList
 

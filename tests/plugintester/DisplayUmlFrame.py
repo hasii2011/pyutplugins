@@ -177,5 +177,5 @@ class DisplayUmlFrame(DiagramFrame):
                     return shape
         return None
 
-    def addShape(self, oglObject: OglObject):
+    def addShape(self, oglObject: Union[OglObject, OglLink, OglInterface2]):
         self._diagram.AddShape(oglObject)

@@ -1,9 +1,10 @@
-
+from typing import Dict
 from typing import List
 
 from logging import Logger
 from logging import getLogger
 
+from pyutmodel.PyutClass import PyutClass
 from wx import BeginBusyCursor
 from wx import EndBusyCursor
 from wx import ICON_ERROR
@@ -15,6 +16,7 @@ from wx import Yield as wxYield
 from core.ICommunicator import ICommunicator
 from core.IOPluginInterface import IOPluginInterface
 
+from core.types.ExportDirectoryResponse import ExportDirectoryResponse
 from core.types.InputFormat import InputFormat
 from core.types.MultipleFileRequestResponse import MultipleFileRequestResponse
 from core.types.OutputFormat import OutputFormat
@@ -24,6 +26,8 @@ from core.types.PluginDataTypes import FormatName
 
 from plugins.common.Types import OglClasses
 from plugins.common.Types import OglLinks
+
+from plugins.io.pythonsupport.PyutToPython import PyutToPython
 from plugins.io.pythonsupport.ReverseEngineerPython2 import ReverseEngineerPython2
 
 PLUGIN_NAME:        FormatName        = FormatName("Python File(s)")
@@ -66,7 +70,12 @@ class IOPython(IOPluginInterface):
         return True
 
     def setExportOptions(self) -> bool:
-        return False
+        response: ExportDirectoryResponse = self.askForExportDirectoryName()
+        if response.cancelled is True:
+            return False
+        else:
+            self._exportDirectoryName = response.directoryName
+            return True
 
     def read(self) -> bool:
         """
@@ -95,7 +104,24 @@ class IOPython(IOPluginInterface):
         return status
 
     def write(self, oglClasses: OglClasses):
-        pass
+
+        directoryName: str = self._exportDirectoryName
+
+        self.logger.info("IoPython Saving...")
+        pyutToPython: PyutToPython = PyutToPython()
+        classes:           Dict[str, List[str]] = {}
+        generatedClassDoc: List[str]            = pyutToPython.generateTopCode()
+        # oglClasses: OglClasses = self._communicator.selectedOglObjects
+
+        for oglClass in oglClasses:
+
+            pyutClass:          PyutClass = oglClass.pyutObject
+            generatedStanza:    str       = pyutToPython.generateClassStanza(pyutClass)
+            generatedClassCode: List[str] = [generatedStanza]
+
+            clsMethods: PyutToPython.MethodsCodeType = pyutToPython.generateMethodsCode(pyutClass)
+
+        self.logger.info("IoPython done !")
 
     def _layoutUmlClasses(self, oglClasses: OglClasses):
         """

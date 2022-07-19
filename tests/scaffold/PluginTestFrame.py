@@ -38,7 +38,11 @@ from untanglepyut.UnTangler import UntangledOglClasses
 from core.IOPluginInterface import IOPluginInterface
 from core.PluginManager import PluginManager
 from core.ToolPluginInterface import ToolPluginInterface
+
+from core.types.PluginDataTypes import IOPluginMap
+from core.types.PluginDataTypes import IOPluginMapType
 from core.types.PluginDataTypes import PluginIDMap
+
 from tests.plugintester.DisplayUmlFrame import DisplayUmlFrame
 
 from tests.scaffold.ScaffoldCommunicator import ScaffoldCommunicator
@@ -221,7 +225,7 @@ class PluginTestFrame(Frame):
         """
         Returns: The import submenu.
         """
-        pluginMap: PluginIDMap = self._pluginManager.inputPluginsMap
+        pluginMap: IOPluginMap = self._pluginManager.inputPluginsMap
 
         return self._makeIOSubMenu(pluginMap=pluginMap)
 
@@ -229,22 +233,23 @@ class PluginTestFrame(Frame):
         """
         Returns:  The export submenu
         """
-        pluginMap: PluginIDMap = self._pluginManager.outputPluginsMap
+        pluginMap: IOPluginMap = self._pluginManager.outputPluginsMap
 
         return self._makeIOSubMenu(pluginMap=pluginMap)
 
-    def _makeIOSubMenu(self, pluginMap: PluginIDMap) -> Menu:
+    def _makeIOSubMenu(self, pluginMap: IOPluginMap) -> Menu:
 
         subMenu: Menu = Menu()
 
-        for wxId in pluginMap:
-            clazz:          type = pluginMap[wxId]   # type: ignore
+        pluginIDMap: PluginIDMap = pluginMap.pluginIdMap
+        for wxId in pluginIDMap:
+            clazz:          type = pluginIDMap[wxId]   # type: ignore
             pluginInstance: IOPluginInterface = clazz(None)
 
-            if pluginInstance.inputFormat is not None:
+            if pluginMap.mapType == IOPluginMapType.INPUT_MAP:
                 pluginName: str = pluginInstance.inputFormat.formatName
                 subMenu = self.__makeSubMenuEntry(subMenu=subMenu, wxId=wxId, pluginName=pluginName, callback=self._onImport)
-            elif pluginInstance.outputFormat is not None:
+            elif pluginMap.mapType == IOPluginMapType.OUTPUT_MAP:
                 pluginName = pluginInstance.outputFormat.formatName
                 subMenu = self.__makeSubMenuEntry(subMenu=subMenu, wxId=wxId, pluginName=pluginName, callback=self._onExport)
             else:
@@ -295,7 +300,8 @@ class PluginTestFrame(Frame):
         wxId: int = event.GetId()
         self.logger.info(f'Export: {wxId=}')
 
-        clazz:        type              = self._pluginManager.outputPluginsMap[wxId]     # type: ignore
+        idMap: PluginIDMap = self._pluginManager.outputPluginsMap.pluginIdMap
+        clazz:        type              = idMap[wxId]     # type: ignore
         plugInstance: IOPluginInterface = clazz(communicator=self._communicator)
         self._doIOAction(methodToCall=plugInstance.executeExport)
 

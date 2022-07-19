@@ -26,16 +26,16 @@
             "level": "INFO",
             "propagate": "False"
         },
-        "pyutplugincore": {
+        "core": {
             "level":     "WARNING",
             "propagate": "False"
         },
         "tests": {
-            "level": "INFO",
+            "level": "WARNING",
             "propagate": "False"
         },
         "plugins.io.pythonsupport.ReverseEngineerPython2": {
-            "level": "INFO",
+            "level": "WARNING",
             "propagate": "False"
         }
 
