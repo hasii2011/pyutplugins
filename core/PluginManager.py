@@ -51,7 +51,7 @@ class PluginManager(Singleton):
         self.logger: Logger = getLogger(__name__)
 
         # These are built later on
-        self._toolPluginsMap:   PluginIDMap  = cast(PluginIDMap, None)
+        self._toolPluginsIDMap:   PluginIDMap  = cast(PluginIDMap, None)
         self._inputPluginsMap:  IOPluginMap  = cast(IOPluginMap, None)
         self._outputPluginsMap: IOPluginMap  = cast(IOPluginMap, None)
 
@@ -102,10 +102,10 @@ class PluginManager(Singleton):
         return self._toolPluginClasses
 
     @property
-    def toolPluginsMap(self) -> PluginIDMap:
-        if self._toolPluginsMap is None:
-            self._toolPluginsMap = self.__mapWxIdsToPlugins(self._toolPluginClasses)
-        return self._toolPluginsMap
+    def toolPluginsIDMap(self) -> PluginIDMap:
+        if self._toolPluginsIDMap is None:
+            self._toolPluginsIDMap = self.__mapWxIdsToPlugins(self._toolPluginClasses)
+        return self._toolPluginsIDMap
 
     @property
     def inputPluginsMap(self) -> IOPluginMap:

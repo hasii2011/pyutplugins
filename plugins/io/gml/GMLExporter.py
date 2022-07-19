@@ -17,7 +17,7 @@ from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglNote import OglNote
 
-from plugins.common.Types import OglClasses
+from plugins.common.Types import OglObjects
 
 from plugins.io.gml.UnsupportedOperation import UnsupportedOperation
 
@@ -65,7 +65,7 @@ class GMLExporter:
 
         self._prettyPrint: bool = True
 
-    def translate(self, umlObjects: OglClasses):
+    def translate(self, umlObjects: OglObjects):
 
         if self._prettyPrint is True:
             GMLExporter.singleTab = '\t'
@@ -102,7 +102,7 @@ class GMLExporter:
         with open(pathToFile, 'w') as writer:
             writer.write(self._gml)
 
-    def _generateNodes(self, umlObjects: OglClasses, gml: str) -> str:
+    def _generateNodes(self, umlObjects: OglObjects, gml: str) -> str:
 
         nodeGml: str = ''
         for umlClass in umlObjects:
@@ -164,7 +164,7 @@ class GMLExporter:
         gml = f'{gml}{GMLExporter.END_TOKEN}'
         return gml
 
-    def _generateUniqueEdges(self, umlObjects: OglClasses, gml: str) -> str:
+    def _generateUniqueEdges(self, umlObjects: OglObjects, gml: str) -> str:
 
         linkSet:  Set    = set()        # Concatenated str link ids;  e.g, 1-2
 

@@ -208,7 +208,7 @@ class PluginTestFrame(Frame):
         """
         Make the Tools submenu.
         """
-        pluginMap: PluginIDMap = self._pluginManager.toolPluginsMap
+        pluginMap: PluginIDMap = self._pluginManager.toolPluginsIDMap
 
         for wxId in pluginMap:
 
@@ -269,7 +269,7 @@ class PluginTestFrame(Frame):
         wxId: int = event.GetId()
         self.logger.warning(f'{wxId=}')
 
-        pluginMap: PluginIDMap = self._pluginManager.toolPluginsMap
+        pluginMap: PluginIDMap = self._pluginManager.toolPluginsIDMap
 
         # TODO: Fix this later for mypy
         clazz: type = pluginMap[wxId]   # type: ignore
@@ -300,7 +300,7 @@ class PluginTestFrame(Frame):
         wxId: int = event.GetId()
         self.logger.info(f'Export: {wxId=}')
 
-        idMap: PluginIDMap = self._pluginManager.outputPluginsMap.pluginIdMap
+        idMap: PluginIDMap              = self._pluginManager.outputPluginsMap.pluginIdMap
         clazz:        type              = idMap[wxId]     # type: ignore
         plugInstance: IOPluginInterface = clazz(communicator=self._communicator)
         self._doIOAction(methodToCall=plugInstance.executeExport)

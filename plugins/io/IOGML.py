@@ -4,7 +4,7 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from plugins.common.Types import OglClasses
+from plugins.common.Types import OglObjects
 from plugins.io.gml.GMLExporter import GMLExporter
 
 from core.IOPluginInterface import IOPluginInterface
@@ -77,15 +77,15 @@ class IOGML(IOPluginInterface):
         """
         return False
 
-    def write(self, oglClasses: OglClasses):
+    def write(self, oglObjects: OglObjects):
         """
         Write data
 
         Args:
-            oglClasses:     list of exported objects
+            oglObjects:     list of exported objects
         """
         gmlExporter: GMLExporter = GMLExporter()
 
-        gmlExporter.translate(umlObjects=oglClasses)
+        gmlExporter.translate(umlObjects=oglObjects)
 
         gmlExporter.write(self._exportResponse.fileName)

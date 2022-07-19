@@ -2,10 +2,11 @@
 from abc import ABC
 from abc import abstractmethod
 
-from plugins.common.Types import OglClasses
+
 from core.PluginInterface import PluginInterface
 from core.ICommunicator import ICommunicator
 from core.types.OutputFormat import OutputFormat
+from plugins.common.Types import OglObjects
 
 
 class IOPluginInterface(PluginInterface, ABC):
@@ -128,13 +129,13 @@ class IOPluginInterface(PluginInterface, ABC):
         pass
 
     @abstractmethod
-    def write(self, oglClasses: OglClasses):
+    def write(self, oglObjects: OglObjects):
         """
-         Write data to a file;  Presumably, the file was specified on the call
+        Write data to a file;  Presumably, the file was specified on the call
         to setExportOptions
 
          Args:
-            oglClasses:  list of exported objects
+            oglObjects:  list of exported objects
 
         """
         pass

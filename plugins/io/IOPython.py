@@ -4,6 +4,7 @@ from typing import List
 from logging import Logger
 from logging import getLogger
 
+from ogl.OglClass import OglClass
 from pyutmodel.PyutClass import PyutClass
 from wx import BeginBusyCursor
 from wx import EndBusyCursor
@@ -26,6 +27,7 @@ from core.types.PluginDataTypes import FormatName
 
 from plugins.common.Types import OglClasses
 from plugins.common.Types import OglLinks
+from plugins.common.Types import OglObjects
 
 from plugins.io.pythonsupport.PyutToPython import PyutToPython
 from plugins.io.pythonsupport.ReverseEngineerPython2 import ReverseEngineerPython2
@@ -103,7 +105,7 @@ class IOPython(IOPluginInterface):
         EndBusyCursor()
         return status
 
-    def write(self, oglClasses: OglClasses):
+    def write(self, oglObjects: OglObjects):
 
         directoryName: str = self._exportDirectoryName
 
@@ -113,13 +115,13 @@ class IOPython(IOPluginInterface):
         generatedClassDoc: List[str]            = pyutToPython.generateTopCode()
         # oglClasses: OglClasses = self._communicator.selectedOglObjects
 
-        for oglClass in oglClasses:
+        for oglClass in oglObjects:
+            if isinstance(oglClass, OglClass):
+                pyutClass:          PyutClass = oglClass.pyutObject
+                generatedStanza:    str       = pyutToPython.generateClassStanza(pyutClass)
+                generatedClassCode: List[str] = [generatedStanza]
 
-            pyutClass:          PyutClass = oglClass.pyutObject
-            generatedStanza:    str       = pyutToPython.generateClassStanza(pyutClass)
-            generatedClassCode: List[str] = [generatedStanza]
-
-            clsMethods: PyutToPython.MethodsCodeType = pyutToPython.generateMethodsCode(pyutClass)
+                clsMethods: PyutToPython.MethodsCodeType = pyutToPython.generateMethodsCode(pyutClass)
 
         self.logger.info("IoPython done !")
 

@@ -3,6 +3,7 @@ from typing import cast
 
 from plugins.common.Types import OglClasses
 from plugins.common.Types import OglLinks
+from plugins.common.Types import OglObjects
 from plugins.io.dtd.DTDParser import DTDParser
 
 from core.ICommunicator import ICommunicator
@@ -75,11 +76,11 @@ class IODTD(IOPluginInterface):
 
         return True
 
-    def write(self, oglClasses: OglClasses):
+    def write(self, oglObjects: OglObjects):
         """
 
         Args:
-            oglClasses:
+            oglObjects:
 
         Returns:  False, write not supported
 

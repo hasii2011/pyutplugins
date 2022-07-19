@@ -52,7 +52,7 @@ class TestPluginManager(TestBase):
 
     def testToolPluginsWxIdGenerated(self):
 
-        pluginMap: PluginIDMap = self.pluginManager.toolPluginsMap
+        pluginMap: PluginIDMap = self.pluginManager.toolPluginsIDMap
         self.assertIsNotNone(pluginMap, 'Where is my map')
 
 
