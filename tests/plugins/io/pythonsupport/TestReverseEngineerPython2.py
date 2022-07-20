@@ -85,7 +85,7 @@ class TestReverseEngineerPython2(TestBase):
         fileName:      str = osPath.basename(fqFileName)
         directoryName: str = dirname(fqFileName)
         files:         List[str] = ['GraphElement.py', fileName]
-        self.reverseEngineer.reversePython(directoryName=directoryName, files=files)
+        self.reverseEngineer.reversePython(directoryName=directoryName, files=files, progressCallback=self._fakeProgressCallback)
 
         oglClasses: OglClasses = self.reverseEngineer.oglClasses
         oglLinks:   OglLinks   = self.reverseEngineer.oglLinks()
@@ -289,6 +289,9 @@ class TestReverseEngineerPython2(TestBase):
                                                                       setterProperties=setterProperties
                                                                       )
         return pyutClass
+
+    def _fakeProgressCallback(self, currentFileCount: int, msg: str):
+        self.logger.info(f'{currentFileCount} - msg')
 
     def __setMockVisitorPropertyNames(self):
         mockVisitor: Mock = Mock(spec=PyutPythonVisitor)

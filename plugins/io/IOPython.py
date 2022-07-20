@@ -1,3 +1,5 @@
+
+from typing import cast
 from typing import Dict
 from typing import List
 
@@ -10,11 +12,15 @@ from ogl.OglClass import OglClass
 
 from pyutmodel.PyutClass import PyutClass
 
+from wx import ICON_ERROR
+from wx import OK
+from wx import PD_APP_MODAL
+from wx import PD_ELAPSED_TIME
+
+from wx import MessageBox
 from wx import BeginBusyCursor
 from wx import EndBusyCursor
-from wx import ICON_ERROR
-from wx import MessageBox
-from wx import OK
+from wx import ProgressDialog
 
 from wx import Yield as wxYield
 
@@ -60,6 +66,8 @@ class IOPython(IOPluginInterface):
         self._importDirectoryName: str         = ''
         self._filesToImport:       List['str'] = []
 
+        self._readProgressDlg: ProgressDialog = cast(ProgressDialog, None)
+
     def setImportOptions(self) -> bool:
         """
         We do need to ask for the input file name
@@ -93,7 +101,12 @@ class IOPython(IOPluginInterface):
         status: bool = True
         try:
             reverseEngineer: ReverseEngineerPython2 = ReverseEngineerPython2()
-            reverseEngineer.reversePython(directoryName=self._importDirectoryName, files=self._filesToImport)
+
+            fileCount: int       = len(self._filesToImport)
+            self._readProgressDlg = ProgressDialog('Parsing Files', 'Starting',  parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
+            self._readProgressDlg.SetRange(fileCount)
+
+            reverseEngineer.reversePython(directoryName=self._importDirectoryName, files=self._filesToImport, progressCallback=self._readProgressCallback)
             oglClasses: OglClasses = reverseEngineer.oglClasses
             oglLinks:   OglLinks   = reverseEngineer.oglLinks()
 
@@ -103,10 +116,12 @@ class IOPython(IOPluginInterface):
             self._layoutUmlClasses(oglClasses=oglClasses)
             self._layoutLinks(oglLinks=oglLinks)
         except (ValueError, Exception) as e:
+            self._readProgressDlg.Destroy()
             MessageBox(f'{e}', 'Error', OK | ICON_ERROR)
             status = False
-
-        EndBusyCursor()
+        else:
+            self._readProgressDlg.Destroy()
+            EndBusyCursor()
         return status
 
     def write(self, oglObjects: OglObjects):
@@ -199,3 +214,13 @@ class IOPython(IOPluginInterface):
         file.writelines(classCode)
 
         file.close()
+
+    def _readProgressCallback(self, currentFileCount: int, msg: str):
+        """
+
+        Args:
+            currentFileCount:   The current file # we are working pm
+            msg:    An updated message
+        """
+
+        self._readProgressDlg.Update(currentFileCount, msg)

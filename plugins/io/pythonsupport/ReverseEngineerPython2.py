@@ -1,4 +1,5 @@
 
+from typing import Callable
 from typing import Dict
 from typing import List
 from typing import NewType
@@ -16,11 +17,6 @@ from antlr4 import FileStream
 from ogl.OglLink import OglLink
 from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutLinkType import PyutLinkType
-
-# from wx import PD_APP_MODAL
-# from wx import PD_ELAPSED_TIME
-#
-# from wx import ProgressDialog
 
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutField import PyutField
@@ -76,18 +72,15 @@ class ReverseEngineerPython2:
 
         self.visitor: PyutPythonVisitor = cast(PyutPythonVisitor, None)
 
-    def reversePython(self,  directoryName: str, files: List[str]):
+    def reversePython(self,  directoryName: str, files: List[str], progressCallback: Callable):
         """
         Reverse engineering Python files to OglClass's
 
         Args:
             directoryName:  The directory name where the selected files reside
             files:          A list of files to parse
+            progressCallback: The method to call to report progress
         """
-        # REPLACE THIS WITH A CALLBACK
-        # fileCount: int            = len(files)
-        # dlg:       ProgressDialog = ProgressDialog('Parsing Files', 'Starting',  parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
-        # dlg.SetRange(fileCount)
         currentFileCount: int = 0
 
         onGoingParents: Parents = Parents({})
@@ -96,8 +89,8 @@ class ReverseEngineerPython2:
             try:
                 fqFileName: str = f'{directoryName}{osSep}{fileName}'
                 self.logger.info(f'Processing file: {fqFileName}')
-                # REPLACE THIS WITH A CALLBACK
-                # dlg.Update(currentFileCount, f'Processing: {fileName}')
+
+                progressCallback(currentFileCount, f'Processing: {fileName}')
 
                 fileStream: FileStream   = FileStream(fqFileName)
                 lexer:      Python3Lexer = Python3Lexer(fileStream)
@@ -107,9 +100,9 @@ class ReverseEngineerPython2:
 
                 tree: Python3Parser.File_inputContext = parser.file_input()
                 if parser.getNumberOfSyntaxErrors() != 0:
-                    self.logger.error(f"File {fileName} contains {parser.getNumberOfSyntaxErrors()} syntax errors")
-                    # TODO:  Put up a dialog
-                    continue
+                    eMsg: str = f"File {fileName} contains {parser.getNumberOfSyntaxErrors()} syntax errors"
+                    self.logger.error(eMsg)
+                    raise PythonParseException(eMsg)
 
                 self.visitor = PyutPythonVisitor()
                 self.visitor.parents = onGoingParents
@@ -119,13 +112,9 @@ class ReverseEngineerPython2:
                 onGoingParents = self.visitor.parents
                 currentFileCount += 1
             except (ValueError, Exception) as e:
-                eMsg: str = f'file: {fileName}\n{e} - {e}'
-                self.logger.error(eMsg)
-                # dlg.Destroy()     REPLACE THIS WITH A CALLBACK
-                raise PythonParseException(eMsg)
-        # dlg.Destroy()         REPLACE THIS WITH A CALLBACK
+                self.logger.error(e)
+                raise PythonParseException(e)
         self._generateOglClasses()
-        # self._layoutUmlClasses()      TODO This needs to be in the plugin itself
         self._generateInheritanceLinks()
 
     @property

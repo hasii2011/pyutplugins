@@ -12,22 +12,21 @@ from typing import List
 from wx import ACCEL_CTRL
 from wx import AcceleratorEntry
 from wx import AcceleratorTable
-from wx import CommandEvent
 from wx import DEFAULT_FRAME_STYLE
 from wx import EVT_MENU
-from wx import FD_CHANGE_DIR
 from wx import FD_FILE_MUST_EXIST
 from wx import FD_OPEN
-from wx import FileDialog
-from wx import FileSelector
+from wx import ID_OK
+from wx import ID_SELECTALL
+
 from wx import ICON_ERROR
 from wx import ID_EXIT
 
 from wx import Frame
-from wx import ID_OK
-from wx import ID_SELECTALL
 from wx import Menu
 from wx import MenuBar
+from wx import FileDialog
+from wx import CommandEvent
 
 from wx import BeginBusyCursor
 from wx import EndBusyCursor
@@ -166,12 +165,6 @@ class PluginTestFrame(Frame):
 
         Returns:  The request response named tuple
         """
-        # file: str = FileSelector(
-        #     message="Choose a file to import",
-        #     default_path=getcwd(),
-        #     default_extension='*.xml',
-        #     flags=FD_OPEN | FD_FILE_MUST_EXIST | FD_CHANGE_DIR
-        # )
         dlg = FileDialog(None, "Choose a file", getcwd(), "", "*.xml", FD_OPEN | FD_FILE_MUST_EXIST)
 
         response: RequestResponse = RequestResponse()
@@ -304,7 +297,8 @@ class PluginTestFrame(Frame):
         wxId: int = event.GetId()
         self.logger.info(f'Import: {wxId=}')
 
-        clazz:        type              = self._pluginManager.inputPluginsMap[wxId]     # type: ignore
+        idMap:        PluginIDMap       = self._pluginManager.inputPluginsMap.pluginIdMap
+        clazz:        type              = idMap[wxId]     # type: ignore
         plugInstance: IOPluginInterface = clazz(communicator=self._communicator)
         self._doIOAction(methodToCall=plugInstance.executeImport)
 
@@ -313,7 +307,7 @@ class PluginTestFrame(Frame):
         wxId: int = event.GetId()
         self.logger.info(f'Export: {wxId=}')
 
-        idMap: PluginIDMap              = self._pluginManager.outputPluginsMap.pluginIdMap
+        idMap:        PluginIDMap      = self._pluginManager.outputPluginsMap.pluginIdMap
         clazz:        type              = idMap[wxId]     # type: ignore
         plugInstance: IOPluginInterface = clazz(communicator=self._communicator)
         self._doIOAction(methodToCall=plugInstance.executeExport)
