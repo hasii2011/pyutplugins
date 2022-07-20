@@ -37,24 +37,6 @@ class IOPluginInterface(PluginInterface, ABC):
 
         super().__init__(communicator)
 
-    @property
-    def name(self) -> str:
-        """
-        Implementations must override this property
-
-        Returns:  The plugin name
-        """
-        return self._name
-
-    @property
-    def version(self) -> str:
-        """
-        Implementations must override this property
-
-        Returns: The plugin version string
-        """
-        return self._version
-
     def executeImport(self):
         """
         Called by Pyut to begin the import process.  Checks to see if an import format is

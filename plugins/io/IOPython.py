@@ -34,6 +34,7 @@ from core.types.OutputFormat import OutputFormat
 from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import FormatName
+from core.types.PluginDataTypes import PluginName
 
 from plugins.common.Types import OglClasses
 from plugins.common.Types import OglLinks
@@ -56,7 +57,7 @@ class IOPython(IOPluginInterface):
         self.logger: Logger = getLogger(__name__)
 
         # from super class
-        self._name    = FormatName('IOPython')
+        self._name    = PluginName('IOPython')
         self._author  = 'Humberto A. Sanchez II'
         self._version = '1.0'
         self._inputFormat  = InputFormat(formatName=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)

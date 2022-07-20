@@ -29,6 +29,7 @@ def createPlugIdMapFactory() -> PluginIDMap:
     return PluginIDMap({})
 
 
+PluginName        = NewType('PluginName', str)
 FormatName        = NewType('FormatName', str)
 PluginExtension   = NewType('PluginExtension', str)
 PluginDescription = NewType('PluginDescription', str)

@@ -11,11 +11,16 @@ from math import ceil
 from os import sep as osSep
 
 from ogl.OglClass import OglClass
+
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutStereotype import PyutStereotype
 
+from core.types.PluginDataTypes import PluginName
+
 from plugins.common.Types import OglClasses
+
 from core.ToolPluginInterface import ToolPluginInterface
+
 from core.ICommunicator import ICommunicator
 
 from core.types.ExportDirectoryResponse import ExportDirectoryResponse
@@ -32,7 +37,7 @@ class ToolAscii(ToolPluginInterface):
 
         self.logger: Logger = getLogger(__name__)
 
-        self._name      = 'ASCII Class Export'
+        self._name      = PluginName('ASCII Class Export')
         self._author    = 'Philippe Waelti <pwaelti@eivd.ch>'
         self._version   = '1.0'
 

@@ -29,6 +29,7 @@ from core.types.MultipleFileRequestResponse import MultipleFileRequestResponse
 from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import FormatName
+from core.types.PluginDataTypes import PluginName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 
 
@@ -56,14 +57,14 @@ class PluginInterface:
         self._communicator: ICommunicator = communicator
         #
         # To be set by implementor constructor and read by property
-        self._name:         str = 'Implementor must provide the plugin name'
+        self._name:         PluginName = PluginName('Implementor must provide the plugin name')
         self._author:       str = 'Implementor must provide the plugin author'
         self._version:      str = 'Implementor must provide the version'
         self._inputFormat:  InputFormat  = InputFormat(formatName=UNSPECIFIED_NAME, extension=UNSPECIFIED_EXTENSION, description=UNSPECIFIED_DESCRIPTION)
         self._outputFormat: OutputFormat = OutputFormat(formatName=UNSPECIFIED_NAME, extension=UNSPECIFIED_EXTENSION, description=UNSPECIFIED_DESCRIPTION)
 
     @property
-    def name(self) -> str:
+    def name(self) -> PluginName:
         """
         Implementations set the protected variable at class construction
 

@@ -5,11 +5,13 @@ from logging import Logger
 from logging import getLogger
 
 from plugins.common.Types import OglObjects
+
 from plugins.io.gml.GMLExporter import GMLExporter
 
 from core.IOPluginInterface import IOPluginInterface
 from core.ICommunicator import ICommunicator
 
+from core.types.PluginDataTypes import PluginName
 from core.types.InputFormat import InputFormat
 from core.types.OutputFormat import OutputFormat
 from core.types.PluginDataTypes import PluginDescription
@@ -37,7 +39,7 @@ class IOGML(IOPluginInterface):
 
         self.logger: Logger = getLogger(__name__)
 
-        self._name    = FormatName('Output GML')
+        self._name    = PluginName('Output GML')
         self._author  = "Humberto A. Sanchez II"
         self._version = GMLExporter.VERSION
 

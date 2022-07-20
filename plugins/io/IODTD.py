@@ -4,6 +4,7 @@ from typing import cast
 from plugins.common.Types import OglClasses
 from plugins.common.Types import OglLinks
 from plugins.common.Types import OglObjects
+
 from plugins.io.dtd.DTDParser import DTDParser
 
 from core.ICommunicator import ICommunicator
@@ -16,6 +17,7 @@ from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import FormatName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
+from core.types.PluginDataTypes import PluginName
 
 PLUGIN_NAME:        FormatName        = FormatName("DTD")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('dtd')
@@ -28,7 +30,7 @@ class IODTD(IOPluginInterface):
         super().__init__(communicator)
 
         # from super class
-        self._name    = 'IoDTD'
+        self._name    = PluginName('IoDTD')
         self._author  = "C.Dutoit <dutoitc@hotmail.com>"
         self._version = '1.0'
         self._inputFormat  = InputFormat(formatName=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
