@@ -215,6 +215,7 @@ class PyutToPython:
         else:
             self.logger.error(f"PyutToPython: Field code not supported : {visibility}")
         self.logger.debug(f"Python code: {code}, for {visibility}")
+
         return code
 
     def _generateMethodDefinitionStanza(self, pyutMethod: PyutMethod):
@@ -234,7 +235,8 @@ class PyutToPython:
             The method start stanza
         """
         currentCode: str = "def "
-        currentCode = f'{currentCode}{self.generateVisibilityPrefix(pyutMethod.getVisibility())}'
+        if self.__isDunderMethod(pyutMethod.name) is False:
+            currentCode = f'{currentCode}{self.generateVisibilityPrefix(pyutMethod.getVisibility())}'
         currentCode = f'{currentCode}{pyutMethod.name}(self'
 
         return currentCode
@@ -332,6 +334,17 @@ class PyutToPython:
             insertedTabs = f'{insertedTabs}{PyutToPython.SINGLE_TAB}'
 
         return f'{insertedTabs}{stringToIndent}'
+
+    def __isDunderMethod(self, methodName: str) -> bool:
+        """
+        Actually, checks to see if a method name already has leading or trailing underscore(s);
+
+        Returns:  `True` if the names starts with underscores else `False`
+        """
+        isDunder: bool = False
+        if methodName.startswith('_') or methodName.startswith('__'):
+            isDunder = True
+        return isDunder
 
     def indent(self, listIn: List[str]) -> List[str]:
         """

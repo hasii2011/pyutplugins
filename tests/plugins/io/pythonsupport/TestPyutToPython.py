@@ -5,6 +5,8 @@ from typing import List
 from logging import Logger
 from logging import getLogger
 
+from os import linesep as osLineSep
+
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
@@ -106,6 +108,17 @@ class TestPyutToPython(TestBase):
 
         self.assertNotEqual(unExpectedValue, actualValue, f'Did not code generate protected method correctly: `{defCode}`')
 
+    def testDunderMethods(self):
+        """
+            def __hash__(self) -> int:
+                return hash(self.id)
+        """
+        # pyutType: PyutType = PyutType(value='str')
+        dunderMethod: PyutMethod = PyutMethod(name='__hash__', visibility=PyutVisibilityEnum.PUBLIC)
+        defCode: List[str] = self.pyutToPython.generateASingleMethodsCode(dunderMethod, writePass=False)
+        self.logger.info(f'Generated definition: {defCode}')
+        expectedDeclaration: str = f'def __hash__(self):{osLineSep}'
+        self.assertEqual(expectedDeclaration, defCode[0], 'Code generation must have changed')
 
 def suite() -> TestSuite:
     import unittest

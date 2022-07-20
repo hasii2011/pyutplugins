@@ -4,8 +4,12 @@ from typing import List
 from logging import Logger
 from logging import getLogger
 
+from os import sep as osSep
+
 from ogl.OglClass import OglClass
+
 from pyutmodel.PyutClass import PyutClass
+
 from wx import BeginBusyCursor
 from wx import EndBusyCursor
 from wx import ICON_ERROR
@@ -123,6 +127,30 @@ class IOPython(IOPluginInterface):
 
                 clsMethods: PyutToPython.MethodsCodeType = pyutToPython.generateMethodsCode(pyutClass)
 
+                # Add __init__ Method
+                if PyutToPython.SPECIAL_PYTHON_CONSTRUCTOR in clsMethods:
+                    methodCode = clsMethods[PyutToPython.SPECIAL_PYTHON_CONSTRUCTOR]
+                    generatedClassCode += methodCode
+                    del clsMethods[PyutToPython.SPECIAL_PYTHON_CONSTRUCTOR]
+
+                # Add others methods in order
+                for pyutMethod in pyutClass.methods:
+                    methodName: str = pyutMethod.name
+                    if methodName != PyutToPython.SPECIAL_PYTHON_CONSTRUCTOR:
+                        try:
+                            otherMethodCode: List[str] = clsMethods[methodName]
+                            generatedClassCode += otherMethodCode
+                        except (ValueError, Exception, KeyError) as e:
+                            self.logger.warning(f'{e}')
+
+                generatedClassCode.append("\n\n")
+                # Save into classes dictionary
+                classes[pyutClass.name] = generatedClassCode
+
+        # Write class code to a file
+        for (className, classCode) in list(classes.items()):
+            self._writeClassToFile(classCode, className, directoryName, generatedClassDoc)
+
         self.logger.info("IoPython done !")
 
     def _layoutUmlClasses(self, oglClasses: OglClasses):
@@ -161,3 +189,13 @@ class IOPython(IOPluginInterface):
             self._communicator.addShape(oglLink)
 
         self._communicator.refreshFrame()
+
+    def _writeClassToFile(self, classCode, className, directory, generatedClassDoc):
+
+        filename: str = f'{directory}{osSep}{str(className)}.py'
+
+        file = open(filename, "w")
+        file.writelines(generatedClassDoc)
+        file.writelines(classCode)
+
+        file.close()

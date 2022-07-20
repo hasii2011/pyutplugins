@@ -7,19 +7,25 @@ from logging import getLogger
 from dataclasses import dataclass
 
 from os import getcwd
+from typing import List
 
-from untanglepyut.UnTangler import UntangledOglLinks
+from wx import ACCEL_CTRL
+from wx import AcceleratorEntry
+from wx import AcceleratorTable
 from wx import CommandEvent
 from wx import DEFAULT_FRAME_STYLE
 from wx import EVT_MENU
 from wx import FD_CHANGE_DIR
 from wx import FD_FILE_MUST_EXIST
 from wx import FD_OPEN
+from wx import FileDialog
 from wx import FileSelector
 from wx import ICON_ERROR
 from wx import ID_EXIT
 
 from wx import Frame
+from wx import ID_OK
+from wx import ID_SELECTALL
 from wx import Menu
 from wx import MenuBar
 
@@ -34,10 +40,11 @@ from wx import Yield as wxYield
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import UnTangler
 from untanglepyut.UnTangler import UntangledOglClasses
+from untanglepyut.UnTangler import UntangledOglLinks
 
 from core.IOPluginInterface import IOPluginInterface
-from core.PluginManager import PluginManager
 from core.ToolPluginInterface import ToolPluginInterface
+from core.PluginManager import PluginManager
 
 from core.types.PluginDataTypes import IOPluginMap
 from core.types.PluginDataTypes import IOPluginMapType
@@ -78,10 +85,11 @@ class PluginTestFrame(Frame):
         self._status.SetStatusText('Ready!')
 
         self._loadXmlFileWxId: int             = NewIdRef()
-        self._selectAllWxId:   int             = NewIdRef()
         self._displayUmlFrame: DisplayUmlFrame = diagramFrame
 
         self._createApplicationMenuBar()
+
+        self.__setupKeyboardShortCuts()
 
     def loadXmlFile(self, fqFileName: str):
         """
@@ -129,9 +137,9 @@ class PluginTestFrame(Frame):
 
     def _makeEditMenu(self, editMenu: Menu) -> Menu:
 
-        editMenu.Append(self._selectAllWxId, 'Select All')
+        editMenu.Append(ID_SELECTALL)
 
-        self.Bind(EVT_MENU, self._onSelectAll, id=self._selectAllWxId)
+        self.Bind(EVT_MENU, self._onSelectAll, id=ID_SELECTALL)
         return editMenu
 
     # noinspection PyUnusedLocal
@@ -149,8 +157,8 @@ class PluginTestFrame(Frame):
 
         response: RequestResponse = self._askForXMLFileToImport()
         self.logger.info(f'{response=}')
-
-        self._loadXmlFile(fqFileName=response.fileName)
+        if response.cancelled is False:
+            self._loadXmlFile(fqFileName=response.fileName)
 
     def _askForXMLFileToImport(self) -> RequestResponse:
         """
@@ -158,17 +166,22 @@ class PluginTestFrame(Frame):
 
         Returns:  The request response named tuple
         """
-        file: str = FileSelector(
-            "Choose a file to import",
-            default_path=getcwd(),
-            default_extension='xml',
-            flags=FD_OPEN | FD_FILE_MUST_EXIST | FD_CHANGE_DIR
-        )
+        # file: str = FileSelector(
+        #     message="Choose a file to import",
+        #     default_path=getcwd(),
+        #     default_extension='*.xml',
+        #     flags=FD_OPEN | FD_FILE_MUST_EXIST | FD_CHANGE_DIR
+        # )
+        dlg = FileDialog(None, "Choose a file", getcwd(), "", "*.xml", FD_OPEN | FD_FILE_MUST_EXIST)
+
         response: RequestResponse = RequestResponse()
-        if file == '':
+        if dlg.ShowModal() != ID_OK:
+            dlg.Destroy()
             response.cancelled = True
-            response.fileName = ''
         else:
+            fileNames: List[str] = dlg.GetPaths()
+            file:      str       = fileNames[0]
+
             response.cancelled = False
             response.fileName = file
 
@@ -316,3 +329,14 @@ class PluginTestFrame(Frame):
                                                   message=f'An error occurred while executing the selected plugin - {e}',
                                                   caption='Error!', style=OK | ICON_ERROR)
             booBoo.ShowModal()
+
+    def __setupKeyboardShortCuts(self):
+        lst = [
+            (ACCEL_CTRL, ord('l'), self._loadXmlFileWxId),
+            ]
+        acc = []
+        for el in lst:
+            (el1, el2, el3) = el
+            acc.append(AcceleratorEntry(el1, el2, el3))
+        accel_table = AcceleratorTable(acc)
+        self.SetAcceleratorTable(accel_table)
