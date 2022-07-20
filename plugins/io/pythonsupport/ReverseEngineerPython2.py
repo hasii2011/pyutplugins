@@ -14,10 +14,13 @@ from os import sep as osSep
 
 from antlr4 import CommonTokenStream
 from antlr4 import FileStream
+
 from ogl.OglLink import OglLink
+from ogl.OglClass import OglClass
+from ogl.OglLinkFactory import OglLinkFactory
+
 from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutLinkType import PyutLinkType
-
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutField import PyutField
 from pyutmodel.PyutMethod import PyutMethod
@@ -26,13 +29,10 @@ from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
-from ogl.OglClass import OglClass
-from ogl.OglLinkFactory import OglLinkFactory
-
 from plugins.common.Types import OglClasses
 from plugins.common.Types import OglLinks
-from plugins.io.pythonsupport.PythonParseException import PythonParseException
 
+from plugins.io.pythonsupport.PythonParseException import PythonParseException
 from plugins.io.pythonsupport.PyutPythonVisitor import ChildName
 from plugins.io.pythonsupport.PyutPythonVisitor import Children
 from plugins.io.pythonsupport.PyutPythonVisitor import ClassName
@@ -45,7 +45,6 @@ from plugins.io.pythonsupport.PyutPythonVisitor import Parameters
 from plugins.io.pythonsupport.PyutPythonVisitor import ParentName
 from plugins.io.pythonsupport.PyutPythonVisitor import Parents
 from plugins.io.pythonsupport.PyutPythonVisitor import PyutPythonVisitor
-
 from plugins.io.pythonsupport.pyantlrparser.Python3Lexer import Python3Lexer
 from plugins.io.pythonsupport.pyantlrparser.Python3Parser import Python3Parser
 
@@ -132,9 +131,7 @@ class ReverseEngineerPython2:
         for pyutClassName in self._pyutClasses:
             try:
                 pyutClass: PyutClass = self._pyutClasses[pyutClassName]
-                oglClass:  OglClass = OglClass(pyutClass)
-                # umlFrame.addShape(oglClass, 0, 0)
-                # oglClass.autoResize()
+                oglClass:  OglClass  = OglClass(pyutClass)
 
                 self._oglClassesDict[pyutClassName] = oglClass
             except (ValueError, Exception) as e:
@@ -293,35 +290,6 @@ class ReverseEngineerPython2:
 
     def _classNames(self) -> ClassNames:
         return self.visitor.classNames
-
-    # def _layoutUmlClasses(self, umlFrame: UmlClassDiagramsFrame):
-    #     """
-    #     Organize by vertical descending sizes
-    #
-    #     Args:
-    #         umlFrame:
-    #     """
-    #     oglClasses: List[OglClass] = list(self._oglClasses.values())
-    #     # Sort by descending height
-    #     # noinspection PyProtectedMember
-    #     sortedOglClasses = sorted(oglClasses, key=lambda oglClassToSort: oglClassToSort._height, reverse=True)
-    #
-    #     x: int = 20
-    #     y: int = 20
-    #
-    #     incY: int = 0
-    #     for oglClass in sortedOglClasses:
-    #         incX, sy = oglClass.GetSize()
-    #         incX += 20
-    #         sy += 20
-    #         incY = max(incY, int(sy))
-    #         # find good coordinates
-    #         if x + incX >= umlFrame.maxWidth:
-    #             x = 20
-    #             y += incY
-    #             incY = int(sy)
-    #         oglClass.SetPosition(x, y)
-    #         x += incX
 
     def _parseFieldToPyut(self, fieldData: str) -> PyutField:
 
