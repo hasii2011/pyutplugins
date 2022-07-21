@@ -7,12 +7,20 @@
         },
         "testSimple": {
             "format": "%(levelname)s: %(module)s: %(message)s"
+        },
+        "simpleTime": {
+            "format": "%(asctime)s.%(msecs)03d %(levelname)s %(module)s: %(funcName)s %(message)s",
+            "datefmt" : "%H:%M:%S"
+        },
+        "favoriteTime": {
+            "format": "%(asctime)s.%(msecs)03d %(levelname)s %(module)s: %(message)s",
+            "datefmt": "%0H%0M%0S"
         }
     },
     "handlers": {
         "consoleHandler": {
             "class": "logging.StreamHandler",
-            "formatter": "testSimple",
+            "formatter": "simpleTime",
             "stream": "ext://sys.stdout"
         }
     },
