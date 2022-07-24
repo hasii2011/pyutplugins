@@ -28,9 +28,10 @@ from core.ICommunicator import ICommunicator
 from core.IOPluginInterface import IOPluginInterface
 
 from core.types.ExportDirectoryResponse import ExportDirectoryResponse
-from core.types.InputFormat import InputFormat
 from core.types.MultipleFileRequestResponse import MultipleFileRequestResponse
+from core.types.InputFormat import InputFormat
 from core.types.OutputFormat import OutputFormat
+
 from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import FormatName
@@ -40,6 +41,7 @@ from plugins.common.Types import OglClasses
 from plugins.common.Types import OglLinks
 from plugins.common.Types import OglObjects
 
+from plugins.io.pythonsupport.PyutToPython import MethodsCodeType
 from plugins.io.pythonsupport.PyutToPython import PyutToPython
 from plugins.io.pythonsupport.ReverseEngineerPython2 import ReverseEngineerPython2
 
@@ -141,7 +143,7 @@ class IOPython(IOPluginInterface):
                 generatedStanza:    str       = pyutToPython.generateClassStanza(pyutClass)
                 generatedClassCode: List[str] = [generatedStanza]
 
-                clsMethods: PyutToPython.MethodsCodeType = pyutToPython.generateMethodsCode(pyutClass)
+                clsMethods: MethodsCodeType = pyutToPython.generateMethodsCode(pyutClass)
 
                 # Add __init__ Method
                 if PyutToPython.SPECIAL_PYTHON_CONSTRUCTOR in clsMethods:
