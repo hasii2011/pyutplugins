@@ -1,4 +1,4 @@
-from time import sleep
+
 from typing import cast
 from typing import List
 
@@ -8,21 +8,17 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from miniogl.DiagramFrame import DiagramFrame
 from pkg_resources import resource_filename
 
 from wx import App
 
 from pyutmodel.ModelTypes import Implementors
 from ogl.OglClass import OglClass
-from wx import Frame
-from wx import ID_ANY
 
 from plugins.io.java.ReverseJava import Extenders
 from plugins.io.java.ReverseJava import InterfaceMap
 from plugins.io.java.ReverseJava import ReverseJava
 from plugins.io.java.ReverseJava import ReversedClasses
-
 
 from tests.TestBase import TestBase
 
@@ -53,18 +49,10 @@ class TestReverseJava(TestBase):
 
     def setUp(self):
         self.logger: Logger  = TestReverseJava.clsLogger
-        self._app:   BogusApp = BogusApp()
-
-        sleep(2)
-
-        baseFrame: Frame = Frame(None, ID_ANY, "", size=(10, 10))
-        # noinspection PyTypeChecker
-        umlFrame = DiagramFrame(baseFrame)
-        umlFrame.Show(True)
+        super().setUp()
 
     def tearDown(self):
-        self._app.OnExit()
-        del self._app
+        super().tearDown()
 
     def testBasicClass(self):
 
