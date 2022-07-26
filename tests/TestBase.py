@@ -25,10 +25,12 @@ class BogusApp(App):
 
 class TestBase(TestCase):
 
-    RESOURCES_PACKAGE_NAME:                   str = 'tests.resources'
-    RESOURCES_TEST_CLASSES_PACKAGE_NAME:      str = f'{RESOURCES_PACKAGE_NAME}.testclasses'
-    RESOURCES_TEST_DATA_PACKAGE_NAME:         str = f'{RESOURCES_PACKAGE_NAME}.testdata'
-    RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME: str = 'tests.resources.testclasses.ozzee'
+    RESOURCES_PACKAGE_NAME:                      str = 'tests.resources'
+    RESOURCES_TEST_CLASSES_PACKAGE_NAME:         str = f'{RESOURCES_PACKAGE_NAME}.testclasses'
+    RESOURCES_TEST_DATA_PACKAGE_NAME:            str = f'{RESOURCES_PACKAGE_NAME}.testdata'
+    RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME:    str = f'{RESOURCES_PACKAGE_NAME}.testclasses.ozzee'
+
+    RESOURCES_TEST_JAVA_BASE_FILES_PACKAGE_NAME: str = f'{RESOURCES_TEST_DATA_PACKAGE_NAME}.javabasefiles'
 
     def setUp(self):
         """

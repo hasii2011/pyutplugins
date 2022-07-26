@@ -9,7 +9,7 @@
             "format": "%(levelname)s: %(module)s: %(message)s"
         },
         "simpleTime": {
-            "format": "%(asctime)s.%(msecs)03d %(levelname)s %(module)s: %(funcName)s %(message)s",
+            "format": "%(asctime)s.%(msecs)03d %(levelname)s %(module)s.%(funcName)s() %(message)s",
             "datefmt" : "%H:%M:%S"
         },
         "favoriteTime": {
@@ -42,10 +42,21 @@
             "level": "WARNING",
             "propagate": "False"
         },
-        "plugins.io.pythonsupport.ReverseEngineerPython2": {
+        "tests.plugins.io.java.TestJavaWriter": {
+            "level": "INFO",
+            "propagate": "False"
+        },
+        "tests.plugins.io": {
             "level": "WARNING",
             "propagate": "False"
+        },
+        "plugins.io.python.ReverseEngineerPython2": {
+            "level": "WARNING",
+            "propagate": "False"
+        },
+        "plugins.io.java.JavaWriter": {
+            "level": "INFO",
+            "propagate": "False"
         }
-
     }
 }
