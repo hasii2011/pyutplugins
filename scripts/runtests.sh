@@ -2,7 +2,7 @@
 
 function changeToProjectRoot {
 
-    export areHere=`basename ${PWD}`
+    areHere=$(basename "${PWD}")
     if [[ ${areHere} = "scripts" ]]; then
         cd ..
     fi
@@ -18,22 +18,24 @@ function checkStatus {
     testName=$2
 
     echo "checkStatus ${testName} -- ${status}"
-    if [ ${status} -ne 0 ]
+    if [ "${status}" -ne 0 ]
     then
-        exit ${status}
+        exit "${status}"
     fi
 }
 
 changeToProjectRoot
 
 echo "Travis Build directory: ${TRAVIS_BUILD_DIR}"
+# shellcheck disable=SC2164
 cd src > /dev/null 2>&1
-echo "current: `pwd`"
+echo "current: $(pwd)"
 
-python3 -m tests.TestAll $*
+python3 -m tests.TestAll "$*"
+status=$?
 
-cd -  > /dev/null 2>&1
+cd -  > /dev/null 2>&1 || exit
 
 echo "Exit with status: ${status}"
-exit ${status}
+exit "${status}"
 

@@ -1,4 +1,4 @@
-
+from typing import List
 from typing import cast
 
 from logging import Logger
@@ -56,9 +56,20 @@ class TestJavaWriter(TestBase):
         self.assertEqual(0, status, 'Diff of single class failed;  Something changed')
 
     def testComplexClass(self):
-        """Another test"""
+        """
+        Test multiple classes with parameters and return types
+        """
+        generatedFileNames: List[str] = ['Account.java', 'ATM.java', 'Bank.java', 'CheckingAccount.java', 'Customer.java', 'SavingsAccount.java']
+
+        for generatedFileName in generatedFileNames:
+            self._cleanupGenerated(generatedFileName)
+
         oglClasses: OglClasses = self._xmlFileToOglClasses(filename='ATM-Model.xml', documentName='Class Diagram')
         self._javaWriter.write(oglObjects=oglClasses)
+
+        for generatedFileName in generatedFileNames:
+            status: int = self._runDiff(generatedFileName)
+            self.assertEqual(0, status, f'Diff of {generatedFileName} class failed;  Something changed')
 
     def _xmlFileToOglClasses(self, filename: str, documentName: str) -> OglClasses:
 
