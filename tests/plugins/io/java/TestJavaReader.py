@@ -15,10 +15,10 @@ from wx import App
 from pyutmodel.ModelTypes import Implementors
 from ogl.OglClass import OglClass
 
-from plugins.io.java.ReverseJava import Extenders
-from plugins.io.java.ReverseJava import InterfaceMap
-from plugins.io.java.ReverseJava import ReverseJava
-from plugins.io.java.ReverseJava import ReversedClasses
+from plugins.io.java.JavaReader import Extenders
+from plugins.io.java.JavaReader import InterfaceMap
+from plugins.io.java.JavaReader import JavaReader
+from plugins.io.java.JavaReader import ReversedClasses
 
 from tests.TestBase import TestBase
 
@@ -33,7 +33,7 @@ class BogusApp(App):
         return True
 
 
-class TestReverseJava(TestBase):
+class TestJavaReader(TestBase):
     """
     """
     clsLogger: Logger = cast(Logger, None)
@@ -41,14 +41,14 @@ class TestReverseJava(TestBase):
     @classmethod
     def setUpClass(cls):
         TestBase.setUpLogging()
-        TestReverseJava.clsLogger = getLogger(__name__)
+        TestJavaReader.clsLogger = getLogger(__name__)
 
     @classmethod
     def tearDownClass(cls):
         pass
 
     def setUp(self):
-        self.logger: Logger  = TestReverseJava.clsLogger
+        self.logger: Logger  = TestJavaReader.clsLogger
         super().setUp()
 
     def tearDown(self):
@@ -56,7 +56,7 @@ class TestReverseJava(TestBase):
 
     def testBasicClass(self):
 
-        reverseJava: ReverseJava = ReverseJava()
+        reverseJava: JavaReader = JavaReader()
 
         basicClassPath: str = resource_filename(TestBase.RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME, 'Tenant.java')
 
@@ -67,7 +67,7 @@ class TestReverseJava(TestBase):
 
     def testCorrectlyGeneratedSingleSubclassMap(self):
 
-        reverseJava: ReverseJava = self._createReversedOglClasses()
+        reverseJava: JavaReader = self._createReversedOglClasses()
 
         expectedLength: int = 1
         actualLength:   int = len(reverseJava._subClassMap)
@@ -75,7 +75,7 @@ class TestReverseJava(TestBase):
 
     def testCorrectlyGeneratedSubClassEntry(self):
 
-        reverseJava: ReverseJava = self._createReversedOglClasses()
+        reverseJava: JavaReader = self._createReversedOglClasses()
 
         testBaseClass: OglClass = reverseJava.reversedClasses[TEST_BASE_CLASS_NAME]
 
@@ -83,7 +83,7 @@ class TestReverseJava(TestBase):
 
     def testCorrectlyGeneratedSubClasses(self):
 
-        reverseJava: ReverseJava = self._createReversedOglClasses()
+        reverseJava: JavaReader = self._createReversedOglClasses()
 
         testBaseClass: OglClass = reverseJava.reversedClasses[TEST_BASE_CLASS_NAME]
 
@@ -96,14 +96,14 @@ class TestReverseJava(TestBase):
 
     def testCorrectlyGeneratedInterfaceMap(self):
 
-        reverseJava: ReverseJava = self._createReversedOglClasses()
+        reverseJava: JavaReader = self._createReversedOglClasses()
 
         expectedLength: int = 3
         actualLength:   int = len(reverseJava.interfaceMap())
         self.assertEqual(expectedLength, actualLength, 'Incorrect number of interfaces detected')
 
     def testCorrectlyGeneratedInterfaceEntries(self):
-        reverseJava: ReverseJava = self._createReversedOglClasses()
+        reverseJava: JavaReader = self._createReversedOglClasses()
 
         reversedClasses: ReversedClasses = reverseJava.reversedClasses
         interfaceMap:    InterfaceMap    = reverseJava.interfaceMap()
@@ -114,7 +114,7 @@ class TestReverseJava(TestBase):
 
     def testCorrectlyGeneratedImplementors(self):
 
-        reverseJava: ReverseJava = self._createReversedOglClasses()
+        reverseJava: JavaReader = self._createReversedOglClasses()
 
         reversedClasses: ReversedClasses = reverseJava.reversedClasses
         interfaceMap:    InterfaceMap    = reverseJava.interfaceMap()
@@ -123,13 +123,13 @@ class TestReverseJava(TestBase):
         self._checkImplementors(interfaceMap, reversedClasses, TEST_INTERFACE_NAME_2, TEST_BASE_CLASS_NAME)
         self._checkImplementors(interfaceMap, reversedClasses, TEST_INTERFACE_NAME_3, 'Feature')
 
-    def _createReversedOglClasses(self) -> ReverseJava:
+    def _createReversedOglClasses(self) -> JavaReader:
 
         fileNames: List[str] = [f'{TEST_BASE_CLASS_NAME}.java', 'Feature.java', f'{TEST_INTERFACE_NAME_2}.java',
                                 f'{TEST_INTERFACE_NAME_1}.java',
                                 f'{TEST_INTERFACE_NAME_3}.java', 'Tenant.java', 'User.java'
                                 ]
-        reverseJava: ReverseJava = ReverseJava()
+        reverseJava: JavaReader = JavaReader()
         for fileName in fileNames:
             testFileName: str = resource_filename(TestBase.RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME, fileName)
             reverseJava.parseFile(testFileName)
@@ -158,7 +158,7 @@ def suite() -> TestSuite:
 
     testSuite: TestSuite = TestSuite()
     # noinspection PyUnresolvedReferences
-    testSuite.addTest(unittest.makeSuite(TestReverseJava))
+    testSuite.addTest(unittest.makeSuite(TestJavaReader))
 
     return testSuite
 

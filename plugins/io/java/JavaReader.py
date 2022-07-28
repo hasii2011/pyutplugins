@@ -31,7 +31,7 @@ FIELD_MODIFIERS  = ["public", "protected", "private", "static", "final", "transi
 METHOD_MODIFIERS = ["public", "protected", "private", "abstract", "static", "final", "synchronized", "native", "strictfp"]
 
 
-class ReverseJava:
+class JavaReader:
 
     def __init__(self):
 
