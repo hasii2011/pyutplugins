@@ -27,11 +27,10 @@ function checkStatus {
 changeToProjectRoot
 
 echo "Travis Build directory: ${TRAVIS_BUILD_DIR}"
-# shellcheck disable=SC2164
-cd src > /dev/null 2>&1
-echo "current: $(pwd)"
 
-python3 -m tests.TestAll "$*"
+cd src > /dev/null 2>&1
+
+python -m tests.TestAll
 status=$?
 
 cd -  > /dev/null 2>&1 || exit
