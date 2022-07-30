@@ -153,7 +153,8 @@ class PluginInterface:
 
     def askToImportMultipleFiles(self, startDirectory: str = None) -> MultipleFileRequestResponse:
         """
-
+        This method determines how to filter the input files via the Plugin Input
+        format specification.
         Args:
             startDirectory:   The initial directory to display
 

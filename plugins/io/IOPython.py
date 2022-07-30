@@ -73,7 +73,7 @@ class IOPython(IOPluginInterface):
 
     def setImportOptions(self) -> bool:
         """
-        We do need to ask for the input file name
+        We do need to ask for the input file names
 
         Returns:  'True', we support import
         """
