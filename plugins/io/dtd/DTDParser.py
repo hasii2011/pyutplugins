@@ -11,7 +11,6 @@ from logging import getLogger
 from xml.parsers.expat import ParserCreate
 from pyexpat import XMLParserType
 
-from ogl.OglLinkFactory import OglLinkFactory
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 from pyutmodel.PyutClass import PyutClass
@@ -23,6 +22,7 @@ from pyutmodel.PyutLinkType import PyutLinkType
 from ogl.OglClass import OglClass
 
 from plugins.common.ElementTreeData import ElementTreeData
+from plugins.common.LinkMakerMixin import LinkMakerMixin
 from plugins.common.Types import ClassPair
 from plugins.common.Types import ClassTree
 from plugins.common.Types import OglClasses
@@ -35,7 +35,7 @@ DTDElements   = NewType('DTDElements',   Dict[str, Tuple])
 DTDAttributes = NewType('DTDAttributes', List[DTDAttribute])
 
 
-class DTDParser:
+class DTDParser(LinkMakerMixin):
 
     MODEL_CHILD_ELEMENT_TYPE_INDEX:                int = 0
     MODEL_CHILD_ELEMENT_NAME_INDEX:                int = 2
@@ -50,15 +50,14 @@ class DTDParser:
         some kind of C language binder;
 
         """
+        super().__init__()
         self.logger:    Logger                = getLogger(__name__)
-        # self._umlFrame: UmlClassDiagramsFrame = umlFrame
 
         self._elementTypes:   DTDElements    = DTDElements({})
         self._attributes:     DTDAttributes  = DTDAttributes([])
         self._classTree:      ClassTree      = ClassTree({})
         self._links:          OglLinks       = OglLinks([])
         self._oglClasses:     OglClasses     = OglClasses([])
-        self._oglLinkFactory: OglLinkFactory = OglLinkFactory()
 
         # noinspection SpellCheckingInspection
         """
@@ -202,8 +201,7 @@ class DTDParser:
                 dstTreeData: ElementTreeData = self._classTree[associatedClassName]
                 child:       OglClass = dstTreeData.oglClass
 
-                link: PyutLink = self._createLink(parent, child, PyutLinkType.AGGREGATION)
-                # self._umlFrame.GetDiagram().AddShape(shape=link, withModelUpdate=True)    # TODO this should not happen here
+                link: PyutLink = self.createLink(parent, child, PyutLinkType.AGGREGATION)
 
                 self._links.append(link)
 
@@ -277,30 +275,3 @@ class DTDParser:
         classPair: ClassPair = ClassPair(pyutClass=pyutClass, oglClass=oglClass)
 
         return classPair
-
-    def _createLink(self, src: OglClass, dst: OglClass, linkType: PyutLinkType = PyutLinkType.AGGREGATION):
-        """
-        Used to create links;  It is still the caller's responsibility to add the created shape to the
-        appropriate diagram
-
-        TODO:  This method may belong in a common place for plugin development.
-
-        Args:
-            src:        The source OglClass
-            dst:        The destination OglClass
-            linkType:   The type of link
-        """
-        sourceClass:      PyutClass = cast(PyutClass, src.pyutObject)
-        destinationClass: PyutClass = cast(PyutClass, dst.pyutObject)
-
-        pyutLink: PyutLink = PyutLink("", linkType=linkType, source=sourceClass, destination=destinationClass)
-
-        oglLink = self._oglLinkFactory.getOglLink(src, pyutLink, dst, linkType)
-
-        src.addLink(oglLink)
-        dst.addLink(oglLink)
-
-        pyutClass: PyutClass = cast(PyutClass, src.pyutObject)
-        pyutClass.addLink(pyutLink)
-
-        return oglLink

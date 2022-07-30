@@ -17,9 +17,7 @@ from antlr4 import FileStream
 
 from ogl.OglLink import OglLink
 from ogl.OglClass import OglClass
-from ogl.OglLinkFactory import OglLinkFactory
 
-from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutField import PyutField
@@ -29,6 +27,7 @@ from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
+from plugins.common.LinkMakerMixin import LinkMakerMixin
 from plugins.common.Types import OglClasses
 from plugins.common.Types import OglLinks
 
@@ -53,7 +52,7 @@ PyutClasses    = NewType('PyutClasses', Dict[PyutClassName, PyutClass])
 OglClassesDict = NewType('OglClassesDict', Dict[Union[PyutClassName, ParentName, ChildName, ClassName], OglClass])
 
 
-class ReverseEngineerPython2:
+class ReverseEngineerPython2(LinkMakerMixin):
 
     PYTHON_ASSIGNMENT:     str = '='
     PYTHON_TYPE_DELIMITER: str = ':'
@@ -61,9 +60,9 @@ class ReverseEngineerPython2:
 
     def __init__(self):
 
+        super().__init__()
         self.logger: Logger = getLogger(__name__)
 
-        self._oglLinkFactory: OglLinkFactory  = OglLinkFactory()
         self._pyutClasses:    PyutClasses     = PyutClasses({})
         self._oglClassesDict: OglClassesDict  = OglClassesDict({})
         self._oglClasses:     OglClasses      = cast(OglClasses, None)
@@ -272,7 +271,7 @@ class ReverseEngineerPython2:
                 try:
                     parentOglClass: OglClass = self._oglClassesDict[parentName]
                     childOglClass:  OglClass = self._oglClassesDict[childName]
-                    oglLink: OglLink = self.__createLink(src=childOglClass, dst=parentOglClass, linkType=PyutLinkType.INHERITANCE)
+                    oglLink: OglLink = self.createLink(src=childOglClass, dst=parentOglClass, linkType=PyutLinkType.INHERITANCE)
                     self._oglLinks.append(oglLink)
                 except KeyError as ke:        # Probably there is no parent we are tracking
                     self.logger.warning(f'Apparently we are not tracking this parent:  {ke}')
@@ -447,29 +446,3 @@ class ReverseEngineerPython2:
         fieldAndComment: List[str] = fieldData.split(ReverseEngineerPython2.PYTHON_EOL_COMMENT)
 
         return fieldAndComment[0]
-
-    def __createLink(self, src: OglClass, dst: OglClass, linkType: PyutLinkType = PyutLinkType.INHERITANCE):
-        """
-        Add a paternity link between child and father.
-
-        Args:
-            src:  subclass
-            dst: Base Class
-
-        Returns: an OglLink
-
-        """
-        sourceClass:      PyutClass = cast(PyutClass, src.pyutObject)
-        destinationClass: PyutClass = cast(PyutClass, dst.pyutObject)
-
-        pyutLink: PyutLink = PyutLink("", linkType=linkType, source=sourceClass, destination=destinationClass)
-
-        oglLink = self._oglLinkFactory.getOglLink(src, pyutLink, dst, linkType)
-
-        src.addLink(oglLink)
-        dst.addLink(oglLink)
-
-        pyutClass: PyutClass = cast(PyutClass, src.pyutObject)
-        pyutClass.addLink(pyutLink)
-
-        return oglLink
