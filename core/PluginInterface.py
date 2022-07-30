@@ -31,7 +31,8 @@ from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import FormatName
 from core.types.PluginDataTypes import PluginName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
-
+from plugins.common.Types import OglClasses
+from plugins.common.Types import OglLinks
 
 UNSPECIFIED_NAME:        FormatName        = FormatName('Unspecified Plugin Name')
 UNSPECIFIED_EXTENSION:   PluginExtension   = PluginExtension('*')
@@ -261,6 +262,43 @@ class PluginInterface:
             response.directoryName = directory
 
         return response
+
+    def _layoutUmlClasses(self, oglClasses: OglClasses):
+        """
+        Organize by vertical descending sizes
+
+        Args:
+            oglClasses
+        """
+        # Sort by descending height
+        # noinspection PyProtectedMember
+        sortedOglClasses = sorted(oglClasses, key=lambda oglClassToSort: oglClassToSort._height, reverse=True)
+
+        x: int = 20
+        y: int = 20
+
+        incY: int = 0
+        for oglClass in sortedOglClasses:
+            incX, sy = oglClass.GetSize()
+            incX += 20
+            sy += 20
+            incY = max(incY, int(sy))
+            # find good coordinates
+            if x + incX >= 3000:
+                x = 20
+                y += incY
+                incY = int(sy)
+            oglClass.SetPosition(x, y)
+            x += incX
+            self._communicator.addShape(shape=oglClass)
+        self._communicator.refreshFrame()
+
+    def _layoutLinks(self, oglLinks: OglLinks):
+
+        for oglLink in oglLinks:
+            self._communicator.addShape(oglLink)
+
+        self._communicator.refreshFrame()
 
     def __composeWildCardSpecification(self) -> str:
 
