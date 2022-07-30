@@ -13,9 +13,9 @@ from unittest import main as unitTestMain
 from antlr4 import CommonTokenStream
 from antlr4 import FileStream
 
-from plugins.io.pythonsupport.pyantlrparser.Python3Lexer import Python3Lexer
-from plugins.io.pythonsupport.pyantlrparser.Python3Parser import Python3Parser
-from plugins.io.pythonsupport.PyutPythonVisitor import PyutPythonVisitor
+from plugins.io.python.pyantlrparser.Python3Lexer import Python3Lexer
+from plugins.io.python.pyantlrparser.Python3Parser import Python3Parser
+from plugins.io.python.PyutPythonVisitor import PyutPythonVisitor
 
 from tests.TestBase import TestBase
 

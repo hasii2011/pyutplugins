@@ -28,12 +28,9 @@ changeToProjectRoot
 
 echo "Travis Build directory: ${TRAVIS_BUILD_DIR}"
 
-cd src > /dev/null 2>&1
-
 python -m tests.TestAll
 status=$?
 
-cd -  > /dev/null 2>&1 || exit
 
 echo "Exit with status: ${status}"
 exit "${status}"

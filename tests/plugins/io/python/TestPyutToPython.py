@@ -16,7 +16,7 @@ from pyutmodel.PyutField import PyutField
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
-from plugins.io.pythonsupport.PyutToPython import PyutToPython
+from plugins.io.python.PyutToPython import PyutToPython
 
 from tests.TestBase import TestBase
 

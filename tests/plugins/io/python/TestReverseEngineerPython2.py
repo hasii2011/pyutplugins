@@ -29,12 +29,12 @@ from wx.py.frame import Frame
 
 from plugins.common.Types import OglClasses
 from plugins.common.Types import OglLinks
-from plugins.io.pythonsupport.PyutPythonVisitor import DataClassProperties
-from plugins.io.pythonsupport.PyutPythonVisitor import DataClassProperty
-from plugins.io.pythonsupport.PyutPythonVisitor import MultiParameterNames
+from plugins.io.python.PyutPythonVisitor import DataClassProperties
+from plugins.io.python.PyutPythonVisitor import DataClassProperty
+from plugins.io.python.PyutPythonVisitor import MultiParameterNames
 
-from plugins.io.pythonsupport.PyutPythonVisitor import PyutPythonVisitor
-from plugins.io.pythonsupport.ReverseEngineerPython2 import ReverseEngineerPython2
+from plugins.io.python.PyutPythonVisitor import PyutPythonVisitor
+from plugins.io.python.ReverseEngineerPython2 import ReverseEngineerPython2
 
 from tests.TestBase import TestBase
 
