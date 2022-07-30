@@ -94,54 +94,6 @@ class JavaReader:
             self.logger.error(f'Error in ReverseJava - {type(e)} {e}')
             raise e
 
-    # def layoutDiagram(self):
-    #     """
-    #     Layout out the generated OglClasses and their inheritance and interface relationships
-    #
-    #     """
-    #
-    #     self.__logMessage('Add the classes')
-    #
-    #     for oglClass in list(self._classes.values()):
-    #         self._umlFrame.createClass(oglClass=oglClass)
-    #         oglClass.autoResize()
-    #
-    #     self.__logMessage('Connect subclasses')
-    #     for parent in self._subClassMap.keys():
-    #         self.__logMessage(f'BaseClass: {parent}')
-    #         extenders: Extenders = self._subClassMap[parent]
-    #         for child in extenders:
-    #             self.__logMessage(f'{parent} <--- {child}')
-    #             self._umlFrame.createInheritanceLink(child=child, parent=parent)
-    #
-    #     self.__logMessage('Connect interfaces')
-    #     for interface in self._interfaceMap.keys():
-    #         implementors: Implementors = self._interfaceMap[interface]
-    #         for implementor in implementors:
-    #             self._umlFrame.createInterfaceLink(src=implementor, dst=interface)
-    #
-    #     self.__logMessage("Relay-out to improve display")
-    #     Margin: int = 10
-    #     x:      int = Margin
-    #     y:      int = Margin
-    #     dy:     int = 10
-    #     for po in list(self._classes.values()):
-    #         self.__logMessage(".")
-    #         try:  # Catch exceptions
-    #             (w, h) = po.GetSize()
-    #             dy = max(dy, h + Margin)
-    #             adjustedX: int = round(x + w / 2)
-    #             adjustedY: int = round(y + h / 2)
-    #             po.SetPosition(adjustedX, adjustedY)
-    #             po.autoResize()
-    #             x += w + Margin
-    #             if x > 200:
-    #                 x = Margin
-    #                 y += dy
-    #                 dy = Margin
-    #         except (ValueError, Exception) as e:
-    #             self.__logMessage(f"Error in IoJavaReverse.py {e}. Please report !")
-
     def _readClass(self, wordList: List[str], currentPos: int):
         """
         Read a class from a list of strings, beginning on a given position.

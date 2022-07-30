@@ -129,12 +129,12 @@ class TestJavaReader(TestBase):
                                 f'{TEST_INTERFACE_NAME_1}.java',
                                 f'{TEST_INTERFACE_NAME_3}.java', 'Tenant.java', 'User.java'
                                 ]
-        reverseJava: JavaReader = JavaReader()
+        javaReader: JavaReader = JavaReader()
         for fileName in fileNames:
             testFileName: str = resource_filename(TestBase.RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME, fileName)
-            reverseJava.parseFile(testFileName)
+            javaReader.parseFile(testFileName)
 
-        return reverseJava
+        return javaReader
 
     def _checkInterface(self, reversedClasses, interfaceMap, interfaceName: str):
 
