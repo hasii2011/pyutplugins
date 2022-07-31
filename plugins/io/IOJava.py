@@ -12,19 +12,23 @@ from wx import Yield as wxYield
 from core.ICommunicator import ICommunicator
 from core.IOPluginInterface import IOPluginInterface
 
-from core.types.InputFormat import InputFormat
+from core.types.ExportDirectoryResponse import ExportDirectoryResponse
 from core.types.MultipleFileRequestResponse import MultipleFileRequestResponse
+
+from core.types.InputFormat import InputFormat
 from core.types.OutputFormat import OutputFormat
 from core.types.PluginDataTypes import FormatName
 from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import PluginName
+
 from plugins.common.Types import OglClasses
 from plugins.common.Types import OglLinks
 
 from plugins.common.Types import OglObjects
 
 from plugins.io.java.JavaReader import JavaReader
+from plugins.io.java.JavaWriter import JavaWriter
 
 PLUGIN_NAME:        FormatName        = FormatName("Java")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('java')
@@ -50,8 +54,8 @@ class IOJava(IOPluginInterface):
         self._name    = PluginName('Java Code Reader and Writer')
         self._author  = "C.Dutoit <dutoitc@hotmail.com> and N. Dubois <nicdub@gmx.ch"
         self._version = '1.0'
-        self._inputFormat  = InputFormat(formatName=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
-        self._outputFormat = cast(OutputFormat, None)
+        self._inputFormat  = InputFormat(formatName=PLUGIN_NAME,  extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
+        self._outputFormat = OutputFormat(formatName=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 
         self._exportDirectoryName: str         = ''
         self._importDirectoryName: str         = ''
@@ -69,7 +73,13 @@ class IOJava(IOPluginInterface):
         return True
 
     def setExportOptions(self) -> bool:
-        return False
+        response: ExportDirectoryResponse = self.askForExportDirectoryName()
+        if response.cancelled is True:
+            return False
+        else:
+            self._exportDirectoryName = response.directoryName
+
+        return True
 
     def read(self) -> bool:
         BeginBusyCursor()
@@ -93,4 +103,8 @@ class IOJava(IOPluginInterface):
         return True
 
     def write(self, oglObjects: OglObjects):
-        pass
+
+        directoryName: str        = self._exportDirectoryName
+        javaWriter:    JavaWriter = JavaWriter(writeDirectory=directoryName)
+
+        javaWriter.write(oglObjects=oglObjects)
