@@ -52,4 +52,3 @@ class ToolArrangeLinks(ToolPluginInterface):
                 self.logger.warning(f"No line optimizing for: {oglObject}")
 
         self._communicator.refreshFrame()
-        

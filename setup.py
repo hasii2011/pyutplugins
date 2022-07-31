@@ -35,7 +35,7 @@ setup(
     },
     packages=[
         'plugins', 'plugins.common',
-        'plugins.io', 'plugins.io.dtd', 'plugins.io.gml', 'plugins.io.python',
+        'plugins.io', 'plugins.io.dtd', 'plugins.io.gml', 'plugins.io.python', 'plugins.io.java',
         'plugins.tools',
         'core', 'core.types', 'core.exceptions',
     ],
