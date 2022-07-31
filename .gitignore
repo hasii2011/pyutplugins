@@ -6,5 +6,4 @@ build/
 dist/
 pyutplugincore.egg-info
 /pyenv-3.9.1/
-*.put
 .envrc

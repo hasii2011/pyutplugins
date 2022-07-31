@@ -1,0 +1,1514 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PyutProject version="10" CodePath="">
+	<PyutDocument type="CLASS_DIAGRAM" title="Compact" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="252" height="50" x="611" y="15">
+			<Class id="14" name="Box" filename="" description="" showMethods="False" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="Box" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="left" type="double"/>
+					<Param name="right" type="double"/>
+					<Param name="top" type="double"/>
+					<Param name="bottom" type="double"/>
+					<Param name="owner" type="Container"/>
+					<Param name="arrangeStyle" type="ArrangeStyle"/>
+					<Param name="constraintType" type="ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="Box" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="left" type="double"/>
+					<Param name="right" type="double"/>
+					<Param name="top" type="double"/>
+					<Param name="bottom" type="double"/>
+					<Param name="owner" type="Container"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setSpacing" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setMinHeight" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="minHeight" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setMinWidth" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="minWidth" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setMinSize" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="width" type="double"/>
+					<Param name="height" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getChildren" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Element&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getIncidentLines" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Line&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getOutsideLabels" visibility="PUBLIC">
+					<Return type="ArrayList&lt;BoxOutsideLabel&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="resize" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="rectangle" type="Rectangle2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="move" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="newCenter" type="Point2D.Double"/>
+					<Param name="newOwner" type="Container"/>
+					<Param name="growPoint" type="Point2D.Double"/>
+					<Param name="row" type="Integer"/>
+					<Param name="column" type="Integer"/>
+					<SourceCode/>
+				</Method>
+				<Method name="move" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="newCenter" type="Point2D.Double"/>
+					<Param name="newOwner" type="Container"/>
+					<Param name="growPoint" type="Point2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="move" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="moveVector" type="Point2D.Double"/>
+					<Param name="newOwner" type="Container"/>
+					<Param name="row" type="Integer"/>
+					<Param name="column" type="Integer"/>
+					<SourceCode/>
+				</Method>
+				<Method name="move" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="moveVector" type="Point2D.Double"/>
+					<Param name="newOwner" type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getShape" visibility="PUBLIC">
+					<Return type="Path2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="createOutsideLabel" visibility="PUBLIC">
+					<Return type="BoxOutsideLabel"/>
+					<Param name="width" type="double"/>
+					<Param name="height" type="double"/>
+					<Param name="center" type="Point2D.Double"/>
+					<Param name="constraintType" type="ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="createOutsideLabel" visibility="PUBLIC">
+					<Return type="BoxOutsideLabel"/>
+					<Param name="width" type="double"/>
+					<Param name="height" type="double"/>
+					<Param name="side" type="BoxSide"/>
+					<Param name="position" type="double"/>
+					<Param name="constraintType" type="ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="createOutsideLabel" visibility="PUBLIC">
+					<Return type="BoxOutsideLabel"/>
+					<Param name="width" type="double"/>
+					<Param name="height" type="double"/>
+					<Param name="point" type="Point2D.Double"/>
+					<Param name="side" type="BoxSide"/>
+					<Param name="position" type="double"/>
+					<Param name="constraintType" type="ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="connectTo" visibility="PUBLIC">
+					<Return type="Line"/>
+					<Param name="element" type="Connectible"/>
+					<Param name="lineType" type="LineType"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="connectTo" visibility="PUBLIC">
+					<Return type="Line"/>
+					<Param name="element" type="Connectible"/>
+					<Param name="lineType" type="LineType"/>
+					<Param name="spacing" type="double"/>
+					<Param name="points" type="ArrayList&lt;Point2D.Double&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="connectTo" visibility="PUBLIC">
+					<Return type="Line"/>
+					<Param name="element" type="Connectible"/>
+					<Param name="lineType" type="LineType"/>
+					<Param name="spacing" type="double"/>
+					<Param name="points" type="ArrayList&lt;Point2D.Double&gt;"/>
+					<Param name="cleanup" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="addOutsideLabel" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="label" type="BoxOutsideLabel"/>
+					<SourceCode/>
+				</Method>
+				<Method name="remove" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="removeChild" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="element" type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Method name="saveAttributes" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="e" type="org.w3c.dom.Element"/>
+					<Param name="doc" type="org.w3c.dom.Document"/>
+					<Param name="," type="LinkedHashMap&lt;Object"/>
+					<Param name="idMap" type="Integer&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="saveToXML" visibility="PUBLIC">
+					<Return type="org.w3c.dom.Element"/>
+					<Param name="doc" type="org.w3c.dom.Document"/>
+					<Param name="," type="LinkedHashMap&lt;Object"/>
+					<Param name="idMap" type="Integer&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="Box" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="e" type="org.w3c.dom.Element"/>
+					<Param name="," type="LinkedHashMap&lt;Integer"/>
+					<Param name="objectMap" type="Object&gt;"/>
+					<Param name="owner" type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PUBLIC">
+					<Param name="incidentLines" type="LinkedHashSet&lt;Line&gt;"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="outsideLabels" type="LinkedHashSet&lt;BoxOutsideLabel&gt;"/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="203" height="70" x="717" y="101">
+			<Class id="15" name="Container" filename="" description="" showMethods="False" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="Container" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="left" type="double"/>
+					<Param name="right" type="double"/>
+					<Param name="top" type="double"/>
+					<Param name="bottom" type="double"/>
+					<Param name="owner" type="Container"/>
+					<Param name="arrangeStyle" type="ArrangeStyle"/>
+					<Param name="constraintType" type="ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="Container" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="owner" type="Container"/>
+					<Param name="arrangeStyle" type="ArrangeStyle"/>
+					<Param name="constraintType" type="ConstraintType"/>
+					<SourceCode/>
+				</Method>
+				<Method name="Container" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="owner" type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setSpacing" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getChildren" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Element&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getBoxes" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Box&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getNextRectangles" visibility="PUBLIC">
+					<Return type="ArrayList&lt;AbstractContainer&gt;"/>
+					<Param name="includeOutsideLabels" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getNextBoxes" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Box&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getPrevBox" visibility="PUBLIC">
+					<Return type="Box"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getPrevBox" visibility="PUBLIC">
+					<Return type="Box"/>
+					<Param name="inclusive" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getDescendantBoxes" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Box&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getDescendantBoxes" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Box&gt;"/>
+					<Param name="inclusive" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getDescendantContainers" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Container&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getDescendantOutsideLabels" visibility="PUBLIC">
+					<Return type="ArrayList&lt;OutsideLabel&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getDescendantBoxOutsideLabels" visibility="PUBLIC">
+					<Return type="ArrayList&lt;BoxOutsideLabel&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getDescendantLines" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Line&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getContainers" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Container&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getPureContainers" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Container&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getAbstractContainers" visibility="PUBLIC">
+					<Return type="ArrayList&lt;AbstractContainer&gt;"/>
+					<Param name="includeOutsideLabels" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getRectangles" visibility="PUBLIC">
+					<Return type="ArrayList&lt;AbstractContainer&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getLines" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Line&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getArrangeData" visibility="PUBLIC">
+					<Return type="ArrangeData"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getUsedArrangeData" visibility="PUBLIC">
+					<Return type="ArrangeData"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setArrangeStyle" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="arrangeStyle" type="ArrangeStyle"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getArrangeStyle" visibility="PUBLIC">
+					<Return type="ArrangeStyle"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getUsedArrangeStyle" visibility="PUBLIC">
+					<Return type="ArrangeStyle"/>
+					<SourceCode/>
+				</Method>
+				<Method name="createBox" visibility="PUBLIC">
+					<Return type="Box"/>
+					<Param name="rectangle" type="Rectangle2D.Double"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="createBox" visibility="PUBLIC">
+					<Return type="Box"/>
+					<Param name="rectangle" type="Rectangle2D.Double"/>
+					<Param name="arrangeStyle" type="ArrangeStyle"/>
+					<Param name="constraintType" type="ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="createBox" visibility="PUBLIC">
+					<Return type="Box"/>
+					<Param name="rectangle" type="Rectangle2D.Double"/>
+					<Param name="arrangeStyle" type="ArrangeStyle"/>
+					<Param name="constraintType" type="ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<Param name="row" type="Integer"/>
+					<Param name="column" type="Integer"/>
+					<SourceCode/>
+				</Method>
+				<Method name="addBox" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="box" type="Box"/>
+					<SourceCode/>
+				</Method>
+				<Method name="addContainer" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="container" type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Method name="addLine" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="line" type="Line"/>
+					<SourceCode/>
+				</Method>
+				<Method name="removeChild" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="element" type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Method name="move" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="moveVector" type="Point2D.Double"/>
+					<Param name="newOwner" type="Container"/>
+					<Param name="row" type="Integer"/>
+					<Param name="column" type="Integer"/>
+					<SourceCode/>
+				</Method>
+				<Method name="move" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="moveVector" type="Point2D.Double"/>
+					<Param name="newOwner" type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Method name="_convertToBox" visibility="PUBLIC">
+					<Return type="Box"/>
+					<Param name="newOwner" type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Method name="convertToBox" visibility="PUBLIC">
+					<Return type="Box"/>
+					<Param name="newCenter" type="Point2D.Double"/>
+					<Param name="newOwner" type="Container"/>
+					<Param name="growPoint" type="Point2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="convertToBox" visibility="PUBLIC">
+					<Return type="Box"/>
+					<Param name="newCenter" type="Point2D.Double"/>
+					<Param name="newOwner" type="Container"/>
+					<Param name="growPoint" type="Point2D.Double"/>
+					<Param name="row" type="Integer"/>
+					<Param name="column" type="Integer"/>
+					<SourceCode/>
+				</Method>
+				<Method name="findDescendantEnclosingRectangle" visibility="PUBLIC">
+					<Return type="Rectangle2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="findChildContainerEnclosingRectangle" visibility="PUBLIC">
+					<Return type="Rectangle2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getShape" visibility="PUBLIC">
+					<Return type="Path2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="saveAttributes" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="e" type="org.w3c.dom.Element"/>
+					<Param name="doc" type="org.w3c.dom.Document"/>
+					<Param name="," type="LinkedHashMap&lt;Object"/>
+					<Param name="idMap" type="Integer&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="saveToXML" visibility="PUBLIC">
+					<Return type="org.w3c.dom.Element"/>
+					<Param name="doc" type="org.w3c.dom.Document"/>
+					<Param name="," type="LinkedHashMap&lt;Object"/>
+					<Param name="idMap" type="Integer&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="Container" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="e" type="org.w3c.dom.Element"/>
+					<Param name="," type="LinkedHashMap&lt;Integer"/>
+					<Param name="objectMap" type="Object&gt;"/>
+					<Param name="owner" type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PUBLIC">
+					<Param name="boxes" type="LinkedHashSet&lt;Box&gt;"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="containers" type="LinkedHashSet&lt;Container&gt;"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="lines" type="LinkedHashSet&lt;Line&gt;"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="arrangeData" type="ArrangeData"/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="77" height="20" x="31" y="63">
+			<Class id="16" name="Connectible" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="78" height="20" x="28" y="112">
+			<Class id="17" name="Rectangular" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="220" height="170" x="614" y="230">
+			<Class id="18" name="AbstractContainer" filename="" description="" showMethods="False" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="AbstractContainer" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="left" type="double"/>
+					<Param name="right" type="double"/>
+					<Param name="top" type="double"/>
+					<Param name="bottom" type="double"/>
+					<Param name="owner" type="Element"/>
+					<Param name="constraintType" type="ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getBounds" visibility="PUBLIC">
+					<Return type="Rectangle2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getCenterX" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getCenterY" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setBounds" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="bounds" type="Rectangle2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setCenter" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="newCenter" type="Point2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getCenter" visibility="PUBLIC">
+					<Return type="Point2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getCurrentMinHeight" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getMinHeight" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getCurrentMinWidth" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getMinWidth" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setCurrentMinSize" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="width" type="double"/>
+					<Param name="height" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getLeft" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getTop" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getRight" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getBottom" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getWidth" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getHeight" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setDesiredCenter" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="desiredCenter" type="Point2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getDesiredCenter" visibility="PUBLIC">
+					<Return type="Point2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getLayoutConstraints" visibility="PUBLIC">
+					<Return type="LayoutConstraints"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setConstraintType" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="constraintType" type="ConstraintType"/>
+					<SourceCode/>
+				</Method>
+				<Method name="transpose" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="vector" type="Point2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="collapse" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="newCenter" type="Point2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="contains" visibility="PUBLIC">
+					<Return type="boolean"/>
+					<Param name="point" type="Point2D.Double"/>
+					<Param name="epsilon" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="strictContains" visibility="PUBLIC">
+					<Return type="boolean"/>
+					<Param name="point" type="Point2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="contains" visibility="PUBLIC">
+					<Return type="boolean"/>
+					<Param name="rectangle" type="AbstractContainer"/>
+					<Param name="epsilon" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="createInsideLabel" visibility="PUBLIC">
+					<Return type="InsideLabel"/>
+					<Param name="rectangle" type="Rectangle2D.Double"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="createInsideLabel" visibility="PUBLIC">
+					<Return type="InsideLabel"/>
+					<Param name="rectangle" type="Rectangle2D.Double"/>
+					<Param name="constraintType" type="LayoutConstraints.ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="createInsideLabel" visibility="PUBLIC">
+					<Return type="InsideLabel"/>
+					<Param name="rectangle" type="Rectangle2D.Double"/>
+					<Param name="constraintType" type="LayoutConstraints.ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<Param name="row" type="Integer"/>
+					<Param name="column" type="Integer"/>
+					<SourceCode/>
+				</Method>
+				<Method name="addInsideLabel" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="label" type="InsideLabel"/>
+					<SourceCode/>
+				</Method>
+				<Method name="findGridEnclosingRectangle" visibility="PUBLIC">
+					<Return type="Rectangle2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getChildren" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Element&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getInsideLabels" visibility="PUBLIC">
+					<Return type="ArrayList&lt;InsideLabel&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getAbstractContainers" visibility="PUBLIC">
+					<Return type="ArrayList&lt;AbstractContainer&gt;"/>
+					<Param name="includeOutsideLabels" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getRectangles" visibility="PUBLIC">
+					<Return type="ArrayList&lt;AbstractContainer&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getNextRectangles" visibility="PUBLIC">
+					<Return type="ArrayList&lt;AbstractContainer&gt;"/>
+					<Param name="includeOutsideLabels" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getDescendantRectangles" visibility="PUBLIC">
+					<Return type="ArrayList&lt;AbstractContainer&gt;"/>
+					<Param name="inclusive" type="boolean"/>
+					<Param name="includeOutsideLabels" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getDescendantAbstractContainers" visibility="PUBLIC">
+					<Return type="ArrayList&lt;AbstractContainer&gt;"/>
+					<Param name="includeOutsideLabels" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getPureContainers" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Container&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="findNextRectangleEnclosingRectangle" visibility="PUBLIC">
+					<Return type="Rectangle2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="findDescendantEnclosingRectangle" visibility="PUBLIC">
+					<Return type="Rectangle2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="hideChildren" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="showChildren" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="removeChild" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="element" type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Method name="remove" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="saveAttributes" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="e" type="org.w3c.dom.Element"/>
+					<Param name="doc" type="org.w3c.dom.Document"/>
+					<Param name="," type="LinkedHashMap&lt;Object"/>
+					<Param name="idMap" type="Integer&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="AbstractContainer" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="e" type="org.w3c.dom.Element"/>
+					<Param name="," type="LinkedHashMap&lt;Integer"/>
+					<Param name="objectMap" type="Object&gt;"/>
+					<Param name="owner" type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PUBLIC">
+					<Param name="left" type="double"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="right" type="double"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="top" type="double"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="bottom" type="double"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="minWidth" type="double"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="minHeight" type="double"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="userMinWidth" type="double"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="userMinHeight" type="double"/>
+				</Field>
+				<Field visibility="PROTECTED">
+					<Param name="hide" type="boolean"/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="nextId" type="int"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="id" type="int"/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="desiredCenter" type="Point2D.Double"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="insideLabels" type="LinkedHashSet&lt;InsideLabel&gt;"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="layoutConstraints" type="LayoutConstraints"/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="203" height="120" x="126" y="20">
+			<Class id="19" name="DiagramPart" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="DiagramPart" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="container" type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Method name="merge" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="childPart" type="DiagramPart"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getStyle" visibility="PUBLIC">
+					<Return type="ArrangeStyle"/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PUBLIC">
+					<Param name="containers" type="LinkedHashSet&lt;Container&gt;"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="children" type="ArrayList&lt;Container&gt;"/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="style" type="ArrangeStyle"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="enclosingContainer" type="Container"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="outerLines" type="LinkedHashSet&lt;Line&gt;"/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="106" height="60" x="368" y="345">
+			<Class id="20" name="Element" filename="" description="" showMethods="False" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="Element" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="owner" type="Element"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setOwner" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="owner" type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getChildren" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Element&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="isDescendantOf" visibility="PUBLIC">
+					<Return type="boolean"/>
+					<Param name="element" type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getDiagram" visibility="PUBLIC">
+					<Return type="Diagram"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setDiagram" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="diagram" type="Diagram"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getDescendants" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Element&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getSpacing" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setSpacing" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="_setSpacing" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="remove" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="remove" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="adjust" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="removeChild" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="element" type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Method name="saveAttributes" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="e" type="org.w3c.dom.Element"/>
+					<Param name="," type="LinkedHashMap&lt;Object"/>
+					<Param name="idMap" type="Integer&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="Element" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="e" type="org.w3c.dom.Element"/>
+					<Param name="," type="LinkedHashMap&lt;Integer"/>
+					<Param name="objectMap" type="Object&gt;"/>
+					<Param name="owner" type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PUBLIC">
+					<Param name="owner" type="Element"/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="diagram" type="Diagram"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="spacing" type="double"/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="188" height="120" x="729" y="481">
+			<Class id="21" name="Line" filename="" description="" showMethods="False" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="hasGeometry" visibility="PUBLIC">
+					<Return type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="Line" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="startElement" type="Connectible"/>
+					<Param name="endElement" type="Connectible"/>
+					<Param name="owner" type="Container"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getStart" visibility="PUBLIC">
+					<Return type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getEnd" visibility="PUBLIC">
+					<Return type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getPoints" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Point2D.Double&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setPoints" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="points" type="ArrayList&lt;Point2D.Double&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setPoints" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="points" type="ArrayList&lt;Point2D.Double&gt;"/>
+					<Param name="cleanup" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setPoints" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="points" type="ArrayList&lt;Point2D.Double&gt;"/>
+					<Param name="newStart" type="Element"/>
+					<Param name="newEnd" type="Element"/>
+					<Param name="cleanup" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setPoints" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="points" type="ArrayList&lt;Point2D.Double&gt;"/>
+					<Param name="newStart" type="Element"/>
+					<Param name="newEnd" type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getStartPoint" visibility="PUBLIC">
+					<Return type="Point2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getEndPoint" visibility="PUBLIC">
+					<Return type="Point2D.Double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getType" visibility="PUBLIC">
+					<Return type="LineType"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setType" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="type" type="LineType"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getSpacing" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setSpacing" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getLength" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getLength" visibility="PUBLIC">
+					<Return type="double"/>
+					<Param name="startIndex" type="int"/>
+					<Param name="endIndex" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="addLabel" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="label" type="LineLabel"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getChildren" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Element&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getIncidentLines" visibility="PUBLIC">
+					<Return type="ArrayList&lt;Line&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getLabels" visibility="PUBLIC">
+					<Return type="ArrayList&lt;LineLabel&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getOwner" visibility="PUBLIC">
+					<Return type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getLineGeometry" visibility="PUBLIC">
+					<Return type="LineGeometry"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setStartSides" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="sides" type="BoxSide[]"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setEndSides" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="sides" type="BoxSide[]"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setStartSides" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="sides" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setEndSides" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="sides" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getStartSides" visibility="PUBLIC">
+					<Return type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getEndSides" visibility="PUBLIC">
+					<Return type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="resetStartSides" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="resetEndSides" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="setLayoutStartSides" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="sides" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setLayoutEndSides" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="sides" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getLayoutStartSides" visibility="PUBLIC">
+					<Return type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getLayoutEndSides" visibility="PUBLIC">
+					<Return type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="resetLayoutStartSides" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="resetLayoutEndSides" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="getUsedStartSides" visibility="PUBLIC">
+					<Return type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getUsedEndSides" visibility="PUBLIC">
+					<Return type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="remove" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="remove" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="adjust" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="removeChild" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="element" type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Method name="createLabel" visibility="PUBLIC">
+					<Return type="LineLabel"/>
+					<Param name="width" type="double"/>
+					<Param name="height" type="double"/>
+					<Param name="point" type="Point2D.Double"/>
+					<Param name="orientation" type="Orientation"/>
+					<Param name="constraintType" type="LayoutConstraints.ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="createLabel" visibility="PUBLIC">
+					<Return type="LineLabel"/>
+					<Param name="width" type="double"/>
+					<Param name="height" type="double"/>
+					<Param name="position" type="double"/>
+					<Param name="orientation" type="Orientation"/>
+					<Param name="constraintType" type="LayoutConstraints.ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="createLabel" visibility="PUBLIC">
+					<Return type="LineLabel"/>
+					<Param name="width" type="double"/>
+					<Param name="height" type="double"/>
+					<Param name="center" type="Point2D.Double"/>
+					<Param name="position" type="double"/>
+					<Param name="segmentIndex" type="int"/>
+					<Param name="orientation" type="Orientation"/>
+					<Param name="constraintType" type="LayoutConstraints.ConstraintType"/>
+					<Param name="spacing" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="trace" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="trace" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="lineType" type="LineType"/>
+					<SourceCode/>
+				</Method>
+				<Method name="trace" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="lineType" type="LineType"/>
+					<Param name="tracer" type="Tracer"/>
+					<SourceCode/>
+				</Method>
+				<Method name="retrace" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="findOwner" visibility="PUBLIC">
+					<Return type="Container"/>
+					<Param name="startElement" type="Connectible"/>
+					<Param name="endElement" type="Connectible"/>
+					<SourceCode/>
+				</Method>
+				<Method name="retrace" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="type" type="LineType"/>
+					<SourceCode/>
+				</Method>
+				<Method name="retrace" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="type" type="LineType"/>
+					<Param name="newStart" type="Element"/>
+					<Param name="newEnd" type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Method name="retrace" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="newStart" type="Element"/>
+					<Param name="newEnd" type="Element"/>
+					<SourceCode/>
+				</Method>
+				<Method name="cleanup" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="isOrthogonal" visibility="PUBLIC">
+					<Return type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="_resetLabels" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="saveToXML" visibility="PUBLIC">
+					<Return type="org.w3c.dom.Element"/>
+					<Param name="doc" type="Document"/>
+					<Param name="," type="LinkedHashMap&lt;Object"/>
+					<Param name="idMap" type="Integer&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="Line" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="e" type="org.w3c.dom.Element"/>
+					<Param name="," type="LinkedHashMap&lt;Integer"/>
+					<Param name="objectMap" type="Object&gt;"/>
+					<Param name="owner" type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PRIVATE">
+					<Param name="startElement" type="Connectible"/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="endElement" type="Connectible"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="lineGeometry" type="LineGeometry"/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="incidentLines" type="LinkedHashSet&lt;Line&gt;"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="labels" type="LinkedHashSet&lt;LineLabel&gt;"/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="userStartSides" type="int"/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="userEndSides" type="int"/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="layoutStartSides" type="int"/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="layoutEndSides" type="int"/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="185" height="320" x="68" y="279">
+			<Class id="22" name="UniversalLayoutAlgorithm" filename="" description="" showMethods="False" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="compress" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="getGraphEnclosingRect" visibility="PUBLIC">
+					<Return type="double[]"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getNHor" visibility="PUBLIC">
+					<Return type="int"/>
+					<Param name="box" type="AbstractContainer"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getNVert" visibility="PUBLIC">
+					<Return type="int"/>
+					<Param name="box" type="AbstractContainer"/>
+					<SourceCode/>
+				</Method>
+				<Method name="placeIsFree" visibility="PUBLIC">
+					<Return type="boolean"/>
+					<Param name="x" type="int"/>
+					<Param name="y" type="int"/>
+					<Param name="nH" type="int"/>
+					<Param name="nV" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="putBox" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="boxIG" type="BoxInGrid"/>
+					<SourceCode/>
+				</Method>
+				<Method name="removeBox" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="boxIG" type="BoxInGrid"/>
+					<SourceCode/>
+				</Method>
+				<Method name="calculateTakenCellCount" visibility="PUBLIC">
+					<Return type="int"/>
+					<Param name="boxIG" type="BoxInGrid"/>
+					<Param name="x" type="int"/>
+					<Param name="y" type="int"/>
+					<Param name="movingDir" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="boxesCanBeSwapped" visibility="PUBLIC">
+					<Return type="boolean"/>
+					<Param name="boxIG1" type="BoxInGrid"/>
+					<Param name="boxIG2" type="BoxInGrid"/>
+					<SourceCode/>
+				</Method>
+				<Method name="swapBoxPlaces" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="boxIG1" type="BoxInGrid"/>
+					<Param name="boxIG2" type="BoxInGrid"/>
+					<SourceCode/>
+				</Method>
+				<Method name="putAllBoxesToGrid" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="setBoxesToGrid" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="useRealSize" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="putToBestPlace" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="boxIG" type="BoxInGrid"/>
+					<SourceCode/>
+				</Method>
+				<Method name="segmentDistance" visibility="PUBLIC">
+					<Return type="int"/>
+					<Param name="min1" type="int"/>
+					<Param name="max1" type="int"/>
+					<Param name="min2" type="int"/>
+					<Param name="max2" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="connectedLineLength" visibility="PUBLIC">
+					<Return type="double"/>
+					<Param name="boxIG" type="BoxInGrid"/>
+					<SourceCode/>
+				</Method>
+				<Method name="findMedian" visibility="PUBLIC">
+					<Return type="double"/>
+					<Param name="arr" type="double[]"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getMedianXOfConnectedBoxes" visibility="PUBLIC">
+					<Return type="double"/>
+					<Param name="boxIG" type="BoxInGrid"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getMedianYOfConnectedBoxes" visibility="PUBLIC">
+					<Return type="double"/>
+					<Param name="boxIG" type="BoxInGrid"/>
+					<SourceCode/>
+				</Method>
+				<Method name="inRectangle" visibility="PUBLIC">
+					<Return type="boolean"/>
+					<Param name="boxIG" type="BoxInGrid"/>
+					<Param name="x" type="int"/>
+					<Param name="y" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="moveAndCheckPlace" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="boxIG1" type="BoxInGrid"/>
+					<Param name="x" type="int"/>
+					<Param name="y" type="int"/>
+					<Param name="movingDir" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="improveBoxPlaces" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="normalize" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="horizontally" type="boolean"/>
+					<Param name="extendBoxSize" type="boolean"/>
+					<Param name="extraSpaceCoef" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="setBoxCoordinates" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="x" type="int"/>
+					<Param name="y" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getObstacleGraph" visibility="PUBLIC">
+					<Return type="SimpleOrthogonalSegment&gt;&gt;"/>
+					<Param name="horizontal" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="firstNormalize" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="horizontally" type="boolean"/>
+					<SourceCode/>
+				</Method>
+				<Method name="addLinesToBoxesInGrid" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="getAverageLineLength" visibility="PUBLIC">
+					<Return type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="UniversalLayoutAlgorithm" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="part" type="DiagramPart"/>
+					<Param name="baseLayouter" type="LayoutAlgorithm"/>
+					<SourceCode/>
+				</Method>
+				<Method name="layoutPass" visibility="PROTECTED">
+					<Return type=""/>
+					<Param name="pass" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="runUniversalLayout" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="container" type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Method name="printGrid" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PUBLIC">
+					<Param name="oneLineSpecialCase=true" type="boolean"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="startRandom=false" type="boolean"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="startBFS=false" type="boolean"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="boxes" type="BoxInGrid[]"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="map" type="BoxInGrid&gt;"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="constr" type="GridLayoutConstraints"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="gridExist" type="boolean"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="rows" type="int[]"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="columns" type="int[]"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="rowsd" type="double[]"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="columnsd" type="double[]"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="SLIDE_COEF" type="int"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="grid" type="BoxInGrid[][]"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="gridSize" type="int"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="horSize" type="int"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="vertSize" type="int"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="crCoef" type="double"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="cellCount" type="int"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="bestX" type="int"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="bestY" type="int"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="random" type="Random"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="bestPlaceCost" type="double"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="randomCoef" type="double"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="curPlaceCost" type="double"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="placeFound" type="boolean"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="leftBorder" type="int"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="rightBorder" type="int"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="topBorder" type="int"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="bottomBorder" type="int"/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="167" height="50" x="367" y="127">
+			<Class id="23" name="ComponentLayout" filename="" description="" showMethods="False" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="ComponentLayout" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="part" type="DiagramPart"/>
+					<Param name="baseLayouter" type="LayoutAlgorithm"/>
+					<SourceCode/>
+				</Method>
+				<Method name="layoutPass" visibility="PROTECTED">
+					<Return type=""/>
+					<Param name="pass" type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="buildInnerLines" visibility="PROTECTED">
+					<Return type="List&lt;LayoutLine&gt;"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getLaidOutPass" visibility="PROTECTED">
+					<Return type="int"/>
+					<Param name="c" type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Method name="getOuterNeighbors" visibility="PROTECTED">
+					<Return type="List&lt;Container&gt;"/>
+					<Param name="c" type="Container"/>
+					<SourceCode/>
+				</Method>
+				<Method name="moveBoxWithChildren" visibility="PROTECTED">
+					<Return type=""/>
+					<Param name="box" type="Container"/>
+					<Param name="newCenterX" type="double"/>
+					<Param name="newCenterY" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Method name="moveAbstrContWithChildren" visibility="PROTECTED">
+					<Return type=""/>
+					<Param name="aCont" type="AbstractContainer"/>
+					<Param name="newCenterX" type="double"/>
+					<Param name="newCenterY" type="double"/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PROTECTED">
+					<Param name="part" type="DiagramPart"/>
+				</Field>
+				<Field visibility="PROTECTED">
+					<Param name="baseLayouter" type="LayoutAlgorithm"/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicLink srcX="725" srcY="64" dstX="750" dstY="101" spline="False">
+			<Link name="PyutObject_00002" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="14" destId="15"/>
+		</GraphicLink>
+		<GraphicLink srcX="822" srcY="170" dstX="720" dstY="230" spline="False">
+			<Link name="PyutObject_00114" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="15" destId="18"/>
+		</GraphicLink>
+		<GraphicLink srcX="749" srcY="481" dstX="431" dstY="404" spline="False">
+			<Link name="PyutObject_00270" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="21" destId="20"/>
+		</GraphicLink>
+		<GraphicLink srcX="140" srcY="279" dstX="439" dstY="176" spline="False">
+			<Link name="PyutObject_00406" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="22" destId="23"/>
+		</GraphicLink>
+		<GraphicLink srcX="614" srcY="324" dstX="419" dstY="345" spline="False">
+			<Link name="PyutObject_00511" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="18" destId="20"/>
+		</GraphicLink>
+	</PyutDocument>
+</PyutProject>
