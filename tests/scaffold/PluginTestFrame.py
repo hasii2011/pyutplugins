@@ -273,7 +273,7 @@ class PluginTestFrame(Frame):
     def _onTools(self, event: CommandEvent):
 
         wxId: int = event.GetId()
-        self.logger.warning(f'{wxId=}')
+        self.logger.debug(f'{wxId=}')
 
         pluginMap: PluginIDMap = self._pluginManager.toolPluginsIDMap
 

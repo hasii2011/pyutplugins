@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PyutProject version="10" CodePath="">
+	<PyutDocument type="CLASS_DIAGRAM" title="Sugiyama" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="100" height="100" x="425" y="500">
+			<Class id="1" name="Level1ClassA" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="100" height="100" x="200" y="0">
+			<Class id="2" name="Level2ClassB" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="100" height="100" x="575" y="150">
+			<Class id="3" name="Level3ClassB" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="100" height="100" x="550" y="350">
+			<Class id="4" name="Level2ClassC" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="136" height="76" x="225" y="175">
+			<Class id="5" name="Level3ClassA" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="100" height="100" x="50" y="375">
+			<Class id="6" name="Level3ClassC" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="100" height="100" x="25" y="125">
+			<Class id="7" name="Level2ClassA" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="100" height="100" x="526" y="10">
+			<Class id="8" name="Level4ClassA" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="100" height="100" x="800" y="175">
+			<Class id="9" name="Level4ClassB" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicLink srcX="425" srcY="500" dstX="124" dstY="224" spline="False">
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="7"/>
+		</GraphicLink>
+		<GraphicLink srcX="425" srcY="500" dstX="299" dstY="99" spline="False">
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="2"/>
+		</GraphicLink>
+		<GraphicLink srcX="524" srcY="500" dstX="550" dstY="449" spline="False">
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="4"/>
+		</GraphicLink>
+		<GraphicLink srcX="550" srcY="350" dstX="360" dstY="250" spline="False">
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="4" destId="5"/>
+		</GraphicLink>
+		<GraphicLink srcX="625" srcY="350" dstX="600" dstY="249" spline="False">
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="4" destId="3"/>
+		</GraphicLink>
+		<GraphicLink srcX="550" srcY="425" dstX="149" dstY="400" spline="False">
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="4" destId="6"/>
+		</GraphicLink>
+		<GraphicLink srcX="149" srcY="375" dstX="526" dstY="109" spline="False">
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="6" destId="8"/>
+		</GraphicLink>
+		<GraphicLink srcX="149" srcY="375" dstX="800" dstY="274" spline="False">
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="6" destId="9"/>
+		</GraphicLink>
+		<GraphicText width="200" height="115" x="75" y="550" textSize="14" isBold="False" isItalicized="True" fontFamily="Swiss">
+			<Text id="10" content="Once you run the Sugiyama tool on this file do not save it"/>
+		</GraphicText>
+	</PyutDocument>
+</PyutProject>

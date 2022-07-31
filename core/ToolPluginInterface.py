@@ -35,10 +35,10 @@ class ToolPluginInterface(PluginInterface, ABC):
     @abstractmethod
     def setOptions(self) -> bool:
         """
-        Prepare the import.
+        Prepare for the tool action
         This can be used to query the user for additional plugin options
 
-        Returns: if False, the import is cancelled.
+        Returns: If False, the import should be cancelled.  'True' to proceed
         """
         pass
 

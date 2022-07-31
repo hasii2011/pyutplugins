@@ -11,7 +11,8 @@ from wx import MessageBox
 
 from wx import Yield as wxYield
 
-from miniogl.DiagramFrame import DiagramFrame
+from core.ICommunicator import ICommunicator
+
 from plugins.tools.sugiyama.SugiyamaNode import SugiyamaNode
 
 
@@ -74,11 +75,11 @@ class SugiyamaGlobals:
             return cmp(xNode.getBarycenter(), yNode.getBarycenter())
 
     @staticmethod
-    def waitKey(umlFrame: DiagramFrame, optionalMessage: str = None):
+    def waitKey(communicator: ICommunicator, optionalMessage: str = None):
         # input('Press enter to continue')
         if optionalMessage is None:
             MessageBox('Press Ok to continue', 'Confirm', style=OK | CENTRE)
         else:
             MessageBox(optionalMessage, 'Press Ok to continue', style=OK | CENTRE)
-        umlFrame.Refresh()
+        communicator.refreshFrame()
         wxYield()
