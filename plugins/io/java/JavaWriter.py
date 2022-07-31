@@ -52,7 +52,7 @@ class JavaWriter:
         }
 
         for oglClass in oglClasses:
-            self.logger.info(f'{oglClass=}')
+            self.logger.debug(f'{oglClass=}')
             pyutClass: PyutClass = cast(PyutClass, oglClass.pyutObject)
             self._writeClass(pyutClass)
 
@@ -274,7 +274,7 @@ class JavaWriter:
         # for all method in methods list
         for aMethod in methods:
             method: PyutMethod = cast(PyutMethod, aMethod)
-            self.logger.info(f'method: {method}')
+            self.logger.debug(f'method: {method}')
             self._writeMethodComment(file, method, self.__tab)
             self._writeMethod(file, method)
 
@@ -318,7 +318,7 @@ class JavaWriter:
 
         # for all param
         nbParam = len(method.parameters)
-        self.logger.info(f'# params: {nbParam}')
+        self.logger.debug(f'# params: {nbParam}')
         for param in method.parameters:
             # writing param
             self._writeParam(file, param)

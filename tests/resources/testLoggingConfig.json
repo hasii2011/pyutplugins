@@ -20,7 +20,7 @@
     "handlers": {
         "consoleHandler": {
             "class": "logging.StreamHandler",
-            "formatter": "simpleTime",
+            "formatter": "testSimple",
             "stream": "ext://sys.stdout"
         }
     },
