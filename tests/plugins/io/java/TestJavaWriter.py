@@ -12,10 +12,6 @@ from pkg_resources import resource_filename
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from untanglepyut.UnTangler import Document
-from untanglepyut.UnTangler import DocumentTitle
-from untanglepyut.UnTangler import UnTangler
-
 from plugins.common.Types import OglClasses
 
 from tests.TestBase import TestBase
@@ -70,16 +66,6 @@ class TestJavaWriter(TestBase):
         for generatedFileName in generatedFileNames:
             status: int = self._runDiff(generatedFileName)
             self.assertEqual(0, status, f'Diff of {generatedFileName} class failed;  Something changed')
-
-    def _xmlFileToOglClasses(self, filename: str, documentName: str) -> OglClasses:
-
-        fqFileName: str       = resource_filename(TestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, filename)
-        untangler:  UnTangler = UnTangler(fqFileName=fqFileName)
-        untangler.untangle()
-
-        document: Document = untangler.documents[DocumentTitle(documentName)]
-
-        return OglClasses(document.oglClasses)
 
     def _cleanupGenerated(self, fileName: str):
 

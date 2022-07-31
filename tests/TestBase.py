@@ -8,11 +8,18 @@ from pkg_resources import resource_filename
 
 from miniogl.DiagramFrame import DiagramFrame
 
+from untanglepyut.UnTangler import Document
+from untanglepyut.UnTangler import DocumentTitle
+from untanglepyut.UnTangler import UnTangler
+
 from wx import App
 from wx import Frame
 from wx import ID_ANY
 
 from unittest import TestCase
+
+from plugins.common.Types import OglClasses
+from plugins.common.Types import OglObjects
 
 JSON_LOGGING_CONFIG_FILENAME: str = "testLoggingConfig.json"
 TEST_DIRECTORY:               str = 'tests'
@@ -66,3 +73,52 @@ class TestBase(TestCase):
         fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, JSON_LOGGING_CONFIG_FILENAME)
 
         return fqFileName
+
+    def _xmlFileToOglClasses(self, filename: str, documentName: str) -> OglClasses:
+        """
+        The input file name must be in the test data package
+
+        Args:
+            filename:  The filename to read (Pyut XML format)
+            documentName:  The document in the XML file
+
+        Returns:  The untangled Ogl Classes;  May return an XX exception if the document name does not match
+        """
+        document: Document = self._getUntangledXmlDocument(filename=filename, documentName=documentName)
+
+        return OglClasses(document.oglClasses)
+
+    def _xmlFileToOglObjects(self, filename: str, documentName: str) -> OglObjects:
+        """
+        The input file name must be in the test data package;  This returns all the
+        Ogl objects in the document
+
+        Args:
+            filename:  The filename to read (Pyut XML format)
+            documentName:  The document in the XML file
+
+        Returns:  The untangled Ogl Objects;  May return an XX exception if the document name does not match
+        """
+        document: Document = self._getUntangledXmlDocument(filename=filename, documentName=documentName)
+
+        oglObjects: OglObjects = [item for lists in [document.oglClasses, document.oglLinks] for item in lists]  # type: ignore
+
+        return oglObjects
+
+    def _getUntangledXmlDocument(self, filename: str, documentName: str) -> Document:
+        """
+
+        Args:
+            filename:  The filename to read (Pyut XML format)
+            documentName:  The document in the XML file
+
+        Returns:  The requested document;May return an XX exception if the document name does not match
+
+        """
+        fqFileName: str       = resource_filename(TestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, filename)
+        untangler:  UnTangler = UnTangler(fqFileName=fqFileName)
+        untangler.untangle()
+
+        document: Document = untangler.documents[DocumentTitle(documentName)]
+
+        return document
