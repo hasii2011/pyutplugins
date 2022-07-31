@@ -6,7 +6,7 @@ from typing import cast
 from os import sep as osSep
 
 from wx import BeginBusyCursor
-
+from wx import EndBusyCursor as wxEndBusyCursor
 from wx import Yield as wxYield
 
 from core.ICommunicator import ICommunicator
@@ -20,6 +20,7 @@ from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import PluginName
 from plugins.common.Types import OglClasses
+from plugins.common.Types import OglLinks
 
 from plugins.common.Types import OglObjects
 
@@ -86,8 +87,9 @@ class IOJava(IOPluginInterface):
 
         oglClasses: OglClasses = OglClasses(list(javaReader.reversedClasses.values()))
         self._layoutUmlClasses(oglClasses=oglClasses)
-        # self._layoutLinks(oglLinks=javaReader.reversedLinks)
+        self._layoutLinks(oglLinks=cast(OglLinks, javaReader.reversedLinks))
 
+        wxEndBusyCursor()
         return True
 
     def write(self, oglObjects: OglObjects):

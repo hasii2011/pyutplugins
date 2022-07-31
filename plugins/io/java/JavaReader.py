@@ -4,24 +4,33 @@ from typing import List
 from typing import NewType
 from typing import Set
 from typing import TextIO
+from typing import Union
 from typing import cast
 
 from logging import Logger
 from logging import getLogger
 
+from ogl.OglInterface import OglInterface
+from ogl.OglLink import OglLink
+from ogl.OglClass import OglClass
+from ogl.OglInterface2 import OglInterface2
+
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutField import PyutField
+from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
-from ogl.OglClass import OglClass
+from plugins.common.LinkMakerMixin import LinkMakerMixin
 
 Implementors = NewType('Implementors', Set[OglClass])
 Extenders    = NewType('Extenders', Set[OglClass])
 
+Links           = Union[OglLink, OglInterface2]
 ReversedClasses = NewType('ReversedClasses', Dict[str, OglClass])
+ReversedLinks   = NewType('ReversedLinks', List[Links])
 SubClassMap     = NewType('SubClassMap', Dict[OglClass, Extenders])
 InterfaceMap    = NewType('InterfaceMap', Dict[OglClass, Implementors])
 
@@ -31,15 +40,20 @@ FIELD_MODIFIERS  = ["public", "protected", "private", "static", "final", "transi
 METHOD_MODIFIERS = ["public", "protected", "private", "abstract", "static", "final", "synchronized", "native", "strictfp"]
 
 
-class JavaReader:
+class JavaReader(LinkMakerMixin):
+    """
+    TODO:  Figure out how to do associations
+    """
 
     def __init__(self):
 
+        super().__init__()
         self.logger: Logger = getLogger(__name__)
 
-        self._classes:      ReversedClasses = ReversedClasses({})
-        self._subClassMap:  SubClassMap  = SubClassMap({})
-        self._interfaceMap: InterfaceMap = InterfaceMap({})
+        self._classes:       ReversedClasses = ReversedClasses({})
+        self._subClassMap:   SubClassMap     = SubClassMap({})
+        self._interfaceMap:  InterfaceMap    = InterfaceMap({})
+        self._reversedLinks: ReversedLinks   = cast(ReversedLinks, None)
 
     @property
     def reversedClasses(self) -> ReversedClasses:
@@ -49,8 +63,15 @@ class JavaReader:
     def subClassMap(self) -> SubClassMap:
         return self._subClassMap
 
+    @property
     def interfaceMap(self) -> InterfaceMap:
         return self._interfaceMap
+
+    @property
+    def reversedLinks(self) -> ReversedLinks:
+        if self._reversedLinks is None:
+            self._reversedLinks = self._connectLinks()
+        return self._reversedLinks
 
     def parseFile(self, filename: str):
         """
@@ -508,6 +529,39 @@ class JavaReader:
 
         return po
 
+    def _connectLinks(self) -> ReversedLinks:
+
+        reversedLinks: ReversedLinks = ReversedLinks([])
+
+        reversedLinks = self._connectSubClasses(reversedLinks)
+        reversedLinks = self._connectInterfaces(reversedLinks)
+
+        return reversedLinks
+
+    def _connectSubClasses(self, reversedLinks: ReversedLinks) -> ReversedLinks:
+
+        for parent in self._subClassMap.keys():
+            self.logger.info(f'BaseClass: {parent}')
+            extenders: Extenders = self._subClassMap[parent]
+            for child in extenders:
+                self.logger.info(f'{parent} <--- {child}')
+
+                oglLink: OglLink = self.createLink(src=child, dst=parent, linkType=PyutLinkType.INHERITANCE)
+                reversedLinks.append(oglLink)
+
+        return reversedLinks
+
+    def _connectInterfaces(self, reversedLinks: ReversedLinks) -> ReversedLinks:
+
+        self.logger.info('Connect interfaces')
+        for interface in self._interfaceMap.keys():
+            implementors: Implementors = self._interfaceMap[interface]
+            for implementor in implementors:
+                oglInterface: OglInterface = self.createInterfaceLink(src=implementor, dst=interface)
+                reversedLinks.append(oglInterface)
+
+        return reversedLinks
+
     def __addClassFields(self, className, modifiers, fieldType, names_values):
         """
         Add fields to a class
@@ -595,7 +649,7 @@ class JavaReader:
 
     def __readParagraph(self, lstFile, currentPos, paragraphStart, paragraphStop):
         """
-        Read a paragraph; Handle sub-levels;
+        Read a paragraph; Handle the sublevel;
         Read a paragraph. A paragraph is limited by two specific tokens.
         As a paragraph can include itself a paragraph, this function
         does read sub-paragraphs.

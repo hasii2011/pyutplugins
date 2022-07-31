@@ -99,14 +99,14 @@ class TestJavaReader(TestBase):
         reverseJava: JavaReader = self._createReversedOglClasses()
 
         expectedLength: int = 3
-        actualLength:   int = len(reverseJava.interfaceMap())
+        actualLength:   int = len(reverseJava.interfaceMap)
         self.assertEqual(expectedLength, actualLength, 'Incorrect number of interfaces detected')
 
     def testCorrectlyGeneratedInterfaceEntries(self):
         reverseJava: JavaReader = self._createReversedOglClasses()
 
         reversedClasses: ReversedClasses = reverseJava.reversedClasses
-        interfaceMap:    InterfaceMap    = reverseJava.interfaceMap()
+        interfaceMap:    InterfaceMap    = reverseJava.interfaceMap
 
         self._checkInterface(reversedClasses, interfaceMap, TEST_INTERFACE_NAME_1)
         self._checkInterface(reversedClasses, interfaceMap, TEST_INTERFACE_NAME_2)
@@ -117,7 +117,7 @@ class TestJavaReader(TestBase):
         reverseJava: JavaReader = self._createReversedOglClasses()
 
         reversedClasses: ReversedClasses = reverseJava.reversedClasses
-        interfaceMap:    InterfaceMap    = reverseJava.interfaceMap()
+        interfaceMap:    InterfaceMap    = reverseJava.interfaceMap
 
         self._checkImplementors(interfaceMap, reversedClasses, TEST_INTERFACE_NAME_1, TEST_BASE_CLASS_NAME)
         self._checkImplementors(interfaceMap, reversedClasses, TEST_INTERFACE_NAME_2, TEST_BASE_CLASS_NAME)

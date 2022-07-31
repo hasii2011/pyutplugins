@@ -5,6 +5,8 @@ from logging import Logger
 from logging import getLogger
 
 from ogl.OglClass import OglClass
+from ogl.OglInterface import OglInterface
+from ogl.OglLink import OglLink
 from ogl.OglLinkFactory import OglLinkFactory
 
 from pyutmodel.PyutClass import PyutClass
@@ -24,7 +26,7 @@ class LinkMakerMixin:
 
         self._oglLinkFactory: OglLinkFactory  = OglLinkFactory()
 
-    def createLink(self, src: OglClass, dst: OglClass, linkType: PyutLinkType = PyutLinkType.INHERITANCE):
+    def createLink(self, src: OglClass, dst: OglClass, linkType: PyutLinkType = PyutLinkType.INHERITANCE) -> OglLink:
         """
         Add a paternity link between child and father.
 
@@ -50,3 +52,24 @@ class LinkMakerMixin:
         pyutClass.addLink(pyutLink)
 
         return oglLink
+
+    def createInterfaceLink(self, src: OglClass, dst: OglClass) -> OglInterface:
+        """
+        Adds an OglInterface link between src and dst.
+
+        Args:
+            src:    source of the link
+            dst:    destination of the link
+
+        Returns: the created OglInterface link
+        """
+        sourceClass:      PyutClass = cast(PyutClass, src.pyutObject)
+        destinationClass: PyutClass = cast(PyutClass, dst.pyutObject)
+
+        pyutLink:     PyutLink     = PyutLink(linkType=PyutLinkType.INTERFACE, source=sourceClass, destination=destinationClass)
+        oglInterface: OglInterface = OglInterface(srcShape=src, pyutLink=pyutLink, dstShape=dst)
+
+        src.addLink(oglInterface)
+        dst.addLink(oglInterface)
+
+        return oglInterface
