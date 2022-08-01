@@ -7,7 +7,9 @@ from logging import getLogger
 
 from unittest import TestSuite
 from unittest import main as unitTestMain
+from unittest.mock import MagicMock
 
+from core.ICommunicator import ICommunicator
 from plugins.common.Types import OglObjects
 from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from plugins.tools.sugiyama.Sugiyama import HierarchicalGraphNodes
@@ -34,7 +36,8 @@ class TestSugiyama(TestBase):
 
         self.logger: Logger = TestSugiyama.clsLogger
 
-        self._sugiyama: Sugiyama = Sugiyama()
+        mockMediator: MagicMock = MagicMock(spec=ICommunicator)
+        self._sugiyama: Sugiyama = Sugiyama(mediator=mockMediator)
 
         self._oglObjects: OglObjects = self._xmlFileToOglObjects(filename='SugiyamaTest.xml', documentName='Sugiyama')
 
@@ -103,6 +106,35 @@ class TestSugiyama(TestBase):
         sugiyama.levelFind()
         sugiyama.addVirtualNodes()
         sugiyama.barycenter()
+
+        self.logger.info(f'Number of hierarchical intersections: {sugiyama._getNbIntersectAll()}')
+
+        sugiyama.addNonHierarchicalNodes()
+
+    def testAddNonHierarchicalNodes(self):
+        sugiyama: Sugiyama = self._sugiyama
+        sugiyama.createInterfaceOglALayout(oglObjects=self._oglObjects)
+        sugiyama.levelFind()
+        sugiyama.addVirtualNodes()
+        sugiyama.barycenter()
+
+        self.logger.info(f'Number of hierarchical intersections: {sugiyama._getNbIntersectAll()}')
+
+        sugiyama.addNonHierarchicalNodes()
+
+    def testFixPositions(self):
+
+        sugiyama: Sugiyama = self._sugiyama
+        sugiyama.createInterfaceOglALayout(oglObjects=self._oglObjects)
+        sugiyama.levelFind()
+        sugiyama.addVirtualNodes()
+        sugiyama.barycenter()
+
+        self.logger.info(f'Number of hierarchical intersections: {sugiyama._getNbIntersectAll()}')
+
+        sugiyama.addNonHierarchicalNodes()
+
+        sugiyama.fixPositions()
 
     def _testLevel0Nodes(self, level0Nodes: NodeList):
         """

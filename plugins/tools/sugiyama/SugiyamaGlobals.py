@@ -75,11 +75,11 @@ class SugiyamaGlobals:
             return cmp(xNode.getBarycenter(), yNode.getBarycenter())
 
     @staticmethod
-    def waitKey(communicator: ICommunicator, optionalMessage: str = None):
+    def waitKey(mediator: ICommunicator, optionalMessage: str = None):
         # input('Press enter to continue')
         if optionalMessage is None:
             MessageBox('Press Ok to continue', 'Confirm', style=OK | CENTRE)
         else:
             MessageBox(optionalMessage, 'Press Ok to continue', style=OK | CENTRE)
-        communicator.refreshFrame()
+        mediator.refreshFrame()
         wxYield()

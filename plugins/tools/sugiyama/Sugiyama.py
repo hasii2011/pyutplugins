@@ -15,7 +15,12 @@ from ogl.OglObject import OglObject
 
 from pyutmodel.PyutLinkType import PyutLinkType
 
+from core.ICommunicator import ICommunicator
 from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
+from plugins.tools.sugiyama.SugiyamaConstants import H_SPACE
+from plugins.tools.sugiyama.SugiyamaConstants import LEFT_MARGIN
+from plugins.tools.sugiyama.SugiyamaConstants import UP_MARGIN
+from plugins.tools.sugiyama.SugiyamaConstants import V_SPACE
 from plugins.tools.sugiyama.SugiyamaGlobals import SugiyamaGlobals
 from plugins.tools.sugiyama.SugiyamaLink import SugiyamaLink
 from plugins.tools.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
@@ -29,10 +34,22 @@ HierarchicalGraphNodes = NewType('HierarchicalGraphNodes', List[HierarchicalGrap
 
 
 class Sugiyama:
-    def __init__(self):
+    """
+    Automatic layout algorithm based on Sugiyama levels.
+
+    This algorithm will change the class and links positions (not the
+    structure). This plugin gives good result with diagrams that contain
+    a lot of hierarchical relations (inheritance and interface), and poor
+    association relations.
+
+    """
+    STEP_BY_STEP: bool = False  # Do Sugiyama Step by step
+
+    def __init__(self, mediator: ICommunicator):
 
         self.logger: Logger = getLogger(__name__)
 
+        self._mediator: ICommunicator = mediator
         # Sugiyama nodes and links
         self.__realSugiyamaNodesList: List[RealSugiyamaNode] = []   # List of all RealSugiyamaNode's
         self._sugiyamaLinksList:      List[SugiyamaLink]     = []   # List of all SugiyamaLink's
@@ -47,7 +64,8 @@ class Sugiyama:
 
         #  All nodes of the hierarchy are assigned to a level.
         #  A level is a list of nodes (real or virtual).
-        self._levels: Levels = Levels(NodeList([]))   # List of levels
+        nodeList: NodeList = NodeList([])
+        self._levels: Levels = Levels([])   # List of levels
 
     @property
     def levels(self) -> Levels:
@@ -359,12 +377,184 @@ class Sugiyama:
 
                 MAX_ITER -= 1
 
+    def addNonHierarchicalNodes(self):
+        """
+        Add non-hierarchical nodes into levels.
+        """
+        # Vocabulary:
+        # Internal node: nodes present in levels
+        # External node: nodes not present in levels yet
+
+        # Dictionary internalNodes externalNodes:
+        # Keys are internal respectively external nodes
+        # Values :
+        #   - externalNodes : # of zLink to internal nodes
+        internalNodes = {}
+        externalNodes = {}
+
+        # Make dictionary of internal nodes
+        for node in self._hierarchyGraphNodesList:
+            internalNodes[node] = None
+
+        # Make dictionary of external nodes
+        for node in self._nonHierarchyGraphNodesList:
+            # Count zLink to internal nodes
+            count = 0
+            for (dstNode, link) in node.getNonHierarchicalLink():
+                if dstNode in internalNodes:
+                    count += 1
+
+            # Add node to externalNodes
+            externalNodes[node] = count
+
+        # If there is no level (no inheritance or realisation) but there are
+        # nodes to put in, create new level
+        if not self._levels and externalNodes:
+            # Add one level for nodes
+            self._levels.append([])
+
+        # Function for getting node that has most connections to internal
+        # nodes
+        def mostConnection(zExternalNodes):
+
+            maxNode    = None
+            maxNbLinks = -1
+            for (nbLinkNode, nbLinks) in list(zExternalNodes.items()):
+                # If current node has more connections
+                if nbLinks > maxNbLinks:
+                    maxNode    = nbLinkNode
+                    maxNbLinks = nbLinks
+
+            return maxNode
+        # Function for evaluating best level and best index for an external
+        # node
+
+        def bestPos(zExtNode, zInternalNodes):
+            """
+            Evaluate average of level of linked nodes
+            Args:
+                zExtNode:
+                zInternalNodes:
+
+            Returns: (level, index)
+            """
+            nb:        int = 0
+            summation: int = 0
+            nodes     = []  # List of connected internal nodes
+
+            # For all non-hierarchical links
+            for (zDstNode, zLink) in zExtNode.getNonHierarchicalLink():
+                # If node linked to internal nodes
+                if zDstNode in zInternalNodes:
+                    # Add connected node to list
+                    nodes.append(zDstNode)
+                    # Add level to sum and count number of zLink
+                    summation += zDstNode.getLevel()
+                    nb += 1
+            # If no zLink to internal nodes
+            # if nodes == []:
+            if not nodes:
+                return None, None
+
+            # Find closer node to average position
+            avgLevel = summation // nb
+            levelNodes = []  # List of nodes on same level
+            bestLevel = None
+            # Fix best level on first node
+            if nodes:
+                bestLevel = nodes[0].getLevel()
+
+            # For all connected internal nodes
+            for connectedInternalNode in nodes:
+                nodeLevel = connectedInternalNode.getLevel()
+
+                # If current node is on bestLevel
+                if nodeLevel == bestLevel:
+                    levelNodes.append(connectedInternalNode)
+
+                # Else if current node is nearer to average position or
+                # is at same distance but with less nodes on level
+                # TODO Refactor this test to a method
+                elif abs(nodeLevel - avgLevel) < abs(bestLevel - avgLevel) or (abs(nodeLevel - avgLevel) == abs(bestLevel - avgLevel) and
+                                                                               len(self._levels[nodeLevel]) < len(self._levels[bestLevel])):
+
+                    # Store best level
+                    bestLevel = nodeLevel
+
+                    # Start new list of nodes on new best level
+                    levelNodes = [connectedInternalNode]
+
+            # Return average of nodes' level
+            return bestLevel, levelNodes[len(levelNodes) // 2].getIndex()
+
+        # Function for getting level that has fewer nodes.
+        def getLessFilledLevel():
+
+            lessLevel = 0  # Index of level that has less node in it
+            nb = len(self._levels[lessLevel])
+
+            for x in range(1, len(self._levels)):
+                if len(self._levels[x]) < nb:
+                    lessLevel = x
+                    nb = len(self._levels[x])
+
+            return lessLevel
+
+        # Function to move a node from internal to external nodes.
+        def moveExternal2Internal(zNode, zInternalNodes, zExternalNodes):
+
+            # Remove node from external nodes
+            del zExternalNodes[zNode]
+
+            # Add node to internal nodes
+            zInternalNodes[zNode] = None
+
+            # For all his linked external nodes, update their counter
+            # zExtNode = None   NOT USED
+            for (zDstNode, zLink) in zNode.getNonHierarchicalLink():
+                if zDstNode in zExternalNodes:
+                    zExternalNodes[zDstNode] += 1
+
+        # While there are nodes still not in hierarchy
+        while externalNodes:
+            # Get external node that has most connections to internalNodes
+            extNode = mostConnection(externalNodes)
+
+            self.logger.info(f'extNode.getName(): `{extNode.getName()}`')
+            # Evaluate best level and index for the node
+            (level, index) = bestPos(extNode, internalNodes)
+
+            # If node has no connection to internal node
+            if level is None:
+                # Find level that is less filled of nodes
+                level = getLessFilledLevel()
+                index = len(self._levels[level])
+
+            # Add node in levels
+            extNode.setLevel(level)
+            extNode.setIndex(index)
+            self._levels[level].insert(index, extNode)
+            # Shift index attributes on right
+            for i in range(index + 1, len(self._levels[level])):
+                self._levels[level][i].setIndex(i)
+
+            # Move node from external to internal nodes
+            moveExternal2Internal(extNode, internalNodes, externalNodes)
+
+    def fixPositions(self):
+        """
+        Compute coordinates for nodes and links.
+        """
+        self._fixNodesNeighbors()
+        self._fixNodesPositions()
+        self._fixLinksPositions()
+
     def _downBarycenterLevel(self, indexLevel):
         """
         Compute down barycenter (from sons) for all nodes on level.
 
-        @param indexLevel : index of level
-        @author Nicolas Dubois
+        Args:
+            indexLevel:   The index level
         """
         level = self._levels[indexLevel]
         for node in level:
@@ -500,3 +690,70 @@ class Sugiyama:
                     indFatherR += 1
 
         return count
+
+    def _fixNodesNeighbors(self):
+        """
+        For each node, fix his right neighbor.
+
+        @author Nicolas Dubois
+        """
+        # For each node, fix his neighbors if he has, None else
+        for level in self._levels:
+            nbNodes = len(level)
+
+            for i in range(nbNodes - 1):
+                level[i + 1].setLeftNode(level[i])
+                level[i].setRightNode(level[i + 1])
+
+            # For first and last nodes of the level
+            level[0].setLeftNode(None)
+            level[nbNodes - 1].setRightNode(None)
+
+    def _fixNodesPositions(self):
+
+        # Compute start positions packed on left
+        y: int = UP_MARGIN
+        for level in self._levels:
+            x:         int = LEFT_MARGIN
+            maxHeight: int = 0
+
+            for node in level:
+                (width, height) = node.getSize()
+                node.setPosition(x, y)
+                x += width + H_SPACE
+                maxHeight = max(maxHeight, height)
+            y += maxHeight + V_SPACE
+
+        if Sugiyama.STEP_BY_STEP:     # TODO Make this a User/Plugin Preference
+            SugiyamaGlobals.waitKey(self._mediator)
+        else:
+            self.logger.info(f'.__fixNodesPositions() is complete')
+
+        # While nodes have to be moved
+        moved: bool = True
+        while moved:
+            moved = False
+            # Compute average coordinates for each node
+            for level in self._levels:
+                for node in level:
+                    if node.balance():
+                        moved = True
+                        msg: str = f'LEVEL - node: {node} {level}'
+                        if Sugiyama.STEP_BY_STEP:
+                            SugiyamaGlobals.waitKey(self._mediator, msg)
+                        else:
+                            self.logger.info(msg)
+
+    def _fixLinksPositions(self):
+        """
+        Compute links new positions.
+        """
+        # For each hierarchical link, fix anchors coordinates
+        for level in self._levels:
+            for node in level:
+                node.fixAnchorPos()
+
+        # For each hierarchical link, add control points to pass through
+        # each virtual node
+        for link in self._sugiyamaLinksList:
+            link.fixControlPoints()
