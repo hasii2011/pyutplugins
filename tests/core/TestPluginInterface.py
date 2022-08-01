@@ -9,7 +9,7 @@ from unittest import main as unitTestMain
 
 from plugins.common.Types import OglClasses
 from core.PluginInterface import PluginInterface
-from core.ICommunicator import ICommunicator
+from core.IMediator import IMediator
 
 from tests.TestBase import TestBase
 
@@ -42,7 +42,7 @@ class TestPluginInterface(TestBase):
 
     def _instantiateAbstractClass(self):
 
-        communicator: ICommunicator = cast(ICommunicator, None)
+        communicator: IMediator = cast(IMediator, None)
         oglObjects:   OglClasses    = cast(OglClasses, None)
         # noinspection PyUnusedLocal
         abc: PluginInterface = PluginInterface(communicator=communicator, oglClasses=oglObjects)

@@ -3,10 +3,10 @@ from os import getcwd
 
 from miniogl.DiagramFrame import DiagramFrame
 
-from core.ICommunicator import ICommunicator
+from core.IMediator import IMediator
 
 
-class ScaffoldCommunicator(ICommunicator):
+class ScaffoldMediator(IMediator):
 
     def __init__(self, umlFrame: DiagramFrame, currentDirectory: str = ''):
 

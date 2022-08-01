@@ -23,7 +23,7 @@ from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 
 from tests.core.SamplePluginInterface import SamplePluginInterface
 
-from tests.core.SampleICommunicator import SampleICommunicator
+from tests.core.SampleICommunicator import SampleIMediator
 
 from tests.TestBase import TestBase
 
@@ -41,7 +41,7 @@ class TestSamplePluginInterface(App):
         self.logger: Logger = getLogger(__name__)
 
         oglObjects:   OglClasses          = OglClasses([])
-        communicator: SampleICommunicator = SampleICommunicator()
+        communicator: SampleIMediator = SampleIMediator()
 
         self._plugin: SamplePluginInterface = SamplePluginInterface(communicator)
 

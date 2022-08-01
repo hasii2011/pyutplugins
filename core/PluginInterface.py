@@ -18,7 +18,7 @@ from wx import FileSelector
 from wx import MessageDialog
 from wx import Yield as wxYield
 
-from core.ICommunicator import ICommunicator
+from core.IMediator import IMediator
 
 from core.types.InputFormat import InputFormat
 from core.types.OutputFormat import OutputFormat
@@ -49,13 +49,13 @@ class PluginInterface:
     There should be no implementations of this interface
     """
 
-    def __init__(self, communicator: ICommunicator):
+    def __init__(self, communicator: IMediator):
         """
 
         Args:
             communicator:   A class that implements ICommunicator
         """
-        self._communicator: ICommunicator = communicator
+        self._communicator: IMediator = communicator
         #
         # To be set by implementor constructor and read by property
         self._name:         PluginName = PluginName('Implementor must provide the plugin name')

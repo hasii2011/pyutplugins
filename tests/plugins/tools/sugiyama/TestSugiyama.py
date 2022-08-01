@@ -9,7 +9,7 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 from unittest.mock import MagicMock
 
-from core.ICommunicator import ICommunicator
+from core.IMediator import IMediator
 from plugins.common.Types import OglObjects
 from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from plugins.tools.sugiyama.Sugiyama import HierarchicalGraphNodes
@@ -36,7 +36,7 @@ class TestSugiyama(TestBase):
 
         self.logger: Logger = TestSugiyama.clsLogger
 
-        mockMediator: MagicMock = MagicMock(spec=ICommunicator)
+        mockMediator: MagicMock = MagicMock(spec=IMediator)
         self._sugiyama: Sugiyama = Sugiyama(mediator=mockMediator)
 
         self._oglObjects: OglObjects = self._xmlFileToOglObjects(filename='SugiyamaTest.xml', documentName='Sugiyama')

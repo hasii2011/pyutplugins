@@ -5,10 +5,10 @@ from typing import cast
 
 from wx import Frame
 
-from core.ICommunicator import ICommunicator
+from core.IMediator import IMediator
 
 
-class SampleICommunicator(ICommunicator):
+class SampleIMediator(IMediator):
 
     def __init__(self):
         self.logger:            Logger = getLogger(__name__)

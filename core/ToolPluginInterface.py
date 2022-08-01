@@ -4,7 +4,7 @@ from abc import abstractmethod
 
 from core.PluginInterface import PluginInterface
 
-from core.ICommunicator import ICommunicator
+from core.IMediator import IMediator
 
 
 class ToolPluginInterface(PluginInterface, ABC):
@@ -13,7 +13,7 @@ class ToolPluginInterface(PluginInterface, ABC):
     plugins must implement.
     """
 
-    def __init__(self, communicator: ICommunicator):
+    def __init__(self, communicator: IMediator):
 
         super().__init__(communicator)
 

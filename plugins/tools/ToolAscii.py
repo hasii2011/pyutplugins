@@ -21,7 +21,7 @@ from plugins.common.Types import OglClasses
 
 from core.ToolPluginInterface import ToolPluginInterface
 
-from core.ICommunicator import ICommunicator
+from core.IMediator import IMediator
 
 from core.types.ExportDirectoryResponse import ExportDirectoryResponse
 
@@ -31,7 +31,7 @@ class ToolAscii(ToolPluginInterface):
     UML objects to an ASCII representation
     """
 
-    def __init__(self, communicator: ICommunicator):
+    def __init__(self, communicator: IMediator):
 
         super().__init__(communicator)
 

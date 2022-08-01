@@ -9,7 +9,7 @@ from plugins.common.Types import OglObjects
 from plugins.io.gml.GMLExporter import GMLExporter
 
 from core.IOPluginInterface import IOPluginInterface
-from core.ICommunicator import ICommunicator
+from core.IMediator import IMediator
 
 from core.types.PluginDataTypes import PluginName
 from core.types.InputFormat import InputFormat
@@ -29,7 +29,7 @@ class IOGML(IOPluginInterface):
     """
     Sample class for input/output plug-ins.
     """
-    def __init__(self, communicator: ICommunicator):
+    def __init__(self, communicator: IMediator):
         """
 
         Args:

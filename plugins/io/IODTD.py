@@ -7,7 +7,7 @@ from plugins.common.Types import OglObjects
 
 from plugins.io.dtd.DTDParser import DTDParser
 
-from core.ICommunicator import ICommunicator
+from core.IMediator import IMediator
 from core.IOPluginInterface import IOPluginInterface
 
 from core.types.InputFormat import InputFormat
@@ -26,7 +26,7 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('W3C DTD 1.0 file form
 
 class IODTD(IOPluginInterface):
 
-    def __init__(self, communicator: ICommunicator):
+    def __init__(self, communicator: IMediator):
         super().__init__(communicator)
 
         # from super class

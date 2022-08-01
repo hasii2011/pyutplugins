@@ -4,7 +4,7 @@ from abc import abstractmethod
 
 
 from core.PluginInterface import PluginInterface
-from core.ICommunicator import ICommunicator
+from core.IMediator import IMediator
 from core.types.OutputFormat import OutputFormat
 from plugins.common.Types import OglObjects
 
@@ -33,7 +33,7 @@ class IOPluginInterface(PluginInterface, ABC):
         `doExport`
 
     """
-    def __init__(self, communicator: ICommunicator):
+    def __init__(self, communicator: IMediator):
 
         super().__init__(communicator)
 

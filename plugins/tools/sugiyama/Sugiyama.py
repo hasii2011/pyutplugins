@@ -15,7 +15,7 @@ from ogl.OglObject import OglObject
 
 from pyutmodel.PyutLinkType import PyutLinkType
 
-from core.ICommunicator import ICommunicator
+from core.IMediator import IMediator
 from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from plugins.tools.sugiyama.SugiyamaConstants import H_SPACE
 from plugins.tools.sugiyama.SugiyamaConstants import LEFT_MARGIN
@@ -45,11 +45,11 @@ class Sugiyama:
     """
     STEP_BY_STEP: bool = False  # Do Sugiyama Step by step
 
-    def __init__(self, mediator: ICommunicator):
+    def __init__(self, mediator: IMediator):
 
         self.logger: Logger = getLogger(__name__)
 
-        self._mediator: ICommunicator = mediator
+        self._mediator: IMediator = mediator
         # Sugiyama nodes and links
         self.__realSugiyamaNodesList: List[RealSugiyamaNode] = []   # List of all RealSugiyamaNode's
         self._sugiyamaLinksList:      List[SugiyamaLink]     = []   # List of all SugiyamaLink's

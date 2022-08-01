@@ -8,7 +8,7 @@ from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import FormatName
 
-from core.ICommunicator import ICommunicator
+from core.IMediator import IMediator
 from core.types.InputFormat import InputFormat
 from core.types.OutputFormat import OutputFormat
 from core.types.PluginDataTypes import PluginName
@@ -25,7 +25,7 @@ class SamplePluginInterface(PluginInterface):
     TODO make this a Sample Tool Plugin
     """
 
-    def __init__(self, communicator: ICommunicator):
+    def __init__(self, communicator: IMediator):
 
         super().__init__(communicator)
 

@@ -8,7 +8,7 @@ from ogl.OglObject import OglObject
 from plugins.common.Types import OglClasses
 
 
-class ICommunicator:
+class IMediator:
     """
     This the interface specification that allows the plugins to manipulate the Pyut UML Frame
     The Pyut application must implement this
