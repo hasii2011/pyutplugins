@@ -1,3 +1,4 @@
+
 from typing import Dict
 from typing import cast
 
@@ -8,10 +9,14 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from plugins.common.Types import OglObjects
+from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from plugins.tools.sugiyama.Sugiyama import HierarchicalGraphNodes
-from tests.TestBase import TestBase
+from plugins.tools.sugiyama.Sugiyama import NodeList
+from plugins.tools.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
 
 from plugins.tools.sugiyama.Sugiyama import Sugiyama
+
+from tests.TestBase import TestBase
 
 
 class TestSugiyama(TestBase):
@@ -75,7 +80,7 @@ class TestSugiyama(TestBase):
             actualLevel:   int = hierarchicalGraphNode.getLevel()
             try:
                 expectedLevel: int = expectedResults[nodeName]
-            except KeyError as ke:
+            except KeyError:
                 self.fail(f'Unknown node name {nodeName}')
 
             self.assertEqual(expectedLevel, actualLevel, f'Level incorrect for node {nodeName}')
@@ -86,12 +91,11 @@ class TestSugiyama(TestBase):
         sugiyama.createInterfaceOglALayout(oglObjects=self._oglObjects)
         sugiyama.levelFind()
         sugiyama.addVirtualNodes()
-        #
-        # Level 0 should have 0 virtual nodes
 
-        # Level 1 should have virtual nodes at indices 1-4
-        # Level 2 should have virtual nodes at indices 1-2
-        # Level 3 should have 0 virtual nodes
+        self._testLevel0Nodes(sugiyama.levels[0])
+        self._testLevel1Nodes(sugiyama.levels[1])
+        self._testLevel2Nodes(sugiyama.levels[2])
+        self._testLevel3Nodes(sugiyama.levels[3])
 
     def testBarycenter(self):
         sugiyama: Sugiyama = self._sugiyama
@@ -99,6 +103,49 @@ class TestSugiyama(TestBase):
         sugiyama.levelFind()
         sugiyama.addVirtualNodes()
         sugiyama.barycenter()
+
+    def _testLevel0Nodes(self, level0Nodes: NodeList):
+        """
+        Level 0 should have 0 virtual nodes
+        Args:
+            level0Nodes:
+        """
+        for level0Node in level0Nodes:
+            self.assertTrue(isinstance(level0Node, RealSugiyamaNode), 'No virtual nodes at level 0')
+
+    def _testLevel1Nodes(self, level1Nodes: NodeList):
+        """
+        Level 1 should have virtual nodes at indices 1-4
+
+        Args:
+            level1Nodes:
+        """
+        level1Node1 = level1Nodes[1]
+        self.assertTrue(isinstance(level1Node1, VirtualSugiyamaNode), 'Missing virtual node')
+
+        level1Node2 = level1Nodes[2]
+        self.assertTrue(isinstance(level1Node2, VirtualSugiyamaNode), 'Missing virtual node')
+
+    def _testLevel2Nodes(self, level2Nodes: NodeList):
+        """
+        Level 2 should have virtual nodes at indices 1-2
+        Args:
+            level2Nodes:
+        """
+        level2Node1 = level2Nodes[1]
+        self.assertTrue(isinstance(level2Node1, VirtualSugiyamaNode), 'Missing virtual node')
+
+        level2Node2 = level2Nodes[1]
+        self.assertTrue(isinstance(level2Node2, VirtualSugiyamaNode), 'Missing virtual node')
+
+    def _testLevel3Nodes(self, level3Nodes: NodeList):
+        """
+        Level 3 should have 0 virtual nodes
+        Args:
+            level3Nodes:
+        """
+        for level3Node in level3Nodes:
+            self.assertTrue(isinstance(level3Node, RealSugiyamaNode), 'No virtual nodes at level 0')
 
     def _debugPrintOglObjects(self, oglObjects: OglObjects):
         for oglObject in oglObjects:

@@ -6,10 +6,13 @@ from typing import Union
 from logging import Logger
 from logging import getLogger
 
+from copy import copy
+
 from ogl.OglInheritance import OglInheritance
 from ogl.OglInterface import OglInterface
 from ogl.OglLink import OglLink
 from ogl.OglObject import OglObject
+
 from pyutmodel.PyutLinkType import PyutLinkType
 
 from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
@@ -17,8 +20,11 @@ from plugins.tools.sugiyama.SugiyamaGlobals import SugiyamaGlobals
 from plugins.tools.sugiyama.SugiyamaLink import SugiyamaLink
 from plugins.tools.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
 
+Nodes    = Union[RealSugiyamaNode, VirtualSugiyamaNode]
+NodeList = NewType('NodeList', List[Nodes])
+Levels   = NewType('Levels', List[NodeList])
 
-HierarchicalGraphNode = Union[RealSugiyamaNode, VirtualSugiyamaNode]
+HierarchicalGraphNode  = Union[RealSugiyamaNode, VirtualSugiyamaNode]
 HierarchicalGraphNodes = NewType('HierarchicalGraphNodes', List[HierarchicalGraphNode])
 
 
@@ -41,7 +47,17 @@ class Sugiyama:
 
         #  All nodes of the hierarchy are assigned to a level.
         #  A level is a list of nodes (real or virtual).
-        self.__levels: List = []  # List of levels
+        self._levels: Levels = Levels(NodeList([]))   # List of levels
+
+    @property
+    def levels(self) -> Levels:
+        """
+        For testability and security you only get a copy
+
+        Returns:  Internal levels structure
+        """
+        levels: Levels = copy(self._levels)
+        return levels
 
     def createInterfaceOglALayout(self, oglObjects):
         """
@@ -191,7 +207,8 @@ class Sugiyama:
         # While not all nodes have an attributed level
         # while indexNodes != []:
         while indexNodes:
-            level = []  # Current level
+            # level = []  # Current level
+            level: NodeList = NodeList([])
             indexNodesNotSel = indexNodes[:]
             indexNodesSel = []
 
@@ -219,11 +236,11 @@ class Sugiyama:
             # Update the list of the nodes that haven't a level yet
             indexNodes = indexNodesNotSel[:]
             # Add the current level to the list
-            self.__levels.append(level)
+            self._levels.append(level)
 
         # Fix nodes index and level for each node
-        for idx in range(len(self.__levels)):
-            level = self.__levels[idx]
+        for idx in range(len(self._levels)):
+            level = self._levels[idx]
             for i in range(len(level)):
                 node = level[i]
                 node.setIndex(i)
@@ -286,7 +303,7 @@ class Sugiyama:
 
             # Add virtual nodes in levels
             for i in range(len(virtualNodes)):
-                level = self.__levels[dstNodeLevel + i + 1]
+                level = self._levels[dstNodeLevel + i + 1]
                 level.append(virtualNodes[i])
                 # Fix index of the virtual node
                 level[-1].setIndex(len(level) - 1)
@@ -314,13 +331,13 @@ class Sugiyama:
             # Downward phase
 
             # For each level except first
-            for i in range(1, len(self.__levels)):
+            for i in range(1, len(self._levels)):
 
                 # Compute parents down-barycenter
                 if i > 0:
                     self._downBarycenterLevel(i - 1)
                 # Compute sons up-barycenter
-                if i < len(self.__levels) - 1:
+                if i < len(self._levels) - 1:
                     self._upBarycenterLevel(i + 1)
 
                 # Compute up-barycenter on current level
@@ -332,7 +349,7 @@ class Sugiyama:
 
             if self._getNbIntersectAll() > 0:
 
-                indexList = list(range(len(self.__levels) - 1))
+                indexList = list(range(len(self._levels) - 1))
                 indexList.reverse()
                 for i in indexList:
 
@@ -349,7 +366,7 @@ class Sugiyama:
         @param indexLevel : index of level
         @author Nicolas Dubois
         """
-        level = self.__levels[indexLevel]
+        level = self._levels[indexLevel]
         for node in level:
             node.downBarycenterIndex()
 
@@ -360,7 +377,7 @@ class Sugiyama:
         @param indexLevel : index of level
         @author Nicolas Dubois
         """
-        level = self.__levels[indexLevel]
+        level = self._levels[indexLevel]
         for node in level:
             node.upBarycenterIndex()
 
@@ -374,7 +391,7 @@ class Sugiyama:
         @param indexLevel : index of level
         @author Nicolas Dubois
         """
-        level = self.__levels[indexLevel]
+        level = self._levels[indexLevel]
 
         # Save current level
         levelSaved = level[:]
@@ -392,7 +409,7 @@ class Sugiyama:
 
         # If new order give more intersections, return to old order
         if self._getNbIntersectAll() > nbIntersections:
-            self.__levels[indexLevel] = levelSaved
+            self._levels[indexLevel] = levelSaved
             for i in range(len(levelSaved)):
                 levelSaved[i].setIndex(i)
 
@@ -404,7 +421,7 @@ class Sugiyama:
         Args:
             indexLevel:  index of level in self.__levels to sort
         """
-        level = self.__levels[indexLevel]
+        level = self._levels[indexLevel]
         levelCopy = level[:]
 
         nbIntersect = self._getNbIntersectAll()
@@ -439,7 +456,7 @@ class Sugiyama:
                 level[i].setIndex(i)
         else:
             # Else set new order
-            self.__levels[indexLevel] = levelCopy
+            self._levels[indexLevel] = levelCopy
         # nbIntersect3 = self.__getNbIntersectAll()    NOT USED
 
     def _getNbIntersectAll(self):
@@ -448,7 +465,7 @@ class Sugiyama:
         Returns:  The number of intersections between hierarchy relations.
         """
         count = 0
-        for i in range(len(self.__levels) - 1):
+        for i in range(len(self._levels) - 1):
             count += self._getNbIntersect2Levels(i)
 
         return count
@@ -463,7 +480,7 @@ class Sugiyama:
         Returns: The intersections number of hierarchical links between two levels.
         """
         # Get nodes from the level
-        nodes = self.__levels[upperLevel]
+        nodes = self._levels[upperLevel]
 
         # Count intersect
         count = 0
