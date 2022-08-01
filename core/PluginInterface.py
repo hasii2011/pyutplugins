@@ -49,13 +49,13 @@ class PluginInterface:
     There should be no implementations of this interface
     """
 
-    def __init__(self, communicator: IMediator):
+    def __init__(self, mediator: IMediator):
         """
 
         Args:
-            communicator:   A class that implements ICommunicator
+            mediator:   A class that implements ICommunicator
         """
-        self._communicator: IMediator = communicator
+        self._communicator: IMediator = mediator
         #
         # To be set by implementor constructor and read by property
         self._name:         PluginName = PluginName('Implementor must provide the plugin name')

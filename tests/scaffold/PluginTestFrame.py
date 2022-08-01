@@ -76,9 +76,9 @@ class PluginTestFrame(Frame):
 
         diagramFrame.Show(True)
 
-        self.logger:         Logger               = getLogger(__name__)
-        self._pluginManager: PluginManager        = PluginManager()
-        self._communicator:  ScaffoldMediator = ScaffoldMediator(umlFrame=diagramFrame)
+        self.logger:         Logger           = getLogger(__name__)
+        self._pluginManager: PluginManager    = PluginManager()
+        self._mediator:      ScaffoldMediator = ScaffoldMediator(umlFrame=diagramFrame)
 
         self._status = self.CreateStatusBar()
         self._status.SetStatusText('Ready!')
@@ -195,8 +195,8 @@ class PluginTestFrame(Frame):
         documentNames = list(untangler.documents.keys())
         document: Document = untangler.documents[documentNames[0]]
 
-        self._communicator.umlFrame.Scroll(document.scrollPositionX, document.scrollPositionY)
-        self._communicator.umlFrame.SetScrollRate(document.pixelsPerUnitX, document.pixelsPerUnitY)
+        self._mediator.umlFrame.Scroll(document.scrollPositionX, document.scrollPositionY)
+        self._mediator.umlFrame.SetScrollRate(document.pixelsPerUnitX, document.pixelsPerUnitY)
 
         oglClasses: UntangledOglClasses = document.oglClasses
         oglLinks:   UntangledOglLinks   = document.oglLinks
@@ -280,7 +280,7 @@ class PluginTestFrame(Frame):
         # TODO: Fix this later for mypy
         clazz: type = pluginMap[wxId]   # type: ignore
         # Create a plugin instance
-        pluginInstance: ToolPluginInterface = clazz(communicator=self._communicator)
+        pluginInstance: ToolPluginInterface = clazz(mediator=self._mediator)
 
         if pluginInstance.setOptions() is True:
             # Do plugin functionality
@@ -299,7 +299,7 @@ class PluginTestFrame(Frame):
 
         idMap:        PluginIDMap       = self._pluginManager.inputPluginsMap.pluginIdMap
         clazz:        type              = idMap[wxId]     # type: ignore
-        plugInstance: IOPluginInterface = clazz(communicator=self._communicator)
+        plugInstance: IOPluginInterface = clazz(mediator=self._mediator)
         self._doIOAction(methodToCall=plugInstance.executeImport)
 
     def _onExport(self, event: CommandEvent):
@@ -309,7 +309,7 @@ class PluginTestFrame(Frame):
 
         idMap:        PluginIDMap      = self._pluginManager.outputPluginsMap.pluginIdMap
         clazz:        type              = idMap[wxId]     # type: ignore
-        plugInstance: IOPluginInterface = clazz(communicator=self._communicator)
+        plugInstance: IOPluginInterface = clazz(mediator=self._mediator)
         self._doIOAction(methodToCall=plugInstance.executeExport)
 
     def _doIOAction(self, methodToCall: Callable):

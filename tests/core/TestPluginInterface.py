@@ -7,7 +7,6 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from plugins.common.Types import OglClasses
 from core.PluginInterface import PluginInterface
 from core.IMediator import IMediator
 
@@ -42,10 +41,9 @@ class TestPluginInterface(TestBase):
 
     def _instantiateAbstractClass(self):
 
-        communicator: IMediator = cast(IMediator, None)
-        oglObjects:   OglClasses    = cast(OglClasses, None)
+        mediator: IMediator = cast(IMediator, None)
         # noinspection PyUnusedLocal
-        abc: PluginInterface = PluginInterface(communicator=communicator, oglClasses=oglObjects)
+        abc: PluginInterface = PluginInterface(mediator=mediator, )
 
 
 def suite() -> TestSuite:

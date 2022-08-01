@@ -40,10 +40,9 @@ class TestSamplePluginInterface(App):
         TestBase.setUpLogging()
         self.logger: Logger = getLogger(__name__)
 
-        oglObjects:   OglClasses          = OglClasses([])
-        communicator: SampleIMediator = SampleIMediator()
+        mediator: SampleIMediator = SampleIMediator()
 
-        self._plugin: SamplePluginInterface = SamplePluginInterface(communicator)
+        self._plugin: SamplePluginInterface = SamplePluginInterface(mediator)
 
     def OnInit(self):
 

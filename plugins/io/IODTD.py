@@ -26,8 +26,8 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('W3C DTD 1.0 file form
 
 class IODTD(IOPluginInterface):
 
-    def __init__(self, communicator: IMediator):
-        super().__init__(communicator)
+    def __init__(self, mediator: IMediator):
+        super().__init__(mediator)
 
         # from super class
         self._name    = PluginName('IoDTD')

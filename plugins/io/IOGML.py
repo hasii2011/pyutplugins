@@ -29,13 +29,13 @@ class IOGML(IOPluginInterface):
     """
     Sample class for input/output plug-ins.
     """
-    def __init__(self, communicator: IMediator):
+    def __init__(self, mediator: IMediator):
         """
 
         Args:
-            communicator:   A class that implements ICommunicator
+            mediator:   A class that implements ICommunicator
         """
-        super().__init__(communicator=communicator)
+        super().__init__(mediator=mediator)
 
         self.logger: Logger = getLogger(__name__)
 
