@@ -49,7 +49,7 @@ from core.types.PluginDataTypes import IOPluginMap
 from core.types.PluginDataTypes import IOPluginMapType
 from core.types.PluginDataTypes import PluginIDMap
 
-from tests.plugintester.DisplayUmlFrame import DisplayUmlFrame
+from tests.scaffold.DisplayUmlFrame import DisplayUmlFrame
 
 from tests.scaffold.ScaffoldCommunicator import ScaffoldMediator
 
