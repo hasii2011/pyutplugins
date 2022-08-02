@@ -16,7 +16,6 @@ from wx import Menu
 from wx import MenuBar
 from wx import MenuItem
 
-from plugins.common.Types import OglClasses
 from core.types.ImportDirectoryResponse import ImportDirectoryResponse
 from core.types.MultipleFileRequestResponse import MultipleFileRequestResponse
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
@@ -29,6 +28,10 @@ from tests.TestBase import TestBase
 
 
 class TestSamplePluginInterface(App):
+    """
+    Manual test program.   Developer run this application
+    to test the various message dialogs
+    """
 
     FRAME_ID:      int = ID_ANY
     WINDOW_WIDTH:  int = 480

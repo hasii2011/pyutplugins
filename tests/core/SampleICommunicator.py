@@ -1,16 +1,21 @@
 
-from logging import Logger
-from logging import getLogger
 from typing import cast
 
+from logging import Logger
+from logging import getLogger
+
 from wx import Frame
+
+from miniogl.DiagramFrame import DiagramFrame
 
 from core.IMediator import IMediator
 
 
 class SampleIMediator(IMediator):
 
-    def __init__(self):
+    def __init__(self, currentDirectory: str, umlFrame: DiagramFrame):
+
+        super().__init__(currentDirectory, umlFrame)
         self.logger:            Logger = getLogger(__name__)
         self._currentDirectory: str    = '/tmp'
 

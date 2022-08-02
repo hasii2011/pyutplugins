@@ -12,12 +12,6 @@ from core.IMediator import IMediator
 
 from tests.TestBase import TestBase
 
-# noinspection SpellCheckingInspection
-"""
-import the class you want to test here
-from core.CoreTypes import BaseFormat
-"""
-
 
 class TestPluginInterface(TestBase):
     """
