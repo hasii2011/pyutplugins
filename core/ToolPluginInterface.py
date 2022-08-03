@@ -25,7 +25,7 @@ class ToolPluginInterface(PluginInterface, ABC):
         be overridden
         """
         if self.setOptions() is True:
-            selectedShapes = self._communicator.selectedOglObjects
+            selectedShapes = self._mediator.selectedOglObjects
             self.doAction(self._oglClasses, selectedShapes)
 
     @property

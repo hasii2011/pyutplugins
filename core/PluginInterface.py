@@ -55,7 +55,7 @@ class PluginInterface:
         Args:
             mediator:   A class that implements ICommunicator
         """
-        self._communicator: IMediator = mediator
+        self._mediator: IMediator = mediator
         #
         # To be set by implementor constructor and read by property
         self._name:         PluginName = PluginName('Implementor must provide the plugin name')
@@ -133,7 +133,7 @@ class PluginInterface:
         defaultDir:  Optional[str] = startDirectory
 
         if defaultDir is None:
-            defaultDir = self._communicator.currentDirectory
+            defaultDir = self._mediator.currentDirectory
         file = FileSelector(
             "Choose a file to import",
             # wildcard=inputFormat.name + " (*." + inputFormat.extension + ")|*." + inputFormat.description,
@@ -163,10 +163,10 @@ class PluginInterface:
         defaultDir:  Optional[str] = startDirectory
 
         if defaultDir is None:
-            defaultDir = self._communicator.currentDirectory
+            defaultDir = self._mediator.currentDirectory
 
         dlg: FileDialog = FileDialog(
-            self._communicator.umlFrame,
+            self._mediator.umlFrame,
             "Choose files to import",
             wildcard=self.__composeWildCardSpecification(),
             defaultDir=defaultDir,
@@ -217,9 +217,9 @@ class PluginInterface:
         Returns:  The appropriate response object;  The directory name is valid only if
         response.cancelled is True
         """
-        dirDialog: DirDialog = DirDialog(self._communicator.umlFrame,
+        dirDialog: DirDialog = DirDialog(self._mediator.umlFrame,
                                          "Choose a directory to import",
-                                         defaultPath=self._communicator.currentDirectory,
+                                         defaultPath=self._mediator.currentDirectory,
                                          style=DD_NEW_DIR_BUTTON)
 
         response: ImportDirectoryResponse = ImportDirectoryResponse()
@@ -229,7 +229,7 @@ class PluginInterface:
         else:
             response.directoryName = dirDialog.GetPath()
             response.cancelled     = False
-            self._communicator.currentDirectory = response.directoryName    # TODO: Should plugin be doing this?
+            self._mediator.currentDirectory = response.directoryName    # TODO: Should plugin be doing this?
 
         dirDialog.Destroy()
 
@@ -245,11 +245,11 @@ class PluginInterface:
         response.cancelled is True
         """
         if preferredDefaultPath is None:
-            defaultPath: str = self._communicator.currentDirectory
+            defaultPath: str = self._mediator.currentDirectory
         else:
             defaultPath = preferredDefaultPath
 
-        dirDialog: DirDialog = DirDialog(self._communicator.umlFrame, "Choose a destination directory", defaultPath=defaultPath)
+        dirDialog: DirDialog = DirDialog(self._mediator.umlFrame, "Choose a destination directory", defaultPath=defaultPath)
 
         response: ExportDirectoryResponse = ExportDirectoryResponse(cancelled=False)
         if dirDialog.ShowModal() == ID_CANCEL:
@@ -258,7 +258,7 @@ class PluginInterface:
             response.cancelled     = True
         else:
             directory = dirDialog.GetPath()
-            self._communicator.currentDirectory = directory     # TODO  Should a plugin do this
+            self._mediator.currentDirectory = directory     # TODO  Should a plugin do this
             dirDialog.Destroy()
             response.directoryName = directory
 
@@ -291,15 +291,15 @@ class PluginInterface:
                 incY = int(sy)
             oglClass.SetPosition(x, y)
             x += incX
-            self._communicator.addShape(shape=oglClass)
-        self._communicator.refreshFrame()
+            self._mediator.addShape(shape=oglClass)
+        self._mediator.refreshFrame()
 
     def _layoutLinks(self, oglLinks: OglLinks):
 
         for oglLink in oglLinks:
-            self._communicator.addShape(oglLink)
+            self._mediator.addShape(oglLink)
 
-        self._communicator.refreshFrame()
+        self._mediator.refreshFrame()
 
     def __composeWildCardSpecification(self) -> str:
 

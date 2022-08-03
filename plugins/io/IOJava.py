@@ -30,7 +30,7 @@ from plugins.common.Types import OglObjects
 from plugins.io.java.JavaReader import JavaReader
 from plugins.io.java.JavaWriter import JavaWriter
 
-PLUGIN_NAME:        FormatName        = FormatName("Java")
+FORMAT_NAME:        FormatName        = FormatName("Java")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('java')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Java file format')
 
@@ -54,8 +54,8 @@ class IOJava(IOPluginInterface):
         self._name    = PluginName('Java Code Reader and Writer')
         self._author  = "C.Dutoit <dutoitc@hotmail.com> and N. Dubois <nicdub@gmx.ch"
         self._version = '1.0'
-        self._inputFormat  = InputFormat(formatName=PLUGIN_NAME,  extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
-        self._outputFormat = OutputFormat(formatName=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
+        self._inputFormat  = InputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
+        self._outputFormat = OutputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 
         self._exportDirectoryName: str         = ''
         self._importDirectoryName: str         = ''

@@ -60,7 +60,7 @@ class IOPluginInterface(PluginInterface, ABC):
         """
         Called by Pyut to begin the export process.
         """
-        if self._communicator.umlFrame is None:
+        if self._mediator.umlFrame is None:
             self.displayNoUmlFrame()
         else:
             outputFormat: OutputFormat = self.outputFormat      # TODO this is probably not needed Pyut groups appropriately
@@ -73,12 +73,12 @@ class IOPluginInterface(PluginInterface, ABC):
                     # prefs: PyutPreferences = PyutPreferences()
                     # if prefs.pyutIoPluginAutoSelectAll is True:       TODO:  Need plugin preferences
                     #    mediator.selectAllShapes()
-                    oglObjects = self._communicator.selectedOglObjects
+                    oglObjects = self._mediator.selectedOglObjects
                     if len(oglObjects) == 0:
                         self.displayNoSelectedOglObjects()
                     else:
                         self.write(oglObjects)
-                        self._communicator.deselectAllOglObjects()
+                        self._mediator.deselectAllOglObjects()
 
     @abstractmethod
     def setImportOptions(self) -> bool:

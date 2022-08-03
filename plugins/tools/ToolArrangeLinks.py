@@ -40,8 +40,8 @@ class ToolArrangeLinks(ToolPluginInterface):
 
     def doAction(self):
 
-        self._communicator.selectAllOglObjects()
-        oglObjects: OglClasses = self._communicator.selectedOglObjects
+        self._mediator.selectAllOglObjects()
+        oglObjects: OglClasses = self._mediator.selectedOglObjects
 
         for oglObject in oglObjects:
             if isinstance(oglObject, OglLink):
@@ -51,4 +51,4 @@ class ToolArrangeLinks(ToolPluginInterface):
             else:
                 self.logger.warning(f"No line optimizing for: {oglObject}")
 
-        self._communicator.refreshFrame()
+        self._mediator.refreshFrame()

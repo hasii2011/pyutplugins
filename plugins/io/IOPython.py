@@ -45,7 +45,7 @@ from plugins.io.python.PyutToPython import MethodsCodeType
 from plugins.io.python.PyutToPython import PyutToPython
 from plugins.io.python.ReverseEngineerPython2 import ReverseEngineerPython2
 
-PLUGIN_NAME:        FormatName        = FormatName("Python File(s)")
+FORMAT_NAME:        FormatName        = FormatName("Python File(s)")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('py')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Python code generation and reverse engineering')
 
@@ -62,8 +62,8 @@ class IOPython(IOPluginInterface):
         self._name    = PluginName('IOPython')
         self._author  = 'Humberto A. Sanchez II'
         self._version = '1.0'
-        self._inputFormat  = InputFormat(formatName=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
-        self._outputFormat = OutputFormat(formatName=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
+        self._inputFormat  = InputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
+        self._outputFormat = OutputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 
         self._exportDirectoryName: str         = ''
         self._importDirectoryName: str         = ''

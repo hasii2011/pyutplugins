@@ -59,7 +59,7 @@ class ToolAscii(ToolPluginInterface):
         """
 
         """
-        selectedObjects: OglClasses = self._communicator.selectedOglObjects
+        selectedObjects: OglClasses = self._mediator.selectedOglObjects
         if len(selectedObjects) < 1:
             self.displayNoSelectedOglObjects()
             return

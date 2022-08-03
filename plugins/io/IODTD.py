@@ -19,7 +19,7 @@ from core.types.PluginDataTypes import FormatName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 from core.types.PluginDataTypes import PluginName
 
-PLUGIN_NAME:        FormatName        = FormatName("DTD")
+FORMAT_NAME:        FormatName        = FormatName("DTD")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('dtd')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('W3C DTD 1.0 file format')
 
@@ -33,7 +33,7 @@ class IODTD(IOPluginInterface):
         self._name    = PluginName('IoDTD')
         self._author  = "C.Dutoit <dutoitc@hotmail.com>"
         self._version = '1.0'
-        self._inputFormat  = InputFormat(formatName=PLUGIN_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
+        self._inputFormat  = InputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
         self._outputFormat = cast(OutputFormat, None)
 
         self._fileToImport: str = ''
@@ -68,13 +68,13 @@ class IODTD(IOPluginInterface):
 
         oglClasses: OglClasses = dtdParser.oglClasses
         for oglClass in oglClasses:
-            self._communicator.addShape(oglClass)
+            self._mediator.addShape(oglClass)
 
         oglLinks: OglLinks = dtdParser.links
         for oglLink in oglLinks:
-            self._communicator.addShape(oglLink)
+            self._mediator.addShape(oglLink)
 
-        self._communicator.refreshFrame()
+        self._mediator.refreshFrame()
 
         return True
 

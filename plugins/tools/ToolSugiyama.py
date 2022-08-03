@@ -62,11 +62,11 @@ class ToolSugiyama(ToolPluginInterface):
         return True
 
     def doAction(self):
-        selectedObjects: OglClasses = self._communicator.selectedOglObjects
+        selectedObjects: OglClasses = self._mediator.selectedOglObjects
 
         self.logger.info(f'Begin Sugiyama algorithm')
 
-        sugiyama: Sugiyama = Sugiyama(mediator=self._communicator)
+        sugiyama: Sugiyama = Sugiyama(mediator=self._mediator)
         sugiyama.createInterfaceOglALayout(oglObjects=selectedObjects)
         sugiyama.levelFind()
         sugiyama.addVirtualNodes()
@@ -77,6 +77,6 @@ class ToolSugiyama(ToolPluginInterface):
         sugiyama.addNonHierarchicalNodes()
         sugiyama.fixPositions()
 
-        self._communicator.refreshFrame()
+        self._mediator.refreshFrame()
 
         self.logger.info('End Sugiyama algorithm')
