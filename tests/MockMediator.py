@@ -1,5 +1,6 @@
 
 from os import getcwd
+from unittest.mock import MagicMock
 
 from miniogl.DiagramFrame import DiagramFrame
 
@@ -7,21 +8,30 @@ from core.IMediator import IMediator
 from core.IMediator import ScreenMetrics
 
 
-class ScaffoldMediator(IMediator):
+class MockMediator(IMediator):
     """
-    Shortcut implement the version and screen metrics properties
+    A simple mostly do nothing mediator for unit tests
     """
+    # noinspection PyUnusedLocal
+    def __init__(self, umlFrame: DiagramFrame = None, currentDirectory: str = ''):
+        """
 
-    def __init__(self, umlFrame: DiagramFrame, currentDirectory: str = ''):
+        Args:
+            umlFrame:           Never going to use this
+            currentDirectory:
+        """
 
         if currentDirectory is None or currentDirectory == '':
             self._currentDirectory: str = getcwd()
         else:
             self._currentDirectory = currentDirectory
 
-        super().__init__(currentDirectory=currentDirectory, umlFrame=umlFrame)
+        # ignore whatever comes in
+        mockFrame: MagicMock = MagicMock(spec=DiagramFrame)
 
-        self._pyutVersion = 'Scaffold 1.0'
+        super().__init__(currentDirectory=currentDirectory, umlFrame=mockFrame)
+
+        self._pyutVersion = 'Mock Mediator 1.0'
 
     @property
     def pyutVersion(self) -> str:
@@ -29,7 +39,7 @@ class ScaffoldMediator(IMediator):
 
     @pyutVersion.setter
     def pyutVersion(self, newVersion: str):
-        self._pyutVersion = newVersion
+        pass
 
     @property
     def screenMetrics(self) -> ScreenMetrics:

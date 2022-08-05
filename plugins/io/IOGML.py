@@ -27,7 +27,6 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Graph Modeling Langua
 
 class IOGML(IOPluginInterface):
     """
-    Sample class for input/output plug-ins.
     """
     def __init__(self, mediator: IMediator):
         """
@@ -61,7 +60,6 @@ class IOGML(IOPluginInterface):
     def setExportOptions(self) -> bool:
         """
         Prepare the export.
-        This can be used to ask the user some questions
 
         Returns:
             if False, the export is cancelled.

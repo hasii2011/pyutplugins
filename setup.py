@@ -18,7 +18,6 @@ setup(
     maintainer_email='humberto.a.sanchez.ii@gmail.com',
     description='Pyut Plugins',
     long_description=README,
-    license=LICENSE,
     long_description_content_type="text/markdown",
     url="https://github.com/hasii2011/pyutplugincore",
     package_data={
@@ -39,5 +38,11 @@ setup(
         'plugins.tools',
         'core', 'core.types', 'core.exceptions',
     ],
-    install_requires=['click~=8.1.3', 'ogl==0.53.2', 'pyutmodel', 'untanglepyut==0.2.55', 'wxPython~=4.1.1']
+    install_requires=['click~=8.1.3',
+                      'ogl==0.54.9',
+                      'pyutmodel==1.1.0',
+                      'untanglepyut==0.2.55',
+                      'pyumldiagrams==2.30.8',
+                      'wxPython~=4.1.1'
+                      ]
 )
