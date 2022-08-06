@@ -42,7 +42,7 @@ setup(
                       'ogl==0.54.9',
                       'pyutmodel==1.1.0',
                       'untanglepyut==0.2.55',
-                      'pyumldiagrams==2.30.8',
+                      'pyumldiagrams==2.30.8`',
                       'wxPython~=4.1.1'
                       ]
 )
