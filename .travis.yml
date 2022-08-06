@@ -31,7 +31,6 @@ before_install:
 install:
   - python3 --version
   - pip install html-testRunner
-  - pip install python-interface
   - pip install pyumldiagrams==2.30.8
   - pip install antlr4-python3-runtime==4.9.3
   - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 wxPython
