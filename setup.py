@@ -43,6 +43,8 @@ setup(
                       'pyutmodel==1.1.0',
                       'untanglepyut==0.2.55',
                       'pyumldiagrams==2.30.8`',
-                      'wxPython~=4.1.1'
+                      'wxPython~=4.1.1',
+                      'networkx==2.8.5',
+                      'orthogonal==1.1.7',
                       ]
 )

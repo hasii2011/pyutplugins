@@ -1,7 +1,8 @@
 
+from typing import List
+
 from logging import Logger
 from logging import getLogger
-from typing import List
 
 from wx import ALIGN_RIGHT
 from wx import ALL
@@ -26,7 +27,6 @@ from wx import VERTICAL
 from wx import Button
 from wx import Choice
 from wx import CommandEvent
-from wx import MouseEvent
 from wx import FileDialog
 from wx import BoxSizer
 from wx import Sizer
@@ -34,15 +34,17 @@ from wx import Sizer
 from wx import StaticBox
 from wx import StaticBoxSizer
 from wx import TextCtrl
-from wx import Dialog
+
+from wx import MouseEvent
 
 from wx import Yield as wxYield
 from wx import NewIdRef
 
+from plugins.common.ui.BaseDlgEdit import BaseDlgEdit
 from plugins.io.wximage.WxImageFormat import WxImageFormat
 
 
-class DlgWxImageOptions(Dialog):
+class DlgWxImageOptions(BaseDlgEdit):
 
     DEFAULT_FILE_NAME: str = 'ImageDump'    # TODO this goes in plugin preferences
     HORIZONTAL_GAP: int = 5
@@ -110,24 +112,10 @@ class DlgWxImageOptions(Dialog):
 
     def _fileSelectionMotion(self, event: MouseEvent):
 
-        ctrl: TextCtrl = event.EventObject
+        ctrl: TextCtrl = event.GetEventObject()
 
         tip = ctrl.GetToolTip()
         tip.SetTip(self._outputFileName)
-
-    def _OnCmdOk(self, event: CommandEvent):
-        """
-        """
-        event.Skip(skip=True)
-        self.SetReturnCode(OK)
-        self.EndModal(OK)
-
-    # noinspection PyUnusedLocal
-    def _OnClose(self, event: CommandEvent):
-        """
-        """
-        self.SetReturnCode(CANCEL)
-        self.EndModal(CANCEL)
 
     # noinspection PyUnusedLocal
     def _onFileSelectClick(self, event: CommandEvent):
@@ -156,18 +144,13 @@ class DlgWxImageOptions(Dialog):
 
     def _onImageFormatChoice(self, event: CommandEvent):
 
-        ctrl:      Choice = event.EventObject
+        ctrl:      Choice = event.GetEventObject()
         idx:       int    = ctrl.GetCurrentSelection()
         newValue:  str    = ctrl.GetString(idx)
 
         newFormat: WxImageFormat = WxImageFormat(newValue)
 
         self._imageFormat = newFormat
-
-    def _createDialogButtonsContainer(self, buttons=OK) -> Sizer:
-
-        hs: Sizer = self.CreateSeparatedButtonSizer(buttons)
-        return hs
 
     def __layoutFileSelection(self) -> StaticBoxSizer:
 
@@ -187,8 +170,8 @@ class DlgWxImageOptions(Dialog):
         return fileSelectionSizer
 
     def __layoutImageFormatChoice(self) -> StaticBoxSizer:
-
         # noinspection PyTypeChecker
+
         imageChoices: List[str] = [WxImageFormat.PNG.value, WxImageFormat.JPG.value, WxImageFormat.BMP.value, WxImageFormat.TIFF.value]
         self._imageFormatChoice = Choice(self, self.__imageFormatChoiceId, choices=imageChoices)
 

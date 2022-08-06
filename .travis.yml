@@ -36,6 +36,9 @@ install:
   - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 wxPython
   - pip install untanglepyut
   - pip install ogl
+  - pip install networkx==2.8.5
+  - pip install orthogonal==1.1.7
+
 
 
 # command to run tests
