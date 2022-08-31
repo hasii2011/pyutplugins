@@ -119,7 +119,7 @@ class JavaWriter:
         """
         for link in allLinks:
             linkType = link.getType()
-            self.logger.info(f'Found linkType: `{linkType}`')
+            self.logger.debug(f'Found linkType: `{linkType}`')
             if linkType == PyutLinkType.INTERFACE:
                 interfaces.append(link)
             elif linkType == PyutLinkType.COMPOSITION or linkType == PyutLinkType.AGGREGATION:
@@ -154,7 +154,7 @@ class JavaWriter:
 
             # Type
             fieldType: str = str(field.type)    # TODO could just be field.type.value
-            self.logger.info(f'fieldType: {fieldType}')
+            self.logger.debug(f'fieldType: {fieldType}')
 
             # Name
             name = field.name

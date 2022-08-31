@@ -4,6 +4,20 @@
  */
 public class Account {
 
+    // ------
+    // Fields
+    // ------
+
+    /**
+     * field number
+     * More field information here.
+     */
+    public  number; // Warning: no type
+    /**
+     * field balance
+     * More field information here.
+     */
+    public  balance; // Warning: no type
 
 
     // -------

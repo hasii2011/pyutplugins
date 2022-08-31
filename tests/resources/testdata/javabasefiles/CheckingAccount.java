@@ -2,7 +2,7 @@
  * class CheckingAccount
  * Class information here 
  */
-public class CheckingAccount {
+public class CheckingAccount extends Account {
 
 
 }

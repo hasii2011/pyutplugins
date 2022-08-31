@@ -36,10 +36,15 @@ from wx import NewIdRef
 from wx import OK
 from wx import Yield as wxYield
 
+from miniogl.SelectAnchorPoint import SelectAnchorPoint
+
+from ogl.OglInterface2 import OglInterface2
+
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import UnTangler
 from untanglepyut.UnTangler import UntangledOglClasses
 from untanglepyut.UnTangler import UntangledOglLinks
+from untanglepyut.Types import UntangledOglNotes
 
 from core.IOPluginInterface import IOPluginInterface
 from core.ToolPluginInterface import ToolPluginInterface
@@ -200,13 +205,20 @@ class PluginTestFrame(Frame):
 
         oglClasses: UntangledOglClasses = document.oglClasses
         oglLinks:   UntangledOglLinks   = document.oglLinks
+        oglNotes:   UntangledOglNotes   = document.oglNotes
 
         for oglClass in oglClasses:
             oglClass.SetDraggable(True)
             self._displayUmlFrame.addShape(oglObject=oglClass)
 
         for oglLink in oglLinks:
-            self._displayUmlFrame.addShape(oglObject=oglLink)
+            if isinstance(oglLink, OglInterface2):
+                self.__displayTheInterfaceLollipops(oglLink)
+            else:
+                self._displayUmlFrame.addShape(oglObject=oglLink)
+
+        for oglNote in oglNotes:
+            self._displayUmlFrame.addShape(oglObject=oglNote)
 
         self._displayUmlFrame.Refresh()
 
@@ -323,6 +335,24 @@ class PluginTestFrame(Frame):
                                                   message=f'An error occurred while executing the selected plugin - {e}',
                                                   caption='Error!', style=OK | ICON_ERROR)
             booBoo.ShowModal()
+
+    def __displayTheInterfaceLollipops(self, oglInterface2: OglInterface2):
+        """
+        TODO: This code is not necessary if we add the attachment anchor and
+        the lollipop as children of the Ogl Class
+        
+        Args:
+            oglInterface2:
+        """
+
+        attachmentAnchor: SelectAnchorPoint = oglInterface2.destinationAnchor
+        x, y = attachmentAnchor.GetPosition()
+
+        attachmentAnchor.SetDraggable(True)
+        attachmentAnchor.SetPosition(x=x, y=y)
+
+        self._displayUmlFrame.addShape(oglInterface2)
+        self._displayUmlFrame.addShape(attachmentAnchor)
 
     def __setupKeyboardShortCuts(self):
         lst = [

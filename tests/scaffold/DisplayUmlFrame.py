@@ -7,7 +7,8 @@ from logging import Logger
 from logging import getLogger
 
 from miniogl.Diagram import Diagram
-from ogl.events.OglEventEngine import OglEventEngine
+from miniogl.SelectAnchorPoint import SelectAnchorPoint
+
 from wx import EVT_CLOSE
 from wx import EVT_PAINT
 from wx import Frame
@@ -18,6 +19,8 @@ from wx import Window
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglObject import OglObject
 from ogl.OglLink import OglLink
+
+from ogl.events.OglEventEngine import OglEventEngine
 
 from ogl.sd.OglSDMessage import OglSDMessage
 
@@ -177,5 +180,5 @@ class DisplayUmlFrame(DiagramFrame):
                     return shape
         return None
 
-    def addShape(self, oglObject: Union[OglObject, OglLink, OglInterface2]):
+    def addShape(self, oglObject: Union[OglObject, OglLink, OglInterface2, SelectAnchorPoint]):
         self._diagram.AddShape(oglObject)

@@ -23,7 +23,7 @@ class TestJavaWriter(TestBase):
     """
     """
     EXTERNAL_DIFF:         str = '/usr/bin/diff -w '
-    EXTERNAL_CLEAN_UP_TMP: str = 'rm -v '
+    EXTERNAL_CLEAN_UP_TMP: str = 'rm '
 
     clsLogger: Logger = cast(Logger, None)
 
@@ -65,7 +65,7 @@ class TestJavaWriter(TestBase):
 
         for generatedFileName in generatedFileNames:
             status: int = self._runDiff(generatedFileName)
-            self.assertEqual(0, status, f'Diff of {generatedFileName} class failed;  Something changed')
+            self.assertEqual(0, status, f'Diff of {generatedFileName} file failed;  Something changed')
 
     def _cleanupGenerated(self, fileName: str):
 

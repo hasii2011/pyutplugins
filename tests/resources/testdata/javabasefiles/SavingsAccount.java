@@ -2,7 +2,7 @@
  * class SavingsAccount
  * Class information here 
  */
-public class SavingsAccount {
+public class SavingsAccount extends Account {
 
 
 }
