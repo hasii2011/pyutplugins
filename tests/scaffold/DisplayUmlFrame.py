@@ -8,6 +8,7 @@ from logging import getLogger
 
 from miniogl.Diagram import Diagram
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
+from miniogl.LinePoint import LinePoint
 
 from wx import EVT_CLOSE
 from wx import EVT_PAINT
@@ -180,5 +181,5 @@ class DisplayUmlFrame(DiagramFrame):
                     return shape
         return None
 
-    def addShape(self, oglObject: Union[OglObject, OglLink, OglInterface2, SelectAnchorPoint]):
+    def addShape(self, oglObject: Union[OglObject, OglLink, OglInterface2, SelectAnchorPoint, LinePoint]):
         self._diagram.AddShape(oglObject)

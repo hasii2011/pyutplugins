@@ -216,6 +216,9 @@ class PluginTestFrame(Frame):
                 self.__displayTheInterfaceLollipops(oglLink)
             else:
                 self._displayUmlFrame.addShape(oglObject=oglLink)
+                controlPoints = oglLink.GetControlPoints()
+                for controlPoint in controlPoints:
+                    self._displayUmlFrame.addShape(controlPoint)
 
         for oglNote in oglNotes:
             self._displayUmlFrame.addShape(oglObject=oglNote)

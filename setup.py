@@ -39,12 +39,13 @@ setup(
         'core', 'core.types', 'core.exceptions',
     ],
     install_requires=['click~=8.1.3',
-                      'ogl==0.60.1',
-                      'pyutmodel==1.1.0',
-                      'untanglepyut==0.4.5',
                       'pyumldiagrams==2.30.8`',
-                      'wxPython~=4.2.0',
                       'networkx==2.8.5',
                       'orthogonal==1.1.7',
+                      'wxPython~=4.2.0',
+                      'pyutmodel==1.1.0',
+                      'ogl==0.60.2',
+                      'untanglepyut==0.4.6',
+                      'oglio==0.5.2'
                       ]
 )

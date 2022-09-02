@@ -8,7 +8,7 @@
         "testSimple": {
             "format": "%(levelname)s: %(module)s: %(message)s"
         },
-        "simpleTime": {
+        "functionNames": {
             "format": "%(asctime)s.%(msecs)03d %(levelname)s %(module)s.%(funcName)s() %(message)s",
             "datefmt" : "%H:%M:%S"
         },
@@ -22,7 +22,13 @@
             "class": "logging.StreamHandler",
             "formatter": "testSimple",
             "stream": "ext://sys.stdout"
+        },
+        "consoleHandlerFunctionNames": {
+            "class": "logging.StreamHandler",
+            "formatter": "functionNames",
+            "stream": "ext://sys.stdout"
         }
+
     },
     "loggers": {
         "root": {
@@ -42,21 +48,15 @@
             "level": "WARNING",
             "propagate": "False"
         },
-        "tests.plugins.io.java.TestJavaWriter": {
-            "level": "INFO",
+        "miniogl.LineShape": {
+            "level":     "WARNING",
             "propagate": "False"
         },
-        "tests.plugins.io": {
-            "level": "WARNING",
-            "propagate": "False"
-        },
-        "plugins.io.python.ReverseEngineerPython2": {
-            "level": "WARNING",
-            "propagate": "False"
-        },
-        "plugins.io.java.JavaWriter": {
-            "level": "INFO",
+        "ogl.OglAssociation": {
+            "level":     "WARNING",
+            "handlers": ["consoleHandlerFunctionNames"],
             "propagate": "False"
         }
+
     }
 }

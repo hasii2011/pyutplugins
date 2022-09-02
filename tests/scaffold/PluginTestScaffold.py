@@ -4,6 +4,7 @@ from wx import App
 
 from click import command
 
+from tests.TestBase import TestBase
 from tests.scaffold.PluginTestFrame import PluginTestFrame
 
 
@@ -21,6 +22,7 @@ class PluginTestScaffold(App):
 
         self._frameTop.Show(True)
 
+        TestBase.setUpLogging()
         return True
 
     def loadXmlFile(self, fqFileName: str):
