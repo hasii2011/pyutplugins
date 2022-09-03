@@ -116,10 +116,11 @@ class DisplayUmlFrame(DiagramFrame):
         Args:
             event:
         """
-
-        # x, y = self.CalcUnscrolledPosition(event.GetX(), event.GetY())
-        # self._mediator.editObject(x, y)
-
+        # noinspection SpellCheckingInspection
+        """
+        x, y = self.CalcUnscrolledPosition(event.GetX(), event.GetY())
+        self._mediator.editObject(x, y)
+        """
         # DiagramFrame.OnLeftDClick(self, event)
         super().OnLeftDClick(event)
 

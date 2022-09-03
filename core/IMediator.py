@@ -1,12 +1,12 @@
 
 from typing import Union
-
-from dataclasses import dataclass
 from typing import cast
 
-from miniogl.DiagramFrame import DiagramFrame
-from ogl.OglLink import OglLink
+from dataclasses import dataclass
 
+from miniogl.DiagramFrame import DiagramFrame
+
+from ogl.OglLink import OglLink
 from ogl.OglObject import OglObject
 
 from plugins.common.Types import OglClasses
