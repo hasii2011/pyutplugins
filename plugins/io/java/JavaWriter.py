@@ -23,7 +23,7 @@ from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutStereotype import PyutStereotype
 
-from plugins.common.Types import OglClasses
+from core.types.DataTypes import OglClasses
 from plugins.common.Types import OglObjects
 
 

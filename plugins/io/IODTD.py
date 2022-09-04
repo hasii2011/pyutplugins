@@ -1,7 +1,7 @@
 
 from typing import cast
 
-from plugins.common.Types import OglClasses
+from core.types.DataTypes import OglClasses
 from plugins.common.Types import OglLinks
 from plugins.common.Types import OglObjects
 

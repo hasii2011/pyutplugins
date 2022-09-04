@@ -17,7 +17,7 @@ from pyutmodel.PyutStereotype import PyutStereotype
 
 from core.types.PluginDataTypes import PluginName
 
-from plugins.common.Types import OglClasses
+from core.types.DataTypes import OglClasses
 
 from core.ToolPluginInterface import ToolPluginInterface
 

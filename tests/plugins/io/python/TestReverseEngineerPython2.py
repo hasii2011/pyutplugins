@@ -27,7 +27,7 @@ from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 from wx import ID_ANY
 from wx.py.frame import Frame
 
-from plugins.common.Types import OglClasses
+from core.types.DataTypes import OglClasses
 from plugins.common.Types import OglLinks
 from plugins.io.python.PyutPythonVisitor import DataClassProperties
 from plugins.io.python.PyutPythonVisitor import DataClassProperty

@@ -31,7 +31,7 @@ from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import FormatName
 from core.types.PluginDataTypes import PluginName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
-from plugins.common.Types import OglClasses
+from core.types.DataTypes import OglClasses
 from plugins.common.Types import OglLinks
 
 UNSPECIFIED_NAME:        FormatName        = FormatName('Unspecified Plugin Name')

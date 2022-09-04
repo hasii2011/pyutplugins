@@ -15,10 +15,10 @@ from ogl.OglObject import OglObject
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutLink import PyutLink
 
+from core.types.DataTypes import OglClasses
 from plugins.common.ElementTreeData import ElementTreeData
 
 ClassTree  = NewType('ClassTree',  Dict[str, ElementTreeData])    # string is ClassName
-OglClasses = NewType('OglClasses', List[OglClass])
 OglLinks   = NewType('OglLinks',   List[OglLink])
 PyutLinks  = NewType('PyutLinks',  List[PyutLink])
 

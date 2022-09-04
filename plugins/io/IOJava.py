@@ -22,7 +22,7 @@ from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import PluginName
 
-from plugins.common.Types import OglClasses
+from core.types.DataTypes import OglClasses
 from plugins.common.Types import OglLinks
 
 from plugins.common.Types import OglObjects

@@ -12,7 +12,7 @@ from pkg_resources import resource_filename
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from plugins.common.Types import OglClasses
+from core.types.DataTypes import OglClasses
 
 from tests.TestBase import TestBase
 

@@ -18,7 +18,7 @@ from wx import ID_ANY
 
 from unittest import TestCase
 
-from plugins.common.Types import OglClasses
+from core.types.DataTypes import OglClasses
 from plugins.common.Types import OglObjects
 
 JSON_LOGGING_CONFIG_FILENAME: str = "testLoggingConfig.json"
