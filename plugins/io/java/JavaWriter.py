@@ -23,8 +23,8 @@ from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutStereotype import PyutStereotype
 
-from core.types.DataTypes import OglClasses
-from core.types.DataTypes import OglObjects
+from core.types.Types import OglClasses
+from core.types.Types import OglObjects
 
 
 class JavaWriter:

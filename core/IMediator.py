@@ -9,7 +9,7 @@ from miniogl.DiagramFrame import DiagramFrame
 from ogl.OglLink import OglLink
 from ogl.OglObject import OglObject
 
-from core.types.DataTypes import OglClasses
+from core.types.Types import OglClasses
 
 
 @dataclass

@@ -19,7 +19,7 @@ from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import PluginName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 
-from core.types.DataTypes import OglObjects
+from core.types.Types import OglObjects
 
 from oglio.Reader import Reader
 from oglio.Types import OglProject

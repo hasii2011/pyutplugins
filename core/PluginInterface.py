@@ -31,8 +31,8 @@ from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import FormatName
 from core.types.PluginDataTypes import PluginName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
-from core.types.DataTypes import OglClasses
-from core.types.DataTypes import OglLinks
+from core.types.Types import OglClasses
+from core.types.Types import OglLinks
 
 UNSPECIFIED_NAME:        FormatName        = FormatName('Unspecified Plugin Name')
 UNSPECIFIED_EXTENSION:   PluginExtension   = PluginExtension('*')

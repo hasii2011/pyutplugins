@@ -4,7 +4,7 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from core.types.DataTypes import OglObjects
+from core.types.Types import OglObjects
 
 from plugins.io.gml.GMLExporter import GMLExporter
 

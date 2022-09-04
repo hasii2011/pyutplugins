@@ -37,9 +37,9 @@ from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import FormatName
 from core.types.PluginDataTypes import PluginName
 
-from core.types.DataTypes import OglClasses
-from core.types.DataTypes import OglLinks
-from core.types.DataTypes import OglObjects
+from core.types.Types import OglClasses
+from core.types.Types import OglLinks
+from core.types.Types import OglObjects
 
 from plugins.io.python.PyutToPython import MethodsCodeType
 from plugins.io.python.PyutToPython import PyutToPython

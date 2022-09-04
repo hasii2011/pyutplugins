@@ -1,9 +1,9 @@
 
 from typing import cast
 
-from core.types.DataTypes import OglClasses
-from core.types.DataTypes import OglLinks
-from core.types.DataTypes import OglObjects
+from core.types.Types import OglClasses
+from core.types.Types import OglLinks
+from core.types.Types import OglObjects
 
 from plugins.io.dtd.DTDParser import DTDParser
 

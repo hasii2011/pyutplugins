@@ -25,8 +25,8 @@ from plugins.common.ElementTreeData import ElementTreeData
 from plugins.common.LinkMakerMixin import LinkMakerMixin
 from plugins.common.PluginTypes import ClassPair
 from plugins.common.PluginTypes import ClassTree
-from core.types.DataTypes import OglClasses
-from core.types.DataTypes import OglLinks
+from core.types.Types import OglClasses
+from core.types.Types import OglLinks
 
 from plugins.io.dtd.DTDAttribute import DTDAttribute
 from plugins.io.dtd.DTDElementTypes import DTDElementTypes

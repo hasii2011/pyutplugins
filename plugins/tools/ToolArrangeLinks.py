@@ -11,7 +11,7 @@ from core.ToolPluginInterface import ToolPluginInterface
 
 from core.types.PluginDataTypes import PluginName
 
-from core.types.DataTypes import OglClasses
+from core.types.Types import OglClasses
 
 
 class ToolArrangeLinks(ToolPluginInterface):

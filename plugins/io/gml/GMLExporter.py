@@ -17,7 +17,7 @@ from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglNote import OglNote
 
-from core.types.DataTypes import OglObjects
+from core.types.Types import OglObjects
 
 from plugins.io.gml.UnsupportedOperation import UnsupportedOperation
 
