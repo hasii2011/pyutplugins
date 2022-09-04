@@ -23,9 +23,9 @@ from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import PluginName
 
 from core.types.DataTypes import OglClasses
-from plugins.common.Types import OglLinks
+from core.types.DataTypes import OglLinks
 
-from plugins.common.Types import OglObjects
+from core.types.DataTypes import OglObjects
 
 from plugins.io.java.JavaReader import JavaReader
 from plugins.io.java.JavaWriter import JavaWriter

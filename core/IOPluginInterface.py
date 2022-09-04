@@ -6,7 +6,7 @@ from abc import abstractmethod
 from core.PluginInterface import PluginInterface
 from core.IMediator import IMediator
 from core.types.OutputFormat import OutputFormat
-from plugins.common.Types import OglObjects
+from core.types.DataTypes import OglObjects
 
 
 class IOPluginInterface(PluginInterface, ABC):

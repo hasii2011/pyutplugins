@@ -28,7 +28,7 @@ from wx import ID_ANY
 from wx.py.frame import Frame
 
 from core.types.DataTypes import OglClasses
-from plugins.common.Types import OglLinks
+from core.types.DataTypes import OglLinks
 from plugins.io.python.PyutPythonVisitor import DataClassProperties
 from plugins.io.python.PyutPythonVisitor import DataClassProperty
 from plugins.io.python.PyutPythonVisitor import MultiParameterNames

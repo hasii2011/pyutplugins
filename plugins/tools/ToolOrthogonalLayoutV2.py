@@ -25,7 +25,7 @@ from core.IMediator import IMediator
 from core.ToolPluginInterface import ToolPluginInterface
 
 from core.types.PluginDataTypes import PluginName
-from plugins.common.Types import OglObjects
+from core.types.DataTypes import OglObjects
 
 from plugins.tools.orthogonal.DlgLayoutSize import DlgLayoutSize
 from plugins.tools.orthogonal.OrthogonalAdapter import LayoutAreaSize

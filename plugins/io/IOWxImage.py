@@ -25,7 +25,7 @@ from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import PluginName
 
-from plugins.common.Types import OglObjects
+from core.types.DataTypes import OglObjects
 from plugins.io.wximage.DlgWxImageOptions import DlgWxImageOptions
 
 from plugins.io.wximage.WxImageFormat import WxImageFormat

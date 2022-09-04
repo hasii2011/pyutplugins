@@ -7,7 +7,7 @@ from core.ToolPluginInterface import ToolPluginInterface
 
 from core.types.PluginDataTypes import PluginName
 
-from plugins.common.Types import OglObjects
+from core.types.DataTypes import OglObjects
 
 
 class ToolTransforms(ToolPluginInterface):

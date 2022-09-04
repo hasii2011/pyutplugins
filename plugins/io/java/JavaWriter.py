@@ -24,7 +24,7 @@ from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutStereotype import PyutStereotype
 
 from core.types.DataTypes import OglClasses
-from plugins.common.Types import OglObjects
+from core.types.DataTypes import OglObjects
 
 
 class JavaWriter:

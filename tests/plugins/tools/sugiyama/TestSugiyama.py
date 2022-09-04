@@ -8,7 +8,7 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from plugins.common.Types import OglObjects
+from core.types.DataTypes import OglObjects
 from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from plugins.tools.sugiyama.Sugiyama import HierarchicalGraphNodes
 from plugins.tools.sugiyama.Sugiyama import NodeList

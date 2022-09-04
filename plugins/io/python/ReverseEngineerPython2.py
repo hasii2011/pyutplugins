@@ -29,7 +29,7 @@ from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
 from plugins.common.LinkMakerMixin import LinkMakerMixin
 from core.types.DataTypes import OglClasses
-from plugins.common.Types import OglLinks
+from core.types.DataTypes import OglLinks
 
 from plugins.io.python.PythonParseException import PythonParseException
 from plugins.io.python.PyutPythonVisitor import ChildName
