@@ -56,7 +56,7 @@ from core.types.PluginDataTypes import PluginIDMap
 
 from tests.scaffold.DisplayUmlFrame import DisplayUmlFrame
 
-from tests.scaffold.ScaffoldCommunicator import ScaffoldMediator
+from tests.scaffold.ScaffoldMediator import ScaffoldMediator
 
 
 @dataclass

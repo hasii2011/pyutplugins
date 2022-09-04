@@ -23,8 +23,8 @@ from ogl.OglClass import OglClass
 
 from plugins.common.ElementTreeData import ElementTreeData
 from plugins.common.LinkMakerMixin import LinkMakerMixin
-from plugins.common.Types import ClassPair
-from plugins.common.Types import ClassTree
+from plugins.common.PluginTypes import ClassPair
+from plugins.common.PluginTypes import ClassTree
 from core.types.DataTypes import OglClasses
 from core.types.DataTypes import OglLinks
 
