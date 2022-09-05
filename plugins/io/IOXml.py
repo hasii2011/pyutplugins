@@ -1,6 +1,8 @@
 from logging import Logger
 from logging import getLogger
+from typing import cast
 
+from oglio.Types import OglDocuments
 from wx import CANCEL
 from wx import CENTRE
 from wx import ICON_QUESTION
@@ -9,20 +11,28 @@ from wx import YES
 from wx import YES_NO
 
 from core.IMediator import IMediator
+
 from core.IOPluginInterface import IOPluginInterface
+
 from core.types.InputFormat import InputFormat
 from core.types.OutputFormat import OutputFormat
-
 from core.types.PluginDataTypes import FormatName
 from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import PluginName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 
+from core.types.Types import OglLinks
 from core.types.Types import OglObjects
 
 from oglio.Reader import Reader
 from oglio.Types import OglProject
+
+from core.types.Types import PluginDocument
+from core.types.Types import PluginDocumentType
+from core.types.Types import PluginDocumentTitle
+from core.types.Types import PluginProject
+from core.types.Types import OglClasses
 
 FORMAT_NAME:        FormatName        = FormatName("XML")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('xml')
@@ -79,6 +89,26 @@ class IOXml(IOPluginInterface):
 
         oglProject: OglProject = reader.read(fqFileName=self._fileToImport)
 
+        pluginProject: PluginProject = PluginProject()
+
+        pluginProject.version  = oglProject.version
+        pluginProject.codePath = oglProject.codePath
+
+        oglDocuments: OglDocuments = oglProject.oglDocuments
+        for oglDocument in oglDocuments.values():
+            pluginDocument: PluginDocument = PluginDocument()
+            pluginDocument.documentType    = PluginDocumentType.toEnum(oglDocument.documentType)
+            pluginDocument.documentTitle   = PluginDocumentTitle(oglDocument.documentTitle)
+            pluginDocument.scrollPositionX = oglDocument.scrollPositionX
+            pluginDocument.scrollPositionY = oglDocument.scrollPositionY
+            pluginDocument.pixelsPerUnitX  = oglDocument.pixelsPerUnitX
+            pluginDocument.pixelsPerUnitY  = oglDocument.pixelsPerUnitY
+            pluginDocument.oglClasses      = cast(OglClasses, oglDocument.oglClasses)
+            pluginDocument.oglLinks        = cast(OglLinks, oglDocument.oglLinks)
+
+            pluginProject.pluginDocuments[pluginDocument.documentTitle] = pluginDocument
+
+        self._mediator.addProject(pluginProject=pluginProject)
         return True
 
     def write(self, oglObjects: OglObjects):

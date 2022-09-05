@@ -66,6 +66,7 @@ class IODTD(IOPluginInterface):
 
         dtdParser.open(filename=filename)
 
+        # TODO use the new PluginProject interface
         oglClasses: OglClasses = dtdParser.oglClasses
         for oglClass in oglClasses:
             self._mediator.addShape(oglClass)

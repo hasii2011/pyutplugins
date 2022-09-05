@@ -10,6 +10,7 @@ from ogl.OglLink import OglLink
 from ogl.OglObject import OglObject
 
 from core.types.Types import OglClasses
+from core.types.Types import PluginProject
 
 
 @dataclass
@@ -87,3 +88,14 @@ class IMediator:
 
         diagram = self._umlFrame.GetDiagram()
         diagram.AddShape(shape)
+
+    def addProject(self, pluginProject: PluginProject):
+        """
+        Abstract
+        This is the preferred way of adding projects to Pyut
+
+        Args:
+            pluginProject:
+
+        """
+        pass
