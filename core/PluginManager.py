@@ -13,7 +13,12 @@ from importlib import import_module
 
 from wx import NewIdRef
 
+from wx import BeginBusyCursor
+from wx import EndBusyCursor
+
+from core.IMediator import IMediator
 from core.Singleton import Singleton
+from core.ToolPluginInterface import ToolPluginInterface
 from core.types.PluginDataTypes import IOPluginMap
 from core.types.PluginDataTypes import IOPluginMapType
 from core.types.PluginDataTypes import PluginList
@@ -128,6 +133,32 @@ class PluginManager(Singleton):
             self._outputPluginsMap.pluginIdMap = self.__mapWxIdsToPlugins(self.outputPlugins)
 
         return self._outputPluginsMap
+
+    def doToolAction(self, wxId: int, mediator: IMediator):
+
+        pluginMap: PluginIDMap = self.toolPluginsIDMap
+
+        # TODO: Fix this later for mypy
+        clazz: type = pluginMap[wxId]   # type: ignore
+        # Create a plugin instance
+        pluginInstance: ToolPluginInterface = clazz(mediator=mediator)
+
+        if pluginInstance.setOptions() is True:
+            # Do plugin functionality
+            BeginBusyCursor()
+            try:
+                pluginInstance.doAction()
+                self.logger.debug(f"After tool plugin do action")
+            except (ValueError, Exception) as e:
+                self.logger.error(f'{e}')
+            EndBusyCursor()
+
+
+    def doImport(self):
+        pass
+
+    def doExport(self):
+        pass
 
     def _loadIOPlugins(self):
         self._ioPluginClasses = self.__loadPlugins(plugins.io)

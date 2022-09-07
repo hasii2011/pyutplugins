@@ -25,11 +25,17 @@ class ScaffoldApp(App):
     WINDOW_WIDTH:  int = 900
     WINDOW_HEIGHT: int = 500
 
+    def __init__(self, redirect: bool = False, createEmptyProject: bool = True):
+
+        self._createEmtpyProject: bool = createEmptyProject
+
+        super(ScaffoldApp, self).__init__(redirect=redirect)
+
     def OnInit(self) -> bool:
 
         ScaffoldApp.setUpLogging()
 
-        self._frameTop: ScaffoldFrame = ScaffoldFrame()
+        self._frameTop: ScaffoldFrame = ScaffoldFrame(createEmptyProject=self._createEmtpyProject)
 
         self._frameTop.Show(True)
 
@@ -68,10 +74,12 @@ class ScaffoldApp(App):
 @option('-i', '--input-file', required=False, help='The input .xml file to preload on startup.')
 def commandHandler(input_file: str):
 
-    testApp: ScaffoldApp = ScaffoldApp(redirect=False)
-
     if input_file is not None:
+        testApp: ScaffoldApp = ScaffoldApp(redirect=False, createEmptyProject=False)
         testApp.loadXmlFile(input_file)
+    else:
+        testApp: ScaffoldApp = ScaffoldApp(redirect=False)
+
     testApp.MainLoop()
 
 

@@ -28,8 +28,8 @@ from wx import MenuBar
 from wx import FileDialog
 from wx import CommandEvent
 
-from wx import BeginBusyCursor
-from wx import EndBusyCursor
+# from wx import BeginBusyCursor
+# from wx import EndBusyCursor
 from wx import MessageDialog
 
 from wx import NewIdRef
@@ -290,22 +290,7 @@ class PluginTestFrame(Frame):
         wxId: int = event.GetId()
         self.logger.debug(f'{wxId=}')
 
-        pluginMap: PluginIDMap = self._pluginManager.toolPluginsIDMap
-
-        # TODO: Fix this later for mypy
-        clazz: type = pluginMap[wxId]   # type: ignore
-        # Create a plugin instance
-        pluginInstance: ToolPluginInterface = clazz(mediator=self._mediator)
-
-        if pluginInstance.setOptions() is True:
-            # Do plugin functionality
-            BeginBusyCursor()
-            try:
-                pluginInstance.doAction()
-                self.logger.debug(f"After tool plugin do action")
-            except (ValueError, Exception) as e:
-                self.logger.error(f'{e}')
-            EndBusyCursor()
+        self._pluginManager.doToolAction(wxId=wxId, mediator=self._mediator)
 
     def _onImport(self, event: CommandEvent):
 

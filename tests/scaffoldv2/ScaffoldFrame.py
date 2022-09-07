@@ -60,7 +60,7 @@ class ScaffoldFrame(Frame):
     WINDOW_WIDTH:  int = 900
     WINDOW_HEIGHT: int = 500
 
-    def __init__(self, parent=None, wxId=FRAME_ID, size=(800, 600)):
+    def __init__(self, parent=None, wxId=FRAME_ID, size=(800, 600), createEmptyProject: bool = True):
 
         super().__init__(parent=parent, id=wxId,  size=size, style=DEFAULT_FRAME_STYLE, title='Test Scaffold for Plugins')
 
@@ -72,7 +72,7 @@ class ScaffoldFrame(Frame):
         self._status = self.CreateStatusBar()
         self._status.SetStatusText('Ready!')
 
-        self._scaffoldUI: ScaffoldUI = ScaffoldUI(topLevelFrame=self)
+        self._scaffoldUI: ScaffoldUI = ScaffoldUI(topLevelFrame=self, createEmptyProject=createEmptyProject)
 
         self._createApplicationMenuBar()
 
