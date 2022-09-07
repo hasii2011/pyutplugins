@@ -20,7 +20,7 @@ wxPython==4.2.0
 pyutmodel==1.1.0
 ogl==0.60.2
 untanglepyut==0.4.6
-oglio==0.5.2
+oglio==0.5.3
 
 # Pin networkx to match orthgonal
 networkx==2.8.5

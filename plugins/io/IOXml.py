@@ -1,8 +1,9 @@
-from logging import Logger
-from logging import getLogger
+
 from typing import cast
 
-from oglio.Types import OglDocuments
+from logging import Logger
+from logging import getLogger
+
 from wx import CANCEL
 from wx import CENTRE
 from wx import ICON_QUESTION
@@ -26,7 +27,10 @@ from core.types.Types import OglLinks
 from core.types.Types import OglObjects
 
 from oglio.Reader import Reader
+from oglio.Writer import Writer
 from oglio.Types import OglProject
+from oglio.Types import OglDocument
+from oglio.Types import OglDocuments
 
 from core.types.Types import PluginDocument
 from core.types.Types import PluginDocumentType
@@ -55,9 +59,9 @@ class IOXml(IOPluginInterface):
         self._inputFormat  = InputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
         self._outputFormat = OutputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 
-        self._prettyPrint:         bool = True
-        self._exportDirectoryName: str  = ''
-        self._fileToImport:        str  = ''
+        self._prettyPrint:  bool = True
+        self._fileToExport: str  = ''
+        self._fileToImport: str  = ''
 
     def setImportOptions(self) -> bool:
         """
@@ -79,10 +83,19 @@ class IOXml(IOPluginInterface):
 
         Returns:
         """
-        ans: bool = MessageBox("Do you want pretty xml ?", "Export option", style=YES_NO | CANCEL | CENTRE | ICON_QUESTION)
-        self._prettyPrint = (ans == YES)
+        prettPrintAnswer: int = MessageBox("Do you want pretty xml ?", "Export option", style=YES_NO | CANCEL | CENTRE | ICON_QUESTION)
+        if prettPrintAnswer is YES:
+            self._prettyPrint = True
+            response: SingleFileRequestResponse = self.askForFileToExport()
+            if response.cancelled is True:
+                exportAnswer: bool = False
+            else:
+                self._fileToExport = response.fileName
+                exportAnswer = True
+        else:
+            exportAnswer = False
 
-        return ans != CANCEL
+        return exportAnswer
 
     def read(self) -> bool:
         reader: Reader = Reader()
@@ -112,4 +125,17 @@ class IOXml(IOPluginInterface):
         return True
 
     def write(self, oglObjects: OglObjects):
-        pass
+
+        oglProject: OglProject = OglProject()
+        oglProject.version  = self._mediator.pyutVersion
+        oglProject.codePath = ''
+
+        oglDocument: OglDocument = OglDocument()
+        oglDocument.scrollPositionX = 0
+        oglDocument.scrollPositionY = 0
+        oglDocument.pixelsPerUnitX = self._mediator.screenMetrics.dpiX
+        oglDocument.pixelsPerUnitY = self._mediator.screenMetrics.dpiY
+
+        writer:     Writer = Writer()
+
+        writer.write(oglProject=oglProject, fqFileName=self._fileToExport)
