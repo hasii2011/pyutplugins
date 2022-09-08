@@ -22,7 +22,7 @@ from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 
 from tests.core.SamplePluginInterface import SamplePluginInterface
 
-from tests.core.SampleICommunicator import SampleIMediator
+from tests.core.SampleIMediator import SampleIMediator
 
 from tests.TestBase import TestBase
 
