@@ -78,7 +78,7 @@ def commandHandler(input_file: str):
         testApp: ScaffoldApp = ScaffoldApp(redirect=False, createEmptyProject=False)
         testApp.loadXmlFile(input_file)
     else:
-        testApp: ScaffoldApp = ScaffoldApp(redirect=False)
+        testApp = ScaffoldApp(redirect=False)
 
     testApp.MainLoop()
 

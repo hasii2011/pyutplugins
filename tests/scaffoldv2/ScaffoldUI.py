@@ -77,7 +77,7 @@ class ScaffoldUI:
 
         self._projects.append(project)
         self._currentProject = project
-        self._currentFrame = None
+        self._currentFrame = cast(DiagramFrame, None)
 
     def _onAddProject(self, addProjectEvent: AddProjectEvent):
 

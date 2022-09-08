@@ -1,11 +1,14 @@
 
 from os import getcwd
+from typing import Union
 
 from miniogl.DiagramFrame import DiagramFrame
+from ogl.OglLink import OglLink
+from ogl.OglObject import OglObject
 
 from core.IMediator import IMediator
 from core.IMediator import ScreenMetrics
-from core.types.Types import PluginDocument
+from core.types.Types import OglClasses
 from core.types.Types import PluginProject
 
 
@@ -16,12 +19,13 @@ class ScaffoldMediator(IMediator):
 
     def __init__(self, umlFrame: DiagramFrame, currentDirectory: str = ''):
 
+        super().__init__()
         if currentDirectory is None or currentDirectory == '':
             self._currentDirectory: str = getcwd()
         else:
             self._currentDirectory = currentDirectory
 
-        super().__init__(currentDirectory=currentDirectory, umlFrame=umlFrame)
+        self._umlFrame: DiagramFrame = umlFrame
 
         self._pyutVersion = 'Scaffold 1.0'
 
@@ -37,25 +41,39 @@ class ScaffoldMediator(IMediator):
     def screenMetrics(self) -> ScreenMetrics:
         return ScreenMetrics(dpiX=72, dpiY=72, screenWidth=250, screenHeight=1440)
 
+    @property
+    def currentDirectory(self) -> str:
+        return self._currentDirectory
+
+    @currentDirectory.setter
+    def currentDirectory(self, theNewValue: str):
+        self._currentDirectory = theNewValue
+
+    @property
+    def umlFrame(self) -> DiagramFrame:
+        return self._umlFrame
+
+    @umlFrame.setter
+    def umlFrame(self, newValue: DiagramFrame):
+        self._umlFrame = newValue
+
+    @property
+    def selectedOglObjects(self) -> OglClasses:
+        return self._umlFrame.GetSelectedShapes()
+
+    def refreshFrame(self):
+        self._umlFrame.Refresh()
+
+    def selectAllOglObjects(self):
+        pass
+
+    def deselectAllOglObjects(self):
+        self._umlFrame.DeselectAllShapes()
+
+    def addShape(self, shape: Union[OglObject, OglLink]):
+
+        diagram = self._umlFrame.GetDiagram()
+        diagram.AddShape(shape)
+
     def addProject(self, pluginProject: PluginProject):
-        """
-        In the plugin scaffold test program we support only single document projects
-
-        Args:
-            pluginProject:
-        """
-        singlePluginDocument: PluginDocument = list(pluginProject.pluginDocuments.values())[0]
-
-        for oglClass in singlePluginDocument.oglClasses:
-            self.addShape(oglClass)
-
-        for oglLink in singlePluginDocument.oglLinks:
-            self.addShape(oglLink)
-
-        for oglText in singlePluginDocument.oglTexts:
-            self.addShape(oglText)
-
-        for oglNote in singlePluginDocument.oglNotes:
-            self.addShape(oglNote)
-
-        self.refreshFrame()
+        pass

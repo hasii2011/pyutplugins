@@ -12,8 +12,6 @@ from enum import Enum
 
 from pyutmodel.PyutLink import PyutLink
 
-from ogl.OglObject import OglObject
-from ogl.OglInterface2 import OglInterface2
 from ogl.OglActor import OglActor
 from ogl.OglNote import OglNote
 from ogl.OglClass import OglClass
