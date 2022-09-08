@@ -30,11 +30,13 @@ class IMediator(ABC):
     The Pyut application must implement this and override the appropriate methods and/or
     set appropriate protected variables after call this class
     constructor
+
+    TODO:  Ignore for properties because mypy does not know how to handle them  @abstractproperty is deprecated
     """
     def __init__(self):
         pass
 
-    @property
+    @property               # type: ignore
     @abstractmethod
     def pyutVersion(self) -> str:
         """
@@ -42,12 +44,12 @@ class IMediator(ABC):
         """
         pass
 
-    @pyutVersion.setter
+    @pyutVersion.setter     # type: ignore
     @abstractmethod
     def pyutVersion(self, newVersion: str):
         pass
 
-    @property
+    @property               # type: ignore
     @abstractmethod
     def screenMetrics(self) -> ScreenMetrics:
         """
@@ -56,21 +58,27 @@ class IMediator(ABC):
         pass
 
     @property
-    @abstractmethod
     def currentDirectory(self) -> str:
-        pass
+        """
+        Returns:  The current directory
+        """
+        return ''
 
     @currentDirectory.setter
-    @abstractmethod
     def currentDirectory(self, theNewValue: str):
+        """
+        TODO:  Should plugins be allowed to manipulate the application's current directory
+        Args:
+            theNewValue:
+        """
         pass
 
-    @property
+    @property           # type: ignore
     @abstractmethod
     def umlFrame(self) -> DiagramFrame:
         pass
 
-    @umlFrame.setter
+    @umlFrame.setter    # type: ignore
     @abstractmethod
     def umlFrame(self, newValue: DiagramFrame):
         pass
