@@ -10,6 +10,8 @@ from dataclasses import field
 
 from enum import Enum
 
+from os import path as osPath
+
 from pyutmodel.PyutLink import PyutLink
 
 from ogl.OglActor import OglActor
@@ -145,6 +147,23 @@ class PluginProject:
     """
     This is a plugin's version of a project
     """
+    projectName:     str             = cast(str, None)
     version:         str             = cast(str, None)
     codePath:        str             = cast(str, None)
     pluginDocuments: PluginDocuments = field(default_factory=createPluginDocumentsFactory)
+
+    @classmethod
+    def toProjectName(cls, fqFilename):
+        """
+        Return just the file name portion of the fully qualified path
+
+        Args:
+            fqFilename:  file name to display
+
+        Returns:
+            A project name
+        """
+        regularFileName: str = osPath.split(fqFilename)[1]
+        projectName:     str  = osPath.splitext(regularFileName)[0]
+
+        return projectName

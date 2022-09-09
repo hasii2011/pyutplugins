@@ -104,8 +104,9 @@ class IOXml(IOPluginInterface):
 
         pluginProject: PluginProject = PluginProject()
 
-        pluginProject.version  = oglProject.version
-        pluginProject.codePath = oglProject.codePath
+        pluginProject.projectName = PluginProject.toProjectName(fqFilename=self._fileToImport)
+        pluginProject.version     = oglProject.version
+        pluginProject.codePath    = oglProject.codePath
 
         oglDocuments: OglDocuments = oglProject.oglDocuments
         for oglDocument in oglDocuments.values():

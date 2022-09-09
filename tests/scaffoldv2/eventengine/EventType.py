@@ -9,5 +9,5 @@ class EventType(Enum):
     """
 
     NewProject         = 'NewProject'
-    AddProjectEvent    = 'AddProjectEvent'
+    LoadProjectEvent   = 'LoadProjectEvent'
     UpdateTreeItemName = 'UpdateTreeItemName'

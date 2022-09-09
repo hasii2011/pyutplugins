@@ -24,12 +24,13 @@ from wx import MessageDialog
 
 from wx import TreeItemId
 
+from core.types.Types import PluginProject
 from tests.scaffoldv2.MediatorV2 import MediatorV2
 from tests.scaffoldv2.PyutProject import PyutProject
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
-from tests.scaffoldv2.eventengine.Events import AddProjectEvent
-from tests.scaffoldv2.eventengine.Events import EVENT_ADD_PROJECT
+from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
+from tests.scaffoldv2.eventengine.Events import EVENT_LOAD_PROJECT
 from tests.scaffoldv2.eventengine.Events import EVENT_NEW_PROJECT
 from tests.scaffoldv2.eventengine.Events import NewProjectEvent
 
@@ -54,10 +55,7 @@ class ScaffoldUI:
         self._projectsRoot: TreeItemId    = cast(TreeItemId, None)
 
         self._projects:    PyutProjects = PyutProjects([])
-        self._eventEngine: EventEngine  = EventEngine(listeningWindow=self._topLevelFrame)
-
-        self._eventEngine.registerListener(EVENT_NEW_PROJECT, self._onNewProject)
-        self._eventEngine.registerListener(EVENT_ADD_PROJECT, self._onAddProject)
+        self._eventEngine: EventEngine  = cast(EventEngine, None)
 
         self._initializeUIElements()
 
@@ -72,6 +70,29 @@ class ScaffoldUI:
 
         if createEmptyProject is True:
             self.createEmptyProject()
+
+    def _setPluginMediator(self, mediatorV2: MediatorV2):
+        """
+        Write only property used to inject the plugin mediator
+        Args:
+            mediatorV2:
+        """
+        self._mediatorV2 = mediatorV2
+
+    def _setEventEngine(self, eventEngine: EventEngine):
+        """
+        Write only property used to inject the event engine
+        Once we get the event engine we can register our listeners
+
+        Args:
+            eventEngine:
+        """
+        self._eventEngine = eventEngine
+        self._eventEngine.registerListener(EVENT_NEW_PROJECT, self._onNewProject)
+        self._eventEngine.registerListener(EVENT_LOAD_PROJECT, self._onLoadProject)
+
+    pluginMediator = property(fset=_setPluginMediator)
+    eventEngine    = property(fset=_setEventEngine)
 
     def createEmptyProject(self):
         self._onNewProject(cast(NewProjectEvent, None))
@@ -92,10 +113,11 @@ class ScaffoldUI:
         self._currentProject = project
         self._currentFrame = cast(DiagramFrame, None)
 
-    def _onAddProject(self, addProjectEvent: AddProjectEvent):
+    def _onLoadProject(self, loadProjectEvent: LoadProjectEvent):
 
-        pyutProject:     PyutProject = addProjectEvent.pyutProject
-        projectTreeRoot: TreeItemId  = pyutProject.projectTreeRoot
+        pluginProject:     PluginProject = loadProjectEvent.pluginProject
+
+        projectTreeRoot: TreeItemId  = self._projectTree.AppendItem(self._projectsRoot, pluginProject.projectName)
 
         # self._treeRoot = self._projectTree.AppendItem(parent=self._projectsRoot, text=projectName, data=pyutProject)
         self._projectTree.Expand(projectTreeRoot)
@@ -113,7 +135,7 @@ class ScaffoldUI:
                 diagramTitle: str = document.title
                 # shortName:    str = self.__shortenNotebookPageFileName(diagramTitle)
                 shortName:    str = diagramTitle
-                self._notebook.AddPage(page=document.getFrame(), text=shortName)
+                self._notebook.AddPage(page=document.diagramFrame, text=shortName)
 
             self.__notebookCurrentPage = self._notebook.GetPageCount()-1
             self._notebook.SetSelection(self.__notebookCurrentPage)
@@ -160,7 +182,7 @@ class ScaffoldUI:
         # if len(project.getDocuments()) > 0:
         if len(project.documents) > 0:
             # self._currentFrame = project.getDocuments()[0].getFrame()
-            self._currentFrame = project.documents[0].getFrame()
+            self._currentFrame = project.documents[0].diagramFrame
             self._syncPageFrameAndNotebook(frame=self._currentFrame)
 
     def _syncPageFrameAndNotebook(self, frame):

@@ -1,5 +1,4 @@
 from typing import List
-from typing import cast
 from typing import Callable
 
 from logging import Logger
@@ -45,6 +44,7 @@ from core.types.PluginDataTypes import PluginIDMap
 
 from tests.scaffoldv2.MediatorV2 import MediatorV2
 from tests.scaffoldv2.ScaffoldUI import ScaffoldUI
+from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 
 
 @dataclass
@@ -65,13 +65,22 @@ class ScaffoldFrame(Frame):
 
         self.logger:           Logger        = getLogger(__name__)
         self._pluginManager:   PluginManager = PluginManager()
-        self._mediator:        MediatorV2    = MediatorV2()
         self._loadXmlFileWxId: int           = NewIdRef()
 
         self._status = self.CreateStatusBar()
         self._status.SetStatusText('Ready!')
 
+        self._eventEngine: EventEngine  = EventEngine(listeningWindow=self)
+
         self._scaffoldUI: ScaffoldUI = ScaffoldUI(topLevelFrame=self, createEmptyProject=createEmptyProject)
+
+        self._scaffoldUI.eventEngine = self._eventEngine
+        self._mediatorV2: MediatorV2 = MediatorV2()
+        #
+        # Inject this so the ScaffoldUI can receive messages from the plugins
+        #
+        self._mediatorV2.eventEngine = self._eventEngine
+        self._scaffoldUI.pluginMediator = self._mediatorV2
 
         self._createApplicationMenuBar()
 
@@ -214,7 +223,7 @@ class ScaffoldFrame(Frame):
         # TODO: Fix this later for mypy
         clazz: type = pluginMap[wxId]   # type: ignore
         # Create a plugin instance
-        pluginInstance: ToolPluginInterface = clazz(mediator=self._mediator)
+        pluginInstance: ToolPluginInterface = clazz(mediator=self._mediatorV2)
 
         if pluginInstance.setOptions() is True:
             # Do plugin functionality
@@ -233,7 +242,7 @@ class ScaffoldFrame(Frame):
 
         idMap:        PluginIDMap       = self._pluginManager.inputPluginsMap.pluginIdMap
         clazz:        type              = idMap[wxId]     # type: ignore
-        plugInstance: IOPluginInterface = clazz(mediator=self._mediator)
+        plugInstance: IOPluginInterface = clazz(mediator=self._mediatorV2)
         self._doIOAction(methodToCall=plugInstance.executeImport)
 
     def _onExport(self, event: CommandEvent):
@@ -243,7 +252,7 @@ class ScaffoldFrame(Frame):
 
         idMap:        PluginIDMap      = self._pluginManager.outputPluginsMap.pluginIdMap
         clazz:        type              = idMap[wxId]     # type: ignore
-        plugInstance: IOPluginInterface = clazz(mediator=self._mediator)
+        plugInstance: IOPluginInterface = clazz(mediator=self._mediatorV2)
         self._doIOAction(methodToCall=plugInstance.executeExport)
 
     def _doIOAction(self, methodToCall: Callable):

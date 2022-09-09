@@ -8,12 +8,16 @@ from wx import PyEventBinder
 from wx import TreeItemId
 from wx import Window
 
+from core.types.Types import PluginProject
+
 from tests.scaffoldv2.eventengine.EventType import EventType
-from tests.scaffoldv2.eventengine.Events import AddProjectEvent
+from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
+from tests.scaffoldv2.eventengine.Events import NewProjectEvent
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 
 NEW_NAME_PARAMETER:     str = 'newName'
 TREE_ITEM_ID_PARAMETER: str = 'treeItemId'
+PLUGIN_PROJECT_PARAMETER: str = 'pluginProject'
 
 
 class EventEngine(IEventEngine):
@@ -39,14 +43,19 @@ class EventEngine(IEventEngine):
             newName:    str        = kwargs[NEW_NAME_PARAMETER]
             treeItemId: TreeItemId = kwargs[TREE_ITEM_ID_PARAMETER]
             self._sendUpdateTreeItemNameEvent(newName=newName, treeItemId=treeItemId)
-        elif eventType == EventType.AddProjectEvent:
-            pass
+        elif eventType == EventType.LoadProjectEvent:
+            pluginProject: PluginProject = kwargs[PLUGIN_PROJECT_PARAMETER]
+            self._sendLoadProjectEvent(pluginProject=pluginProject)
         elif eventType == EventType.NewProject:
-            pass
+            self._sendNewProjectEvent()
 
     def _sendUpdateTreeItemNameEvent(self, newName: str, treeItemId: TreeItemId):
         pass
 
     def _sendNewProjectEvent(self):
-        eventToPost: AddProjectEvent = AddProjectEvent()
+        eventToPost: NewProjectEvent = NewProjectEvent()
+        PostEvent(dest=self._listeningWindow, event=eventToPost)
+
+    def _sendLoadProjectEvent(self, pluginProject: PluginProject):
+        eventToPost: LoadProjectEvent = LoadProjectEvent(pluginProject=pluginProject)
         PostEvent(dest=self._listeningWindow, event=eventToPost)

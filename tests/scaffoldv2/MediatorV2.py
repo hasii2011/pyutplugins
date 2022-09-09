@@ -5,18 +5,24 @@ from typing import Union
 from typing import cast
 
 from miniogl.DiagramFrame import DiagramFrame
+
 from ogl.OglLink import OglLink
 from ogl.OglObject import OglObject
 
 from core.IMediator import IMediator
 from core.IMediator import ScreenMetrics
+
 from core.types.Types import OglObjects
-from core.types.Types import PluginDocument
 from core.types.Types import PluginProject
+
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
+from tests.scaffoldv2.eventengine.EventType import EventType
 
 
 class MediatorV2(IMediator):
+    """
+    
+    """
 
     def __init__(self):
 
@@ -72,18 +78,4 @@ class MediatorV2(IMediator):
         Args:
             pluginProject:
         """
-        singlePluginDocument: PluginDocument = list(pluginProject.pluginDocuments.values())[0]
-
-        for oglClass in singlePluginDocument.oglClasses:
-            self.addShape(oglClass)
-
-        for oglLink in singlePluginDocument.oglLinks:
-            self.addShape(oglLink)
-
-        for oglText in singlePluginDocument.oglTexts:
-            self.addShape(oglText)
-
-        for oglNote in singlePluginDocument.oglNotes:
-            self.addShape(oglNote)
-
-        self.refreshFrame()
+        self._eventEngine.sendEvent(eventType=EventType.LoadProjectEvent, pluginProject=pluginProject)
