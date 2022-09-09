@@ -134,10 +134,10 @@ class IMediator(ABC):
         pass
 
     @abstractmethod
-    def addProject(self, pluginProject: PluginProject):
+    def loadProject(self, pluginProject: PluginProject):
         """
         Abstract
-        This is the preferred way of adding projects to Pyut
+        This is the preferred way for plugins to projects into Pyut
 
         Args:
             pluginProject:

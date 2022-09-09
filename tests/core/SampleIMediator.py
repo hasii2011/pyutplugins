@@ -78,5 +78,5 @@ class SampleIMediator(IMediator):
     def addShape(self, shape: Union[OglObject, OglLink]):
         pass
 
-    def addProject(self, pluginProject: PluginProject):
+    def loadProject(self, pluginProject: PluginProject):
         pass

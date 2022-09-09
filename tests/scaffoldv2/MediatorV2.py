@@ -65,7 +65,7 @@ class MediatorV2(IMediator):
     def addShape(self, shape: Union[OglObject, OglLink]):
         pass
 
-    def addProject(self, pluginProject: PluginProject):
+    def loadProject(self, pluginProject: PluginProject):
         """
         In the plugin scaffold test program we support only single document projects
 

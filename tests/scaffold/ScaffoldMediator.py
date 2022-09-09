@@ -85,5 +85,5 @@ class ScaffoldMediator(IMediator):
         diagram = self._umlFrame.GetDiagram()
         diagram.AddShape(shape)
 
-    def addProject(self, pluginProject: PluginProject):
+    def loadProject(self, pluginProject: PluginProject):
         pass

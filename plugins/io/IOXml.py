@@ -121,7 +121,7 @@ class IOXml(IOPluginInterface):
 
             pluginProject.pluginDocuments[pluginDocument.documentTitle] = pluginDocument
 
-        self._mediator.addProject(pluginProject=pluginProject)
+        self._mediator.loadProject(pluginProject=pluginProject)
         return True
 
     def write(self, oglObjects: OglObjects):
