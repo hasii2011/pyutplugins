@@ -35,8 +35,6 @@ from wx import NewIdRef
 
 from wx import Yield as wxYield
 
-from miniogl.DiagramFrame import DiagramFrame
-
 from core.IOPluginInterface import IOPluginInterface
 from core.PluginManager import PluginManager
 from core.ToolPluginInterface import ToolPluginInterface
@@ -44,7 +42,8 @@ from core.ToolPluginInterface import ToolPluginInterface
 from core.types.PluginDataTypes import IOPluginMap
 from core.types.PluginDataTypes import IOPluginMapType
 from core.types.PluginDataTypes import PluginIDMap
-from tests.scaffold.ScaffoldMediator import ScaffoldMediator
+
+from tests.scaffoldv2.MediatorV2 import MediatorV2
 from tests.scaffoldv2.ScaffoldUI import ScaffoldUI
 
 
@@ -64,10 +63,10 @@ class ScaffoldFrame(Frame):
 
         super().__init__(parent=parent, id=wxId,  size=size, style=DEFAULT_FRAME_STYLE, title='Test Scaffold for Plugins')
 
-        self.logger:           Logger           = getLogger(__name__)
-        self._pluginManager:   PluginManager    = PluginManager()
-        self._mediator:        ScaffoldMediator = ScaffoldMediator(umlFrame=cast(DiagramFrame, None))
-        self._loadXmlFileWxId: int              = NewIdRef()
+        self.logger:           Logger        = getLogger(__name__)
+        self._pluginManager:   PluginManager = PluginManager()
+        self._mediator:        MediatorV2    = MediatorV2()
+        self._loadXmlFileWxId: int           = NewIdRef()
 
         self._status = self.CreateStatusBar()
         self._status.SetStatusText('Ready!')

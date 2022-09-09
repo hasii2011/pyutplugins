@@ -7,8 +7,11 @@ from logging import Logger
 from logging import getLogger
 
 from miniogl.DiagramFrame import DiagramFrame
+
 from wx import CLIP_CHILDREN
+from wx import ICON_ERROR
 from wx import ID_ANY
+from wx import OK
 from wx import TR_HAS_BUTTONS
 from wx import TR_HIDE_ROOT
 
@@ -17,8 +20,11 @@ from wx import Notebook
 from wx import SplitterWindow
 from wx import TreeCtrl
 
+from wx import MessageDialog
+
 from wx import TreeItemId
 
+from tests.scaffoldv2.MediatorV2 import MediatorV2
 from tests.scaffoldv2.PyutProject import PyutProject
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
@@ -57,6 +63,13 @@ class ScaffoldUI:
 
         self._notebookCurrentPage: int = -1
         self._currentFrame:        DiagramFrame = cast(DiagramFrame, None)
+
+        self._mediatorV2: MediatorV2 = MediatorV2()
+        #
+        # Inject this so we can receive messages from the plugins
+        #
+        self._mediatorV2.eventEngine = self._eventEngine
+
         if createEmptyProject is True:
             self.createEmptyProject()
 
@@ -91,6 +104,32 @@ class ScaffoldUI:
         # for document in pyutProject.documents:
         #     document.addToTree(self._tree, self._treeRoot)
 
+    def __addProjectToNotebook(self, project: PyutProject) -> bool:
+
+        success: bool = True
+        try:
+            # for document in project.getDocuments():
+            for document in project.documents:
+                diagramTitle: str = document.title
+                # shortName:    str = self.__shortenNotebookPageFileName(diagramTitle)
+                shortName:    str = diagramTitle
+                self._notebook.AddPage(page=document.getFrame(), text=shortName)
+
+            self.__notebookCurrentPage = self._notebook.GetPageCount()-1
+            self._notebook.SetSelection(self.__notebookCurrentPage)
+
+            self._updateTreeNotebookIfPossible(project=project)
+        except (ValueError, Exception) as e:
+            # PyutUtils.displayError(_(f"An error occurred while adding the project to the notebook {e}"))
+            booBoo: MessageDialog = MessageDialog(parent=None, caption='Try Again!',
+                                                  message=f'An error occurred while adding the project to the notebook {e}',
+                                                  style=OK | ICON_ERROR)
+            booBoo.ShowModal()
+
+            success = False
+
+        return success
+
     def _initializeUIElements(self):
         """
         Instantiate all the UI elements
@@ -113,3 +152,20 @@ class ScaffoldUI:
         # self._parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self._onNotebookPageChanged)
         # self._parent.Bind(EVT_TREE_SEL_CHANGED, self._onProjectTreeSelChanged)
         # self._projectTree.Bind(EVT_TREE_ITEM_RIGHT_CLICK, self.__onProjectTreeRightClick)
+
+    def _updateTreeNotebookIfPossible(self, project: PyutProject):
+
+        # project.selectFirstDocument()
+
+        # if len(project.getDocuments()) > 0:
+        if len(project.documents) > 0:
+            # self._currentFrame = project.getDocuments()[0].getFrame()
+            self._currentFrame = project.documents[0].getFrame()
+            self._syncPageFrameAndNotebook(frame=self._currentFrame)
+
+    def _syncPageFrameAndNotebook(self, frame):
+        for i in range(self._notebook.GetPageCount()):
+            pageFrame = self._notebook.GetPage(i)
+            if pageFrame is frame:
+                self._notebook.SetSelection(i)
+                break

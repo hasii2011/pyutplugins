@@ -15,6 +15,7 @@ from core.IMediator import IMediator
 from core.IMediator import ScreenMetrics
 from core.types.Types import OglObjects
 from core.types.Types import PluginProject
+from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 
 
 class MockMediator(IMediator):
@@ -68,6 +69,14 @@ class MockMediator(IMediator):
 
     @umlFrame.setter
     def umlFrame(self, newValue: DiagramFrame):
+        pass
+
+    @property
+    def eventEngine(self) -> EventEngine:
+        return cast(EventEngine, None)
+
+    @eventEngine.setter
+    def eventEngine(self, eventEngine: EventEngine):
         pass
 
     def selectedOglObjects(self) -> OglObjects:

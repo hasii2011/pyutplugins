@@ -14,6 +14,7 @@ from core.IMediator import IMediator
 from core.IMediator import ScreenMetrics
 from core.types.Types import OglObjects
 from core.types.Types import PluginProject
+from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 
 
 class SampleIMediator(IMediator):
@@ -53,8 +54,17 @@ class SampleIMediator(IMediator):
     def screenMetrics(self) -> ScreenMetrics:
         return ScreenMetrics(dpiX=72, dpiY=72, screenWidth=250, screenHeight=1440)
 
-    def selectedOglObjects(self) -> OglObjects:
+    @property
+    def eventEngine(self) -> EventEngine:
+        return cast(EventEngine, None)
+
+    @eventEngine.setter
+    def eventEngine(self, eventEngine: EventEngine):
         pass
+
+    @property
+    def selectedOglObjects(self) -> OglObjects:
+        return cast(OglObjects, None)
 
     def refreshFrame(self):
         pass

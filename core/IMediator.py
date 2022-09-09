@@ -13,6 +13,7 @@ from ogl.OglObject import OglObject
 
 from core.types.Types import OglObjects
 from core.types.Types import PluginProject
+from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 
 
 @dataclass
@@ -81,6 +82,16 @@ class IMediator(ABC):
     @umlFrame.setter    # type: ignore
     @abstractmethod
     def umlFrame(self, newValue: DiagramFrame):
+        pass
+
+    @property       # type: ignore
+    @abstractmethod
+    def eventEngine(self) -> EventEngine:
+        pass
+
+    @eventEngine.setter     # type: ignore
+    @abstractmethod
+    def eventEngine(self, eventEngine: EventEngine):
         pass
 
     @property
