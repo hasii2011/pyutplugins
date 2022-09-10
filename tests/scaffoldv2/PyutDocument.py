@@ -4,14 +4,16 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
 
 
 class PyutDocument:
 
-    def __init__(self):
+    def __init__(self, diagramType: PyutDiagramType =  PyutDiagramType.CLASS_DIAGRAM):
 
-        self.logger: Logger = getLogger(__name__)
+        self._diagramType: PyutDiagramType = diagramType
+        self.logger:       Logger          = getLogger(__name__)
 
         self._title:        str = cast(str, None)
         self._diagramFrame: UmlDiagramsFrame = cast(UmlDiagramsFrame, None)

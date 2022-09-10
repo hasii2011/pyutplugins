@@ -21,7 +21,7 @@ from tests.scaffoldv2.eventengine.EventType import EventType
 
 class MediatorV2(IMediator):
     """
-    
+
     """
 
     def __init__(self):

@@ -1,8 +1,10 @@
-from logging import Logger
-from logging import getLogger
+
 from typing import List
 from typing import NewType
 from typing import cast
+
+from logging import Logger
+from logging import getLogger
 
 from wx import TreeItemId
 

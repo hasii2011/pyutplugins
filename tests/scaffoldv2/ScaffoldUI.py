@@ -24,8 +24,11 @@ from wx import MessageDialog
 
 from wx import TreeItemId
 
+from core.types.Types import PluginDocumentType
 from core.types.Types import PluginProject
 from tests.scaffoldv2.MediatorV2 import MediatorV2
+from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
+from tests.scaffoldv2.PyutDocument import PyutDocument
 from tests.scaffoldv2.PyutProject import PyutProject
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
@@ -119,12 +122,19 @@ class ScaffoldUI:
 
         projectTreeRoot: TreeItemId  = self._projectTree.AppendItem(self._projectsRoot, pluginProject.projectName)
 
+        pyutProject: PyutProject = PyutProject(projectName=pluginProject.projectName, codePath=pluginProject.codePath)
+        pyutProject.projectTreeRoot = projectTreeRoot
+
         # self._treeRoot = self._projectTree.AppendItem(parent=self._projectsRoot, text=projectName, data=pyutProject)
         self._projectTree.Expand(projectTreeRoot)
 
         # Add the frames
-        # for document in pyutProject.documents:
-        #     document.addToTree(self._tree, self._treeRoot)
+        for pluginDocument in pluginProject.pluginDocuments.values():
+            # document.addToTree(self._tree, self._treeRoot)
+            pyutDocument: PyutDocument = PyutDocument()
+            pyutDocument.title = pluginDocument.documentTitle
+            pyutDocument.type  = self._toPyutDiagramType(pluginDocument.documentType)
+            self._projectTree.AppendItem(parent=projectTreeRoot, text=pyutDocument.title)
 
     def __addProjectToNotebook(self, project: PyutProject) -> bool:
 
@@ -191,3 +201,12 @@ class ScaffoldUI:
             if pageFrame is frame:
                 self._notebook.SetSelection(i)
                 break
+
+    def _toPyutDiagramType(self, documentType: PluginDocumentType) -> PyutDiagramType:
+
+        if documentType == PyutDiagramType.CLASS_DIAGRAM:
+            return PyutDiagramType.CLASS_DIAGRAM
+        elif documentType == PyutDiagramType.USECASE_DIAGRAM:
+            return PyutDiagramType.USECASE_DIAGRAM
+        else:
+            return PyutDiagramType.SEQUENCE_DIAGRAM
