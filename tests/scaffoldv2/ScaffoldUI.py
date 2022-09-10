@@ -1,6 +1,7 @@
 
 from typing import List
 from typing import NewType
+from typing import Union
 from typing import cast
 
 from logging import Logger
@@ -9,6 +10,7 @@ from logging import getLogger
 from miniogl.DiagramFrame import DiagramFrame
 
 from wx import CLIP_CHILDREN
+from wx import EVT_TREE_SEL_CHANGED
 from wx import ICON_ERROR
 from wx import ID_ANY
 from wx import OK
@@ -21,15 +23,18 @@ from wx import SplitterWindow
 from wx import TreeCtrl
 
 from wx import MessageDialog
+from wx import TreeEvent
 
 from wx import TreeItemId
 
+from core.types.Types import PluginDocument
 from core.types.Types import PluginDocumentType
 from core.types.Types import PluginProject
 from tests.scaffoldv2.MediatorV2 import MediatorV2
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.PyutDocument import PyutDocument
 from tests.scaffoldv2.PyutProject import PyutProject
+from tests.scaffoldv2.PyutProject import UmlFrameType
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
@@ -37,7 +42,13 @@ from tests.scaffoldv2.eventengine.Events import EVENT_LOAD_PROJECT
 from tests.scaffoldv2.eventengine.Events import EVENT_NEW_PROJECT
 from tests.scaffoldv2.eventengine.Events import NewProjectEvent
 
+from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
+from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
+from tests.scaffoldv2.umlframes.UmlFrameShapeHandler import UmlFrameShapeHandler
+
 PyutProjects = NewType('PyutProjects', List[PyutProject])
+
+TreeDataType = Union[PyutProject, UmlClassDiagramsFrame]
 
 
 class ScaffoldUI:
@@ -73,6 +84,21 @@ class ScaffoldUI:
 
         if createEmptyProject is True:
             self.createEmptyProject()
+
+    def getProjectFromFrame(self, frame: UmlDiagramsFrame) -> PyutProject:
+        """
+        Return the project that owns a given frame
+
+        Args:
+            frame:  the frame to get This project
+
+        Returns:
+            PyutProject or None if not found
+        """
+        for project in self._projects:
+            if frame in project.frames:
+                return project
+        return cast(PyutProject, None)
 
     def _setPluginMediator(self, mediatorV2: MediatorV2):
         """
@@ -117,26 +143,44 @@ class ScaffoldUI:
         self._currentFrame = cast(DiagramFrame, None)
 
     def _onLoadProject(self, loadProjectEvent: LoadProjectEvent):
+        """
+        When we load a project the Project node will have a PyutProject associated with it.
+        Document nodes will have a PyutDocument node associated with them
 
-        pluginProject:     PluginProject = loadProjectEvent.pluginProject
+        Args:
+            loadProjectEvent:  The event has the PluginProject from the plugin that created it
+        """
 
-        projectTreeRoot: TreeItemId  = self._projectTree.AppendItem(self._projectsRoot, pluginProject.projectName)
+        pluginProject:   PluginProject = loadProjectEvent.pluginProject
 
-        pyutProject: PyutProject = PyutProject(projectName=pluginProject.projectName, codePath=pluginProject.codePath)
+        pyutProject:     PyutProject = PyutProject(projectName=pluginProject.projectName, codePath=pluginProject.codePath)
+        projectTreeRoot: TreeItemId  = self._projectTree.AppendItem(self._projectsRoot, pluginProject.projectName, data=pyutProject)
+
         pyutProject.projectTreeRoot = projectTreeRoot
 
         # self._treeRoot = self._projectTree.AppendItem(parent=self._projectsRoot, text=projectName, data=pyutProject)
-        self._projectTree.Expand(projectTreeRoot)
 
         # Add the frames
         for pluginDocument in pluginProject.pluginDocuments.values():
             # document.addToTree(self._tree, self._treeRoot)
-            pyutDocument: PyutDocument = PyutDocument()
+            diagramType:  PyutDiagramType = self._toPyutDiagramType(pluginDocument.documentType)
+            pyutDocument: PyutDocument    = PyutDocument(diagramType=diagramType)
             pyutDocument.title = pluginDocument.documentTitle
-            pyutDocument.type  = self._toPyutDiagramType(pluginDocument.documentType)
-            self._projectTree.AppendItem(parent=projectTreeRoot, text=pyutDocument.title)
 
-    def __addProjectToNotebook(self, project: PyutProject) -> bool:
+            umlClassDiagramsFrame: UmlClassDiagramsFrame = UmlClassDiagramsFrame(parent=self._notebook)
+            pyutDocument.diagramFrame = umlClassDiagramsFrame
+
+            self._projectTree.AppendItem(parent=projectTreeRoot, text=pyutDocument.title, data=pyutDocument)
+
+            pyutProject.documents.append(pyutDocument)
+            self._layoutPluginDocument(pluginDocument=pluginDocument, umlFrame=umlClassDiagramsFrame)
+
+        self._projectTree.Expand(projectTreeRoot)
+
+        self._addProjectToNotebook(project=pyutProject)
+        self._projects.append(pyutProject)
+
+    def _addProjectToNotebook(self, project: PyutProject) -> bool:
 
         success: bool = True
         try:
@@ -179,10 +223,9 @@ class ScaffoldUI:
 
         # self._projectTree.Expand(self._projectsRoot)
 
-        print(f'Hello')
         # Callbacks
         # self._parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self._onNotebookPageChanged)
-        # self._parent.Bind(EVT_TREE_SEL_CHANGED, self._onProjectTreeSelChanged)
+        self._topLevelFrame.Bind(EVT_TREE_SEL_CHANGED, self._onProjectTreeSelChanged)
         # self._projectTree.Bind(EVT_TREE_ITEM_RIGHT_CLICK, self.__onProjectTreeRightClick)
 
     def _updateTreeNotebookIfPossible(self, project: PyutProject):
@@ -210,3 +253,80 @@ class ScaffoldUI:
             return PyutDiagramType.USECASE_DIAGRAM
         else:
             return PyutDiagramType.SEQUENCE_DIAGRAM
+
+    # noinspection PyUnusedLocal
+    # def _onNotebookPageChanged(self, event):
+    #     """
+    #     Callback for notebook page changed
+    #
+    #     Args:
+    #         event:
+    #     """
+    #     self.__notebookCurrentPage = self._notebook.GetSelection()
+    #     self.logger.info(f'{self.__notebookCurrentPage=}')
+    #     if self._mediator is not None:      # hasii maybe I got this right from the old pre PEP-8 code
+    #         #  self._ctrl.registerUMLFrame(self._getCurrentFrame())
+    #         self._currentFrame = self._getCurrentFrameFromNotebook()
+    #
+    #         self._mediator.updateTitle()
+    #     self.__getTreeItemFromFrame(self._currentFrame)
+    #     # self.__projectTree.SelectItem(getID(self.getCurrentFrame()))
+    #     # TODO : how can I do getID ???
+    #
+    #     # Register the current project
+    #     self._currentProject = self.getProjectFromFrame(self._currentFrame)
+
+    def _onProjectTreeSelChanged(self, event: TreeEvent):
+        """
+        Callback for tree node selection changed
+
+        Args:
+            event:
+        """
+        itm:      TreeItemId   = event.GetItem()
+        pyutData: TreeDataType = self._projectTree.GetItemData(itm)
+        self.logger.debug(f'Clicked on: {itm=} `{pyutData=}`')
+
+        # Use our own base type
+        if isinstance(pyutData, PyutDocument):
+            pyutDocument: PyutDocument = pyutData
+            frame: UmlClassDiagramsFrame = cast(UmlClassDiagramsFrame, pyutDocument.diagramFrame)
+            self._currentFrame = frame
+            self._currentProject = self.getProjectFromFrame(frame)
+            # self.__syncPageFrameAndNotebook(frame=frame)
+
+        elif isinstance(pyutData, PyutProject):
+            project: PyutProject = pyutData
+            projectFrames: List[UmlFrameType] = project.frames
+            if len(projectFrames) > 0:
+                self._currentFrame = projectFrames[0]
+                self.__syncPageFrameAndNotebook(frame=self._currentFrame)
+                # self._mediator.updateTitle()
+            self._currentProject = project
+
+    def __syncPageFrameAndNotebook(self, frame):
+
+        for i in range(self._notebook.GetPageCount()):
+            pageFrame = self._notebook.GetPage(i)
+            if pageFrame is frame:
+                self._notebook.SetSelection(i)
+                break
+
+    def _layoutPluginDocument(self, pluginDocument: PluginDocument, umlFrame: UmlFrameShapeHandler, usePositions: bool = True):
+        """
+        Loads a plugin's Ogl Objects
+        Args:
+            pluginDocument: The plugin document itself
+            umlFrame:   The Uml Frame to display them one
+            usePositions: If true will assume the ogl objects have valid positions;  Else we will attempt some auto-layout
+        """
+        for oglClass in pluginDocument.oglClasses:
+            x, y = oglClass.GetPosition()
+            umlFrame.addShape(shape=oglClass, x=x, y=y)
+        for oglLink in pluginDocument.oglLinks:
+            x, y = oglLink.GetPosition()
+            umlFrame.addShape(oglLink, x=x, y=y)
+        for oglNote in pluginDocument.oglNotes:
+            x, y = oglNote.GetPosition()
+            umlFrame.addShape(oglNote, x=x, y=y)
+

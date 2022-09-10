@@ -23,7 +23,9 @@ from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import PluginName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 
+from core.types.Types import OglActors
 from core.types.Types import OglLinks
+from core.types.Types import OglNotes
 from core.types.Types import OglObjects
 
 from oglio.Reader import Reader
@@ -32,11 +34,15 @@ from oglio.Types import OglProject
 from oglio.Types import OglDocument
 from oglio.Types import OglDocuments
 
+from core.types.Types import OglClasses
+from core.types.Types import OglSDInstances
+from core.types.Types import OglSDMessages
+from core.types.Types import OglTexts
+from core.types.Types import OglUseCases
 from core.types.Types import PluginDocument
 from core.types.Types import PluginDocumentType
 from core.types.Types import PluginDocumentTitle
 from core.types.Types import PluginProject
-from core.types.Types import OglClasses
 
 FORMAT_NAME:        FormatName        = FormatName("XML")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('xml')
@@ -117,8 +123,14 @@ class IOXml(IOPluginInterface):
             pluginDocument.scrollPositionY = oglDocument.scrollPositionY
             pluginDocument.pixelsPerUnitX  = oglDocument.pixelsPerUnitX
             pluginDocument.pixelsPerUnitY  = oglDocument.pixelsPerUnitY
-            pluginDocument.oglClasses      = cast(OglClasses, oglDocument.oglClasses)
-            pluginDocument.oglLinks        = cast(OglLinks, oglDocument.oglLinks)
+            pluginDocument.oglClasses      = cast(OglClasses,     oglDocument.oglClasses)
+            pluginDocument.oglLinks        = cast(OglLinks,       oglDocument.oglLinks)
+            pluginDocument.oglNotes        = cast(OglNotes,       oglDocument.oglNotes)
+            pluginDocument.oglTexts        = cast(OglTexts,       oglDocument.oglTexts)
+            pluginDocument.oglActors       = cast(OglActors,      oglDocument.oglActors)
+            pluginDocument.oglUseCases     = cast(OglUseCases,    oglDocument.oglUseCases)
+            pluginDocument.oglSDInstances  = cast(OglSDInstances, oglDocument.oglSDInstances)
+            pluginDocument.oglSDMessages   = cast(OglSDMessages,  oglDocument.oglSDMessages)
 
             pluginProject.pluginDocuments[pluginDocument.documentTitle] = pluginDocument
 

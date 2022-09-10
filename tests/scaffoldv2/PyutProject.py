@@ -1,6 +1,7 @@
 
 from typing import List
 from typing import NewType
+from typing import Union
 from typing import cast
 
 from logging import Logger
@@ -9,8 +10,15 @@ from logging import getLogger
 from wx import TreeItemId
 
 from tests.scaffoldv2.PyutDocument import PyutDocument
+from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
+from tests.scaffoldv2.umlframes.UmlSequenceDiagramsFrame import UmlSequenceDiagramsFrame
 
 PyutDocuments = NewType('PyutDocuments', List[PyutDocument])
+
+# Until I figure out how to stop mypy from complaining
+# TODO:   This should just be the following:
+UmlFrameType = Union[UmlClassDiagramsFrame, UmlSequenceDiagramsFrame]
+# UmlFrameType = NewType('UmlFrameType', Union[UmlClassDiagramsFrame, UmlSequenceDiagramsFrame])  # type: ignore
 
 
 class PyutProject:
@@ -116,6 +124,17 @@ class PyutProject:
     @projectTreeRoot.setter
     def projectTreeRoot(self, newValue: TreeItemId):
         self._projectTreeRoot = newValue
+
+    @property
+    def frames(self) -> List[UmlFrameType]:
+        """
+        Get all the project's frames
+
+        Returns:
+            List of frames
+        """
+        frameList = [document.diagramFrame for document in self._documents]
+        return frameList
 
     def updateTreeText(self):
         pass

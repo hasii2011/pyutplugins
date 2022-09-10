@@ -10,7 +10,7 @@ from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
 
 class PyutDocument:
 
-    def __init__(self, diagramType: PyutDiagramType =  PyutDiagramType.CLASS_DIAGRAM):
+    def __init__(self, diagramType: PyutDiagramType = PyutDiagramType.CLASS_DIAGRAM):
 
         self._diagramType: PyutDiagramType = diagramType
         self.logger:       Logger          = getLogger(__name__)
@@ -25,6 +25,15 @@ class PyutDocument:
     @title.setter
     def title(self, theNewValue: str):
         self._title = theNewValue
+
+    @property
+    def diagramType(self) -> PyutDiagramType:
+        """
+        Read-only property
+
+        Returns:  The diagram type
+        """
+        return self._diagramType
 
     @property
     def diagramFrame(self) -> UmlDiagramsFrame:
