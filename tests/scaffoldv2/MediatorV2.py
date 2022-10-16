@@ -35,6 +35,10 @@ class MediatorV2(IMediator):
     def pyutVersion(self) -> str:
         return 'MediatorV2'
 
+    @pyutVersion.setter
+    def pyutVersion(self, newValue: str):
+        self.logger.warning(f'Unused {newValue}')
+
     @property
     def screenMetrics(self) -> ScreenMetrics:
         return ScreenMetrics(dpiX=72, dpiY=72, screenWidth=250, screenHeight=1440)

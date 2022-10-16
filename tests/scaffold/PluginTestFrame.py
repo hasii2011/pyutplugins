@@ -191,9 +191,9 @@ class PluginTestFrame(Frame):
         Args:
             fqFileName: Fully qualified file name
         """
-        untangler: UnTangler = UnTangler(fqFileName=fqFileName)
+        untangler: UnTangler = UnTangler()
 
-        untangler.untangle()
+        untangler.untangleFile(fqFileName=fqFileName)
 
         assert untangler.documents is not None, 'Bug!'
 

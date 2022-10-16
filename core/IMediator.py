@@ -37,7 +37,7 @@ class IMediator(ABC):
     def __init__(self):
         pass
 
-    @property               # type: ignore
+    @property
     @abstractmethod
     def pyutVersion(self) -> str:
         """
@@ -45,7 +45,7 @@ class IMediator(ABC):
         """
         pass
 
-    @pyutVersion.setter     # type: ignore
+    @pyutVersion.setter
     @abstractmethod
     def pyutVersion(self, newVersion: str):
         pass

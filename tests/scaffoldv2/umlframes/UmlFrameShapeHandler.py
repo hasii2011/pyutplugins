@@ -4,6 +4,7 @@ from typing import Union
 from logging import Logger
 from logging import getLogger
 
+from ogl.OglLink import OglLink
 from ogl.OglTextFontFamily import OglTextFontFamily
 from wx import Brush
 from wx import Pen
@@ -132,8 +133,11 @@ class UmlFrameShapeHandler(DiagramFrame):
         self.Refresh()
         return pyutUseCase
 
-    def addShape(self, shape: Union[OglObject, OglInterface2, SelectAnchorPoint],
-                 x: int, y: int, pen: Pen = None, brush: Brush = None, withModelUpdate: bool = True):
+    def addShape(self, shape: Union[OglObject, OglLink, OglInterface2, SelectAnchorPoint],
+                 x: int, y: int,
+                 pen: Pen = None,
+                 brush: Brush = None,
+                 withModelUpdate: bool = True):
         """
         Add a shape to the UmlFrame.
 

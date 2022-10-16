@@ -254,28 +254,6 @@ class ScaffoldUI:
         else:
             return PyutDiagramType.SEQUENCE_DIAGRAM
 
-    # noinspection PyUnusedLocal
-    # def _onNotebookPageChanged(self, event):
-    #     """
-    #     Callback for notebook page changed
-    #
-    #     Args:
-    #         event:
-    #     """
-    #     self.__notebookCurrentPage = self._notebook.GetSelection()
-    #     self.logger.info(f'{self.__notebookCurrentPage=}')
-    #     if self._mediator is not None:      # hasii maybe I got this right from the old pre PEP-8 code
-    #         #  self._ctrl.registerUMLFrame(self._getCurrentFrame())
-    #         self._currentFrame = self._getCurrentFrameFromNotebook()
-    #
-    #         self._mediator.updateTitle()
-    #     self.__getTreeItemFromFrame(self._currentFrame)
-    #     # self.__projectTree.SelectItem(getID(self.getCurrentFrame()))
-    #     # TODO : how can I do getID ???
-    #
-    #     # Register the current project
-    #     self._currentProject = self.getProjectFromFrame(self._currentFrame)
-
     def _onProjectTreeSelChanged(self, event: TreeEvent):
         """
         Callback for tree node selection changed
@@ -312,13 +290,12 @@ class ScaffoldUI:
                 self._notebook.SetSelection(i)
                 break
 
-    def _layoutPluginDocument(self, pluginDocument: PluginDocument, umlFrame: UmlFrameShapeHandler, usePositions: bool = True):
+    def _layoutPluginDocument(self, pluginDocument: PluginDocument, umlFrame: UmlFrameShapeHandler):
         """
         Loads a plugin's Ogl Objects
         Args:
             pluginDocument: The plugin document itself
             umlFrame:   The Uml Frame to display them one
-            usePositions: If true will assume the ogl objects have valid positions;  Else we will attempt some auto-layout
         """
         for oglClass in pluginDocument.oglClasses:
             x, y = oglClass.GetPosition()
@@ -329,4 +306,3 @@ class ScaffoldUI:
         for oglNote in pluginDocument.oglNotes:
             x, y = oglNote.GetPosition()
             umlFrame.addShape(oglNote, x=x, y=y)
-

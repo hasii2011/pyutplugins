@@ -44,8 +44,8 @@ setup(
                       'orthogonal==1.1.7',
                       'wxPython~=4.2.0',
                       'pyutmodel==1.1.0',
-                      'ogl==0.60.2',
-                      'untanglepyut==0.4.6',
-                      'oglio==0.5.3'
+                      'ogl==0.60.5',
+                      'untanglepyut==0.5.1',
+                      'oglio==0.5.7'
                       ]
 )

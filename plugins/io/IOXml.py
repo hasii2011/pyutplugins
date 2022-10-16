@@ -106,7 +106,7 @@ class IOXml(IOPluginInterface):
     def read(self) -> bool:
         reader: Reader = Reader()
 
-        oglProject: OglProject = reader.read(fqFileName=self._fileToImport)
+        oglProject: OglProject = reader.readXmlFile(fqFileName=self._fileToImport)
 
         pluginProject: PluginProject = PluginProject()
 
@@ -151,4 +151,4 @@ class IOXml(IOPluginInterface):
 
         writer:     Writer = Writer()
 
-        writer.write(oglProject=oglProject, fqFileName=self._fileToExport)
+        writer.writeXmlFile(oglProject=oglProject, fqFileName=self._fileToExport)

@@ -116,8 +116,8 @@ class TestBase(TestCase):
 
         """
         fqFileName: str       = resource_filename(TestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, filename)
-        untangler:  UnTangler = UnTangler(fqFileName=fqFileName)
-        untangler.untangle()
+        untangler:  UnTangler = UnTangler()
+        untangler.untangleFile(fqFileName=fqFileName)
 
         document: Document = untangler.documents[DocumentTitle(documentName)]
 
