@@ -27,6 +27,7 @@ from wx import TreeEvent
 
 from wx import TreeItemId
 
+from core.IMediator import IMediator
 from core.types.Types import PluginDocument
 from core.types.Types import PluginDocumentType
 from core.types.Types import PluginProject
@@ -69,18 +70,13 @@ class ScaffoldUI:
         self._projectsRoot: TreeItemId    = cast(TreeItemId, None)
 
         self._projects:    PyutProjects = PyutProjects([])
-        self._eventEngine: EventEngine  = cast(EventEngine, None)
 
         self._initializeUIElements()
 
         self._notebookCurrentPage: int = -1
         self._currentFrame:        DiagramFrame = cast(DiagramFrame, None)
 
-        self._mediatorV2: MediatorV2 = MediatorV2()
-        #
-        # Inject this so we can receive messages from the plugins
-        #
-        self._mediatorV2.eventEngine = self._eventEngine
+        self._mediatorV2: IMediator = cast(IMediator, None)
 
         if createEmptyProject is True:
             self.createEmptyProject()

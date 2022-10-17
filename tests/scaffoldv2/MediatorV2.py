@@ -17,6 +17,7 @@ from core.types.Types import PluginProject
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.EventType import EventType
+from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 
 
 class MediatorV2(IMediator):
@@ -24,12 +25,12 @@ class MediatorV2(IMediator):
 
     """
 
-    def __init__(self):
+    def __init__(self, eventEngine: IEventEngine):
 
         super().__init__()
         self.logger: Logger = getLogger(__name__)
 
-        self._eventEngine: EventEngine = cast(EventEngine, None)
+        self._eventEngine: IEventEngine = eventEngine
 
     @property
     def pyutVersion(self) -> str:
@@ -54,14 +55,6 @@ class MediatorV2(IMediator):
     @property
     def selectedOglObjects(self) -> OglObjects:
         return cast(OglObjects, None)
-
-    @property
-    def eventEngine(self) -> EventEngine:
-        return self._eventEngine
-
-    @eventEngine.setter
-    def eventEngine(self, eventEngine: EventEngine):
-        self._eventEngine = eventEngine
 
     def refreshFrame(self):
         pass

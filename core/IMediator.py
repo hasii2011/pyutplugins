@@ -32,7 +32,6 @@ class IMediator(ABC):
     set appropriate protected variables after call this class
     constructor
 
-    TODO:  Ignore for properties because mypy does not know how to handle them  @abstractproperty is deprecated
     """
     def __init__(self):
         pass
@@ -50,7 +49,7 @@ class IMediator(ABC):
     def pyutVersion(self, newVersion: str):
         pass
 
-    @property               # type: ignore
+    @property
     @abstractmethod
     def screenMetrics(self) -> ScreenMetrics:
         """
@@ -74,24 +73,14 @@ class IMediator(ABC):
         """
         pass
 
-    @property           # type: ignore
+    @property
     @abstractmethod
     def umlFrame(self) -> DiagramFrame:
         pass
 
-    @umlFrame.setter    # type: ignore
+    @umlFrame.setter
     @abstractmethod
     def umlFrame(self, newValue: DiagramFrame):
-        pass
-
-    @property       # type: ignore
-    @abstractmethod
-    def eventEngine(self) -> EventEngine:
-        pass
-
-    @eventEngine.setter     # type: ignore
-    @abstractmethod
-    def eventEngine(self, eventEngine: EventEngine):
         pass
 
     @property

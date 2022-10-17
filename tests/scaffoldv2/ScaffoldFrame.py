@@ -75,11 +75,10 @@ class ScaffoldFrame(Frame):
         self._scaffoldUI: ScaffoldUI = ScaffoldUI(topLevelFrame=self, createEmptyProject=createEmptyProject)
 
         self._scaffoldUI.eventEngine = self._eventEngine
-        self._mediatorV2: MediatorV2 = MediatorV2()
+        self._mediatorV2: MediatorV2 = MediatorV2(eventEngine=self._eventEngine)
         #
         # Inject this so the ScaffoldUI can receive messages from the plugins
         #
-        self._mediatorV2.eventEngine = self._eventEngine
         self._scaffoldUI.pluginMediator = self._mediatorV2
 
         self._createApplicationMenuBar()
@@ -136,10 +135,7 @@ class ScaffoldFrame(Frame):
     # noinspection PyUnusedLocal
     def _onLoadXmlFile(self, event: CommandEvent):
 
-        response: RequestResponse = self._askForXMLFileToImport()
-        self.logger.info(f'{response=}')
-        if response.cancelled is False:
-            self._loadXmlFile(fqFileName=response.fileName)
+        self._displayError(message='Use the import plugin')
 
     def _makeToolsMenu(self, toolsMenu: Menu) -> Menu:
         """
@@ -267,47 +263,6 @@ class ScaffoldFrame(Frame):
                                                   caption='Error!', style=OK | ICON_ERROR)
             booBoo.ShowModal()
 
-    def _loadXmlFile(self, fqFileName: str):
-        """
-        This code belongs in another class
-        Args:
-            fqFileName: Fully qualified file name
-        """
-        # untangler: UnTangler = UnTangler(fqFileName=fqFileName)
-        #
-        # untangler.untangle()
-        #
-        # assert untangler.documents is not None, 'Bug!'
-        #
-        # documentNames = list(untangler.documents.keys())
-        # document: Document = untangler.documents[documentNames[0]]
-        #
-        # self._mediator.umlFrame.Scroll(document.scrollPositionX, document.scrollPositionY)
-        # self._mediator.umlFrame.SetScrollRate(document.pixelsPerUnitX, document.pixelsPerUnitY)
-        #
-        # oglClasses: UntangledOglClasses = document.oglClasses
-        # oglLinks:   UntangledOglLinks   = document.oglLinks
-        # oglNotes:   UntangledOglNotes   = document.oglNotes
-        #
-        # for oglClass in oglClasses:
-        #     oglClass.SetDraggable(True)
-        #     self._displayUmlFrame.addShape(oglObject=oglClass)
-        #
-        # for oglLink in oglLinks:
-        #     if isinstance(oglLink, OglInterface2):
-        #         self.__displayTheInterfaceLollipops(oglLink)
-        #     else:
-        #         self._displayUmlFrame.addShape(oglObject=oglLink)
-        #         controlPoints = oglLink.GetControlPoints()
-        #         for controlPoint in controlPoints:
-        #             self._displayUmlFrame.addShape(controlPoint)
-        #
-        # for oglNote in oglNotes:
-        #     self._displayUmlFrame.addShape(oglObject=oglNote)
-        #
-        # self._displayUmlFrame.Refresh()
-        pass
-
     # TODO End these belong in a separate class
 
     def _askForXMLFileToImport(self) -> RequestResponse:
@@ -350,3 +305,8 @@ class ScaffoldFrame(Frame):
             acc.append(AcceleratorEntry(el1, el2, el3))
         accel_table = AcceleratorTable(acc)
         self.SetAcceleratorTable(accel_table)
+
+    def _displayError(self, message: str):
+
+        booBoo: MessageDialog = MessageDialog(parent=None, message=message, caption='Error', style=OK | ICON_ERROR)
+        booBoo.ShowModal()
