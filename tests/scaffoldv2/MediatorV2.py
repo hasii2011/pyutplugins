@@ -15,8 +15,7 @@ from core.IMediator import ScreenMetrics
 from core.types.Types import OglObjects
 from core.types.Types import PluginProject
 
-from tests.scaffoldv2.eventengine.EventEngine import EventEngine
-from tests.scaffoldv2.eventengine.EventType import EventType
+from tests.scaffoldv2.eventengine.Events import EventType
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 
 

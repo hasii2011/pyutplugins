@@ -45,6 +45,7 @@ from core.types.PluginDataTypes import PluginIDMap
 from tests.scaffoldv2.MediatorV2 import MediatorV2
 from tests.scaffoldv2.ScaffoldUI import ScaffoldUI
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
+from tests.scaffoldv2.eventengine.Events import EventType
 
 
 @dataclass
@@ -199,14 +200,7 @@ class ScaffoldFrame(Frame):
 
     # noinspection PyUnusedLocal
     def _onSelectAll(self, event: CommandEvent):
-        # shapes = self._displayUmlFrame.GetDiagram().GetShapes()
-        # for shape in shapes:
-        #     shape.SetSelected(True)
-        #     self._displayUmlFrame.GetSelectedShapes()
-        #
-        # self._displayUmlFrame.SetSelectedShapes(shapes)
-        # self._displayUmlFrame.Refresh()
-        pass
+        self._eventEngine.sendEvent(EventType.SelectAll)
 
     # TODO  Start these belong in a separate class
     def _onTools(self, event: CommandEvent):
@@ -298,6 +292,7 @@ class ScaffoldFrame(Frame):
     def __setupKeyboardShortCuts(self):
         lst = [
             (ACCEL_CTRL, ord('l'), self._loadXmlFileWxId),
+            (ACCEL_CTRL, ord('a'), ID_SELECTALL),
             ]
         acc = []
         for el in lst:

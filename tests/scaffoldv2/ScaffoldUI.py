@@ -38,10 +38,12 @@ from tests.scaffoldv2.PyutProject import PyutProject
 from tests.scaffoldv2.PyutProject import UmlFrameType
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
+from tests.scaffoldv2.eventengine.Events import EVENT_SELECT_ALL
 from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
 from tests.scaffoldv2.eventengine.Events import EVENT_LOAD_PROJECT
 from tests.scaffoldv2.eventengine.Events import EVENT_NEW_PROJECT
 from tests.scaffoldv2.eventengine.Events import NewProjectEvent
+from tests.scaffoldv2.eventengine.Events import SelectAllEvent
 
 from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
 from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
@@ -113,14 +115,26 @@ class ScaffoldUI:
             eventEngine:
         """
         self._eventEngine = eventEngine
-        self._eventEngine.registerListener(EVENT_NEW_PROJECT, self._onNewProject)
+        self._eventEngine.registerListener(EVENT_NEW_PROJECT,  self._onNewProject)
         self._eventEngine.registerListener(EVENT_LOAD_PROJECT, self._onLoadProject)
+        self._eventEngine.registerListener(EVENT_SELECT_ALL,   self._onSelectAll)
 
     pluginMediator = property(fset=_setPluginMediator)
     eventEngine    = property(fset=_setEventEngine)
 
     def createEmptyProject(self):
         self._onNewProject(cast(NewProjectEvent, None))
+
+    # noinspection PyUnusedLocal
+    def _onSelectAll(self, event: SelectAllEvent):
+
+        shapes = self._currentFrame.GetDiagram().GetShapes()
+        for shape in shapes:
+            shape.SetSelected(True)
+            self._currentFrame.GetSelectedShapes()
+
+        self._currentFrame.SetSelectedShapes(shapes)
+        self._currentFrame.Refresh()
 
     # noinspection PyUnusedLocal
     def _onNewProject(self, newProjectEvent: NewProjectEvent):
