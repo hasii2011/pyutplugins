@@ -1,4 +1,4 @@
-
+from typing import Tuple
 from typing import Union
 
 from abc import ABC
@@ -6,14 +6,12 @@ from abc import abstractmethod
 
 from dataclasses import dataclass
 
-from miniogl.DiagramFrame import DiagramFrame
-
 from ogl.OglLink import OglLink
 from ogl.OglObject import OglObject
 
-from core.types.Types import OglObjects
+from core.types.Types import FrameSizeCallback
 from core.types.Types import PluginProject
-from tests.scaffoldv2.eventengine.EventEngine import EventEngine
+from core.types.Types import SelectedOglObjectsCallback
 
 
 @dataclass
@@ -58,13 +56,15 @@ class IMediator(ABC):
         pass
 
     @property
+    @abstractmethod
     def currentDirectory(self) -> str:
         """
         Returns:  The current directory
         """
-        return ''
+        pass
 
     @currentDirectory.setter
+    @abstractmethod
     def currentDirectory(self, theNewValue: str):
         """
         TODO:  Should plugins be allowed to manipulate the application's current directory
@@ -73,22 +73,17 @@ class IMediator(ABC):
         """
         pass
 
-    @property
     @abstractmethod
-    def umlFrame(self) -> DiagramFrame:
+    def getFrameSize(self, callback: FrameSizeCallback):
         pass
 
-    @umlFrame.setter
     @abstractmethod
-    def umlFrame(self, newValue: DiagramFrame):
-        pass
-
-    @property
-    @abstractmethod
-    def selectedOglObjects(self) -> OglObjects:
+    def getSelectedOglObjects(self, callback: SelectedOglObjectsCallback):
         """
-        Select all the Ogl shapes in the currently displayed frame
-        Returns:
+        Requests all the selected in the currently displayed frame
+
+        Args:
+            callback:  This method is invoked with a list of all the selected OglObjects
         """
         pass
 

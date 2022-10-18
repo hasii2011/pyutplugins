@@ -64,7 +64,7 @@ class IOWxImage(IOPluginInterface):
         Returns:
             if False, the export will be cancelled.
         """
-        with DlgWxImageOptions(self._mediator.umlFrame) as dlg:
+        with DlgWxImageOptions(None) as dlg:
             if dlg.ShowModal() == OK:
                 self.logger.warning(f'{dlg.imageFormat=} {dlg.outputFileName=}')
                 self._imageFormat:    WxImageFormat = dlg.imageFormat

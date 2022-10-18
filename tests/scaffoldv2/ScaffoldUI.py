@@ -27,10 +27,16 @@ from wx import TreeEvent
 
 from wx import TreeItemId
 
+from wx import Yield as wxYield
+
 from core.IMediator import IMediator
+from core.types.Types import FrameSize
+
 from core.types.Types import PluginDocument
 from core.types.Types import PluginDocumentType
 from core.types.Types import PluginProject
+from core.types.Types import OglLinks
+
 from tests.scaffoldv2.MediatorV2 import MediatorV2
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.PyutDocument import PyutDocument
@@ -38,12 +44,20 @@ from tests.scaffoldv2.PyutProject import PyutProject
 from tests.scaffoldv2.PyutProject import UmlFrameType
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
+from tests.scaffoldv2.eventengine.Events import EVENT_FRAME_SIZE
+from tests.scaffoldv2.eventengine.Events import EVENT_REFRESH_FRAME
+
 from tests.scaffoldv2.eventengine.Events import EVENT_SELECT_ALL
-from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
 from tests.scaffoldv2.eventengine.Events import EVENT_LOAD_PROJECT
 from tests.scaffoldv2.eventengine.Events import EVENT_NEW_PROJECT
+from tests.scaffoldv2.eventengine.Events import EVENT_SELECTED_OGL_OBJECTS
+from tests.scaffoldv2.eventengine.Events import FrameSizeEvent
+
+from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
 from tests.scaffoldv2.eventengine.Events import NewProjectEvent
+from tests.scaffoldv2.eventengine.Events import RefreshFrameEvent
 from tests.scaffoldv2.eventengine.Events import SelectAllEvent
+from tests.scaffoldv2.eventengine.Events import SelectedOglObjectsEvent
 
 from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
 from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
@@ -118,6 +132,9 @@ class ScaffoldUI:
         self._eventEngine.registerListener(EVENT_NEW_PROJECT,  self._onNewProject)
         self._eventEngine.registerListener(EVENT_LOAD_PROJECT, self._onLoadProject)
         self._eventEngine.registerListener(EVENT_SELECT_ALL,   self._onSelectAll)
+        self._eventEngine.registerListener(EVENT_SELECTED_OGL_OBJECTS, self._onSelectedOglObjects)
+        self._eventEngine.registerListener(EVENT_REFRESH_FRAME,        self._onRefreshFrame)
+        self._eventEngine.registerListener(EVENT_FRAME_SIZE,           self._onFrameSize)
 
     pluginMediator = property(fset=_setPluginMediator)
     eventEngine    = property(fset=_setEventEngine)
@@ -189,6 +206,30 @@ class ScaffoldUI:
 
         self._addProjectToNotebook(project=pyutProject)
         self._projects.append(pyutProject)
+
+    def _onSelectedOglObjects(self, event: SelectedOglObjectsEvent):
+
+        selectedObjects = self._currentFrame.GetSelectedShapes()
+        callback = event.callback
+
+        callback(selectedObjects)
+
+    # noinspection PyUnusedLocal
+    def _onRefreshFrame(self, event: RefreshFrameEvent):
+        self._currentFrame.Refresh()
+        wxYield()
+
+    def _onFrameSize(self, event: FrameSizeEvent):
+
+        frameSize: FrameSize = FrameSize()
+
+        (frameW, frameH) = self._currentFrame.GetSize()
+        frameSize.width = frameW
+        frameSize.height = frameH
+
+        callback = event.callback
+
+        callback(frameSize)
 
     def _addProjectToNotebook(self, project: PyutProject) -> bool:
 
@@ -310,9 +351,22 @@ class ScaffoldUI:
         for oglClass in pluginDocument.oglClasses:
             x, y = oglClass.GetPosition()
             umlFrame.addShape(shape=oglClass, x=x, y=y)
-        for oglLink in pluginDocument.oglLinks:
-            x, y = oglLink.GetPosition()
-            umlFrame.addShape(oglLink, x=x, y=y)
+
+        self._layoutLinks(umlFrame=umlFrame, oglLinks=pluginDocument.oglLinks)
+
         for oglNote in pluginDocument.oglNotes:
             x, y = oglNote.GetPosition()
             umlFrame.addShape(oglNote, x=x, y=y)
+
+    def _layoutLinks(self, umlFrame: UmlFrameShapeHandler, oglLinks: OglLinks):
+
+        umlDiagram = umlFrame.GetDiagram()
+
+        for oglLink in oglLinks:
+            x, y = oglLink.GetPosition()
+            umlFrame.addShape(oglLink, x=x, y=y)
+            umlDiagram.AddShape(oglLink.sourceAnchor)
+            umlDiagram.AddShape(oglLink.destinationAnchor)
+            controlPoints = oglLink.GetControlPoints()
+            for controlPoint in controlPoints:
+                umlDiagram.AddShape(controlPoint)

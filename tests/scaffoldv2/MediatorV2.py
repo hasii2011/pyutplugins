@@ -1,19 +1,20 @@
 
+from typing import Union
+
 from logging import Logger
 from logging import getLogger
-from typing import Union
-from typing import cast
 
-from miniogl.DiagramFrame import DiagramFrame
+from wx import Yield as wxYield
 
 from ogl.OglLink import OglLink
 from ogl.OglObject import OglObject
 
 from core.IMediator import IMediator
 from core.IMediator import ScreenMetrics
+from core.types.Types import FrameSizeCallback
 
-from core.types.Types import OglObjects
 from core.types.Types import PluginProject
+from core.types.Types import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.eventengine.Events import EventType
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
@@ -44,22 +45,33 @@ class MediatorV2(IMediator):
         return ScreenMetrics(dpiX=72, dpiY=72, screenWidth=250, screenHeight=1440)
 
     @property
-    def umlFrame(self) -> DiagramFrame:
-        return cast(DiagramFrame, None)
+    def currentDirectory(self) -> str:
+        """
+        Returns:  The current directory
+        """
+        return ''
 
-    @umlFrame.setter
-    def umlFrame(self, newValue: DiagramFrame):
+    @currentDirectory.setter
+    def currentDirectory(self, theNewValue: str):
+        """
+        TODO:  Should plugins be allowed to manipulate the application's current directory
+        Args:
+            theNewValue:
+        """
         pass
 
-    @property
-    def selectedOglObjects(self) -> OglObjects:
-        return cast(OglObjects, None)
+    def getFrameSize(self, callback: FrameSizeCallback):
+        self._eventEngine.sendEvent(EventType.FrameSize, callback=callback)
+
+    def getSelectedOglObjects(self, callback: SelectedOglObjectsCallback):
+        self._eventEngine.sendEvent(EventType.SelectedOglObjects, callback=callback)
 
     def refreshFrame(self):
-        pass
+        self._eventEngine.sendEvent(EventType.RefreshFrame)
 
     def selectAllOglObjects(self):
-        pass
+        self._eventEngine.sendEvent(EventType.SelectAll)
+        wxYield()
 
     def deselectAllOglObjects(self):
         pass

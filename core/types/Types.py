@@ -1,4 +1,5 @@
 
+from typing import Callable
 from typing import Dict
 from typing import List
 from typing import NewType
@@ -35,8 +36,18 @@ OglSDMessages  = NewType('OglSDMessages',  Dict[int, OglSDMessage])
 
 OglObjects = Union[OglClasses, OglLinks, OglNotes, OglTexts, OglActors, OglUseCases]
 
-
 PyutLinks  = NewType('PyutLinks',   List[PyutLink])
+
+SelectedOglObjectsCallback = Callable[[OglObjects], None]        # Todo: Figure out appropriate type for callback
+
+
+@dataclass
+class FrameSize:
+    width: int = 0
+    height: int = 0
+
+
+FrameSizeCallback = Callable[[FrameSize], None]
 
 
 def createPluginClassesFactory() -> OglClasses:

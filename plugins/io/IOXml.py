@@ -55,7 +55,7 @@ class IOXml(IOPluginInterface):
 
         self.logger: Logger = getLogger(__name__)
 
-        super().__init__(mediator)
+        super().__init__(mediator=mediator)
 
         # from super class
         self._name    = PluginName('IOXml')

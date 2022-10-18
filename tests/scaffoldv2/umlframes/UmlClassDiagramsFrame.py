@@ -1,3 +1,4 @@
+from ogl.events.OglEventEngine import OglEventEngine
 
 from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
 
@@ -23,3 +24,9 @@ class UmlClassDiagramsFrame(UmlDiagramsFrame):
 
         super().__init__(parent)
         self.clearDiagram()     # Used to be .newDiagram
+
+        self._oglEventEngine: OglEventEngine = OglEventEngine(listeningWindow=self)
+
+    @property
+    def eventEngine(self) -> OglEventEngine:
+        return self._oglEventEngine

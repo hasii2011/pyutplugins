@@ -13,6 +13,9 @@ NewProjectEvent,         EVENT_NEW_PROJECT           = NewEvent()
 LoadProjectEvent,        EVENT_LOAD_PROJECT          = NewEvent()
 UpdateTreeItemNameEvent, EVENT_UPDATE_TREE_ITEM_NAME = NewEvent()
 SelectAllEvent,          EVENT_SELECT_ALL            = NewEvent()
+SelectedOglObjectsEvent, EVENT_SELECTED_OGL_OBJECTS  = NewEvent()
+RefreshFrameEvent,       EVENT_REFRESH_FRAME         = NewEvent()
+FrameSizeEvent,          EVENT_FRAME_SIZE            = NewEvent()
 
 
 class EventType(str, Enum):
@@ -34,3 +37,6 @@ class EventType(str, Enum):
     LoadProjectEvent   = ('LoadProjectEvent',   LoadProjectEvent(),        EVENT_NEW_PROJECT)
     UpdateTreeItemName = ('UpdateTreeItemName', UpdateTreeItemNameEvent(), EVENT_UPDATE_TREE_ITEM_NAME)
     SelectAll          = ('SelectAll',          SelectAllEvent(),          EVENT_SELECT_ALL)
+    SelectedOglObjects = ('SelectedOglObjects', SelectedOglObjectsEvent(), EVENT_SELECTED_OGL_OBJECTS)
+    RefreshFrame       = ('RefreshFrame',       RefreshFrameEvent(),       EVENT_REFRESH_FRAME)
+    FrameSize          = ('FrameSize',          FrameSizeEvent(),          EVENT_FRAME_SIZE)

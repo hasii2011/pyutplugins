@@ -17,13 +17,12 @@ from pyutmodel.PyutStereotype import PyutStereotype
 
 from core.types.PluginDataTypes import PluginName
 
-from core.types.Types import OglClasses
-
 from core.ToolPluginInterface import ToolPluginInterface
 
 from core.IMediator import IMediator
 
 from core.types.ExportDirectoryResponse import ExportDirectoryResponse
+from core.types.Types import OglObjects
 
 
 class ToolAscii(ToolPluginInterface):
@@ -59,13 +58,22 @@ class ToolAscii(ToolPluginInterface):
         """
 
         """
-        selectedObjects: OglClasses = self._mediator.selectedOglObjects
+        self._mediator.getSelectedOglObjects(callback=self._doAction)
+
+        # selectedObjects: OglClasses = self._mediator.selectedOglObjects
+        # if len(selectedObjects) < 1:
+        #     self.displayNoSelectedOglObjects()
+        #     return
+        # self._write(selectedObjects)
+
+    def _doAction(self, selectedObjects: OglObjects):
+
         if len(selectedObjects) < 1:
             self.displayNoSelectedOglObjects()
             return
         self._write(selectedObjects)
 
-    def _write(self, oglObjects: OglClasses):
+    def _write(self, oglObjects: OglObjects):
         """
         Write the data to a file
         Args:

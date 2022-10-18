@@ -1,5 +1,4 @@
 
-from typing import List
 from typing import cast
 
 from logging import Logger
@@ -7,8 +6,6 @@ from logging import getLogger
 
 from time import time
 
-from miniogl.DiagramFrame import DiagramFrame
-from ogl.OglNote import OglNote
 from wx import ICON_ERROR
 from wx import OK
 
@@ -17,8 +14,10 @@ from wx import MessageBox
 from wx import Yield as wxYield
 
 from miniogl.Shape import Shape
+
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
+from ogl.OglNote import OglNote
 
 from core.IMediator import IMediator
 
@@ -55,7 +54,7 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
 
     def setOptions(self) -> bool:
 
-        with DlgLayoutSize(self._mediator.umlFrame) as dlg:
+        with DlgLayoutSize(None) as dlg:
             dlgLayoutSize: DlgLayoutSize = cast(DlgLayoutSize, dlg)
             if dlgLayoutSize.ShowModal() == OK:
                 self.logger.warning(f'Retrieved data: layoutWidth: {dlgLayoutSize.layoutWidth} layoutHeight: {dlgLayoutSize.layoutHeight}')
@@ -68,7 +67,25 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
 
     def doAction(self):
 
-        selectedObjects: OglObjects = self._mediator.selectedOglObjects
+        self._mediator.getSelectedOglObjects(callback=self._doAction)
+        # selectedObjects: OglObjects = self._mediator.selectedOglObjects
+        #
+        # try:
+        #     orthogonalAdapter: OrthogonalAdapter = OrthogonalAdapter(umlObjects=selectedObjects)
+        #
+        #     layoutAreaSize: LayoutAreaSize = LayoutAreaSize(self._layoutWidth, self._layoutHeight)
+        #     orthogonalAdapter.doLayout(layoutAreaSize)
+        # except OrthogonalAdapterException as oae:
+        #     MessageBox(f'{oae}', 'Error', OK | ICON_ERROR)
+        #     return
+        #
+        # umlFrame: DiagramFrame = self._mediator.umlFrame
+        #
+        # if orthogonalAdapter is not None:
+        #     self._reLayoutNodes(selectedObjects, umlFrame, orthogonalAdapter.oglCoordinates)
+        #     self._reLayoutLinks(selectedObjects, umlFrame)
+
+    def _doAction(self, selectedObjects: OglObjects):
 
         try:
             orthogonalAdapter: OrthogonalAdapter = OrthogonalAdapter(umlObjects=selectedObjects)
@@ -79,18 +96,17 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
             MessageBox(f'{oae}', 'Error', OK | ICON_ERROR)
             return
 
-        umlFrame: DiagramFrame = self._mediator.umlFrame
+        # umlFrame: DiagramFrame = self._mediator.umlFrame
 
         if orthogonalAdapter is not None:
-            self._reLayoutNodes(selectedObjects, umlFrame, orthogonalAdapter.oglCoordinates)
-            self._reLayoutLinks(selectedObjects, umlFrame)
+            self._reLayoutNodes(selectedObjects, orthogonalAdapter.oglCoordinates)
+            self._reLayoutLinks(selectedObjects,)
 
-    def _reLayoutNodes(self, umlObjects: List[OglClass], umlFrame: DiagramFrame, oglCoordinates: OglCoordinates):
+    def _reLayoutNodes(self, umlObjects: OglObjects, oglCoordinates: OglCoordinates):
         """
 
         Args:
             umlObjects:
-            umlFrame:
         """
 
         for umlObj in umlObjects:
@@ -99,15 +115,15 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
                 oglCoordinate: OglCoordinate = oglCoordinates[oglName]
 
                 self._stepNodes(umlObj, oglCoordinate)
-            self._animate(umlFrame)
+            self._animate()
 
-    def _reLayoutLinks(self, umlObjects: List[OglClass], umlFrame: DiagramFrame):
+    def _reLayoutLinks(self, umlObjects: OglObjects):
 
         for oglObject in umlObjects:
             if isinstance(oglObject, OglLink):
                 oglLink: OglLink = cast(OglLink, oglObject)
                 oglLink.optimizeLine()
-            self._animate(umlFrame)
+            self._animate()
 
     def _stepNodes(self, srcShape: Shape, oglCoordinate: OglCoordinate):
 
@@ -119,14 +135,12 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
         #
         srcShape.SetPosition(newX, newY)
 
-    def _animate(self, umlFrame: DiagramFrame):
+    def _animate(self):
         """
         Does an animation simulation
-
-        Args:
-            umlFrame:
         """
-        umlFrame.Refresh()
+        # umlFrame.Refresh()
+        self._mediator.refreshFrame()
         self.logger.debug(f'Refreshing ...............')
         wxYield()
         t = time()

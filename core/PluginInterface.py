@@ -1,5 +1,6 @@
 
 from typing import Optional
+from typing import cast
 
 from wx import DD_NEW_DIR_BUTTON
 from wx import FD_OPEN
@@ -33,6 +34,7 @@ from core.types.PluginDataTypes import PluginName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 from core.types.Types import OglClasses
 from core.types.Types import OglLinks
+from core.types.Types import OglObjects
 
 UNSPECIFIED_NAME:        FormatName        = FormatName('Unspecified Plugin Name')
 UNSPECIFIED_EXTENSION:   PluginExtension   = PluginExtension('*')
@@ -51,9 +53,12 @@ class PluginInterface:
 
     def __init__(self, mediator: IMediator):
         """
+        Menu handlers may instantiate a plugin merely to get plugin information.  In that case,
+        the input parameter will be None
 
         Args:
             mediator:   A class that implements ICommunicator
+
         """
         self._mediator: IMediator = mediator
         #
@@ -166,7 +171,7 @@ class PluginInterface:
             defaultDir = self._mediator.currentDirectory
 
         dlg: FileDialog = FileDialog(
-            self._mediator.umlFrame,
+            None,
             "Choose files to import",
             wildcard=self.__composeWildCardSpecification(),
             defaultDir=defaultDir,
@@ -217,7 +222,7 @@ class PluginInterface:
         Returns:  The appropriate response object;  The directory name is valid only if
         response.cancelled is True
         """
-        dirDialog: DirDialog = DirDialog(self._mediator.umlFrame,
+        dirDialog: DirDialog = DirDialog(None,
                                          "Choose a directory to import",
                                          defaultPath=self._mediator.currentDirectory,
                                          style=DD_NEW_DIR_BUTTON)
@@ -249,7 +254,7 @@ class PluginInterface:
         else:
             defaultPath = preferredDefaultPath
 
-        dirDialog: DirDialog = DirDialog(self._mediator.umlFrame, "Choose a destination directory", defaultPath=defaultPath)
+        dirDialog: DirDialog = DirDialog(None, "Choose a destination directory", defaultPath=defaultPath)
 
         response: ExportDirectoryResponse = ExportDirectoryResponse(cancelled=False)
         if dirDialog.ShowModal() == ID_CANCEL:
@@ -296,8 +301,13 @@ class PluginInterface:
 
     def _layoutLinks(self, oglLinks: OglLinks):
 
+        # umlDiagram = umlFrame.GetDiagram()
+
         for oglLink in oglLinks:
             self._mediator.addShape(oglLink)
+
+            # umlDiagram.AddShape(oglLink.sourceAnchor)
+            # umlDiagram.AddShape(oglLink.destinationAnchor)
 
         self._mediator.refreshFrame()
 

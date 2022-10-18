@@ -13,8 +13,9 @@ from ogl.OglObject import OglObject
 
 from core.IMediator import IMediator
 from core.IMediator import ScreenMetrics
-from core.types.Types import OglObjects
+from core.types.Types import FrameSizeCallback
 from core.types.Types import PluginProject
+from core.types.Types import SelectedOglObjectsCallback
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 
 
@@ -63,12 +64,7 @@ class MockMediator(IMediator):
     def currentDirectory(self, theNewValue: str):
         pass
 
-    @property
-    def umlFrame(self) -> DiagramFrame:
-        return cast(DiagramFrame, None)
-
-    @umlFrame.setter
-    def umlFrame(self, newValue: DiagramFrame):
+    def getFrameSize(self, callback: FrameSizeCallback):
         pass
 
     @property
@@ -79,7 +75,7 @@ class MockMediator(IMediator):
     def eventEngine(self, eventEngine: EventEngine):
         pass
 
-    def selectedOglObjects(self) -> OglObjects:
+    def getSelectedOglObjects(self, callback: SelectedOglObjectsCallback):
         pass
 
     def refreshFrame(self):

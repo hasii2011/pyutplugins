@@ -15,7 +15,7 @@ class ToolPluginInterface(PluginInterface, ABC):
 
     def __init__(self, mediator: IMediator):
 
-        super().__init__(mediator)
+        super().__init__(mediator=mediator)
 
         self._menuTitle: str = 'Not Set'
 
@@ -25,8 +25,7 @@ class ToolPluginInterface(PluginInterface, ABC):
         be overridden
         """
         if self.setOptions() is True:
-            selectedShapes = self._mediator.selectedOglObjects
-            self.doAction(self._oglClasses, selectedShapes)
+            self.doAction()
 
     @property
     def menuTitle(self) -> str:

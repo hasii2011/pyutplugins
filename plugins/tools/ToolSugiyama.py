@@ -11,6 +11,7 @@ from core.ToolPluginInterface import ToolPluginInterface
 from core.types.PluginDataTypes import PluginName
 
 from core.types.Types import OglClasses
+from core.types.Types import OglObjects
 
 from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from plugins.tools.sugiyama.Sugiyama import Sugiyama
@@ -62,7 +63,11 @@ class ToolSugiyama(ToolPluginInterface):
         return True
 
     def doAction(self):
-        selectedObjects: OglClasses = self._mediator.selectedOglObjects
+        self._mediator.getSelectedOglObjects(callback=self._doAction)
+
+    def _doAction(self, selectedOglObjects: OglObjects):
+
+        selectedObjects: OglObjects = selectedOglObjects
 
         self.logger.info(f'Begin Sugiyama algorithm')
 
@@ -72,7 +77,8 @@ class ToolSugiyama(ToolPluginInterface):
         sugiyama.addVirtualNodes()
         sugiyama.barycenter()
 
-        # self.logger.info(f'Number of hierarchical intersections: {sugiyama._getNbIntersectAll()}')
+        # noinspection PyProtectedMember
+        self.logger.info(f'Number of hierarchical intersections: {sugiyama._getNbIntersectAll()}')
 
         sugiyama.addNonHierarchicalNodes()
         sugiyama.fixPositions()

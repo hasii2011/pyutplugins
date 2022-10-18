@@ -35,7 +35,7 @@ class IOPluginInterface(PluginInterface, ABC):
     """
     def __init__(self, mediator: IMediator):
 
-        super().__init__(mediator)
+        super().__init__(mediator=mediator)
 
     def executeImport(self):
         """

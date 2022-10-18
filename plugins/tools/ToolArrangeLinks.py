@@ -11,7 +11,7 @@ from core.ToolPluginInterface import ToolPluginInterface
 
 from core.types.PluginDataTypes import PluginName
 
-from core.types.Types import OglClasses
+from core.types.Types import OglObjects
 
 
 class ToolArrangeLinks(ToolPluginInterface):
@@ -41,7 +41,22 @@ class ToolArrangeLinks(ToolPluginInterface):
     def doAction(self):
 
         self._mediator.selectAllOglObjects()
-        oglObjects: OglClasses = self._mediator.selectedOglObjects
+        self._mediator.getSelectedOglObjects(callback=self._doAction)
+        # oglObjects: OglClasses = self._mediator.getSelectedOglObjects(callback=self._doAction)
+
+        # for oglObject in oglObjects:
+        #     if isinstance(oglObject, OglLink):
+        #         oglLink: OglLink = cast(OglLink, oglObject)
+        #         self.logger.info(f"Optimizing: {oglLink}")
+        #         oglLink.optimizeLine()
+        #     else:
+        #         self.logger.debug(f"No line optimizing for: {oglObject}")
+        #
+        # self._mediator.refreshFrame()
+
+    def _doAction(self, oglObjects: OglObjects):
+
+        # oglObjects: OglClasses = self._mediator.getSelectedOglObjects(callback=self._doAction)
 
         for oglObject in oglObjects:
             if isinstance(oglObject, OglLink):

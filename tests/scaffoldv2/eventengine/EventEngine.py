@@ -9,17 +9,21 @@ from wx import TreeItemId
 from wx import Window
 
 from core.types.Types import PluginProject
+from core.types.Types import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.eventengine.Events import EventType
+from tests.scaffoldv2.eventengine.Events import FrameSizeEvent
 from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
 from tests.scaffoldv2.eventengine.Events import NewProjectEvent
+from tests.scaffoldv2.eventengine.Events import SelectedOglObjectsEvent
 from tests.scaffoldv2.eventengine.Events import UpdateTreeItemNameEvent
 
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 
-NEW_NAME_PARAMETER:     str = 'newName'
-TREE_ITEM_ID_PARAMETER: str = 'treeItemId'
+NEW_NAME_PARAMETER:       str = 'newName'
+TREE_ITEM_ID_PARAMETER:   str = 'treeItemId'
 PLUGIN_PROJECT_PARAMETER: str = 'pluginProject'
+CALLBACK_PARAMETER:       str = 'callback'
 
 
 class EventEngine(IEventEngine):
@@ -50,6 +54,12 @@ class EventEngine(IEventEngine):
                 self._sendNewProjectEvent()
             case EventType.SelectAll:
                 self._simpleSendEvent(eventType=eventType)
+            case EventType.RefreshFrame:
+                self._simpleSendEvent(eventType=eventType)
+            case EventType.SelectedOglObjects:
+                self._sendSelectedOglObjectsEvent(**kwargs)
+            case EventType.FrameSize:
+                self._sendFrameSizeEvent(**kwargs)
             case _:
                 assert False, f'Unknown event type: `{eventType}`'
 
@@ -68,6 +78,18 @@ class EventEngine(IEventEngine):
 
         pluginProject: PluginProject = kwargs[PLUGIN_PROJECT_PARAMETER]
         eventToPost: LoadProjectEvent = LoadProjectEvent(pluginProject=pluginProject)
+        PostEvent(dest=self._listeningWindow, event=eventToPost)
+
+    def _sendSelectedOglObjectsEvent(self, **kwargs):
+
+        callback: SelectedOglObjectsCallback = kwargs[CALLBACK_PARAMETER]
+        eventToPost: SelectedOglObjectsEvent = SelectedOglObjectsEvent(callback=callback)
+        PostEvent(dest=self._listeningWindow, event=eventToPost)
+
+    def _sendFrameSizeEvent(self, **kwargs):
+
+        callback: SelectedOglObjectsCallback = kwargs[CALLBACK_PARAMETER]
+        eventToPost: FrameSizeEvent = FrameSizeEvent(callback=callback)
         PostEvent(dest=self._listeningWindow, event=eventToPost)
 
     def _simpleSendEvent(self, eventType: EventType):
