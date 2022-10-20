@@ -13,7 +13,6 @@ from wx import Image
 from wx import MemoryDC
 from wx import NullBitmap
 from wx import OK
-from wx import ScrolledWindow
 
 from core.IMediator import IMediator
 from core.IOPluginInterface import IOPluginInterface
@@ -24,10 +23,10 @@ from core.types.PluginDataTypes import FormatName
 from core.types.PluginDataTypes import PluginDescription
 from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import PluginName
-
+from core.types.Types import FrameInformation
 from core.types.Types import OglObjects
-from plugins.io.wximage.DlgWxImageOptions import DlgWxImageOptions
 
+from plugins.io.wximage.DlgWxImageOptions import DlgWxImageOptions
 from plugins.io.wximage.WxImageFormat import WxImageFormat
 
 FORMAT_NAME:        FormatName = FormatName('Wx Image')
@@ -80,24 +79,26 @@ class IOWxImage(IOPluginInterface):
         pass
 
     def write(self, oglObjects: OglObjects):
-
         """
         Write data
 
         Args:
             oglObjects:     list of exported objects
         """
-
-        mediator: IMediator = self._mediator
+        # self._mediator.getFrameInformation(callback=self._gotFrameInfo)
+        mediator:         IMediator        = self._mediator
+        frameInformation: FrameInformation = self._frameInformation
         mediator.deselectAllOglObjects()
 
         imageType: BitmapType     = WxImageFormat.toWxBitMapType(self._imageFormat)
 
-        window:    ScrolledWindow = self._mediator.umlFrame
-        context:   ClientDC       = ClientDC(window)
+        # window:    ScrolledWindow = self._mediator.umlFrame
+        context:   ClientDC       = frameInformation.clientDC
         memory:    MemoryDC       = MemoryDC()
 
-        x, y = window.GetSize()
+        # x, y = window.GetSize()
+        x: int = frameInformation.frameSize.width
+        y: int = frameInformation.frameSize.height
         emptyBitmap: Bitmap = Bitmap(x, y, -1)
 
         memory.SelectObject(emptyBitmap)
@@ -111,3 +112,29 @@ class IOWxImage(IOPluginInterface):
         status:   bool  = img.SaveFile(filename, imageType)
         if status is False:
             self.logger.error(f'Error on image write to {filename}')
+
+    # def _gotFrameInfo(self, frameInformation: FrameInformation):
+    #
+    #     x = frameInformation.frameSize.width
+    #     y = frameInformation.frameSize.height
+    #     context: ClientDC = frameInformation.clientDC
+    #     imageType: BitmapType     = WxImageFormat.toWxBitMapType(self._imageFormat)
+    #
+    #     # window:    ScrolledWindow = self._mediator.umlFrame
+    #     # context:   ClientDC       = ClientDC(window)
+    #     memory:    MemoryDC       = MemoryDC()
+    #
+    #     # x, y = window.GetSize()
+    #     emptyBitmap: Bitmap = Bitmap(x, y, -1)
+    #
+    #     memory.SelectObject(emptyBitmap)
+    #     memory.Blit(source=context, xsrc=0, height=y, xdest=0, ydest=0, ysrc=0, width=x)
+    #     memory.SelectObject(NullBitmap)
+    #
+    #     img:       Image = emptyBitmap.ConvertToImage()
+    #     extension: str   = self._imageFormat.__str__()
+    #
+    #     filename: str   = f'{self._outputFileName}.{extension}'
+    #     status:   bool  = img.SaveFile(filename, imageType)
+    #     if status is False:
+    #         self.logger.error(f'Error on image write to {filename}')

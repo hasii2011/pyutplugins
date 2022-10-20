@@ -10,6 +10,7 @@ from logging import getLogger
 from miniogl.DiagramFrame import DiagramFrame
 
 from wx import CLIP_CHILDREN
+from wx import ClientDC
 from wx import EVT_TREE_SEL_CHANGED
 from wx import ICON_ERROR
 from wx import ID_ANY
@@ -30,12 +31,16 @@ from wx import TreeItemId
 from wx import Yield as wxYield
 
 from core.IMediator import IMediator
+from core.types.Types import FrameInformation
+from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSize
+from core.types.Types import FrameSizeCallback
 
 from core.types.Types import PluginDocument
 from core.types.Types import PluginDocumentType
 from core.types.Types import PluginProject
 from core.types.Types import OglLinks
+from core.types.Types import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.MediatorV2 import MediatorV2
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
@@ -44,19 +49,23 @@ from tests.scaffoldv2.PyutProject import PyutProject
 from tests.scaffoldv2.PyutProject import UmlFrameType
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
+from tests.scaffoldv2.eventengine.Events import DeSelectAllShapesEvent
+from tests.scaffoldv2.eventengine.Events import EVENT_DESELECT_ALL_SHAPES
+
+from tests.scaffoldv2.eventengine.Events import EVENT_FRAME_INFORMATION
 from tests.scaffoldv2.eventengine.Events import EVENT_FRAME_SIZE
 from tests.scaffoldv2.eventengine.Events import EVENT_REFRESH_FRAME
-
-from tests.scaffoldv2.eventengine.Events import EVENT_SELECT_ALL
+from tests.scaffoldv2.eventengine.Events import EVENT_SELECT_ALL_SHAPES
 from tests.scaffoldv2.eventengine.Events import EVENT_LOAD_PROJECT
 from tests.scaffoldv2.eventengine.Events import EVENT_NEW_PROJECT
 from tests.scaffoldv2.eventengine.Events import EVENT_SELECTED_OGL_OBJECTS
-from tests.scaffoldv2.eventengine.Events import FrameSizeEvent
 
+from tests.scaffoldv2.eventengine.Events import FrameSizeEvent
+from tests.scaffoldv2.eventengine.Events import FrameInformationEvent
 from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
 from tests.scaffoldv2.eventengine.Events import NewProjectEvent
 from tests.scaffoldv2.eventengine.Events import RefreshFrameEvent
-from tests.scaffoldv2.eventengine.Events import SelectAllEvent
+from tests.scaffoldv2.eventengine.Events import SelectAllShapesEvent
 from tests.scaffoldv2.eventengine.Events import SelectedOglObjectsEvent
 
 from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
@@ -129,12 +138,14 @@ class ScaffoldUI:
             eventEngine:
         """
         self._eventEngine = eventEngine
-        self._eventEngine.registerListener(EVENT_NEW_PROJECT,  self._onNewProject)
-        self._eventEngine.registerListener(EVENT_LOAD_PROJECT, self._onLoadProject)
-        self._eventEngine.registerListener(EVENT_SELECT_ALL,   self._onSelectAll)
+        self._eventEngine.registerListener(EVENT_NEW_PROJECT,          self._onNewProject)
+        self._eventEngine.registerListener(EVENT_LOAD_PROJECT,         self._onLoadProject)
+        self._eventEngine.registerListener(EVENT_SELECT_ALL_SHAPES,    self._onSelectAll)
+        self._eventEngine.registerListener(EVENT_DESELECT_ALL_SHAPES,  self._onDeSelectAll)
         self._eventEngine.registerListener(EVENT_SELECTED_OGL_OBJECTS, self._onSelectedOglObjects)
         self._eventEngine.registerListener(EVENT_REFRESH_FRAME,        self._onRefreshFrame)
         self._eventEngine.registerListener(EVENT_FRAME_SIZE,           self._onFrameSize)
+        self._eventEngine.registerListener(EVENT_FRAME_INFORMATION,    self._onFrameInformation)
 
     pluginMediator = property(fset=_setPluginMediator)
     eventEngine    = property(fset=_setEventEngine)
@@ -143,11 +154,30 @@ class ScaffoldUI:
         self._onNewProject(cast(NewProjectEvent, None))
 
     # noinspection PyUnusedLocal
-    def _onSelectAll(self, event: SelectAllEvent):
+    def _onDeSelectAll(self, event: DeSelectAllShapesEvent):
+        self._selectShapes(False)
+
+    # noinspection PyUnusedLocal
+    def _onSelectAll(self, event: SelectAllShapesEvent):
+        self._selectShapes(True)
+        # shapes = self._currentFrame.GetDiagram().GetShapes()
+        # for shape in shapes:
+        #     shape.SetSelected(True)
+        #     self._currentFrame.GetSelectedShapes()
+        #
+        # self._currentFrame.SetSelectedShapes(shapes)
+        # self._currentFrame.Refresh()
+
+    def _selectShapes(self, selected: bool):
+        """
+
+        Args:
+            selected: 'True' selects them all, 'False' deselects them
+        """
 
         shapes = self._currentFrame.GetDiagram().GetShapes()
         for shape in shapes:
-            shape.SetSelected(True)
+            shape.SetSelected(selected)
             self._currentFrame.GetSelectedShapes()
 
         self._currentFrame.SetSelectedShapes(shapes)
@@ -210,7 +240,7 @@ class ScaffoldUI:
     def _onSelectedOglObjects(self, event: SelectedOglObjectsEvent):
 
         selectedObjects = self._currentFrame.GetSelectedShapes()
-        callback = event.callback
+        callback: SelectedOglObjectsCallback = event.callback
 
         callback(selectedObjects)
 
@@ -224,12 +254,33 @@ class ScaffoldUI:
         frameSize: FrameSize = FrameSize()
 
         (frameW, frameH) = self._currentFrame.GetSize()
-        frameSize.width = frameW
+        frameSize.width  = frameW
         frameSize.height = frameH
 
-        callback = event.callback
+        callback: FrameSizeCallback = event.callback
 
         callback(frameSize)
+
+    def _onFrameInformation(self, event: FrameInformationEvent):
+
+        frameInformation: FrameInformation = FrameInformation()
+
+        if self._currentFrame is None:
+            frameInformation.frameActive = False
+        else:
+            frameInformation.frameActive = True
+            frameInformation.clientDC          = ClientDC(self._currentFrame)
+            frameInformation.selectedOglObjects = self._currentFrame.GetSelectedShapes()
+
+            (width, height) = self._currentFrame.GetSize()
+
+            frameSize: FrameSize = FrameSize(width=width, height=height)
+
+            frameInformation.frameSize         = frameSize
+
+        callback: FrameInformationCallback = event.callback
+
+        callback(frameInformation)
 
     def _addProjectToNotebook(self, project: PyutProject) -> bool:
 

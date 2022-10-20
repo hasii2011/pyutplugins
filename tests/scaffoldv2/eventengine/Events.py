@@ -7,15 +7,18 @@ from wx import PyEventBinder
 from wx.lib.newevent import NewEvent
 
 #
-# Constructor return Tuple; First is the event,  The second is the binder
+# The constructor returns a Tuple; First is the event,  The second is the binder
 #
 NewProjectEvent,         EVENT_NEW_PROJECT           = NewEvent()
 LoadProjectEvent,        EVENT_LOAD_PROJECT          = NewEvent()
 UpdateTreeItemNameEvent, EVENT_UPDATE_TREE_ITEM_NAME = NewEvent()
-SelectAllEvent,          EVENT_SELECT_ALL            = NewEvent()
+SelectAllShapesEvent,    EVENT_SELECT_ALL_SHAPES     = NewEvent()
+DeSelectAllShapesEvent, EVENT_DESELECT_ALL_SHAPES    = NewEvent()
+
 SelectedOglObjectsEvent, EVENT_SELECTED_OGL_OBJECTS  = NewEvent()
 RefreshFrameEvent,       EVENT_REFRESH_FRAME         = NewEvent()
 FrameSizeEvent,          EVENT_FRAME_SIZE            = NewEvent()
+FrameInformationEvent,   EVENT_FRAME_INFORMATION     = NewEvent()
 
 
 class EventType(str, Enum):
@@ -36,7 +39,9 @@ class EventType(str, Enum):
     NewProject         = ('NewProject',         NewProjectEvent(),         EVENT_NEW_PROJECT)
     LoadProjectEvent   = ('LoadProjectEvent',   LoadProjectEvent(),        EVENT_NEW_PROJECT)
     UpdateTreeItemName = ('UpdateTreeItemName', UpdateTreeItemNameEvent(), EVENT_UPDATE_TREE_ITEM_NAME)
-    SelectAll          = ('SelectAll',          SelectAllEvent(),          EVENT_SELECT_ALL)
+    SelectAllShapes    = ('SelectAllShapes',    SelectAllShapesEvent(),    EVENT_SELECT_ALL_SHAPES)
+    DeSelectAllShapes  = ('DeSelectAllShapes',  DeSelectAllShapesEvent(),  EVENT_DESELECT_ALL_SHAPES)
     SelectedOglObjects = ('SelectedOglObjects', SelectedOglObjectsEvent(), EVENT_SELECTED_OGL_OBJECTS)
     RefreshFrame       = ('RefreshFrame',       RefreshFrameEvent(),       EVENT_REFRESH_FRAME)
     FrameSize          = ('FrameSize',          FrameSizeEvent(),          EVENT_FRAME_SIZE)
+    FrameInformation   = ('FrameInformation',   FrameInformationEvent(),   EVENT_FRAME_INFORMATION)

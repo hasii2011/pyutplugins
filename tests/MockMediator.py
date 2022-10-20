@@ -13,6 +13,7 @@ from ogl.OglObject import OglObject
 
 from core.IMediator import IMediator
 from core.IMediator import ScreenMetrics
+from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSizeCallback
 from core.types.Types import PluginProject
 from core.types.Types import SelectedOglObjectsCallback
@@ -65,6 +66,9 @@ class MockMediator(IMediator):
         pass
 
     def getFrameSize(self, callback: FrameSizeCallback):
+        pass
+
+    def getFrameInformation(self, callback: FrameInformationCallback):
         pass
 
     @property

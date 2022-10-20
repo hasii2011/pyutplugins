@@ -12,6 +12,7 @@ from core.types.Types import PluginProject
 from core.types.Types import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.eventengine.Events import EventType
+from tests.scaffoldv2.eventengine.Events import FrameInformationEvent
 from tests.scaffoldv2.eventengine.Events import FrameSizeEvent
 from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
 from tests.scaffoldv2.eventengine.Events import NewProjectEvent
@@ -52,12 +53,16 @@ class EventEngine(IEventEngine):
                 self._sendLoadProjectEvent(**kwargs)
             case EventType.NewProject:
                 self._sendNewProjectEvent()
-            case EventType.SelectAll:
+            case EventType.SelectAllShapes:
+                self._simpleSendEvent(eventType=eventType)
+            case EventType.DeSelectAllShapes:
                 self._simpleSendEvent(eventType=eventType)
             case EventType.RefreshFrame:
                 self._simpleSendEvent(eventType=eventType)
             case EventType.SelectedOglObjects:
                 self._sendSelectedOglObjectsEvent(**kwargs)
+            case EventType.FrameInformation:
+                self._sendFrameInformationEvent(**kwargs)
             case EventType.FrameSize:
                 self._sendFrameSizeEvent(**kwargs)
             case _:
@@ -90,6 +95,11 @@ class EventEngine(IEventEngine):
 
         callback: SelectedOglObjectsCallback = kwargs[CALLBACK_PARAMETER]
         eventToPost: FrameSizeEvent = FrameSizeEvent(callback=callback)
+        PostEvent(dest=self._listeningWindow, event=eventToPost)
+
+    def _sendFrameInformationEvent(self, **kwargs):
+        callback: SelectedOglObjectsCallback = kwargs[CALLBACK_PARAMETER]
+        eventToPost: FrameInformationEvent = FrameInformationEvent(callback=callback)
         PostEvent(dest=self._listeningWindow, event=eventToPost)
 
     def _simpleSendEvent(self, eventType: EventType):

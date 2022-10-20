@@ -1,11 +1,13 @@
 
+from typing import cast
+
 from abc import ABC
 from abc import abstractmethod
 
-
 from core.PluginInterface import PluginInterface
 from core.IMediator import IMediator
-from core.types.OutputFormat import OutputFormat
+
+from core.types.Types import FrameInformation
 from core.types.Types import OglObjects
 
 
@@ -37,6 +39,10 @@ class IOPluginInterface(PluginInterface, ABC):
 
         super().__init__(mediator=mediator)
 
+        self._oglObjects:         OglObjects = cast(OglObjects, None)               # The imported Ogl Objects
+        self._selectedOglObjects: OglObjects = cast(OglObjects, None)               # The selected Ogl Objects requested by .executeExport()
+        self._frameInformation:   FrameInformation = cast(FrameInformation, None)   # The frame information requested by .executeExport()
+
     def executeImport(self):
         """
         Called by Pyut to begin the import process.  Checks to see if an import format is
@@ -60,25 +66,26 @@ class IOPluginInterface(PluginInterface, ABC):
         """
         Called by Pyut to begin the export process.
         """
-        if self._mediator.umlFrame is None:
+        self._mediator.getFrameInformation(callback=self._executeExport)
+
+    def _executeExport(self, frameInformation: FrameInformation):
+
+        assert self.outputFormat is not None, 'Developer error. We cannot export w/o and output format'
+        if frameInformation.frameActive is False:
             self.displayNoUmlFrame()
         else:
-            outputFormat: OutputFormat = self.outputFormat      # TODO this is probably not needed Pyut groups appropriately
-            if outputFormat is None:
-                pass
-            else:
-                if self.setExportOptions() is False:
-                    pass
+            if self.setExportOptions() is True:
+                self._frameInformation   = frameInformation
+                self._selectedOglObjects = frameInformation.selectedOglObjects  # syntactic sugar
+                # prefs: PyutPreferences = PyutPreferences()
+                # if prefs.pyutIoPluginAutoSelectAll is True:       TODO:  Need plugin preferences
+                #    mediator.selectAllShapes()
+
+                if len(self._selectedOglObjects) == 0:
+                    self.displayNoSelectedOglObjects()
                 else:
-                    # prefs: PyutPreferences = PyutPreferences()
-                    # if prefs.pyutIoPluginAutoSelectAll is True:       TODO:  Need plugin preferences
-                    #    mediator.selectAllShapes()
-                    oglObjects = self._mediator.selectedOglObjects
-                    if len(oglObjects) == 0:
-                        self.displayNoSelectedOglObjects()
-                    else:
-                        self.write(oglObjects)
-                        self._mediator.deselectAllOglObjects()
+                    self.write(self._selectedOglObjects)
+                    self._mediator.deselectAllOglObjects()
 
     @abstractmethod
     def setImportOptions(self) -> bool:

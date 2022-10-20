@@ -1,6 +1,10 @@
+
+from typing import cast
+
 from logging import Logger
 from logging import getLogger
-from typing import cast
+
+from ogl.OglObject import OglObject
 
 from core.IMediator import IMediator
 
@@ -8,7 +12,6 @@ from core.ToolPluginInterface import ToolPluginInterface
 
 from core.types.PluginDataTypes import PluginName
 from core.types.Types import FrameSize
-
 from core.types.Types import OglObjects
 
 
@@ -54,9 +57,10 @@ class ToolTransforms(ToolPluginInterface):
         self.logger.warning(f'frameW: {frameW} - frameH: {frameH}')
 
         for obj in selectedObjects:
-            x, y = obj.GetPosition()
+            oglObject: OglObject = cast(OglObject, obj)
+            x, y = oglObject.GetPosition()
             newX: int = frameW - x
             self.logger.info(f"x,y: {x},{y} - newX: {newX}")
-            obj.SetPosition(newX, y)
+            oglObject.SetPosition(newX, y)
 
         self._mediator.refreshFrame()

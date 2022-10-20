@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from ogl.OglLink import OglLink
 from ogl.OglObject import OglObject
 
+from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSizeCallback
 from core.types.Types import PluginProject
 from core.types.Types import SelectedOglObjectsCallback
@@ -75,6 +76,10 @@ class IMediator(ABC):
 
     @abstractmethod
     def getFrameSize(self, callback: FrameSizeCallback):
+        pass
+
+    @abstractmethod
+    def getFrameInformation(self, callback: FrameInformationCallback):
         pass
 
     @abstractmethod

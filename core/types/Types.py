@@ -9,9 +9,11 @@ from typing import cast
 from dataclasses import dataclass
 from dataclasses import field
 
+from os import path as osPath
+
 from enum import Enum
 
-from os import path as osPath
+from wx import ClientDC
 
 from pyutmodel.PyutLink import PyutLink
 
@@ -34,20 +36,43 @@ OglUseCases = NewType('OglUseCases', List[OglUseCase])
 OglSDInstances = NewType('OglSDInstances', Dict[int, OglSDInstance])
 OglSDMessages  = NewType('OglSDMessages',  Dict[int, OglSDMessage])
 
-OglObjects = Union[OglClasses, OglLinks, OglNotes, OglTexts, OglActors, OglUseCases]
+AllOglObjects = Union[OglClasses, OglLinks, OglNotes, OglTexts, OglActors, OglUseCases]
 
+OglObjects = NewType('OglObjects',  List[AllOglObjects])
 PyutLinks  = NewType('PyutLinks',   List[PyutLink])
 
 SelectedOglObjectsCallback = Callable[[OglObjects], None]        # Todo: Figure out appropriate type for callback
 
 
+def createOglObjectsFactory() -> OglObjects:
+    """
+    Factory method to create  the OglClasses data structure;
+
+    Returns:  A new data structure
+    """
+    return OglObjects([])
+
+
 @dataclass
 class FrameSize:
-    width: int = 0
-    height: int = 0
+    """
+    The strategy is to provide minimal information to the plugins
+    we do not want them to not abuse it.
+    """
+    width:  int = -1
+    height: int = -1
 
 
-FrameSizeCallback = Callable[[FrameSize], None]
+@dataclass
+class FrameInformation:
+    frameActive:        bool       = False
+    selectedOglObjects: OglObjects = field(default_factory=createOglObjectsFactory)
+    frameSize:          FrameSize  = FrameSize()
+    clientDC:           ClientDC   = cast(ClientDC, None)
+
+
+FrameInformationCallback = Callable[[FrameInformation], None]
+FrameSizeCallback        = Callable[[FrameSize], None]
 
 
 def createPluginClassesFactory() -> OglClasses:

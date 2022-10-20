@@ -53,20 +53,14 @@ class ToolAscii(ToolPluginInterface):
             self._exportDirectory = response.directoryName
             self.logger.debug(f'selectedDir: {self._exportDirectory}')
             return True
-
-    def doAction(self):
         """
-
         """
         self._mediator.getSelectedOglObjects(callback=self._doAction)
 
-        # selectedObjects: OglClasses = self._mediator.selectedOglObjects
-        # if len(selectedObjects) < 1:
-        #     self.displayNoSelectedOglObjects()
-        #     return
-        # self._write(selectedObjects)
-
     def _doAction(self, selectedObjects: OglObjects):
+        pass
+
+    def doAction(self):
 
         if len(selectedObjects) < 1:
             self.displayNoSelectedOglObjects()

@@ -200,7 +200,7 @@ class ScaffoldFrame(Frame):
 
     # noinspection PyUnusedLocal
     def _onSelectAll(self, event: CommandEvent):
-        self._eventEngine.sendEvent(EventType.SelectAll)
+        self._eventEngine.sendEvent(EventType.SelectAllShapes)
 
     # TODO  Start these belong in a separate class
     def _onTools(self, event: CommandEvent):

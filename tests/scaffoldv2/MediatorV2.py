@@ -11,6 +11,7 @@ from ogl.OglObject import OglObject
 
 from core.IMediator import IMediator
 from core.IMediator import ScreenMetrics
+from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSizeCallback
 
 from core.types.Types import PluginProject
@@ -63,6 +64,9 @@ class MediatorV2(IMediator):
     def getFrameSize(self, callback: FrameSizeCallback):
         self._eventEngine.sendEvent(EventType.FrameSize, callback=callback)
 
+    def getFrameInformation(self, callback: FrameInformationCallback):
+        self._eventEngine.sendEvent(EventType.FrameInformation, callback=callback)
+
     def getSelectedOglObjects(self, callback: SelectedOglObjectsCallback):
         self._eventEngine.sendEvent(EventType.SelectedOglObjects, callback=callback)
 
@@ -70,11 +74,12 @@ class MediatorV2(IMediator):
         self._eventEngine.sendEvent(EventType.RefreshFrame)
 
     def selectAllOglObjects(self):
-        self._eventEngine.sendEvent(EventType.SelectAll)
+        self._eventEngine.sendEvent(EventType.SelectAllShapes)
         wxYield()
 
     def deselectAllOglObjects(self):
-        pass
+        self._eventEngine.sendEvent(EventType.DeSelectAllShapes)
+        wxYield()
 
     def addShape(self, shape: Union[OglObject, OglLink]):
         pass

@@ -153,7 +153,6 @@ class PluginManager(Singleton):
                 self.logger.error(f'{e}')
             EndBusyCursor()
 
-
     def doImport(self):
         pass
 
