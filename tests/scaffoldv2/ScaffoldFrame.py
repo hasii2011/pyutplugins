@@ -232,7 +232,7 @@ class ScaffoldFrame(Frame):
 
         idMap:        PluginIDMap       = self._pluginManager.inputPluginsMap.pluginIdMap
         clazz:        type              = idMap[wxId]     # type: ignore
-        plugInstance: IOPluginInterface = clazz(mediator=self._mediatorV2)
+        plugInstance: IOPluginInterface = clazz(pluginAdapter=self._mediatorV2)
         self._doIOAction(methodToCall=plugInstance.executeImport)
 
     def _onExport(self, event: CommandEvent):
@@ -242,7 +242,7 @@ class ScaffoldFrame(Frame):
 
         idMap:        PluginIDMap      = self._pluginManager.outputPluginsMap.pluginIdMap
         clazz:        type              = idMap[wxId]     # type: ignore
-        plugInstance: IOPluginInterface = clazz(mediator=self._mediatorV2)
+        plugInstance: IOPluginInterface = clazz(pluginAdapter=self._mediatorV2)
         self._doIOAction(methodToCall=plugInstance.executeExport)
 
     def _doIOAction(self, methodToCall: Callable):
