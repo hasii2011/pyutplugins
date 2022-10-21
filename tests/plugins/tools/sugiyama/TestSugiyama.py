@@ -16,7 +16,7 @@ from plugins.tools.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
 
 from plugins.tools.sugiyama.Sugiyama import Sugiyama
 
-from tests.MockMediator import MockPluginAdapter
+from tests.MockPluginAdapter import MockPluginAdapter
 from tests.TestBase import TestBase
 
 
