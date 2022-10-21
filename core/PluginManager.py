@@ -11,13 +11,20 @@ from pkgutil import iter_modules
 
 from importlib import import_module
 
-from wx import NewIdRef
+from wx import ICON_ERROR
+from wx import OK
 
+from wx import MessageDialog
+from wx import NewIdRef
 from wx import BeginBusyCursor
 from wx import EndBusyCursor
 
+from wx import Yield as wxYield
+
+from core.IOPluginInterface import IOPluginInterface
 from core.IPluginAdapter import IPluginAdapter
 from core.Singleton import Singleton
+
 from core.ToolPluginInterface import ToolPluginInterface
 from core.types.PluginDataTypes import IOPluginMap
 from core.types.PluginDataTypes import IOPluginMapType
@@ -52,6 +59,12 @@ class PluginManager(Singleton):
     """
 
     def init(self,  *args, **kwargs):
+        """
+        Expects a pluginAdapter parameter in kwargs
+        Args:
+            *args:
+            **kwargs:
+        """
 
         self.logger: Logger = getLogger(__name__)
 
@@ -65,6 +78,8 @@ class PluginManager(Singleton):
 
         self._loadIOPlugins()
         self._loadToolPlugins()
+
+        self._pluginAdapter: IPluginAdapter = kwargs['pluginAdapter']
 
     @property
     def inputPlugins(self) -> PluginList:
@@ -134,14 +149,19 @@ class PluginManager(Singleton):
 
         return self._outputPluginsMap
 
-    def doToolAction(self, wxId: int, mediator: IPluginAdapter):
+    def doToolAction(self, wxId: int):
+        """
+
+        Args:
+            wxId:   The ID ref of the menu item
+        """
 
         pluginMap: PluginIDMap = self.toolPluginsIDMap
 
         # TODO: Fix this later for mypy
         clazz: type = pluginMap[wxId]   # type: ignore
         # Create a plugin instance
-        pluginInstance: ToolPluginInterface = clazz(mediator=mediator)
+        pluginInstance: ToolPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
 
         if pluginInstance.setOptions() is True:
             # Do plugin functionality
@@ -153,11 +173,44 @@ class PluginManager(Singleton):
                 self.logger.error(f'{e}')
             EndBusyCursor()
 
-    def doImport(self):
-        pass
+    def doImport(self, wxId: int):
+        """
 
-    def doExport(self):
+        Args:
+            wxId:       The ID ref of the menu item
+        """
+        idMap:        PluginIDMap       = self.inputPluginsMap.pluginIdMap
+        clazz:        type              = idMap[wxId]     # type: ignore
+        plugInstance: IOPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
+        self._doIOAction(methodToCall=plugInstance.executeImport)
+
+    def doExport(self, wxId: int):
         pass
+        """
+
+        Args:
+            wxId:       The ID ref of the menu item
+        """
+        idMap:        PluginIDMap      = self.outputPluginsMap.pluginIdMap
+        clazz:        type              = idMap[wxId]     # type: ignore
+        plugInstance: IOPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
+        self._doIOAction(methodToCall=plugInstance.executeExport)
+
+    def _doIOAction(self, methodToCall: Callable):
+        """
+        Args:
+            methodToCall:
+        """
+
+        try:
+            wxYield()
+            methodToCall()
+        except (ValueError, Exception) as e:
+            self.logger.error(f'{e}')
+            booBoo: MessageDialog = MessageDialog(parent=None,
+                                                  message=f'An error occurred while executing the selected plugin - {e}',
+                                                  caption='Error!', style=OK | ICON_ERROR)
+            booBoo.ShowModal()
 
     def _loadIOPlugins(self):
         self._ioPluginClasses = self.__loadPlugins(plugins.io)

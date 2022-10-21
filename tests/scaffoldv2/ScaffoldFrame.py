@@ -27,8 +27,7 @@ from wx import MenuBar
 
 from wx import AcceleratorEntry
 from wx import AcceleratorTable
-from wx import BeginBusyCursor
-from wx import EndBusyCursor
+
 from wx import MessageDialog
 from wx import NewIdRef
 
@@ -65,22 +64,21 @@ class ScaffoldFrame(Frame):
         super().__init__(parent=parent, id=wxId,  size=size, style=DEFAULT_FRAME_STYLE, title='Test Scaffold for Plugins')
 
         self.logger:           Logger        = getLogger(__name__)
-        self._pluginManager:   PluginManager = PluginManager()
         self._loadXmlFileWxId: int           = NewIdRef()
 
         self._status = self.CreateStatusBar()
         self._status.SetStatusText('Ready!')
 
-        self._eventEngine: EventEngine  = EventEngine(listeningWindow=self)
-
-        self._scaffoldUI: ScaffoldUI = ScaffoldUI(topLevelFrame=self, createEmptyProject=createEmptyProject)
+        self._eventEngine: EventEngine = EventEngine(listeningWindow=self)
+        self._scaffoldUI:  ScaffoldUI  = ScaffoldUI(topLevelFrame=self, createEmptyProject=createEmptyProject)
 
         self._scaffoldUI.eventEngine = self._eventEngine
-        self._mediatorV2: PluginAdapterV2 = PluginAdapterV2(eventEngine=self._eventEngine)
+
+        self._pluginAdapter: PluginAdapterV2 = PluginAdapterV2(eventEngine=self._eventEngine)
         #
-        # Inject this so the ScaffoldUI can receive messages from the plugins
+        # The plugin manager needs this to allow the plugins to send us messages
         #
-        self._scaffoldUI.pluginMediator = self._mediatorV2
+        self._pluginManager:   PluginManager = PluginManager(pluginAdapter=self._pluginAdapter)
 
         self._createApplicationMenuBar()
 
@@ -202,62 +200,25 @@ class ScaffoldFrame(Frame):
     def _onSelectAll(self, event: CommandEvent):
         self._eventEngine.sendEvent(EventType.SelectAllShapes)
 
-    # TODO  Start these belong in a separate class
     def _onTools(self, event: CommandEvent):
 
         wxId: int = event.GetId()
         self.logger.debug(f'{wxId=}')
 
-        pluginMap: PluginIDMap = self._pluginManager.toolPluginsIDMap
-
-        # TODO: Fix this later for mypy
-        clazz: type = pluginMap[wxId]   # type: ignore
-        # Create a plugin instance
-        pluginInstance: ToolPluginInterface = clazz(mediator=self._mediatorV2)
-
-        if pluginInstance.setOptions() is True:
-            # Do plugin functionality
-            BeginBusyCursor()
-            try:
-                pluginInstance.doAction()
-                self.logger.debug(f"After tool plugin do action")
-            except (ValueError, Exception) as e:
-                self.logger.error(f'{e}')
-            EndBusyCursor()
+        self._pluginManager.doToolAction(wxId=wxId)
 
     def _onImport(self, event: CommandEvent):
 
         wxId: int = event.GetId()
         self.logger.info(f'Import: {wxId=}')
 
-        idMap:        PluginIDMap       = self._pluginManager.inputPluginsMap.pluginIdMap
-        clazz:        type              = idMap[wxId]     # type: ignore
-        plugInstance: IOPluginInterface = clazz(pluginAdapter=self._mediatorV2)
-        self._doIOAction(methodToCall=plugInstance.executeImport)
+        self._pluginManager.doImport(wxId=wxId)
 
     def _onExport(self, event: CommandEvent):
 
         wxId: int = event.GetId()
         self.logger.info(f'Export: {wxId=}')
-
-        idMap:        PluginIDMap      = self._pluginManager.outputPluginsMap.pluginIdMap
-        clazz:        type              = idMap[wxId]     # type: ignore
-        plugInstance: IOPluginInterface = clazz(pluginAdapter=self._mediatorV2)
-        self._doIOAction(methodToCall=plugInstance.executeExport)
-
-    def _doIOAction(self, methodToCall: Callable):
-
-        try:
-            wxYield()
-            methodToCall()
-        except (ValueError, Exception) as e:
-            self.logger.error(f'{e}')
-            booBoo: MessageDialog = MessageDialog(parent=None,
-                                                  message=f'An error occurred while executing the selected plugin - {e}',
-                                                  caption='Error!', style=OK | ICON_ERROR)
-            booBoo.ShowModal()
-
-    # TODO End these belong in a separate class
+        self._pluginManager.doExport(wxId=wxId)
 
     def _askForXMLFileToImport(self) -> RequestResponse:
         """

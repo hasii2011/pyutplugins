@@ -7,18 +7,22 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from wx import Window
+
+from core.IPluginAdapter import IPluginAdapter
 from core.PluginManager import PluginManager
 from core.types.PluginDataTypes import PluginIDMap
 
 from tests.TestBase import TestBase
+from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
+from tests.scaffoldv2.eventengine.EventEngine import EventEngine
+from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 
 
 class TestPluginManager(TestBase):
     """
-    You need to change the name of this class to Test`xxxx`
-    Where `xxxx' is the name of the class that you want to test.
-
-    See existing tests for more information.
+    Does not test any execution of the plugins;  Only the interfaces needed by Pyut
+    to set up menu times and test whether or not we actually dynamically loaded the plugins
     """
     clsLogger: Logger = cast(Logger, None)
 
@@ -29,7 +33,12 @@ class TestPluginManager(TestBase):
 
     def setUp(self):
         self.logger:        Logger        = TestPluginManager.clsLogger
-        self.pluginManager: PluginManager = PluginManager()
+
+        eventEngine: IEventEngine = EventEngine(listeningWindow=cast(Window, None))       # don't use these in these tests
+
+        pluginAdapter: IPluginAdapter = PluginAdapterV2(eventEngine=eventEngine)
+
+        self.pluginManager: PluginManager = PluginManager(pluginAdapter=pluginAdapter)
 
     def tearDown(self):
         pass

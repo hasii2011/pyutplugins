@@ -97,16 +97,13 @@ class ScaffoldUI:
         self._projectTree: TreeCtrl       = cast(TreeCtrl, None)
         self._notebook:    Notebook       = cast(Notebook, None)
 
-        self._projectsRoot: TreeItemId    = cast(TreeItemId, None)
-
+        self._projectsRoot: TreeItemId  = cast(TreeItemId, None)
         self._projects:    PyutProjects = PyutProjects([])
 
         self._initializeUIElements()
 
-        self._notebookCurrentPage: int = -1
+        self._notebookCurrentPage: int          = -1
         self._currentFrame:        DiagramFrame = cast(DiagramFrame, None)
-
-        self._mediatorV2: IPluginAdapter = cast(IPluginAdapter, None)
 
         if createEmptyProject is True:
             self.createEmptyProject()
@@ -126,14 +123,6 @@ class ScaffoldUI:
                 return project
         return cast(PyutProject, None)
 
-    def _setPluginMediator(self, mediatorV2: PluginAdapterV2):
-        """
-        Write only property used to inject the plugin pluginAdapter
-        Args:
-            mediatorV2:
-        """
-        self._mediatorV2 = mediatorV2
-
     def _setEventEngine(self, eventEngine: EventEngine):
         """
         Write only property used to inject the event engine
@@ -152,7 +141,6 @@ class ScaffoldUI:
         self._eventEngine.registerListener(EVENT_FRAME_SIZE,           self._onFrameSize)
         self._eventEngine.registerListener(EVENT_FRAME_INFORMATION,    self._onFrameInformation)
 
-    pluginMediator = property(fset=_setPluginMediator)
     eventEngine    = property(fset=_setEventEngine)
 
     def createEmptyProject(self):

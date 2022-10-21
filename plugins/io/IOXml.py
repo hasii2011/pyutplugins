@@ -183,7 +183,7 @@ class IOXml(IOPluginInterface):
                     oglDocument.oglSDMessages[modelId] = oglSDMessage
                 case OglSDInstance() as oglObject:
                     oglSDInstance: OglSDInstance        = cast(OglSDInstance, oglObject)
-                    modelId:       int                  = oglSDInstance.pyutObject.id
+                    modelId                             = oglSDInstance.pyutObject.id
                     oglDocument.oglSDInstances[modelId] = oglSDInstance
                 case _:
                     self.logger.warning(f'Unsaved {oglObject=}')
