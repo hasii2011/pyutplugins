@@ -30,13 +30,13 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('A simple PDF for UML 
 class IOPdf(IOPluginInterface):
     """
     """
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
         """
 
         Args:
-            mediator:   A class that implements IMediator
+            pluginAdapter:   A class that implements IMediator
         """
-        super().__init__(mediator=mediator)
+        super().__init__(pluginAdapter=pluginAdapter)
 
         self.logger: Logger = getLogger(__name__)
 
@@ -87,9 +87,9 @@ class IOPdf(IOPluginInterface):
         wxYield()
 
         pluginVersion: str = self.version
-        pyutVersion:   str = self._mediator.pyutVersion
+        pyutVersion:   str = self._pluginAdapter.pyutVersion
 
-        screenMetrics: ScreenMetrics = self._mediator.screenMetrics
+        screenMetrics: ScreenMetrics = self._pluginAdapter.screenMetrics
         dpi:           int           = screenMetrics.dpiX
 
         oglToPdf: OglToPyUmlDefinition = OglToPyUmlDefinition(imageOptions=self._imageOptions,

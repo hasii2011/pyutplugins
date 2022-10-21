@@ -35,9 +35,9 @@ class IOPluginInterface(PluginInterface, ABC):
         `doExport`
 
     """
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
 
-        super().__init__(mediator=mediator)
+        super().__init__(pluginAdapter=pluginAdapter)
 
         self._oglObjects:         OglObjects = cast(OglObjects, None)               # The imported Ogl Objects
         self._selectedOglObjects: OglObjects = cast(OglObjects, None)               # The selected Ogl Objects requested by .executeExport()
@@ -66,7 +66,7 @@ class IOPluginInterface(PluginInterface, ABC):
         """
         Called by Pyut to begin the export process.
         """
-        self._mediator.getFrameInformation(callback=self._executeExport)
+        self._pluginAdapter.getFrameInformation(callback=self._executeExport)
 
     def _executeExport(self, frameInformation: FrameInformation):
 
@@ -79,13 +79,13 @@ class IOPluginInterface(PluginInterface, ABC):
                 self._selectedOglObjects = frameInformation.selectedOglObjects  # syntactic sugar
                 # prefs: PyutPreferences = PyutPreferences()
                 # if prefs.pyutIoPluginAutoSelectAll is True:       TODO:  Need plugin preferences
-                #    mediator.selectAllShapes()
+                #    pluginAdapter.selectAllShapes()
 
                 if len(self._selectedOglObjects) == 0:
                     self.displayNoSelectedOglObjects()
                 else:
                     self.write(self._selectedOglObjects)
-                    self._mediator.deselectAllOglObjects()
+                    self._pluginAdapter.deselectAllOglObjects()
 
     @abstractmethod
     def setImportOptions(self) -> bool:

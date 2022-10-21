@@ -123,7 +123,7 @@ class ScaffoldUI:
 
     def _setPluginMediator(self, mediatorV2: PluginAdapterV2):
         """
-        Write only property used to inject the plugin mediator
+        Write only property used to inject the plugin pluginAdapter
         Args:
             mediatorV2:
         """
@@ -387,7 +387,7 @@ class ScaffoldUI:
             if len(projectFrames) > 0:
                 self._currentFrame = projectFrames[0]
                 self.__syncPageFrameAndNotebook(frame=self._currentFrame)
-                # self._mediator.updateTitle()
+                # self._pluginAdapter.updateTitle()
             self._currentProject = project
 
     def __syncPageFrameAndNotebook(self, frame):

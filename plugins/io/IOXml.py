@@ -54,11 +54,11 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Pyut XML File')
 
 class IOXml(IOPluginInterface):
 
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
 
         self.logger: Logger = getLogger(__name__)
 
-        super().__init__(mediator=mediator)
+        super().__init__(pluginAdapter=pluginAdapter)
 
         # from super class
         self._name    = PluginName('IOXml')
@@ -137,20 +137,20 @@ class IOXml(IOPluginInterface):
 
             pluginProject.pluginDocuments[pluginDocument.documentTitle] = pluginDocument
 
-        self._mediator.loadProject(pluginProject=pluginProject)
+        self._pluginAdapter.loadProject(pluginProject=pluginProject)
         return True
 
     def write(self, oglObjects: OglObjects):
 
         oglProject: OglProject = OglProject()
-        oglProject.version  = self._mediator.pyutVersion
+        oglProject.version  = self._pluginAdapter.pyutVersion
         oglProject.codePath = ''
 
         oglDocument: OglDocument = OglDocument()
         oglDocument.scrollPositionX = 0
         oglDocument.scrollPositionY = 0
-        oglDocument.pixelsPerUnitX = self._mediator.screenMetrics.dpiX
-        oglDocument.pixelsPerUnitY = self._mediator.screenMetrics.dpiY
+        oglDocument.pixelsPerUnitX = self._pluginAdapter.screenMetrics.dpiX
+        oglDocument.pixelsPerUnitY = self._pluginAdapter.screenMetrics.dpiY
         oglDocument.documentTitle  = OglDocumentTitle(self._frameInformation.diagramTitle)
         oglDocument.documentType   = self._frameInformation.diagramType
         for oglObject in oglObjects:

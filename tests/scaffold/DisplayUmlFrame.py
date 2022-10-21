@@ -96,7 +96,7 @@ class DisplayUmlFrame(DiagramFrame):
     def OnLeftDown(self, event: MouseEvent):
         """
         Manage a left down mouse event.
-        If there's an action pending in the mediator, give it the event, else
+        If there's an action pending in the pluginAdapter, give it the event, else
         let it go to the next handler.
         """
         # DiagramFrame.OnLeftDown(self, event)
@@ -119,7 +119,7 @@ class DisplayUmlFrame(DiagramFrame):
         # noinspection SpellCheckingInspection
         """
         x, y = self.CalcUnscrolledPosition(event.GetX(), event.GetY())
-        self._mediator.editObject(x, y)
+        self._pluginAdapter.editObject(x, y)
         """
         # DiagramFrame.OnLeftDClick(self, event)
         super().OnLeftDClick(event)

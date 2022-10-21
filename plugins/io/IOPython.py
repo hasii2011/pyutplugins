@@ -52,9 +52,9 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Python code generatio
 
 class IOPython(IOPluginInterface):
 
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
 
-        super().__init__(mediator)
+        super().__init__(pluginAdapter)
 
         self.logger: Logger = getLogger(__name__)
 

@@ -1,6 +1,5 @@
 
 from typing import Optional
-from typing import cast
 
 from wx import DD_NEW_DIR_BUTTON
 from wx import FD_OPEN
@@ -24,6 +23,8 @@ from core.IPluginAdapter import IPluginAdapter
 from core.types.InputFormat import InputFormat
 from core.types.OutputFormat import OutputFormat
 
+from core.types.Types import OglClasses
+from core.types.Types import OglLinks
 from core.types.ExportDirectoryResponse import ExportDirectoryResponse
 from core.types.ImportDirectoryResponse import ImportDirectoryResponse
 from core.types.MultipleFileRequestResponse import MultipleFileRequestResponse
@@ -32,9 +33,6 @@ from core.types.PluginDataTypes import PluginExtension
 from core.types.PluginDataTypes import FormatName
 from core.types.PluginDataTypes import PluginName
 from core.types.SingleFileRequestResponse import SingleFileRequestResponse
-from core.types.Types import OglClasses
-from core.types.Types import OglLinks
-from core.types.Types import OglObjects
 
 UNSPECIFIED_NAME:        FormatName        = FormatName('Unspecified Plugin Name')
 UNSPECIFIED_EXTENSION:   PluginExtension   = PluginExtension('*')
@@ -51,16 +49,16 @@ class PluginInterface:
     There should be no implementations of this interface
     """
 
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
         """
         Menu handlers may instantiate a plugin merely to get plugin information.  In that case,
         the input parameter will be None
 
         Args:
-            mediator:   A class that implements ICommunicator
+            pluginAdapter:   A class that implements ICommunicator
 
         """
-        self._mediator: IPluginAdapter = mediator
+        self._pluginAdapter: IPluginAdapter = pluginAdapter
         #
         # To be set by implementor constructor and read by property
         self._name:         PluginName = PluginName('Implementor must provide the plugin name')
@@ -138,7 +136,7 @@ class PluginInterface:
         defaultDir:  Optional[str] = startDirectory
 
         if defaultDir is None:
-            defaultDir = self._mediator.currentDirectory
+            defaultDir = self._pluginAdapter.currentDirectory
         file = FileSelector(
             "Choose a file to import",
             # wildcard=inputFormat.name + " (*." + inputFormat.extension + ")|*." + inputFormat.description,
@@ -168,7 +166,7 @@ class PluginInterface:
         defaultDir:  Optional[str] = startDirectory
 
         if defaultDir is None:
-            defaultDir = self._mediator.currentDirectory
+            defaultDir = self._pluginAdapter.currentDirectory
 
         dlg: FileDialog = FileDialog(
             None,
@@ -224,7 +222,7 @@ class PluginInterface:
         """
         dirDialog: DirDialog = DirDialog(None,
                                          "Choose a directory to import",
-                                         defaultPath=self._mediator.currentDirectory,
+                                         defaultPath=self._pluginAdapter.currentDirectory,
                                          style=DD_NEW_DIR_BUTTON)
 
         response: ImportDirectoryResponse = ImportDirectoryResponse()
@@ -234,7 +232,7 @@ class PluginInterface:
         else:
             response.directoryName = dirDialog.GetPath()
             response.cancelled     = False
-            self._mediator.currentDirectory = response.directoryName    # TODO: Should plugin be doing this?
+            self._pluginAdapter.currentDirectory = response.directoryName    # TODO: Should plugin be doing this?
 
         dirDialog.Destroy()
 
@@ -250,7 +248,7 @@ class PluginInterface:
         response.cancelled is True
         """
         if preferredDefaultPath is None:
-            defaultPath: str = self._mediator.currentDirectory
+            defaultPath: str = self._pluginAdapter.currentDirectory
         else:
             defaultPath = preferredDefaultPath
 
@@ -263,7 +261,7 @@ class PluginInterface:
             response.cancelled     = True
         else:
             directory = dirDialog.GetPath()
-            self._mediator.currentDirectory = directory     # TODO  Should a plugin do this
+            self._pluginAdapter.currentDirectory = directory     # TODO  Should a plugin do this
             dirDialog.Destroy()
             response.directoryName = directory
 
@@ -296,20 +294,20 @@ class PluginInterface:
                 incY = int(sy)
             oglClass.SetPosition(x, y)
             x += incX
-            self._mediator.addShape(shape=oglClass)
-        self._mediator.refreshFrame()
+            self._pluginAdapter.addShape(shape=oglClass)
+        self._pluginAdapter.refreshFrame()
 
     def _layoutLinks(self, oglLinks: OglLinks):
 
         # umlDiagram = umlFrame.GetDiagram()
 
         for oglLink in oglLinks:
-            self._mediator.addShape(oglLink)
+            self._pluginAdapter.addShape(oglLink)
 
             # umlDiagram.AddShape(oglLink.sourceAnchor)
             # umlDiagram.AddShape(oglLink.destinationAnchor)
 
-        self._mediator.refreshFrame()
+        self._pluginAdapter.refreshFrame()
 
     def __composeWildCardSpecification(self) -> str:
 

@@ -25,9 +25,9 @@ class SamplePluginInterface(PluginInterface):
     TODO make this a Sample Tool Plugin
     """
 
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
 
-        super().__init__(mediator)
+        super().__init__(pluginAdapter)
 
         self.logger: Logger = getLogger(__name__)
 

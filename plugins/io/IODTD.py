@@ -26,8 +26,8 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('W3C DTD 1.0 file form
 
 class IODTD(IOPluginInterface):
 
-    def __init__(self, mediator: IPluginAdapter):
-        super().__init__(mediator)
+    def __init__(self, pluginAdapter: IPluginAdapter):
+        super().__init__(pluginAdapter)
 
         # from super class
         self._name    = PluginName('IoDTD')
@@ -69,13 +69,13 @@ class IODTD(IOPluginInterface):
         # TODO use the new PluginProject interface
         oglClasses: OglClasses = dtdParser.oglClasses
         for oglClass in oglClasses:
-            self._mediator.addShape(oglClass)
+            self._pluginAdapter.addShape(oglClass)
 
         oglLinks: OglLinks = dtdParser.links
         for oglLink in oglLinks:
-            self._mediator.addShape(oglLink)
+            self._pluginAdapter.addShape(oglLink)
 
-        self._mediator.refreshFrame()
+        self._pluginAdapter.refreshFrame()
 
         return True
 

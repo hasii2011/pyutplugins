@@ -28,13 +28,13 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Graph Modeling Langua
 class IOGML(IOPluginInterface):
     """
     """
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
         """
 
         Args:
-            mediator:   A class that implements IMediator
+            pluginAdapter:   A class that implements IMediator
         """
-        super().__init__(mediator=mediator)
+        super().__init__(pluginAdapter=pluginAdapter)
 
         self.logger: Logger = getLogger(__name__)
 

@@ -13,9 +13,9 @@ class ToolPluginInterface(PluginInterface, ABC):
     plugins must implement.
     """
 
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
 
-        super().__init__(mediator=mediator)
+        super().__init__(pluginAdapter=pluginAdapter)
 
         self._menuTitle: str = 'Not Set'
 

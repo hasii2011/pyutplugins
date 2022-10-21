@@ -44,11 +44,11 @@ class IOJava(IOPluginInterface):
     In the original implementation these were two different I/O Plugins
     """
 
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
 
         self.logger: Logger = getLogger(__name__)
 
-        super().__init__(mediator)
+        super().__init__(pluginAdapter)
 
         # from super class
         self._name    = PluginName('Java Code Reader and Writer')

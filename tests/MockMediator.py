@@ -22,7 +22,7 @@ from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 
 class MockPluginAdapter(IPluginAdapter):
     """
-    A simple mostly do nothing mediator for unit tests
+    A simple mostly do nothing pluginAdapter for unit tests
     """
     # noinspection PyUnusedLocal
     def __init__(self, umlFrame: DiagramFrame = None, currentDirectory: str = ''):

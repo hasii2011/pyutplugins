@@ -37,7 +37,7 @@ class TestPluginInterface(TestBase):
 
         mediator: IPluginAdapter = cast(IPluginAdapter, None)
         # noinspection PyUnusedLocal
-        abc: PluginInterface = PluginInterface(mediator=mediator, )
+        abc: PluginInterface = PluginInterface(pluginAdapter=mediator, )
 
 
 def suite() -> TestSuite:

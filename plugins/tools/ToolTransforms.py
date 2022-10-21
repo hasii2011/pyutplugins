@@ -21,9 +21,9 @@ class ToolTransforms(ToolPluginInterface):
 
     TODO: Explore parameterizing x transform and adding other transforms
     """
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
 
-        super().__init__(mediator=mediator)
+        super().__init__(pluginAdapter=pluginAdapter)
 
         self.logger: Logger = getLogger(__name__)
 
@@ -37,13 +37,13 @@ class ToolTransforms(ToolPluginInterface):
         return True
 
     def doAction(self):
-        # self._mediator.getSelectedOglObjects(callback=self._stashSelectedObjects)
-        self._mediator.getFrameInformation(callback=self._doAction)
+        # self._pluginAdapter.getSelectedOglObjects(callback=self._stashSelectedObjects)
+        self._pluginAdapter.getFrameInformation(callback=self._doAction)
     # def _stashSelectedObjects(self, selectedOglObjects: OglObjects):
     #
     #     self._selectedOglObjects = selectedOglObjects
     #
-    #     self._mediator.getFrameSize(callback=self._doAction)
+    #     self._pluginAdapter.getFrameSize(callback=self._doAction)
 
     # def _doAction(self, frameSize: FrameSize):
     def _doAction(self, frameInformation: FrameInformation):
@@ -52,7 +52,7 @@ class ToolTransforms(ToolPluginInterface):
 
         frameW: int = frameInformation.frameSize.width
         frameH: int = frameInformation.frameSize.height
-        # (frameW, frameH) = self._mediator.umlFrame.GetSize()
+        # (frameW, frameH) = self._pluginAdapter.umlFrame.GetSize()
         self.logger.warning(f'frameW: {frameW} - frameH: {frameH}')
 
         for obj in selectedObjects:
@@ -62,4 +62,4 @@ class ToolTransforms(ToolPluginInterface):
             self.logger.info(f"x,y: {x},{y} - newX: {newX}")
             oglObject.SetPosition(newX, y)
 
-        self._mediator.refreshFrame()
+        self._pluginAdapter.refreshFrame()

@@ -40,9 +40,9 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
     Version 2 of this plugin.  Does not depend on python-tulip.  Instead, it depends on a homegrown
     version
     """
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
 
-        super().__init__(mediator)
+        super().__init__(pluginAdapter)
 
         self.logger: Logger = getLogger(__name__)
 
@@ -67,8 +67,8 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
 
     def doAction(self):
 
-        self._mediator.getSelectedOglObjects(callback=self._doAction)
-        # selectedObjects: OglObjects = self._mediator.selectedOglObjects
+        self._pluginAdapter.getSelectedOglObjects(callback=self._doAction)
+        # selectedObjects: OglObjects = self._pluginAdapter.selectedOglObjects
         #
         # try:
         #     orthogonalAdapter: OrthogonalAdapter = OrthogonalAdapter(umlObjects=selectedObjects)
@@ -79,7 +79,7 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
         #     MessageBox(f'{oae}', 'Error', OK | ICON_ERROR)
         #     return
         #
-        # umlFrame: DiagramFrame = self._mediator.umlFrame
+        # umlFrame: DiagramFrame = self._pluginAdapter.umlFrame
         #
         # if orthogonalAdapter is not None:
         #     self._reLayoutNodes(selectedObjects, umlFrame, orthogonalAdapter.oglCoordinates)
@@ -96,7 +96,7 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
             MessageBox(f'{oae}', 'Error', OK | ICON_ERROR)
             return
 
-        # umlFrame: DiagramFrame = self._mediator.umlFrame
+        # umlFrame: DiagramFrame = self._pluginAdapter.umlFrame
 
         if orthogonalAdapter is not None:
             self._reLayoutNodes(selectedObjects, orthogonalAdapter.oglCoordinates)
@@ -140,7 +140,7 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
         Does an animation simulation
         """
         # umlFrame.Refresh()
-        self._mediator.refreshFrame()
+        self._pluginAdapter.refreshFrame()
         self.logger.debug(f'Refreshing ...............')
         wxYield()
         t = time()

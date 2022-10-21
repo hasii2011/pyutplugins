@@ -36,13 +36,13 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('png, bmp, gif, or jpg
 
 class IOWxImage(IOPluginInterface):
 
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
         """
 
         Args:
-            mediator:   A class that implements IMediator
+            pluginAdapter:   A class that implements IMediator
         """
-        super().__init__(mediator=mediator)
+        super().__init__(pluginAdapter=pluginAdapter)
 
         self.logger: Logger = getLogger(__name__)
 
@@ -85,14 +85,14 @@ class IOWxImage(IOPluginInterface):
         Args:
             oglObjects:     list of exported objects
         """
-        # self._mediator.getFrameInformation(callback=self._gotFrameInfo)
-        mediator:         IPluginAdapter        = self._mediator
+        # self._pluginAdapter.getFrameInformation(callback=self._gotFrameInfo)
+        mediator:         IPluginAdapter        = self._pluginAdapter
         frameInformation: FrameInformation = self._frameInformation
         mediator.deselectAllOglObjects()
 
         imageType: BitmapType     = WxImageFormat.toWxBitMapType(self._imageFormat)
 
-        # window:    ScrolledWindow = self._mediator.umlFrame
+        # window:    ScrolledWindow = self._pluginAdapter.umlFrame
         context:   ClientDC       = frameInformation.clientDC
         memory:    MemoryDC       = MemoryDC()
 
@@ -120,7 +120,7 @@ class IOWxImage(IOPluginInterface):
     #     context: ClientDC = frameInformation.clientDC
     #     imageType: BitmapType     = WxImageFormat.toWxBitMapType(self._imageFormat)
     #
-    #     # window:    ScrolledWindow = self._mediator.umlFrame
+    #     # window:    ScrolledWindow = self._pluginAdapter.umlFrame
     #     # context:   ClientDC       = ClientDC(window)
     #     memory:    MemoryDC       = MemoryDC()
     #

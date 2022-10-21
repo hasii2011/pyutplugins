@@ -16,9 +16,9 @@ from core.types.Types import OglObjects
 
 class ToolArrangeLinks(ToolPluginInterface):
 
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
 
-        super().__init__(mediator)
+        super().__init__(pluginAdapter)
 
         self.logger: Logger = getLogger(__name__)
 
@@ -40,8 +40,8 @@ class ToolArrangeLinks(ToolPluginInterface):
 
     def doAction(self):
 
-        self._mediator.selectAllOglObjects()
-        self._mediator.getSelectedOglObjects(callback=self._doAction)
+        self._pluginAdapter.selectAllOglObjects()
+        self._pluginAdapter.getSelectedOglObjects(callback=self._doAction)
 
     def _doAction(self, oglObjects: OglObjects):
 
@@ -53,4 +53,4 @@ class ToolArrangeLinks(ToolPluginInterface):
             else:
                 self.logger.debug(f"No line optimizing for: {oglObject}")
 
-        self._mediator.refreshFrame()
+        self._pluginAdapter.refreshFrame()

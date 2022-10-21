@@ -31,9 +31,9 @@ class ToolAscii(ToolPluginInterface):
     TODO:  This is really and IOPlugin that only does Output
     """
 
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
 
-        super().__init__(mediator)
+        super().__init__(pluginAdapter)
 
         self.logger: Logger = getLogger(__name__)
 
@@ -56,7 +56,7 @@ class ToolAscii(ToolPluginInterface):
             return True
 
     def doAction(self):
-        self._mediator.getSelectedOglObjects(callback=self._doAction)
+        self._pluginAdapter.getSelectedOglObjects(callback=self._doAction)
 
     def _doAction(self, selectedObjects: OglObjects):
 

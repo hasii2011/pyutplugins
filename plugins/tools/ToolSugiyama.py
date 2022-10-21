@@ -22,9 +22,9 @@ class ToolSugiyama(ToolPluginInterface):
     """
     ToSugiyama : Automatic layout algorithm based on Sugiyama levels.
     """
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
 
-        super().__init__(mediator)
+        super().__init__(pluginAdapter)
 
         self.logger: Logger = getLogger(__name__)
 
@@ -62,7 +62,7 @@ class ToolSugiyama(ToolPluginInterface):
         return True
 
     def doAction(self):
-        self._mediator.getSelectedOglObjects(callback=self._doAction)
+        self._pluginAdapter.getSelectedOglObjects(callback=self._doAction)
 
     def _doAction(self, selectedOglObjects: OglObjects):
 
@@ -70,7 +70,7 @@ class ToolSugiyama(ToolPluginInterface):
 
         self.logger.info(f'Begin Sugiyama algorithm')
 
-        sugiyama: Sugiyama = Sugiyama(mediator=self._mediator)
+        sugiyama: Sugiyama = Sugiyama(mediator=self._pluginAdapter)
         sugiyama.createInterfaceOglALayout(oglObjects=selectedObjects)
         sugiyama.levelFind()
         sugiyama.addVirtualNodes()
@@ -82,6 +82,6 @@ class ToolSugiyama(ToolPluginInterface):
         sugiyama.addNonHierarchicalNodes()
         sugiyama.fixPositions()
 
-        self._mediator.refreshFrame()
+        self._pluginAdapter.refreshFrame()
 
         self.logger.info('End Sugiyama algorithm')
