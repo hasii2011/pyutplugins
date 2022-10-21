@@ -7,8 +7,9 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from miniogl.DiagramFrame import DiagramFrame
-
+from miniogl.SelectAnchorPoint import SelectAnchorPoint
+from ogl.OglLink import OglLink
+from ogl.OglObject import OglObject
 from wx import CLIP_CHILDREN
 from wx import ClientDC
 from wx import EVT_TREE_SEL_CHANGED
@@ -29,6 +30,10 @@ from wx import TreeEvent
 from wx import TreeItemId
 
 from wx import Yield as wxYield
+
+from miniogl.DiagramFrame import DiagramFrame
+
+from ogl.OglInterface2 import OglInterface2
 
 from core.IPluginAdapter import IPluginAdapter
 from core.types.Types import FrameInformation
@@ -401,19 +406,37 @@ class ScaffoldUI:
     def _layoutPluginDocument(self, pluginDocument: PluginDocument, umlFrame: UmlFrameShapeHandler):
         """
         Loads a plugin's Ogl Objects
+        TODO: Not complete.  No sequence diagrams or use cases or OglTexts
         Args:
             pluginDocument: The plugin document itself
             umlFrame:   The Uml Frame to display them one
         """
         for oglClass in pluginDocument.oglClasses:
-            x, y = oglClass.GetPosition()
-            umlFrame.addShape(shape=oglClass, x=x, y=y)
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglClass)
 
         self._layoutLinks(umlFrame=umlFrame, oglLinks=pluginDocument.oglLinks)
 
         for oglNote in pluginDocument.oglNotes:
-            x, y = oglNote.GetPosition()
-            umlFrame.addShape(oglNote, x=x, y=y)
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglNote)
+
+        for oglText in pluginDocument.oglTexts:
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglText)
+
+        for oglUseCase in pluginDocument.oglUseCases:
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglUseCase)
+
+        for oglActor in pluginDocument.oglActors:
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglActor)
+
+        for oglSDInstance in pluginDocument.oglSDInstances.values():
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglSDInstance)
+
+        for oglSDMessage in pluginDocument.oglSDMessages.values():
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglSDMessage)
+
+    def _layoutAnOglObject(self, umlFrame: UmlFrameShapeHandler, oglObject: Union[OglObject, OglInterface2, SelectAnchorPoint, OglLink]):
+        x, y = oglObject.GetPosition()
+        umlFrame.addShape(oglObject, x, y)
 
     def _layoutLinks(self, umlFrame: UmlFrameShapeHandler, oglLinks: OglLinks):
 
@@ -422,8 +445,10 @@ class ScaffoldUI:
         for oglLink in oglLinks:
             x, y = oglLink.GetPosition()
             umlFrame.addShape(oglLink, x=x, y=y)
-            umlDiagram.AddShape(oglLink.sourceAnchor)
-            umlDiagram.AddShape(oglLink.destinationAnchor)
-            controlPoints = oglLink.GetControlPoints()
-            for controlPoint in controlPoints:
-                umlDiagram.AddShape(controlPoint)
+
+            if isinstance(oglLink, OglInterface2) is False:
+                umlDiagram.AddShape(oglLink.sourceAnchor)
+                umlDiagram.AddShape(oglLink.destinationAnchor)
+                controlPoints = oglLink.GetControlPoints()
+                for controlPoint in controlPoints:
+                    umlDiagram.AddShape(controlPoint)

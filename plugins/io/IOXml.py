@@ -4,15 +4,22 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from ogl.OglClass import OglClass
-from ogl.OglLink import OglLink
-from oglio.Types import OglDocumentTitle
+from ogl.OglActor import OglActor
+from ogl.OglNote import OglNote
+from ogl.OglText import OglText
+from ogl.OglUseCase import OglUseCase
+from ogl.sd.OglSDInstance import OglSDInstance
+from ogl.sd.OglSDMessage import OglSDMessage
 from wx import CANCEL
 from wx import CENTRE
 from wx import ICON_QUESTION
 from wx import MessageBox
 from wx import YES
 from wx import YES_NO
+
+from ogl.OglClass import OglClass
+from ogl.OglLink import OglLink
+from ogl.OglInterface2 import OglInterface2
 
 from core.IPluginAdapter import IPluginAdapter
 
@@ -36,6 +43,7 @@ from oglio.Writer import Writer
 from oglio.Types import OglProject
 from oglio.Types import OglDocument
 from oglio.Types import OglDocuments
+from oglio.Types import OglDocumentTitle
 
 from core.types.Types import OglClasses
 from core.types.Types import OglSDInstances
@@ -154,10 +162,31 @@ class IOXml(IOPluginInterface):
         oglDocument.documentTitle  = OglDocumentTitle(self._frameInformation.diagramTitle)
         oglDocument.documentType   = self._frameInformation.diagramType
         for oglObject in oglObjects:
-            if isinstance(oglObject, OglClass):
-                oglDocument.oglClasses.append(oglObject)
-            elif isinstance(oglObject, OglLink):
-                oglDocument.oglLinks.append(oglObject)
+            match oglObject:
+                case OglClass() as oglObject:
+                    oglDocument.oglClasses.append(oglObject)
+                case OglInterface2() as oglObject:
+                    oglDocument.oglLinks.append(oglObject)
+                case OglLink() as oglObject:
+                    oglDocument.oglLinks.append(oglObject)
+                case OglNote() as oglObject:
+                    oglDocument.oglNotes.append(oglObject)
+                case OglText() as oglObject:
+                    oglDocument.oglTexts.append(oglObject)
+                case OglUseCase() as oglObject:
+                    oglDocument.oglUseCases.append(oglObject)
+                case OglActor() as oglObject:
+                    oglDocument.oglActors.append(oglObject)
+                case OglSDMessage() as oglObject:
+                    oglSDMessage: OglSDMessage         = cast(OglSDMessage, oglObject)
+                    modelId:      int                  = oglSDMessage.pyutObject.id
+                    oglDocument.oglSDMessages[modelId] = oglSDMessage
+                case OglSDInstance() as oglObject:
+                    oglSDInstance: OglSDInstance        = cast(OglSDInstance, oglObject)
+                    modelId:       int                  = oglSDInstance.pyutObject.id
+                    oglDocument.oglSDInstances[modelId] = oglSDInstance
+                case _:
+                    self.logger.warning(f'Unsaved {oglObject=}')
         oglProject.oglDocuments[oglDocument.documentTitle] = oglDocument
 
         writer:     Writer = Writer()
