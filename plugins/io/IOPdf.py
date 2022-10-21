@@ -6,8 +6,8 @@ from logging import getLogger
 
 from wx import Yield as wxYield
 
-from core.IMediator import IMediator
-from core.IMediator import ScreenMetrics
+from core.IPluginAdapter import IPluginAdapter
+from core.IPluginAdapter import ScreenMetrics
 from core.IOPluginInterface import IOPluginInterface
 from core.types.InputFormat import InputFormat
 from core.types.OutputFormat import OutputFormat
@@ -30,7 +30,7 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('A simple PDF for UML 
 class IOPdf(IOPluginInterface):
     """
     """
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
         """
 
         Args:

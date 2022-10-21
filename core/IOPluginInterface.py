@@ -5,7 +5,7 @@ from abc import ABC
 from abc import abstractmethod
 
 from core.PluginInterface import PluginInterface
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 
 from core.types.Types import FrameInformation
 from core.types.Types import OglObjects
@@ -35,7 +35,7 @@ class IOPluginInterface(PluginInterface, ABC):
         `doExport`
 
     """
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
 
         super().__init__(mediator=mediator)
 

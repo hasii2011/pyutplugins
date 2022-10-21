@@ -7,14 +7,14 @@ from miniogl.DiagramFrame import DiagramFrame
 from ogl.OglLink import OglLink
 from ogl.OglObject import OglObject
 
-from core.IMediator import IMediator
-from core.IMediator import ScreenMetrics
+from core.IPluginAdapter import IPluginAdapter
+from core.IPluginAdapter import ScreenMetrics
 from core.types.Types import OglClasses
 from core.types.Types import PluginProject
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 
 
-class ScaffoldMediator(IMediator):
+class ScaffoldPluginAdapter(IPluginAdapter):
     """
     Shortcut implement the version and screen metrics properties
     """

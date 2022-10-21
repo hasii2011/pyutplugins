@@ -19,7 +19,7 @@ from core.types.PluginDataTypes import PluginName
 
 from core.ToolPluginInterface import ToolPluginInterface
 
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 
 from core.types.ExportDirectoryResponse import ExportDirectoryResponse
 from core.types.Types import OglObjects
@@ -31,7 +31,7 @@ class ToolAscii(ToolPluginInterface):
     TODO:  This is really and IOPlugin that only does Output
     """
 
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
 
         super().__init__(mediator)
 

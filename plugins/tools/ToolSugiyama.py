@@ -5,7 +5,7 @@ from typing import Union
 from logging import Logger
 from logging import getLogger
 
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 from core.ToolPluginInterface import ToolPluginInterface
 
 from core.types.PluginDataTypes import PluginName
@@ -22,7 +22,7 @@ class ToolSugiyama(ToolPluginInterface):
     """
     ToSugiyama : Automatic layout algorithm based on Sugiyama levels.
     """
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
 
         super().__init__(mediator)
 

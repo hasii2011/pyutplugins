@@ -24,7 +24,7 @@ class ScreenMetrics:
     dpiY: int = 0
 
 
-class IMediator(ABC):
+class IPluginAdapter(ABC):
     """
     This the interface specification that allows the plugins to manipulate the Pyut UML Frame
     The Pyut application must implement this and override the appropriate methods and/or

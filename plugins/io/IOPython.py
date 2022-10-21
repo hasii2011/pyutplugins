@@ -24,7 +24,7 @@ from wx import ProgressDialog
 
 from wx import Yield as wxYield
 
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 from core.IOPluginInterface import IOPluginInterface
 
 from core.types.ExportDirectoryResponse import ExportDirectoryResponse
@@ -52,7 +52,7 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Python code generatio
 
 class IOPython(IOPluginInterface):
 
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
 
         super().__init__(mediator)
 

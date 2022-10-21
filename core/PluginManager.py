@@ -16,7 +16,7 @@ from wx import NewIdRef
 from wx import BeginBusyCursor
 from wx import EndBusyCursor
 
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 from core.Singleton import Singleton
 from core.ToolPluginInterface import ToolPluginInterface
 from core.types.PluginDataTypes import IOPluginMap
@@ -134,7 +134,7 @@ class PluginManager(Singleton):
 
         return self._outputPluginsMap
 
-    def doToolAction(self, wxId: int, mediator: IMediator):
+    def doToolAction(self, wxId: int, mediator: IPluginAdapter):
 
         pluginMap: PluginIDMap = self.toolPluginsIDMap
 

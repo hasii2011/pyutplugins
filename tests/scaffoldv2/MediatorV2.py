@@ -9,8 +9,8 @@ from wx import Yield as wxYield
 from ogl.OglLink import OglLink
 from ogl.OglObject import OglObject
 
-from core.IMediator import IMediator
-from core.IMediator import ScreenMetrics
+from core.IPluginAdapter import IPluginAdapter
+from core.IPluginAdapter import ScreenMetrics
 from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSizeCallback
 
@@ -21,7 +21,7 @@ from tests.scaffoldv2.eventengine.Events import EventType
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 
 
-class MediatorV2(IMediator):
+class PluginAdapterV2(IPluginAdapter):
     """
 
     """

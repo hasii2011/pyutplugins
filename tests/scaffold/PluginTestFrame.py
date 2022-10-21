@@ -56,7 +56,7 @@ from core.types.PluginDataTypes import PluginIDMap
 
 from tests.scaffold.DisplayUmlFrame import DisplayUmlFrame
 
-from tests.scaffold.ScaffoldMediator import ScaffoldMediator
+from tests.scaffold.ScaffoldMediator import ScaffoldPluginAdapter
 
 
 @dataclass
@@ -83,7 +83,7 @@ class PluginTestFrame(Frame):
 
         self.logger:         Logger           = getLogger(__name__)
         self._pluginManager: PluginManager    = PluginManager()
-        self._mediator:      ScaffoldMediator = ScaffoldMediator(umlFrame=diagramFrame)
+        self._mediator:      ScaffoldPluginAdapter = ScaffoldPluginAdapter(umlFrame=diagramFrame)
 
         self._status = self.CreateStatusBar()
         self._status.SetStatusText('Ready!')

@@ -30,7 +30,7 @@ from wx import TreeItemId
 
 from wx import Yield as wxYield
 
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 from core.types.Types import FrameInformation
 from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSize
@@ -42,7 +42,7 @@ from core.types.Types import PluginProject
 from core.types.Types import OglLinks
 from core.types.Types import SelectedOglObjectsCallback
 
-from tests.scaffoldv2.MediatorV2 import MediatorV2
+from tests.scaffoldv2.MediatorV2 import PluginAdapterV2
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.PyutDocument import PyutDocument
 from tests.scaffoldv2.PyutProject import PyutProject
@@ -101,7 +101,7 @@ class ScaffoldUI:
         self._notebookCurrentPage: int = -1
         self._currentFrame:        DiagramFrame = cast(DiagramFrame, None)
 
-        self._mediatorV2: IMediator = cast(IMediator, None)
+        self._mediatorV2: IPluginAdapter = cast(IPluginAdapter, None)
 
         if createEmptyProject is True:
             self.createEmptyProject()
@@ -121,7 +121,7 @@ class ScaffoldUI:
                 return project
         return cast(PyutProject, None)
 
-    def _setPluginMediator(self, mediatorV2: MediatorV2):
+    def _setPluginMediator(self, mediatorV2: PluginAdapterV2):
         """
         Write only property used to inject the plugin mediator
         Args:

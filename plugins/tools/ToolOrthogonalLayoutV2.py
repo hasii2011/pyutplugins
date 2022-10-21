@@ -19,7 +19,7 @@ from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglNote import OglNote
 
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 
 from core.ToolPluginInterface import ToolPluginInterface
 
@@ -40,7 +40,7 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
     Version 2 of this plugin.  Does not depend on python-tulip.  Instead, it depends on a homegrown
     version
     """
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
 
         super().__init__(mediator)
 

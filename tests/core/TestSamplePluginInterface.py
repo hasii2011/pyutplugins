@@ -22,7 +22,7 @@ from core.types.SingleFileRequestResponse import SingleFileRequestResponse
 
 from tests.core.SamplePluginInterface import SamplePluginInterface
 
-from tests.core.SampleIMediator import SampleIMediator
+from tests.core.SampleIMediator import SampleIPluginAdapter
 
 from tests.TestBase import TestBase
 
@@ -43,7 +43,7 @@ class TestSamplePluginInterface(App):
         TestBase.setUpLogging()
         self.logger: Logger = getLogger(__name__)
 
-        mediator: SampleIMediator = SampleIMediator()
+        mediator: SampleIPluginAdapter = SampleIPluginAdapter()
 
         self._plugin: SamplePluginInterface = SamplePluginInterface(mediator)
 

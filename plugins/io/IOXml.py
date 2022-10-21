@@ -14,7 +14,7 @@ from wx import MessageBox
 from wx import YES
 from wx import YES_NO
 
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 
 from core.IOPluginInterface import IOPluginInterface
 
@@ -54,7 +54,7 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Pyut XML File')
 
 class IOXml(IOPluginInterface):
 
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
 
         self.logger: Logger = getLogger(__name__)
 

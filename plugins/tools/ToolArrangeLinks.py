@@ -6,7 +6,7 @@ from logging import getLogger
 
 from ogl.OglLink import OglLink
 
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 from core.ToolPluginInterface import ToolPluginInterface
 
 from core.types.PluginDataTypes import PluginName
@@ -16,7 +16,7 @@ from core.types.Types import OglObjects
 
 class ToolArrangeLinks(ToolPluginInterface):
 
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
 
         super().__init__(mediator)
 

@@ -10,14 +10,14 @@ from wx import Frame
 
 from miniogl.DiagramFrame import DiagramFrame
 
-from core.IMediator import IMediator
-from core.IMediator import ScreenMetrics
+from core.IPluginAdapter import IPluginAdapter
+from core.IPluginAdapter import ScreenMetrics
 from core.types.Types import OglObjects
 from core.types.Types import PluginProject
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 
 
-class SampleIMediator(IMediator):
+class SampleIPluginAdapter(IPluginAdapter):
 
     def __init__(self):
 

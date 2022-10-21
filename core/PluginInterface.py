@@ -19,7 +19,7 @@ from wx import FileSelector
 from wx import MessageDialog
 from wx import Yield as wxYield
 
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 
 from core.types.InputFormat import InputFormat
 from core.types.OutputFormat import OutputFormat
@@ -51,7 +51,7 @@ class PluginInterface:
     There should be no implementations of this interface
     """
 
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
         """
         Menu handlers may instantiate a plugin merely to get plugin information.  In that case,
         the input parameter will be None
@@ -60,7 +60,7 @@ class PluginInterface:
             mediator:   A class that implements ICommunicator
 
         """
-        self._mediator: IMediator = mediator
+        self._mediator: IPluginAdapter = mediator
         #
         # To be set by implementor constructor and read by property
         self._name:         PluginName = PluginName('Implementor must provide the plugin name')

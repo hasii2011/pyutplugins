@@ -42,7 +42,7 @@ from core.types.PluginDataTypes import IOPluginMap
 from core.types.PluginDataTypes import IOPluginMapType
 from core.types.PluginDataTypes import PluginIDMap
 
-from tests.scaffoldv2.MediatorV2 import MediatorV2
+from tests.scaffoldv2.MediatorV2 import PluginAdapterV2
 from tests.scaffoldv2.ScaffoldUI import ScaffoldUI
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.Events import EventType
@@ -76,7 +76,7 @@ class ScaffoldFrame(Frame):
         self._scaffoldUI: ScaffoldUI = ScaffoldUI(topLevelFrame=self, createEmptyProject=createEmptyProject)
 
         self._scaffoldUI.eventEngine = self._eventEngine
-        self._mediatorV2: MediatorV2 = MediatorV2(eventEngine=self._eventEngine)
+        self._mediatorV2: PluginAdapterV2 = PluginAdapterV2(eventEngine=self._eventEngine)
         #
         # Inject this so the ScaffoldUI can receive messages from the plugins
         #

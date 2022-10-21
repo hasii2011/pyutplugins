@@ -14,7 +14,7 @@ from wx import MemoryDC
 from wx import NullBitmap
 from wx import OK
 
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 from core.IOPluginInterface import IOPluginInterface
 
 from core.types.InputFormat import InputFormat
@@ -36,7 +36,7 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('png, bmp, gif, or jpg
 
 class IOWxImage(IOPluginInterface):
 
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
         """
 
         Args:
@@ -86,7 +86,7 @@ class IOWxImage(IOPluginInterface):
             oglObjects:     list of exported objects
         """
         # self._mediator.getFrameInformation(callback=self._gotFrameInfo)
-        mediator:         IMediator        = self._mediator
+        mediator:         IPluginAdapter        = self._mediator
         frameInformation: FrameInformation = self._frameInformation
         mediator.deselectAllOglObjects()
 

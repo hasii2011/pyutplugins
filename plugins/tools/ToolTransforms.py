@@ -6,7 +6,7 @@ from logging import getLogger
 
 from ogl.OglObject import OglObject
 
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 
 from core.ToolPluginInterface import ToolPluginInterface
 
@@ -21,7 +21,7 @@ class ToolTransforms(ToolPluginInterface):
 
     TODO: Explore parameterizing x transform and adding other transforms
     """
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
 
         super().__init__(mediator=mediator)
 

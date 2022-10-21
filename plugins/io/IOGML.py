@@ -9,7 +9,7 @@ from core.types.Types import OglObjects
 from plugins.io.gml.GMLExporter import GMLExporter
 
 from core.IOPluginInterface import IOPluginInterface
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 
 from core.types.PluginDataTypes import PluginName
 from core.types.InputFormat import InputFormat
@@ -28,7 +28,7 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Graph Modeling Langua
 class IOGML(IOPluginInterface):
     """
     """
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
         """
 
         Args:

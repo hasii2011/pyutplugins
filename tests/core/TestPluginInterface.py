@@ -8,7 +8,7 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from core.PluginInterface import PluginInterface
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 
 from tests.TestBase import TestBase
 
@@ -35,7 +35,7 @@ class TestPluginInterface(TestBase):
 
     def _instantiateAbstractClass(self):
 
-        mediator: IMediator = cast(IMediator, None)
+        mediator: IPluginAdapter = cast(IPluginAdapter, None)
         # noinspection PyUnusedLocal
         abc: PluginInterface = PluginInterface(mediator=mediator, )
 

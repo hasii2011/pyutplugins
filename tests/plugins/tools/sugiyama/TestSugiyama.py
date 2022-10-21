@@ -16,7 +16,7 @@ from plugins.tools.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
 
 from plugins.tools.sugiyama.Sugiyama import Sugiyama
 
-from tests.MockMediator import MockMediator
+from tests.MockMediator import MockPluginAdapter
 from tests.TestBase import TestBase
 
 
@@ -35,7 +35,7 @@ class TestSugiyama(TestBase):
 
         self.logger: Logger = TestSugiyama.clsLogger
 
-        mockMediator: MockMediator = MockMediator()
+        mockMediator: MockPluginAdapter = MockPluginAdapter()
         self._sugiyama: Sugiyama = Sugiyama(mediator=mockMediator)
 
         self._oglObjects: OglObjects = self._xmlFileToOglObjects(filename='SugiyamaTest.xml', documentName='Sugiyama')

@@ -9,7 +9,7 @@ from wx import BeginBusyCursor
 from wx import EndBusyCursor as wxEndBusyCursor
 from wx import Yield as wxYield
 
-from core.IMediator import IMediator
+from core.IPluginAdapter import IPluginAdapter
 from core.IOPluginInterface import IOPluginInterface
 
 from core.types.ExportDirectoryResponse import ExportDirectoryResponse
@@ -44,7 +44,7 @@ class IOJava(IOPluginInterface):
     In the original implementation these were two different I/O Plugins
     """
 
-    def __init__(self, mediator: IMediator):
+    def __init__(self, mediator: IPluginAdapter):
 
         self.logger: Logger = getLogger(__name__)
 
