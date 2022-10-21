@@ -227,7 +227,8 @@ class ScaffoldUI:
             umlClassDiagramsFrame: UmlClassDiagramsFrame = UmlClassDiagramsFrame(parent=self._notebook)
             pyutDocument.diagramFrame = umlClassDiagramsFrame
 
-            self._projectTree.AppendItem(parent=projectTreeRoot, text=pyutDocument.title, data=pyutDocument)
+            itemId: TreeItemId = self._projectTree.AppendItem(parent=projectTreeRoot, text=pyutDocument.title, data=pyutDocument)
+            self._projectTree.SelectItem(item=itemId, select=True)
 
             pyutProject.documents.append(pyutDocument)
             self._layoutPluginDocument(pluginDocument=pluginDocument, umlFrame=umlClassDiagramsFrame)
@@ -272,6 +273,11 @@ class ScaffoldUI:
             frameInformation.clientDC          = ClientDC(self._currentFrame)
             frameInformation.selectedOglObjects = self._currentFrame.GetSelectedShapes()
 
+            treeItemId: TreeItemId = self._projectTree.GetFocusedItem()
+            itemData = self._projectTree.GetItemData(treeItemId)
+            pyutDocument: PyutDocument = cast(PyutDocument, itemData)
+            frameInformation.diagramTitle = pyutDocument.title
+            frameInformation.diagramType  = pyutDocument.diagramType.__str__()
             (width, height) = self._currentFrame.GetSize()
 
             frameSize: FrameSize = FrameSize(width=width, height=height)

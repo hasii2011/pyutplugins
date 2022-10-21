@@ -10,7 +10,6 @@ from core.ToolPluginInterface import ToolPluginInterface
 
 from core.types.PluginDataTypes import PluginName
 
-from core.types.Types import OglClasses
 from core.types.Types import OglObjects
 
 from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode

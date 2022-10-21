@@ -28,6 +28,7 @@ from core.types.Types import OglObjects
 class ToolAscii(ToolPluginInterface):
     """
     UML objects to an ASCII representation
+    TODO:  This is really and IOPlugin that only does Output
     """
 
     def __init__(self, mediator: IMediator):
@@ -53,14 +54,11 @@ class ToolAscii(ToolPluginInterface):
             self._exportDirectory = response.directoryName
             self.logger.debug(f'selectedDir: {self._exportDirectory}')
             return True
-        """
-        """
+
+    def doAction(self):
         self._mediator.getSelectedOglObjects(callback=self._doAction)
 
     def _doAction(self, selectedObjects: OglObjects):
-        pass
-
-    def doAction(self):
 
         if len(selectedObjects) < 1:
             self.displayNoSelectedOglObjects()

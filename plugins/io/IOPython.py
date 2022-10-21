@@ -105,7 +105,7 @@ class IOPython(IOPluginInterface):
         try:
             reverseEngineer: ReverseEngineerPython2 = ReverseEngineerPython2()
 
-            fileCount: int       = len(self._filesToImport)
+            fileCount: int        = len(self._filesToImport)
             self._readProgressDlg = ProgressDialog('Parsing Files', 'Starting',  parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
             self._readProgressDlg.SetRange(fileCount)
 

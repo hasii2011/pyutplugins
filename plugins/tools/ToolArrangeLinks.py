@@ -42,21 +42,8 @@ class ToolArrangeLinks(ToolPluginInterface):
 
         self._mediator.selectAllOglObjects()
         self._mediator.getSelectedOglObjects(callback=self._doAction)
-        # oglObjects: OglClasses = self._mediator.getSelectedOglObjects(callback=self._doAction)
-
-        # for oglObject in oglObjects:
-        #     if isinstance(oglObject, OglLink):
-        #         oglLink: OglLink = cast(OglLink, oglObject)
-        #         self.logger.info(f"Optimizing: {oglLink}")
-        #         oglLink.optimizeLine()
-        #     else:
-        #         self.logger.debug(f"No line optimizing for: {oglObject}")
-        #
-        # self._mediator.refreshFrame()
 
     def _doAction(self, oglObjects: OglObjects):
-
-        # oglObjects: OglClasses = self._mediator.getSelectedOglObjects(callback=self._doAction)
 
         for oglObject in oglObjects:
             if isinstance(oglObject, OglLink):

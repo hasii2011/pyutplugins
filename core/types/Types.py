@@ -65,8 +65,13 @@ class FrameSize:
 
 @dataclass
 class FrameInformation:
+    """
+    The document title is the name of the frame
+    """
     frameActive:        bool       = False
     selectedOglObjects: OglObjects = field(default_factory=createOglObjectsFactory)
+    diagramTitle:       str         = ''
+    diagramType:        str        = ''
     frameSize:          FrameSize  = FrameSize()
     clientDC:           ClientDC   = cast(ClientDC, None)
 

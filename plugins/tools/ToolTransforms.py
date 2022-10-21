@@ -11,7 +11,7 @@ from core.IMediator import IMediator
 from core.ToolPluginInterface import ToolPluginInterface
 
 from core.types.PluginDataTypes import PluginName
-from core.types.Types import FrameSize
+from core.types.Types import FrameInformation
 from core.types.Types import OglObjects
 
 
@@ -33,26 +33,25 @@ class ToolTransforms(ToolPluginInterface):
 
         self._menuTitle = 'Transformations'
 
-        self._selectedOglObjects: OglObjects = cast(OglObjects, None)
-
     def setOptions(self) -> bool:
         return True
 
     def doAction(self):
-        self._mediator.getSelectedOglObjects(callback=self._stashSelectedObjects)
+        # self._mediator.getSelectedOglObjects(callback=self._stashSelectedObjects)
+        self._mediator.getFrameInformation(callback=self._doAction)
+    # def _stashSelectedObjects(self, selectedOglObjects: OglObjects):
+    #
+    #     self._selectedOglObjects = selectedOglObjects
+    #
+    #     self._mediator.getFrameSize(callback=self._doAction)
 
-    def _stashSelectedObjects(self, selectedOglObjects: OglObjects):
+    # def _doAction(self, frameSize: FrameSize):
+    def _doAction(self, frameInformation: FrameInformation):
 
-        self._selectedOglObjects = selectedOglObjects
+        selectedObjects: OglObjects = frameInformation.selectedOglObjects
 
-        self._mediator.getFrameSize(callback=self._doAction)
-
-    def _doAction(self, frameSize: FrameSize):
-
-        selectedObjects: OglObjects = self._selectedOglObjects
-
-        frameW: int = frameSize.width
-        frameH: int = frameSize.height
+        frameW: int = frameInformation.frameSize.width
+        frameH: int = frameInformation.frameSize.height
         # (frameW, frameH) = self._mediator.umlFrame.GetSize()
         self.logger.warning(f'frameW: {frameW} - frameH: {frameH}')
 

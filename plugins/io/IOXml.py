@@ -4,6 +4,9 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from ogl.OglClass import OglClass
+from ogl.OglLink import OglLink
+from oglio.Types import OglDocumentTitle
 from wx import CANCEL
 from wx import CENTRE
 from wx import ICON_QUESTION
@@ -148,6 +151,14 @@ class IOXml(IOPluginInterface):
         oglDocument.scrollPositionY = 0
         oglDocument.pixelsPerUnitX = self._mediator.screenMetrics.dpiX
         oglDocument.pixelsPerUnitY = self._mediator.screenMetrics.dpiY
+        oglDocument.documentTitle  = OglDocumentTitle(self._frameInformation.diagramTitle)
+        oglDocument.documentType   = self._frameInformation.diagramType
+        for oglObject in oglObjects:
+            if isinstance(oglObject, OglClass):
+                oglDocument.oglClasses.append(oglObject)
+            elif isinstance(oglObject, OglLink):
+                oglDocument.oglLinks.append(oglObject)
+        oglProject.oglDocuments[oglDocument.documentTitle] = oglDocument
 
         writer:     Writer = Writer()
 
