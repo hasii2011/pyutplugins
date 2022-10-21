@@ -42,7 +42,7 @@ from core.types.PluginDataTypes import IOPluginMap
 from core.types.PluginDataTypes import IOPluginMapType
 from core.types.PluginDataTypes import PluginIDMap
 
-from tests.scaffoldv2.MediatorV2 import PluginAdapterV2
+from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
 from tests.scaffoldv2.ScaffoldUI import ScaffoldUI
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.Events import EventType

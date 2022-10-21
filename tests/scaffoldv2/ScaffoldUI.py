@@ -42,7 +42,7 @@ from core.types.Types import PluginProject
 from core.types.Types import OglLinks
 from core.types.Types import SelectedOglObjectsCallback
 
-from tests.scaffoldv2.MediatorV2 import PluginAdapterV2
+from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.PyutDocument import PyutDocument
 from tests.scaffoldv2.PyutProject import PyutProject
