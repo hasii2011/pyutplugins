@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
-    name="core",
+    name="pyutplugincore",
     version="0.5.0",
     author='Humberto A. Sanchez II',
     author_email='humberto.a.sanchez.ii@gmail.com',
