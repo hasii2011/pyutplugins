@@ -70,8 +70,10 @@ class PluginManager(Singleton):
 
         # These are built later on
         self._toolPluginsIDMap:   PluginIDMap  = cast(PluginIDMap, None)
-        self._inputPluginsMap:  IOPluginMap  = cast(IOPluginMap, None)
-        self._outputPluginsMap: IOPluginMap  = cast(IOPluginMap, None)
+        self._inputPluginsIDMap:  PluginIDMap  = cast(PluginIDMap, None)
+        self._outputPluginsIDMap: PluginIDMap  = cast(PluginIDMap, None)
+        self._inputPluginsMap:    IOPluginMap  = cast(IOPluginMap, None)
+        self._outputPluginsMap:   IOPluginMap  = cast(IOPluginMap, None)
 
         self._ioPluginClasses:   PluginList = PluginList([])
         self._toolPluginClasses: PluginList = PluginList([])
@@ -124,8 +126,20 @@ class PluginManager(Singleton):
     @property
     def toolPluginsIDMap(self) -> PluginIDMap:
         if self._toolPluginsIDMap is None:
-            self._toolPluginsIDMap = self.__mapWxIdsToPlugins(self._toolPluginClasses)
+            self._toolPluginsIDMap = self.__mapWxIdsToPlugins(self.toolPlugins)
         return self._toolPluginsIDMap
+
+    @property
+    def inputPluginsIDMap(self) -> PluginIDMap:
+        if self._inputPluginsIDMap is None:
+            self._inputPluginsIDMap = self.__mapWxIdsToPlugins(self.inputPlugins)
+        return self._inputPluginsIDMap
+
+    @property
+    def outputPluginsIDMap(self) -> PluginIDMap:
+        if self._outputPluginsIDMap is None:
+            self._outputPluginsIDMap = self.__mapWxIdsToPlugins(self.outputPlugins)
+        return self._outputPluginsIDMap
 
     @property
     def inputPluginsMap(self) -> IOPluginMap:

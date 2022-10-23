@@ -28,7 +28,8 @@ changeToProjectRoot
 
 echo "Travis Build directory: ${TRAVIS_BUILD_DIR}"
 
-python3 -m tests.TestAll --produce-html-results
+# python3 -m tests.TestAll --produce-html-results
+python3 -m tests.TestAll
 status=$?
 
 
