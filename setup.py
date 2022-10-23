@@ -11,7 +11,7 @@ LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
     name="pyutplugincore",
-    version="0.5.5",
+    version="0.5.6",
     author='Humberto A. Sanchez II',
     author_email='humberto.a.sanchez.ii@gmail.com',
     maintainer='Humberto A. Sanchez II',
@@ -23,6 +23,7 @@ setup(
     package_data={
         'plugins':                         ['py.typed'],
         'plugins.common':                  ['py.typed'],
+        'plugins.common.ui':               ['py.typed'],
         'plugins.io':                      ['py.typed'],
         'plugins.io.dtd':                  ['py.typed'],
         'plugins.io.gml':                  ['py.typed'],
@@ -39,7 +40,7 @@ setup(
         'core.exceptions': ['py.typed'],
     },
     packages=[
-        'plugins', 'plugins.common',
+        'plugins', 'plugins.common', 'plugins.common.ui',
         'plugins.io',
         'plugins.io.dtd',
         'plugins.io.gml',
