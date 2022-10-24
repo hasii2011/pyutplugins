@@ -121,6 +121,7 @@ class IOXml(IOPluginInterface):
 
         pluginProject: PluginProject = PluginProject()
 
+        pluginProject.fileName    = self._fileToImport
         pluginProject.projectName = PluginProject.toProjectName(fqFilename=self._fileToImport)
         pluginProject.version     = oglProject.version
         pluginProject.codePath    = oglProject.codePath

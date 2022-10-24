@@ -188,6 +188,7 @@ class PluginProject:
     """
     This is a plugin's version of a project
     """
+    fileName:        str             = cast(str, None)
     projectName:     str             = cast(str, None)
     version:         str             = cast(str, None)
     codePath:        str             = cast(str, None)

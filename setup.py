@@ -11,7 +11,7 @@ LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
     name="pyutplugincore",
-    version="0.5.7",
+    version="0.5.8",
     author='Humberto A. Sanchez II',
     author_email='humberto.a.sanchez.ii@gmail.com',
     maintainer='Humberto A. Sanchez II',
