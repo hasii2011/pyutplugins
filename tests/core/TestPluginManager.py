@@ -59,11 +59,6 @@ class TestPluginManager(TestBase):
         inputPlugins = self.pluginManager.inputPlugins
         self.assertIsNotNone(inputPlugins, 'Oh no !!')
 
-    def testToolPluginsWxIdGenerated(self):
-
-        pluginMap: PluginIDMap = self.pluginManager.toolPluginsIDMap
-        self.assertIsNotNone(pluginMap, 'Where is my map')
-
 
 def suite() -> TestSuite:
     """You need to change the name of the test class here also."""

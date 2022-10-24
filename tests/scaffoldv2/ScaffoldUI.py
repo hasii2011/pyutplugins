@@ -35,7 +35,6 @@ from miniogl.DiagramFrame import DiagramFrame
 
 from ogl.OglInterface2 import OglInterface2
 
-from core.IPluginAdapter import IPluginAdapter
 from core.types.Types import FrameInformation
 from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSize
@@ -47,7 +46,6 @@ from core.types.Types import PluginProject
 from core.types.Types import OglLinks
 from core.types.Types import SelectedOglObjectsCallback
 
-from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.PyutDocument import PyutDocument
 from tests.scaffoldv2.PyutProject import PyutProject

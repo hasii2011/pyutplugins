@@ -21,13 +21,14 @@ from wx import EndBusyCursor
 
 from wx import Yield as wxYield
 
+from core.ToolPluginInterface import ToolPluginInterface
 from core.IOPluginInterface import IOPluginInterface
 from core.IPluginAdapter import IPluginAdapter
 from core.Singleton import Singleton
 
-from core.ToolPluginInterface import ToolPluginInterface
-from core.types.PluginDataTypes import IOPluginMap
-from core.types.PluginDataTypes import IOPluginMapType
+from core.types.PluginDataTypes import ToolsPluginMap
+from core.types.PluginDataTypes import InputPluginMap
+from core.types.PluginDataTypes import OutputPluginMap
 from core.types.PluginDataTypes import PluginList
 from core.types.PluginDataTypes import PluginIDMap
 from core.types.PluginDataTypes import PluginType
@@ -68,12 +69,10 @@ class PluginManager(Singleton):
 
         self.logger: Logger = getLogger(__name__)
 
-        # These are built later on
-        self._toolPluginsIDMap:   PluginIDMap  = cast(PluginIDMap, None)
-        self._inputPluginsIDMap:  PluginIDMap  = cast(PluginIDMap, None)
-        self._outputPluginsIDMap: PluginIDMap  = cast(PluginIDMap, None)
-        self._inputPluginsMap:    IOPluginMap  = cast(IOPluginMap, None)
-        self._outputPluginsMap:   IOPluginMap  = cast(IOPluginMap, None)
+        # These are lazily built
+        self._toolPluginsMap:   ToolsPluginMap   = ToolsPluginMap()
+        self._inputPluginsMap:  InputPluginMap   = InputPluginMap()
+        self._outputPluginsMap: OutputPluginMap  = OutputPluginMap()
 
         self._ioPluginClasses:   PluginList = PluginList([])
         self._toolPluginClasses: PluginList = PluginList([])
@@ -124,53 +123,29 @@ class PluginManager(Singleton):
         return self._toolPluginClasses
 
     @property
-    def toolPluginsIDMap(self) -> PluginIDMap:
-        if self._toolPluginsIDMap is None:
-            self._toolPluginsIDMap = self.__mapWxIdsToPlugins(self.toolPlugins)
-        return self._toolPluginsIDMap
+    def toolPluginsMap(self) -> ToolsPluginMap:
+        if len(self._toolPluginsMap.pluginIdMap) == 0:
+            self._toolPluginsMap.pluginIdMap = self.__mapWxIdsToPlugins(self.toolPlugins)
+        return self._toolPluginsMap
 
     @property
-    def inputPluginsIDMap(self) -> PluginIDMap:
-        if self._inputPluginsIDMap is None:
-            self._inputPluginsIDMap = self.__mapWxIdsToPlugins(self.inputPlugins)
-        return self._inputPluginsIDMap
-
-    @property
-    def outputPluginsIDMap(self) -> PluginIDMap:
-        if self._outputPluginsIDMap is None:
-            self._outputPluginsIDMap = self.__mapWxIdsToPlugins(self.outputPlugins)
-        return self._outputPluginsIDMap
-
-    @property
-    def inputPluginsMap(self) -> IOPluginMap:
-
-        if self._inputPluginsMap is None:
-            self._inputPluginsMap = IOPluginMap()
-
-            self._inputPluginsMap.mapType     = IOPluginMapType.INPUT_MAP
+    def inputPluginsMap(self) -> InputPluginMap:
+        if len(self._inputPluginsMap.pluginIdMap) == 0:
             self._inputPluginsMap.pluginIdMap = self.__mapWxIdsToPlugins(self.inputPlugins)
-
         return self._inputPluginsMap
 
     @property
-    def outputPluginsMap(self) -> IOPluginMap:
-
-        if self._outputPluginsMap is None:
-            self._outputPluginsMap = IOPluginMap()
-
-            self._outputPluginsMap.mapType     = IOPluginMapType.OUTPUT_MAP
+    def outputPluginsMap(self) -> OutputPluginMap:
+        if len(self._outputPluginsMap.pluginIdMap) == 0:
             self._outputPluginsMap.pluginIdMap = self.__mapWxIdsToPlugins(self.outputPlugins)
-
         return self._outputPluginsMap
 
     def doToolAction(self, wxId: int):
         """
-
         Args:
             wxId:   The ID ref of the menu item
         """
-
-        pluginMap: PluginIDMap = self.toolPluginsIDMap
+        pluginMap: PluginIDMap = self.toolPluginsMap.pluginIdMap
 
         # TODO: Fix this later for mypy
         clazz: type = pluginMap[wxId]   # type: ignore
@@ -189,23 +164,20 @@ class PluginManager(Singleton):
 
     def doImport(self, wxId: int):
         """
-
         Args:
             wxId:       The ID ref of the menu item
         """
-        idMap:        PluginIDMap       = self.inputPluginsMap.pluginIdMap
+        idMap:        PluginIDMap    = self.inputPluginsMap.pluginIdMap
         clazz:        type              = idMap[wxId]     # type: ignore
         plugInstance: IOPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
         self._doIOAction(methodToCall=plugInstance.executeImport)
 
     def doExport(self, wxId: int):
-        pass
         """
-
         Args:
             wxId:       The ID ref of the menu item
         """
-        idMap:        PluginIDMap      = self.outputPluginsMap.pluginIdMap
+        idMap:        PluginIDMap  = self.outputPluginsMap.pluginIdMap
         clazz:        type              = idMap[wxId]     # type: ignore
         plugInstance: IOPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
         self._doIOAction(methodToCall=plugInstance.executeExport)

@@ -7,6 +7,7 @@ from logging import getLogger
 from os import getcwd
 
 from dataclasses import dataclass
+from typing import Union
 
 from wx import ACCEL_CTRL
 from wx import FD_FILE_MUST_EXIST
@@ -31,14 +32,14 @@ from wx import AcceleratorTable
 from wx import MessageDialog
 from wx import NewIdRef
 
-from wx import Yield as wxYield
 
 from core.IOPluginInterface import IOPluginInterface
 from core.PluginManager import PluginManager
 from core.ToolPluginInterface import ToolPluginInterface
+from core.types.PluginDataTypes import InputPluginMap
+from core.types.PluginDataTypes import OutputPluginMap
 
-from core.types.PluginDataTypes import IOPluginMap
-from core.types.PluginDataTypes import IOPluginMapType
+from core.types.PluginDataTypes import PluginMapType
 from core.types.PluginDataTypes import PluginIDMap
 
 from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
@@ -56,10 +57,10 @@ class RequestResponse:
 class ScaffoldFrame(Frame):
 
     FRAME_ID:      int = 0xDeadBeef
-    WINDOW_WIDTH:  int = 900
-    WINDOW_HEIGHT: int = 500
+    WINDOW_WIDTH:  int = 1200
+    WINDOW_HEIGHT: int = 600
 
-    def __init__(self, parent=None, wxId=FRAME_ID, size=(800, 600), createEmptyProject: bool = True):
+    def __init__(self, parent=None, wxId=FRAME_ID, size=(WINDOW_WIDTH, WINDOW_HEIGHT), createEmptyProject: bool = True):
 
         super().__init__(parent=parent, id=wxId,  size=size, style=DEFAULT_FRAME_STYLE, title='Test Scaffold for Plugins')
 
@@ -140,11 +141,11 @@ class ScaffoldFrame(Frame):
         """
         Make the Tools submenu.
         """
-        pluginMap: PluginIDMap = self._pluginManager.toolPluginsIDMap
+        idMap: PluginIDMap = self._pluginManager.toolPluginsMap.pluginIdMap
 
-        for wxId in pluginMap:
+        for wxId in idMap:
 
-            clazz: type = pluginMap[wxId]   # type: ignore
+            clazz: type = idMap[wxId]   # type: ignore
 
             pluginInstance: ToolPluginInterface = clazz(None)
             toolsMenu.Append(wxId, pluginInstance.menuTitle)
@@ -157,7 +158,7 @@ class ScaffoldFrame(Frame):
         """
         Returns: The import submenu.
         """
-        pluginMap: IOPluginMap = self._pluginManager.inputPluginsMap
+        pluginMap: InputPluginMap = self._pluginManager.inputPluginsMap
 
         return self._makeIOSubMenu(pluginMap=pluginMap)
 
@@ -165,23 +166,22 @@ class ScaffoldFrame(Frame):
         """
         Returns:  The export submenu
         """
-        pluginMap: IOPluginMap = self._pluginManager.outputPluginsMap
+        pluginMap: OutputPluginMap = self._pluginManager.outputPluginsMap
 
         return self._makeIOSubMenu(pluginMap=pluginMap)
 
-    def _makeIOSubMenu(self, pluginMap: IOPluginMap) -> Menu:
+    def _makeIOSubMenu(self, pluginMap: Union[InputPluginMap, OutputPluginMap]) -> Menu:
 
         subMenu: Menu = Menu()
 
-        pluginIDMap: PluginIDMap = pluginMap.pluginIdMap
-        for wxId in pluginIDMap:
-            clazz:          type = pluginIDMap[wxId]   # type: ignore
+        for wxId in pluginMap.pluginIdMap.keys():
+            clazz:          type = pluginMap.pluginIdMap[wxId]   # type: ignore
             pluginInstance: IOPluginInterface = clazz(None)
 
-            if pluginMap.mapType == IOPluginMapType.INPUT_MAP:
+            if pluginMap.mapType == PluginMapType.INPUT_MAP:
                 pluginName: str = pluginInstance.inputFormat.formatName
                 subMenu = self.__makeSubMenuEntry(subMenu=subMenu, wxId=wxId, pluginName=pluginName, callback=self._onImport)
-            elif pluginMap.mapType == IOPluginMapType.OUTPUT_MAP:
+            elif pluginMap.mapType == PluginMapType.OUTPUT_MAP:
                 pluginName = pluginInstance.outputFormat.formatName
                 subMenu = self.__makeSubMenuEntry(subMenu=subMenu, wxId=wxId, pluginName=pluginName, callback=self._onExport)
             else:

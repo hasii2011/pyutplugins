@@ -35,12 +35,52 @@ PluginExtension   = NewType('PluginExtension', str)
 PluginDescription = NewType('PluginDescription', str)
 
 
-class IOPluginMapType(Enum):
+class PluginMapType(Enum):
     INPUT_MAP  = 'InputMap'
     OUTPUT_MAP = 'OutputMap'
+    TOOL_MAP   = 'ToolMap'
+
+
+#
+# Some nice syntactic sugar
+#
+@dataclass
+class BasePluginMap:
+    mapType:     PluginMapType = PluginMapType.INPUT_MAP
+    pluginIdMap: PluginIDMap   = field(default_factory=createPlugIdMapFactory)
+
+    def __init__(self):
+        self.pluginIdMap = PluginIDMap({})
+
+    def __str__(self) -> str:
+        return self.__repr__()
+
+    def __repr__(self) -> str:
+        return f'{self.mapType} plugin count: {len(self.pluginIdMap)}'
 
 
 @dataclass
-class IOPluginMap:
-    mapType:     IOPluginMapType = IOPluginMapType.INPUT_MAP
-    pluginIdMap: PluginIDMap     = field(default_factory=createPlugIdMapFactory)
+class InputPluginMap(BasePluginMap):
+    def __init__(self):
+        super().__init__()
+        self.mapType = PluginMapType.INPUT_MAP
+
+    def __str__(self) -> str:
+        return self.__repr__()
+
+    def __repr__(self) -> str:
+        return f'{self.mapType} plugin count: {len(self.pluginIdMap)}'
+
+
+@dataclass
+class OutputPluginMap(BasePluginMap):
+    def __init__(self):
+        super().__init__()
+        self.mapType = PluginMapType.OUTPUT_MAP
+
+
+@dataclass
+class ToolsPluginMap(BasePluginMap):
+    def __init__(self):
+        super().__init__()
+        self.mapType = PluginMapType.TOOL_MAP
