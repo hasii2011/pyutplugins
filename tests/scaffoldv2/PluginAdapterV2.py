@@ -1,18 +1,14 @@
 
-from typing import Union
-
 from logging import Logger
 from logging import getLogger
 
 from wx import Yield as wxYield
 
-from ogl.OglLink import OglLink
-from ogl.OglObject import OglObject
-
 from core.IPluginAdapter import IPluginAdapter
 from core.IPluginAdapter import ScreenMetrics
 from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSizeCallback
+from core.types.Types import OglObjectType
 
 from core.types.Types import PluginProject
 from core.types.Types import SelectedOglObjectsCallback
@@ -37,10 +33,6 @@ class PluginAdapterV2(IPluginAdapter):
     def pyutVersion(self) -> str:
         return 'MediatorV2'
 
-    @pyutVersion.setter
-    def pyutVersion(self, newValue: str):
-        self.logger.warning(f'Unused {newValue}')
-
     @property
     def screenMetrics(self) -> ScreenMetrics:
         return ScreenMetrics(dpiX=72, dpiY=72, screenWidth=250, screenHeight=1440)
@@ -51,15 +43,6 @@ class PluginAdapterV2(IPluginAdapter):
         Returns:  The current directory
         """
         return ''
-
-    @currentDirectory.setter
-    def currentDirectory(self, theNewValue: str):
-        """
-        TODO:  Should plugins be allowed to manipulate the application's current directory
-        Args:
-            theNewValue:
-        """
-        pass
 
     def getFrameSize(self, callback: FrameSizeCallback):
         self._eventEngine.sendEvent(EventType.FrameSize, callback=callback)
@@ -81,7 +64,7 @@ class PluginAdapterV2(IPluginAdapter):
         self._eventEngine.sendEvent(EventType.DeSelectAllShapes)
         wxYield()
 
-    def addShape(self, shape: Union[OglObject, OglLink]):
+    def addShape(self, shape: OglObjectType):
         pass
 
     def loadProject(self, pluginProject: PluginProject):

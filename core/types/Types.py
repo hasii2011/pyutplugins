@@ -17,12 +17,15 @@ from wx import ClientDC
 
 from pyutmodel.PyutLink import PyutLink
 
-from ogl.OglActor import OglActor
-from ogl.OglNote import OglNote
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
+from ogl.OglInterface2 import OglInterface2
+from ogl.OglNote import OglNote
 from ogl.OglText import OglText
+
 from ogl.OglUseCase import OglUseCase
+from ogl.OglActor import OglActor
+
 from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage
 
@@ -36,9 +39,9 @@ OglUseCases = NewType('OglUseCases', List[OglUseCase])
 OglSDInstances = NewType('OglSDInstances', Dict[int, OglSDInstance])
 OglSDMessages  = NewType('OglSDMessages',  Dict[int, OglSDMessage])
 
-AllOglObjects = Union[OglClasses, OglLinks, OglNotes, OglTexts, OglActors, OglUseCases]
+OglObjectType = Union[OglClass, OglLink, OglNote, OglText, OglActor, OglUseCase, OglInterface2]
 
-OglObjects = NewType('OglObjects',  List[AllOglObjects])
+OglObjects = NewType('OglObjects',  List[OglObjectType])
 PyutLinks  = NewType('PyutLinks',   List[PyutLink])
 
 SelectedOglObjectsCallback = Callable[[OglObjects], None]        # Todo: Figure out appropriate type for callback

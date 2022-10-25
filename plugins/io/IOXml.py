@@ -167,7 +167,8 @@ class IOXml(IOPluginInterface):
                 case OglClass() as oglObject:
                     oglDocument.oglClasses.append(oglObject)
                 case OglInterface2() as oglObject:
-                    oglDocument.oglLinks.append(oglObject)
+                    # TODO Fix this in oglio
+                    oglDocument.oglLinks.append(oglObject)  # type: ignore
                 case OglLink() as oglObject:
                     oglDocument.oglLinks.append(oglObject)
                 case OglNote() as oglObject:

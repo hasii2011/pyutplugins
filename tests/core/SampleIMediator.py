@@ -1,19 +1,23 @@
-from typing import Union
+
 from typing import cast
 
 from logging import Logger
 from logging import getLogger
 
-from ogl.OglLink import OglLink
-from ogl.OglObject import OglObject
+
 from wx import Frame
 
 from miniogl.DiagramFrame import DiagramFrame
 
 from core.IPluginAdapter import IPluginAdapter
 from core.IPluginAdapter import ScreenMetrics
+from core.types.Types import FrameInformationCallback
+from core.types.Types import FrameSizeCallback
+from core.types.Types import OglObjectType
 from core.types.Types import OglObjects
 from core.types.Types import PluginProject
+from core.types.Types import SelectedOglObjectsCallback
+
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 
 
@@ -30,10 +34,6 @@ class SampleIPluginAdapter(IPluginAdapter):
     def currentDirectory(self) -> str:
         return self._currentDirectory
 
-    @currentDirectory.setter
-    def currentDirectory(self, newValue: str):
-        self._currentDirectory = newValue
-
     @property
     def umlFrame(self) -> Frame:
         return cast(Frame, None)
@@ -45,10 +45,6 @@ class SampleIPluginAdapter(IPluginAdapter):
     @property
     def pyutVersion(self) -> str:
         return self._pyutVersion
-
-    @pyutVersion.setter
-    def pyutVersion(self, newVersion: str):
-        pass
 
     @property
     def screenMetrics(self) -> ScreenMetrics:
@@ -66,6 +62,15 @@ class SampleIPluginAdapter(IPluginAdapter):
     def selectedOglObjects(self) -> OglObjects:
         return cast(OglObjects, None)
 
+    def getFrameSize(self, callback: FrameSizeCallback):
+        pass
+
+    def getFrameInformation(self, callback: FrameInformationCallback):
+        pass
+
+    def getSelectedOglObjects(self, callback: SelectedOglObjectsCallback):
+        pass
+
     def refreshFrame(self):
         pass
 
@@ -75,7 +80,7 @@ class SampleIPluginAdapter(IPluginAdapter):
     def deselectAllOglObjects(self):
         pass
 
-    def addShape(self, shape: Union[OglObject, OglLink]):
+    def addShape(self, shape: OglObjectType):
         pass
 
     def loadProject(self, pluginProject: PluginProject):

@@ -1,14 +1,10 @@
 
-from typing import Union
-
 from abc import ABC
 from abc import abstractmethod
 
 from dataclasses import dataclass
 
-from ogl.OglLink import OglLink
-from ogl.OglObject import OglObject
-
+from core.types.Types import OglObjectType
 from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSizeCallback
 from core.types.Types import PluginProject
@@ -43,11 +39,6 @@ class IPluginAdapter(ABC):
         """
         pass
 
-    @pyutVersion.setter
-    @abstractmethod
-    def pyutVersion(self, newVersion: str):
-        pass
-
     @property
     @abstractmethod
     def screenMetrics(self) -> ScreenMetrics:
@@ -61,16 +52,6 @@ class IPluginAdapter(ABC):
     def currentDirectory(self) -> str:
         """
         Returns:  The current directory
-        """
-        pass
-
-    @currentDirectory.setter
-    @abstractmethod
-    def currentDirectory(self, theNewValue: str):
-        """
-        TODO:  Should plugins be allowed to manipulate the application's current directory
-        Args:
-            theNewValue:
         """
         pass
 
@@ -114,9 +95,9 @@ class IPluginAdapter(ABC):
         pass
 
     @abstractmethod
-    def addShape(self, shape: Union[OglObject, OglLink]):
+    def addShape(self, shape: OglObjectType):
         """
-        Add an Ogl shape in the currently displayed frame
+        Add an Ogl shape to the currently displayed frame
         Args:
             shape:
         """

@@ -1,5 +1,4 @@
 
-from typing import Union
 from typing import cast
 
 from unittest.mock import MagicMock
@@ -8,13 +7,11 @@ from os import getcwd
 
 from miniogl.DiagramFrame import DiagramFrame
 
-from ogl.OglLink import OglLink
-from ogl.OglObject import OglObject
-
 from core.IPluginAdapter import IPluginAdapter
 from core.IPluginAdapter import ScreenMetrics
 from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSizeCallback
+from core.types.Types import OglObjectType
 from core.types.Types import PluginProject
 from core.types.Types import SelectedOglObjectsCallback
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
@@ -91,7 +88,7 @@ class MockPluginAdapter(IPluginAdapter):
     def deselectAllOglObjects(self):
         pass
 
-    def addShape(self, shape: Union[OglObject, OglLink]):
+    def addShape(self, shape: OglObjectType):
         pass
 
     def loadProject(self, pluginProject: PluginProject):

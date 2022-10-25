@@ -232,7 +232,7 @@ class PluginInterface:
         else:
             response.directoryName = dirDialog.GetPath()
             response.cancelled     = False
-            self._pluginAdapter.currentDirectory = response.directoryName    # TODO: Should plugin be doing this?
+            # self._pluginAdapter.currentDirectory = response.directoryName    # TODO: Should plugin be doing this?  No
 
         dirDialog.Destroy()
 
@@ -261,7 +261,7 @@ class PluginInterface:
             response.cancelled     = True
         else:
             directory = dirDialog.GetPath()
-            self._pluginAdapter.currentDirectory = directory     # TODO  Should a plugin do this
+            # self._pluginAdapter.currentDirectory = directory     # TODO  Should a plugin do this;  No
             dirDialog.Destroy()
             response.directoryName = directory
 
