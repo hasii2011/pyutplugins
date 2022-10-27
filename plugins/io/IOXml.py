@@ -80,6 +80,8 @@ class IOXml(IOPluginInterface):
         self._fileToExport: str  = ''
         self._fileToImport: str  = ''
 
+        self._requireActiveFrame = False
+
     def setImportOptions(self) -> bool:
         """
         We do need to ask for the input file names

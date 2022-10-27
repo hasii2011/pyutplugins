@@ -23,6 +23,7 @@ class ToolPluginInterface(PluginInterface, ABC):
         """
         This is used by Pyut to invoke the tool.  This should NOT
         be overridden
+        TODO: Check for active frame
         """
         if self.setOptions() is True:
             self.doAction()

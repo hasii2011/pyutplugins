@@ -53,6 +53,8 @@ class IOWxImage(IOPluginInterface):
         self._inputFormat  = cast(InputFormat, None)
         self._outputFormat = OutputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 
+        self._autoSelectAll = True     # we are taking a picture of the entire diagram
+
     def setImportOptions(self) -> bool:
         return False
 
@@ -85,18 +87,15 @@ class IOWxImage(IOPluginInterface):
         Args:
             oglObjects:     list of exported objects
         """
-        # self._pluginAdapter.getFrameInformation(callback=self._gotFrameInfo)
-        mediator:         IPluginAdapter        = self._pluginAdapter
+        pluginAdapter:    IPluginAdapter   = self._pluginAdapter
         frameInformation: FrameInformation = self._frameInformation
-        mediator.deselectAllOglObjects()
+        pluginAdapter.deselectAllOglObjects()
 
         imageType: BitmapType     = WxImageFormat.toWxBitMapType(self._imageFormat)
 
-        # window:    ScrolledWindow = self._pluginAdapter.umlFrame
         context:   ClientDC       = frameInformation.clientDC
         memory:    MemoryDC       = MemoryDC()
 
-        # x, y = window.GetSize()
         x: int = frameInformation.frameSize.width
         y: int = frameInformation.frameSize.height
         emptyBitmap: Bitmap = Bitmap(x, y, -1)
@@ -112,29 +111,3 @@ class IOWxImage(IOPluginInterface):
         status:   bool  = img.SaveFile(filename, imageType)
         if status is False:
             self.logger.error(f'Error on image write to {filename}')
-
-    # def _gotFrameInfo(self, frameInformation: FrameInformation):
-    #
-    #     x = frameInformation.frameSize.width
-    #     y = frameInformation.frameSize.height
-    #     context: ClientDC = frameInformation.clientDC
-    #     imageType: BitmapType     = WxImageFormat.toWxBitMapType(self._imageFormat)
-    #
-    #     # window:    ScrolledWindow = self._pluginAdapter.umlFrame
-    #     # context:   ClientDC       = ClientDC(window)
-    #     memory:    MemoryDC       = MemoryDC()
-    #
-    #     # x, y = window.GetSize()
-    #     emptyBitmap: Bitmap = Bitmap(x, y, -1)
-    #
-    #     memory.SelectObject(emptyBitmap)
-    #     memory.Blit(source=context, xsrc=0, height=y, xdest=0, ydest=0, ysrc=0, width=x)
-    #     memory.SelectObject(NullBitmap)
-    #
-    #     img:       Image = emptyBitmap.ConvertToImage()
-    #     extension: str   = self._imageFormat.__str__()
-    #
-    #     filename: str   = f'{self._outputFileName}.{extension}'
-    #     status:   bool  = img.SaveFile(filename, imageType)
-    #     if status is False:
-    #         self.logger.error(f'Error on image write to {filename}')

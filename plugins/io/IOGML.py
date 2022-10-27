@@ -47,6 +47,8 @@ class IOGML(IOPluginInterface):
         self._inputFormat  = cast(InputFormat, None)
         self._outputFormat = OutputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 
+        self._autoSelectAll = False      # Temp until we have plugin preferences
+
     def setImportOptions(self) -> bool:
         """
         Prepare the import.

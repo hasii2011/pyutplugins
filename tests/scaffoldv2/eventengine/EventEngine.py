@@ -11,10 +11,14 @@ from wx import Window
 from core.types.Types import PluginProject
 from core.types.Types import SelectedOglObjectsCallback
 
+from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
+from tests.scaffoldv2.eventengine.Events import AddShapeEvent
+
 from tests.scaffoldv2.eventengine.Events import EventType
 from tests.scaffoldv2.eventengine.Events import FrameInformationEvent
 from tests.scaffoldv2.eventengine.Events import FrameSizeEvent
 from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
+from tests.scaffoldv2.eventengine.Events import NewDiagramEvent
 from tests.scaffoldv2.eventengine.Events import NewProjectEvent
 from tests.scaffoldv2.eventengine.Events import SelectedOglObjectsEvent
 from tests.scaffoldv2.eventengine.Events import UpdateTreeItemNameEvent
@@ -25,6 +29,8 @@ NEW_NAME_PARAMETER:       str = 'newName'
 TREE_ITEM_ID_PARAMETER:   str = 'treeItemId'
 PLUGIN_PROJECT_PARAMETER: str = 'pluginProject'
 CALLBACK_PARAMETER:       str = 'callback'
+DIAGRAM_TYPE_PARAMETER:   str = 'diagramType'
+SHAPE_PARAMETER:          str = 'shapeToAdd'
 
 
 class EventEngine(IEventEngine):
@@ -53,10 +59,14 @@ class EventEngine(IEventEngine):
                 self._sendLoadProjectEvent(**kwargs)
             case EventType.NewProject:
                 self._sendNewProjectEvent()
+            case EventType.NewDiagram:
+                self._sendNewDiagramEvent(**kwargs)
             case EventType.SelectAllShapes:
                 self._simpleSendEvent(eventType=eventType)
             case EventType.DeSelectAllShapes:
                 self._simpleSendEvent(eventType=eventType)
+            case EventType.AddShape:
+                self._sendAddShapeEvent(**kwargs)
             case EventType.RefreshFrame:
                 self._simpleSendEvent(eventType=eventType)
             case EventType.SelectedOglObjects:
@@ -77,6 +87,11 @@ class EventEngine(IEventEngine):
 
     def _sendNewProjectEvent(self):
         eventToPost: NewProjectEvent = NewProjectEvent()
+        PostEvent(dest=self._listeningWindow, event=eventToPost)
+
+    def _sendNewDiagramEvent(self, **kwargs):
+        diagramType: PyutDiagramType = kwargs[DIAGRAM_TYPE_PARAMETER]
+        eventToPost: NewDiagramEvent = NewDiagramEvent(diagramType=diagramType)
         PostEvent(dest=self._listeningWindow, event=eventToPost)
 
     def _sendLoadProjectEvent(self, **kwargs):
@@ -100,6 +115,11 @@ class EventEngine(IEventEngine):
     def _sendFrameInformationEvent(self, **kwargs):
         callback: SelectedOglObjectsCallback = kwargs[CALLBACK_PARAMETER]
         eventToPost: FrameInformationEvent = FrameInformationEvent(callback=callback)
+        PostEvent(dest=self._listeningWindow, event=eventToPost)
+
+    def _sendAddShapeEvent(self, **kwargs):
+        shapeToAdd = kwargs[SHAPE_PARAMETER]
+        eventToPost: AddShapeEvent = AddShapeEvent(shapeToAdd=shapeToAdd)
         PostEvent(dest=self._listeningWindow, event=eventToPost)
 
     def _simpleSendEvent(self, eventType: EventType):

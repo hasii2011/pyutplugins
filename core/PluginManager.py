@@ -152,15 +152,14 @@ class PluginManager(Singleton):
         # Create a plugin instance
         pluginInstance: ToolPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
 
-        if pluginInstance.setOptions() is True:
-            # Do plugin functionality
-            BeginBusyCursor()
-            try:
-                pluginInstance.doAction()
-                self.logger.debug(f"After tool plugin do action")
-            except (ValueError, Exception) as e:
-                self.logger.error(f'{e}')
-            EndBusyCursor()
+        # Do plugin functionality
+        BeginBusyCursor()
+        try:
+            pluginInstance.executeTool()
+            self.logger.debug(f"After tool plugin do action")
+        except (ValueError, Exception) as e:
+            self.logger.error(f'{e}')
+        EndBusyCursor()
 
     def doImport(self, wxId: int):
         """

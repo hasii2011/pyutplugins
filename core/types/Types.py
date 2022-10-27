@@ -39,7 +39,7 @@ OglUseCases = NewType('OglUseCases', List[OglUseCase])
 OglSDInstances = NewType('OglSDInstances', Dict[int, OglSDInstance])
 OglSDMessages  = NewType('OglSDMessages',  Dict[int, OglSDMessage])
 
-OglObjectType = Union[OglClass, OglLink, OglNote, OglText, OglActor, OglUseCase, OglInterface2]
+OglObjectType = Union[OglClass, OglLink, OglNote, OglText, OglActor, OglUseCase, OglInterface2, OglSDMessage, OglSDInstance, OglUseCase, OglActor]
 
 OglObjects = NewType('OglObjects',  List[OglObjectType])
 PyutLinks  = NewType('PyutLinks',   List[PyutLink])

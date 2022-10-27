@@ -43,6 +43,7 @@ from core.types.PluginDataTypes import PluginMapType
 from core.types.PluginDataTypes import PluginIDMap
 
 from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
+from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.ScaffoldUI import ScaffoldUI
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.Events import EventType
@@ -100,6 +101,11 @@ class ScaffoldFrame(Frame):
 
     def _createApplicationMenuBar(self):
 
+        self._loadXmlFileWxId:        int = NewIdRef()
+        self._newClassDiagramWxId:    int = NewIdRef()
+        self._newUseCaseDiagramWxId:  int = NewIdRef()
+        self._newSequenceDiagramWxId: int = NewIdRef()
+
         menuBar:   MenuBar = MenuBar()
         fileMenu:  Menu = Menu()
         editMenu:  Menu = Menu()
@@ -115,27 +121,34 @@ class ScaffoldFrame(Frame):
 
         self.SetMenuBar(menuBar)
 
-        self._loadXmlFileWxId: int  = NewIdRef()
-
         self.Bind(EVT_MENU, self.Close, id=ID_EXIT)
 
     def _makeFileMenu(self, fileMenu: Menu) -> Menu:
 
         fileMenu.Append(self._loadXmlFileWxId, 'Load Xml Diagram')
 
-        importSubMenu: Menu = self._makeImportSubMenu()
-        exportSubMenu: Menu = self._makeExportSubMenu()
+        newDiagramSubMenu: Menu = self._makeNewDiagramSubMenu()
+        importSubMenu:     Menu = self._makeImportSubMenu()
+        exportSubMenu:     Menu = self._makeExportSubMenu()
 
+        fileMenu.AppendSubMenu(newDiagramSubMenu, 'New')
         fileMenu.AppendSubMenu(importSubMenu, 'Import')
         fileMenu.AppendSubMenu(exportSubMenu, 'Export')
         self.Bind(EVT_MENU, self._onLoadXmlFile, id=self._loadXmlFileWxId)
 
         return fileMenu
 
-    # noinspection PyUnusedLocal
-    def _onLoadXmlFile(self, event: CommandEvent):
+    def _makeNewDiagramSubMenu(self) -> Menu:
+        subMenu: Menu = Menu()
 
-        self._displayError(message='Use the import plugin')
+        subMenu.Append(self._newClassDiagramWxId,    'Class Diagram')
+        subMenu.Append(self._newUseCaseDiagramWxId,  'Use Case Diagram')
+        subMenu.Append(self._newSequenceDiagramWxId, 'Sequence Diagram')
+
+        self.Bind(EVT_MENU, self._onNewDiagram, id=self._newClassDiagramWxId)
+        self.Bind(EVT_MENU, self._onNewDiagram, id=self._newUseCaseDiagramWxId)
+        self.Bind(EVT_MENU, self._onNewDiagram, id=self._newSequenceDiagramWxId)
+        return subMenu
 
     def _makeToolsMenu(self, toolsMenu: Menu) -> Menu:
         """
@@ -219,6 +232,17 @@ class ScaffoldFrame(Frame):
         wxId: int = event.GetId()
         self.logger.info(f'Export: {wxId=}')
         self._pluginManager.doExport(wxId=wxId)
+
+    # noinspection PyUnusedLocal
+    def _onLoadXmlFile(self, event: CommandEvent):
+
+        self._displayError(message='Use the import plugin')
+
+    def _onNewDiagram(self, event: CommandEvent):
+        eventId: int = event.GetId()
+
+        if eventId == self._newClassDiagramWxId:
+            self._eventEngine.sendEvent(EventType.NewDiagram, diagramType=PyutDiagramType.CLASS_DIAGRAM)
 
     def _askForXMLFileToImport(self) -> RequestResponse:
         """

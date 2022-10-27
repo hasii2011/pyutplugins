@@ -65,7 +65,7 @@ class PluginAdapterV2(IPluginAdapter):
         wxYield()
 
     def addShape(self, shape: OglObjectType):
-        pass
+        self._eventEngine.sendEvent(EventType.AddShape, shapeToAdd=shape)
 
     def loadProject(self, pluginProject: PluginProject):
         """

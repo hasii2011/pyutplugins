@@ -27,3 +27,11 @@ class UmlFrame(UmlFrameShapeHandler):
         """
         self._diagram.DeleteAllShapes()
         self.Refresh()
+
+    def getDiagram(self):
+        """
+        Returns this frame's diagram
+
+        Returns:  wx.Diagram
+        """
+        return self._diagram

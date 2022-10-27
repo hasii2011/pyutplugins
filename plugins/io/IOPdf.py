@@ -53,6 +53,8 @@ class IOPdf(IOPluginInterface):
 
         self._imageOptions.imageFormat = ImageFormat.PDF
 
+        self._autoSelectAll = True     # we are taking a picture of the entire diagram
+
     def setImportOptions(self) -> bool:
         return False
 
