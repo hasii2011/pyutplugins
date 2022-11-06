@@ -44,6 +44,10 @@
             "level":     "WARNING",
             "propagate": "False"
         },
+        "core.PluginManager": {
+            "level":     "DEBUG",
+            "propagate": "False"
+        },
         "tests": {
             "level": "WARNING",
             "propagate": "False"

@@ -1,15 +1,9 @@
 
 from typing import Callable
-from typing import List
 from typing import cast
 
 from logging import Logger
 from logging import getLogger
-
-from pkgutil import ModuleInfo
-from pkgutil import iter_modules
-
-from importlib import import_module
 
 from wx import ICON_ERROR
 from wx import OK
@@ -31,10 +25,20 @@ from core.types.PluginDataTypes import InputPluginMap
 from core.types.PluginDataTypes import OutputPluginMap
 from core.types.PluginDataTypes import PluginList
 from core.types.PluginDataTypes import PluginIDMap
-from core.types.PluginDataTypes import PluginType
 
-import plugins.io
-import plugins.tools
+from plugins.io.IODTD import IODTD
+from plugins.io.IOGML import IOGML
+from plugins.io.IOJava import IOJava
+from plugins.io.IOPdf import IOPdf
+from plugins.io.IOPython import IOPython
+from plugins.io.IOWxImage import IOWxImage
+from plugins.io.IOXml import IOXml
+
+from plugins.tools.ToolArrangeLinks import ToolArrangeLinks
+from plugins.tools.ToolAscii import ToolAscii
+from plugins.tools.ToolOrthogonalLayoutV2 import ToolOrthogonalLayoutV2
+from plugins.tools.ToolSugiyama import ToolSugiyama
+from plugins.tools.ToolTransforms import ToolTransforms
 
 TOOL_PLUGIN_NAME_PREFIX: str = 'Tool'
 IO_PLUGIN_NAME_PREFIX:   str = 'IO'
@@ -44,8 +48,8 @@ class PluginManager(Singleton):
     """
     Is responsible for:
 
-    * Finding the plugin loader files
-    * Creating tool and Input/Output Menu Items
+    * Identifying the plugin loader files
+    * Creating tool and Input/Output Menu ID References
     * Providing the callbacks to invoke the appropriate methods on the
     appropriate plugins to invoke there functionality.
 
@@ -58,6 +62,8 @@ class PluginManager(Singleton):
     By convention prefix the plugin I/O module with the characters 'IO'
 
     """
+    IO_PLUGINS:   PluginList = PluginList([IODTD, IOGML, IOJava, IOPdf, IOPython, IOWxImage, IOXml])
+    TOOL_PLUGINS: PluginList = PluginList([ToolArrangeLinks, ToolAscii, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms])
 
     def init(self,  *args, **kwargs):
         """
@@ -74,11 +80,8 @@ class PluginManager(Singleton):
         self._inputPluginsMap:  InputPluginMap   = InputPluginMap()
         self._outputPluginsMap: OutputPluginMap  = OutputPluginMap()
 
-        self._ioPluginClasses:   PluginList = PluginList([])
-        self._toolPluginClasses: PluginList = PluginList([])
-
-        self._loadIOPlugins()
-        self._loadToolPlugins()
+        self._inputPluginClasses:  PluginList = cast(PluginList, None)
+        self._outputPluginClasses: PluginList = cast(PluginList, None)
 
         self._pluginAdapter: IPluginAdapter = kwargs['pluginAdapter']
 
@@ -89,14 +92,14 @@ class PluginManager(Singleton):
 
         Returns:  A list of classes (the plugins classes).
         """
-
-        pluginList = cast(PluginList, [])
-        for plugin in self._ioPluginClasses:
-            pluginClass = cast(type, plugin)
-            classInstance = pluginClass(None)
-            if classInstance.inputFormat is not None:
-                pluginList.append(plugin)
-        return pluginList
+        if self._inputPluginClasses is None:
+            self._inputPluginClasses = PluginList([])
+            for plugin in PluginManager.IO_PLUGINS:
+                pluginClass = cast(type, plugin)
+                classInstance = pluginClass(None)
+                if classInstance.inputFormat is not None:
+                    self._inputPluginClasses.append(plugin)
+        return self._inputPluginClasses
 
     @property
     def outputPlugins(self) -> PluginList:
@@ -105,13 +108,15 @@ class PluginManager(Singleton):
 
         Returns:  A list of classes (the plugins classes).
         """
-        pluginList = cast(PluginList, [])
-        for plugin in self._ioPluginClasses:
-            pluginClass = cast(type, plugin)
-            classInstance = pluginClass(None)
-            if classInstance.outputFormat is not None:
-                pluginList.append(plugin)
-        return pluginList
+        if self._outputPluginClasses is None:
+            self._outputPluginClasses = PluginList([])
+            for plugin in PluginManager.IO_PLUGINS:
+                pluginClass = cast(type, plugin)
+                classInstance = pluginClass(None)
+                if classInstance.outputFormat is not None:
+                    self._outputPluginClasses.append(plugin)
+
+        return self._outputPluginClasses
 
     @property
     def toolPlugins(self) -> PluginList:
@@ -120,12 +125,12 @@ class PluginManager(Singleton):
 
         Returns:    A list of classes (the plugins classes).
         """
-        return self._toolPluginClasses
+        return PluginManager.TOOL_PLUGINS
 
     @property
     def toolPluginsMap(self) -> ToolsPluginMap:
         if len(self._toolPluginsMap.pluginIdMap) == 0:
-            self._toolPluginsMap.pluginIdMap = self.__mapWxIdsToPlugins(self.toolPlugins)
+            self._toolPluginsMap.pluginIdMap = self.__mapWxIdsToPlugins(PluginManager.TOOL_PLUGINS)
         return self._toolPluginsMap
 
     @property
@@ -196,50 +201,6 @@ class PluginManager(Singleton):
                                                   message=f'An error occurred while executing the selected plugin - {e}',
                                                   caption='Error!', style=OK | ICON_ERROR)
             booBoo.ShowModal()
-
-    def _loadIOPlugins(self):
-        self._ioPluginClasses = self.__loadPlugins(plugins.io)
-
-    def _loadToolPlugins(self):
-        self._toolPluginClasses = self.__loadPlugins(plugins.tools)
-
-    def _iterateNameSpace(self, pluginPackage):
-        self.logger.debug(f'{dir(pluginPackage)}')
-        return iter_modules(pluginPackage.__path__, pluginPackage.__name__ + ".")
-
-    def __loadPlugins(self, pluginPackage) -> PluginList:
-
-        pluginList: PluginList = PluginList([])
-        for info in self._iterateNameSpace(pluginPackage):
-            moduleInfo: ModuleInfo = cast(ModuleInfo, info)
-
-            loadedModule = import_module(moduleInfo.name)
-
-            moduleName:  str      = moduleInfo.name
-            className:   str      = self.__computePluginClassNameFromModuleName(moduleName=moduleName)
-            if className.startswith(IO_PLUGIN_NAME_PREFIX) is True or className.startswith(TOOL_PLUGIN_NAME_PREFIX):
-
-                pluginClass: Callable = getattr(loadedModule, className)
-
-                self.logger.debug(f'{type(pluginClass)=}')
-                pluginList.append(cast(PluginType, pluginClass))
-        return pluginList
-
-    def __computePluginClassNameFromModuleName(self, moduleName: str) -> str:
-        """
-        Typical module names are:
-            * plugins.io.IoDTD
-            * plugins.tools.ToAscii
-        Args:
-            moduleName: A fully qualified module name
-
-        Returns: A string that is the contained class name
-        """
-
-        splitName: List[str] = moduleName.split('.')
-        className: str       = splitName[len(splitName) - 1]
-
-        return className
 
     def __mapWxIdsToPlugins(self, pluginList: PluginList) -> PluginIDMap:
 

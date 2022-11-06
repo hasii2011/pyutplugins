@@ -2,27 +2,17 @@
 from typing import Dict
 from typing import List
 from typing import NewType
-from typing import Union
-from typing import TYPE_CHECKING
 
 from enum import Enum
 
 from dataclasses import dataclass
 from dataclasses import field
 
-from wx import NewIdRef
-
-if TYPE_CHECKING:
-    from core.IOPluginInterface import IOPluginInterface
-    from core.ToolPluginInterface import ToolPluginInterface
-
-PluginType = Union['ToolPluginInterface', 'IOPluginInterface']
-
 #
 #  Both of these hold the class types for the Plugins
 #
-PluginList   = NewType('PluginList',  List[PluginType])
-PluginIDMap  = NewType('PluginIDMap', Dict[NewIdRef, PluginType])
+PluginList  = NewType('PluginList',  List[type])
+PluginIDMap = NewType('PluginIDMap', Dict[int, type])
 
 
 def createPlugIdMapFactory() -> PluginIDMap:
