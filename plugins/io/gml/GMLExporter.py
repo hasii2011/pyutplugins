@@ -112,11 +112,12 @@ class GMLExporter:
                 nodeGml = (
                     f'{nodeGml}'
                     f'{GMLExporter.singleTab}{GMLExporter.NODE_TOKEN} {GMLExporter.START_TOKEN}\n'
-                    f'{GMLExporter.doubleTab}{GMLExporter.ID_TOKEN} {oglObject.GetID()}\n'
+                    f'{GMLExporter.doubleTab}{GMLExporter.ID_TOKEN} {oglObject.id}\n'
                     f'{GMLExporter.doubleTab}{GMLExporter.LABEL_TOKEN} "{pyutObject.name}"\n'
                     f'{self._generateNodeGraphicsSection(oglObject)}'
                     f'{GMLExporter.singleTab}{GMLExporter.END_TOKEN}\n'
                 )
+                self.logger.debug(f'{nodeGml}')
         return f'{gml}{nodeGml}'
 
     def _generateNodeGraphicsSection(self, oglObject: OglObject) -> str:
@@ -171,11 +172,11 @@ class GMLExporter:
         for umlClass in umlObjects:
             if isinstance(umlClass, OglClass) or isinstance(umlClass, OglNote):
                 oglObject: OglObject = cast(OglObject, umlClass)
-                links = oglObject.getLinks()
+                links = oglObject.links
                 self.logger.info(f'links: {links}')
                 for oglLink in links:
-                    srcOglId:  int = oglLink.getSourceShape().GetID()
-                    destOglId: int = oglLink.getDestinationShape().GetID()
+                    srcOglId:  int = oglLink.getSourceShape().id
+                    destOglId: int = oglLink.getDestinationShape().id
                     linkIds:   str = f'{srcOglId}-{destOglId}'
                     if linkIds not in linkSet:
                         gml = self.__generateUniqueEdge(oglLink=oglLink, gml=gml)
@@ -185,13 +186,13 @@ class GMLExporter:
 
     def __generateUniqueEdge(self, oglLink: OglLink, gml: str) -> str:
 
-        srcOglId:  int = oglLink.getSourceShape().GetID()
-        destOglId: int = oglLink.getDestinationShape().GetID()
+        srcOglId:  int = oglLink.getSourceShape().id
+        destOglId: int = oglLink.getDestinationShape().id
 
         gml = (
             f'{gml}'
             f'{GMLExporter.singleTab}{GMLExporter.EDGE_TOKEN} {GMLExporter.START_TOKEN}\n'
-            f'{GMLExporter.doubleTab}{GMLExporter.ID_TOKEN} {oglLink.GetID()}\n'
+            f'{GMLExporter.doubleTab}{GMLExporter.ID_TOKEN} {oglLink.id}\n'
             f'{GMLExporter.doubleTab}{GMLExporter.SOURCE_ID_TOKEN} {srcOglId}\n'
             f'{GMLExporter.doubleTab}{GMLExporter.TARGET_ID_TOKEN} {destOglId}\n'
             f'{self.__generateEdgeGraphicsSection(oglLink=oglLink)}'

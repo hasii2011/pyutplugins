@@ -76,7 +76,7 @@ class JavaWriter:
         parents    = pyutClass.getParents()
         allLinks: PyutLinks   = pyutClass.getLinks()
 
-        stereotype: PyutStereotype = pyutClass.getStereotype()
+        stereotype: PyutStereotype = pyutClass.stereotype
 
         # List of links
         interfaces: PyutLinks = PyutLinks([])     # List of interfaces implemented by the class
@@ -118,7 +118,8 @@ class JavaWriter:
 
         """
         for link in allLinks:
-            linkType = link.getType()
+            pyutLink: PyutLink = cast(PyutLink, link)
+            linkType: PyutLinkType = pyutLink.linkType
             self.logger.debug(f'Found linkType: `{linkType}`')
             if linkType == PyutLinkType.INTERFACE:
                 interfaces.append(link)
