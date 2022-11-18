@@ -63,7 +63,7 @@ class IOJava(IOPluginInterface):
 
     def setImportOptions(self) -> bool:
 
-        response: MultipleFileRequestResponse = self.askToImportMultipleFiles()
+        response: MultipleFileRequestResponse = self.askToImportMultipleFiles(startDirectory=None)
         if response.cancelled is True:
             return False
         else:
@@ -73,7 +73,7 @@ class IOJava(IOPluginInterface):
         return True
 
     def setExportOptions(self) -> bool:
-        response: ExportDirectoryResponse = self.askForExportDirectoryName()
+        response: ExportDirectoryResponse = self.askForExportDirectoryName(preferredDefaultPath=None)
         if response.cancelled is True:
             return False
         else:

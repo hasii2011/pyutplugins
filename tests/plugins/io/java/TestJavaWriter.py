@@ -13,6 +13,7 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from core.types.Types import OglClasses
+from core.types.Types import OglObjects
 
 from tests.TestBase import TestBase
 
@@ -46,7 +47,7 @@ class TestJavaWriter(TestBase):
         self._cleanupGenerated('SingleClass.java')
 
         oglClasses: OglClasses = self._xmlFileToOglClasses(filename='SingleClass.xml', documentName='SingleClass')
-        self._javaWriter.write(oglObjects=oglClasses)
+        self._javaWriter.write(oglObjects=cast(OglObjects, oglClasses))
 
         status: int = self._runDiff('SingleClass.java')
         self.assertEqual(0, status, 'Diff of single class failed;  Something changed')
@@ -61,7 +62,7 @@ class TestJavaWriter(TestBase):
             self._cleanupGenerated(generatedFileName)
 
         oglClasses: OglClasses = self._xmlFileToOglClasses(filename='ATM-Model.xml', documentName='Class Diagram')
-        self._javaWriter.write(oglObjects=oglClasses)
+        self._javaWriter.write(oglObjects=cast(OglObjects, oglClasses))
 
         for generatedFileName in generatedFileNames:
             status: int = self._runDiff(generatedFileName)

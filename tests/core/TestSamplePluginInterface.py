@@ -97,7 +97,7 @@ class TestSamplePluginInterface(App):
 
     # noinspection PyUnusedLocal
     def _displayFileImportDialog(self, event: CommandEvent):
-        ans: SingleFileRequestResponse = self._plugin.askForFileToImport()
+        ans: SingleFileRequestResponse = self._plugin.askForFileToImport(startDirectory=None)
         self.logger.info(f'_displayFileImportDialog: `{ans}`')
 
     # noinspection PyUnusedLocal
@@ -122,7 +122,7 @@ class TestSamplePluginInterface(App):
     # noinspection PyUnusedLocal
     def _displayExportDirectoryDialog(self, event: CommandEvent):
 
-        ans = self._plugin.askForExportDirectoryName()
+        ans = self._plugin.askForExportDirectoryName(preferredDefaultPath=None)
 
         self.logger.info(f'_displayExportDirectoryDialog: `{ans}`')
 

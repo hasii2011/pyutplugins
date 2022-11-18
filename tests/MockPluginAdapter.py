@@ -22,19 +22,9 @@ class MockPluginAdapter(IPluginAdapter):
     A simple mostly do nothing pluginAdapter for unit tests
     """
     # noinspection PyUnusedLocal
-    def __init__(self, umlFrame: DiagramFrame = None, currentDirectory: str = ''):
+    def __init__(self):
         """
-
-        Args:
-            umlFrame:           Never going to use this
-            currentDirectory:
         """
-
-        if currentDirectory is None or currentDirectory == '':
-            self._currentDirectory: str = getcwd()
-        else:
-            self._currentDirectory = currentDirectory
-
         # ignore whatever comes in
         mockFrame: MagicMock = MagicMock(spec=DiagramFrame)
 

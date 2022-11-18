@@ -47,7 +47,7 @@ class ToolAscii(ToolPluginInterface):
 
     def setOptions(self) -> bool:
 
-        response: ExportDirectoryResponse = self.askForExportDirectoryName()
+        response: ExportDirectoryResponse = self.askForExportDirectoryName(preferredDefaultPath=None)
         if response.cancelled is True:
             return False
         else:

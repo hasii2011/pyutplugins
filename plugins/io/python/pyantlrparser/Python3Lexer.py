@@ -1,3 +1,4 @@
+# type: ignore
 # Generated from Python3.g4 by ANTLR 4.9.3
 from antlr4 import *
 from io import StringIO

@@ -44,7 +44,7 @@ class IODTD(IOPluginInterface):
 
         Returns:  'True', we support import
         """
-        response: SingleFileRequestResponse = self.askForFileToImport()
+        response: SingleFileRequestResponse = self.askForFileToImport(startDirectory=None)
         if response.cancelled is True:
             return False
         else:

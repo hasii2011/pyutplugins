@@ -351,7 +351,7 @@ class JavaReader(LinkMakerMixin):
                     pos += 1
                 self.__logMessage(f"={defaultValue}")
             if defaultValue == "":
-                defaultValue = None
+                defaultValue = ''
 
             # Pass \n ?
             pos = self.__selectNextAfter(lstFile, pos, ["\n"])
@@ -580,14 +580,13 @@ class JavaReader(LinkMakerMixin):
 
         # TODO fix this crazy code to use constructor and catch exception on bad input
         # Get visibility
+        visibility: PyutVisibilityEnum = PyutVisibilityEnum.PUBLIC
         if "private" in modifiers:
-            visibility: PyutVisibilityEnum = PyutVisibilityEnum.PRIVATE
+            visibility = PyutVisibilityEnum.PRIVATE
         elif "protected" in modifiers:
-            visibility: PyutVisibilityEnum = PyutVisibilityEnum.PROTECTED
+            visibility = PyutVisibilityEnum.PROTECTED
         elif "public" in modifiers:
-            visibility: PyutVisibilityEnum = PyutVisibilityEnum.PUBLIC
-        else:
-            visibility: PyutVisibilityEnum = PyutVisibilityEnum.PUBLIC
+            visibility = PyutVisibilityEnum.PUBLIC
 
         # Add all
         for (name, value) in names_values:
@@ -624,14 +623,13 @@ class JavaReader(LinkMakerMixin):
 
         # TODO fix this crazy code to use constructor and catch exception on bad input
         # Get visibility
+        visibility: PyutVisibilityEnum = PyutVisibilityEnum.PUBLIC
         if "private" in modifiers:
-            visibility: PyutVisibilityEnum = PyutVisibilityEnum.PRIVATE
+            visibility = PyutVisibilityEnum.PRIVATE
         elif "protected" in modifiers:
-            visibility: PyutVisibilityEnum = PyutVisibilityEnum.PROTECTED
+            visibility = PyutVisibilityEnum.PROTECTED
         elif "public" in modifiers:
-            visibility: PyutVisibilityEnum = PyutVisibilityEnum.PUBLIC
-        else:
-            visibility: PyutVisibilityEnum = PyutVisibilityEnum.PUBLIC
+            visibility = PyutVisibilityEnum.PUBLIC
 
         # Add method
         methods = pc.methods

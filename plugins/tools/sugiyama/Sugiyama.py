@@ -2,6 +2,7 @@
 from typing import List
 from typing import NewType
 from typing import Union
+from typing import cast
 
 from logging import Logger
 from logging import getLogger
@@ -16,6 +17,7 @@ from ogl.OglObject import OglObject
 from pyutmodel.PyutLinkType import PyutLinkType
 
 from core.IPluginAdapter import IPluginAdapter
+from plugins.tools.sugiyama import SugiyamaNode
 from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from plugins.tools.sugiyama.SugiyamaConstants import H_SPACE
 from plugins.tools.sugiyama.SugiyamaConstants import LEFT_MARGIN
@@ -64,7 +66,7 @@ class Sugiyama:
 
         #  All nodes of the hierarchy are assigned to a level.
         #  A level is a list of nodes (real or virtual).
-        nodeList: NodeList = NodeList([])
+        # nodeList: NodeList = NodeList([])
         self._levels: Levels = Levels([])   # List of levels
 
     @property
@@ -707,7 +709,7 @@ class Sugiyama:
 
             # For first and last nodes of the level
             level[0].setLeftNode(None)
-            level[nbNodes - 1].setRightNode(None)
+            level[nbNodes - 1].setRightNode(cast(SugiyamaNode, None))
 
     def _fixNodesPositions(self):
 
@@ -725,7 +727,7 @@ class Sugiyama:
             y += maxHeight + V_SPACE
 
         if Sugiyama.STEP_BY_STEP:     # TODO Make this a User/Plugin Preference
-            SugiyamaGlobals.waitKey(self._mediator)
+            SugiyamaGlobals.waitKey(self._mediator, optionalMessage=None)
         else:
             self.logger.info(f'.__fixNodesPositions() is complete')
 

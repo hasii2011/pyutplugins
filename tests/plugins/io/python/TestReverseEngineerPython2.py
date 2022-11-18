@@ -29,8 +29,10 @@ from wx.py.frame import Frame
 
 from core.types.Types import OglClasses
 from core.types.Types import OglLinks
+from plugins.io.python.PyutPythonVisitor import ClassName
 from plugins.io.python.PyutPythonVisitor import DataClassProperties
 from plugins.io.python.PyutPythonVisitor import DataClassProperty
+from plugins.io.python.PyutPythonVisitor import ExpressionText
 from plugins.io.python.PyutPythonVisitor import MultiParameterNames
 
 from plugins.io.python.PyutPythonVisitor import PyutPythonVisitor
@@ -144,10 +146,10 @@ class TestReverseEngineerPython2(TestBase):
     def testCreateDataClassPropertiesAsFields(self):
 
         sampleDataClassProperties: DataClassProperties = [
-            DataClassProperty(('DataTestClass', 'w="A String"')),
-            DataClassProperty(('DataTestClass', 'x:float=0.0')),
-            DataClassProperty(('DataTestClass', 'y:float=42.0')),
-            DataClassProperty(('DataTestClass', 'z:int'))
+            DataClassProperty(('DataTestClass', 'w="A String"')),                   # type: ignore
+            DataClassProperty(('DataTestClass', 'x:float=0.0')),                    # type: ignore
+            DataClassProperty(('DataTestClass', 'y:float=42.0')),                   # type: ignore
+            DataClassProperty((ClassName('DataTestClass'), ExpressionText('z:int')))
         ]
         pyutClass: PyutClass = PyutClass(name='DataTestClass')
 

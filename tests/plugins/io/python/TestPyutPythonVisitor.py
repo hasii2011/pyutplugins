@@ -13,6 +13,7 @@ from unittest import main as unitTestMain
 from antlr4 import CommonTokenStream
 from antlr4 import FileStream
 
+from plugins.io.python.PyutPythonVisitor import ParentName
 from plugins.io.python.pyantlrparser.Python3Lexer import Python3Lexer
 from plugins.io.python.pyantlrparser.Python3Parser import Python3Parser
 from plugins.io.python.PyutPythonVisitor import PyutPythonVisitor
@@ -103,7 +104,7 @@ class TestPyutPythonVisitor(TestBase):
 
         self.assertTrue(expectedParentName in visitor.parents, 'Missing parent')
 
-        actualChildName: str = visitor.parents[expectedParentName][0]
+        actualChildName: str = visitor.parents[ParentName(expectedParentName)][0]
 
         self.assertEqual(expectedChildName, actualChildName, 'Missing child')
 
@@ -120,14 +121,14 @@ class TestPyutPythonVisitor(TestBase):
         self.assertTrue(expectedParentName1 in visitor.parents, f'Missing parent: {expectedParentName1}')
         self.assertTrue(expectedParentName2 in visitor.parents, f'Missing parent: {expectedParentName2}')
 
-        parent1Children: List[str] = visitor.parents[expectedParentName1]
+        parent1Children: List[str] = visitor.parents[cast(ParentName, expectedParentName1)]     # type: ignore
 
         expectedParent1Child1: str = 'ChildClass1'
         expectedParent1Child2: str = 'ChildClass2'
         self.assertTrue(expectedParent1Child1 in parent1Children, f'Missing child: {expectedParent1Child1} of parent {expectedParentName1}')
         self.assertTrue(expectedParent1Child2 in parent1Children, f'Missing child: {expectedParent1Child2} of parent {expectedParentName1}')
 
-        parent2Children: List[str] = visitor.parents[expectedParentName2]
+        parent2Children: List[str] = visitor.parents[ParentName(expectedParentName2)]
 
         expectedParent2Child3: str = 'ChildClass3'
         expectedParent2Child4: str = 'ChildClass4'

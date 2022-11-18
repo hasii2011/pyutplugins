@@ -39,7 +39,7 @@ class TestPyutToPython(TestBase):
     def testGetPublicFieldPythonCode(self):
 
         pyutType: PyutType = PyutType(value='')
-        s: str = self.pyutToPython.generateFieldPythonCode(PyutField("publicField", pyutType, None, PyutVisibilityEnum.PUBLIC))
+        s: str = self.pyutToPython.generateFieldPythonCode(PyutField("publicField", pyutType, '', PyutVisibilityEnum.PUBLIC))
 
         unExpectedValue: int = -1
         actualValue:     int = s.find('self.publicField')
@@ -49,7 +49,7 @@ class TestPyutToPython(TestBase):
 
         pyutType: PyutType = PyutType(value='')
 
-        s: str = self.pyutToPython.generateFieldPythonCode(PyutField("privateField", pyutType, None, PyutVisibilityEnum.PRIVATE))
+        s: str = self.pyutToPython.generateFieldPythonCode(PyutField("privateField", pyutType, '', PyutVisibilityEnum.PRIVATE))
 
         unExpectedValue: int = -1
         actualValue:     int = s.find('self.__privateField')
@@ -59,7 +59,7 @@ class TestPyutToPython(TestBase):
 
         pyutType: PyutType = PyutType(value='')
 
-        s: str = self.pyutToPython.generateFieldPythonCode(PyutField("protectedField", pyutType, None, PyutVisibilityEnum.PROTECTED))
+        s: str = self.pyutToPython.generateFieldPythonCode(PyutField("protectedField", pyutType, '', PyutVisibilityEnum.PROTECTED))
 
         unExpectedValue: int = -1
         actualValue:     int = s.find('self._protectedField')
@@ -119,6 +119,7 @@ class TestPyutToPython(TestBase):
         self.logger.info(f'Generated definition: {defCode}')
         expectedDeclaration: str = f'def __hash__(self):{osLineSep}'
         self.assertEqual(expectedDeclaration, defCode[0], 'Code generation must have changed')
+
 
 def suite() -> TestSuite:
     import unittest

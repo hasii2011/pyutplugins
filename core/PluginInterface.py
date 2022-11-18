@@ -124,7 +124,7 @@ class PluginInterface:
         booBoo: MessageDialog = MessageDialog(parent=None, message='No selected UML objects', caption='Try Again!', style=OK | ICON_ERROR)
         booBoo.ShowModal()
 
-    def askForFileToImport(self, startDirectory: str = None) -> SingleFileRequestResponse:
+    def askForFileToImport(self, startDirectory: str | None) -> SingleFileRequestResponse:
         """
         Called by plugin to ask for a file to import
 
@@ -154,7 +154,7 @@ class PluginInterface:
 
         return response
 
-    def askToImportMultipleFiles(self, startDirectory: str = None) -> MultipleFileRequestResponse:
+    def askToImportMultipleFiles(self, startDirectory: str | None) -> MultipleFileRequestResponse:
         """
         This method determines how to filter the input files via the Plugin Input
         format specification.
@@ -238,7 +238,7 @@ class PluginInterface:
 
         return response
 
-    def askForExportDirectoryName(self, preferredDefaultPath: str = None) -> ExportDirectoryResponse:
+    def askForExportDirectoryName(self, preferredDefaultPath: str | None) -> ExportDirectoryResponse:
         """
         Called by plugin to ask for an output directory
         Args:

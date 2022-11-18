@@ -23,6 +23,7 @@ from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutField import PyutField
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutParameters
+from pyutmodel.PyutMethod import SourceCode
 from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
@@ -152,7 +153,7 @@ class ReverseEngineerPython2(LinkMakerMixin):
                 else:
                     pyutMethod.setVisibility(PyutVisibilityEnum.PUBLIC)
                 pyutMethod = self._addParameters(pyutMethod)
-                pyutMethod.sourceCode = self.visitor.methodCode[methodName]
+                pyutMethod.sourceCode = SourceCode(self.visitor.methodCode[methodName])
 
                 pyutClass.addMethod(pyutMethod)
 
@@ -164,7 +165,7 @@ class ReverseEngineerPython2(LinkMakerMixin):
             if className in self.visitor.dataClassNames:
                 self._createDataClassPropertiesAsFields(pyutClass, self.visitor.dataClassProperties)
 
-            self._pyutClasses[className] = pyutClass
+            self._pyutClasses[PyutClassName(className)] = pyutClass
         self.logger.info(f'Generated {len(self._pyutClasses)} classes')
 
     def _generatePropertiesAsMethods(self, pyutClass: PyutClass, getterProperties, setterProperties) -> PyutClass:

@@ -101,7 +101,8 @@ class ScaffoldFrame(Frame):
 
     def _createApplicationMenuBar(self):
 
-        self._loadXmlFileWxId:        int = NewIdRef()
+        self._loadXmlFileWxId = NewIdRef()
+
         self._newClassDiagramWxId:    int = NewIdRef()
         self._newUseCaseDiagramWxId:  int = NewIdRef()
         self._newSequenceDiagramWxId: int = NewIdRef()

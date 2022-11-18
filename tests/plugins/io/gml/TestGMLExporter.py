@@ -11,6 +11,7 @@ from unittest.mock import MagicMock
 
 from os import remove as osRemove
 
+
 from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutLink import PyutLink
@@ -20,8 +21,7 @@ from miniogl.AnchorPoint import AnchorPoint
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 
-from core.types.Types import OglClasses
-
+from core.types.Types import OglObjects
 from plugins.io.gml.GMLExporter import GMLExporter
 
 from tests.TestBase import TestBase
@@ -65,7 +65,7 @@ class TestGMLExporter(TestBase):
         self._addMockLinks(umlObjects)
 
         self.exporter.prettyPrint = True
-        self.exporter.translate(cast(OglClasses, umlObjects))
+        self.exporter.translate(cast(OglObjects, umlObjects))
         gml: str = self.exporter.gml
 
         self.assertIsNotNone(gml, 'Generate Something!!')

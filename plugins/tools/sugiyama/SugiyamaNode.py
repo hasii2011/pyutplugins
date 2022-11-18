@@ -25,16 +25,16 @@ class SugiyamaNode:
         # Current barycenter value of the link, this value can be computed
         # on indexes or x coordinate. For more information, see function
         # getBarycenter()
-        self.__barycenter: float = cast(float, None)
+        self.__barycenter: int = cast(int, None)
         self.__index = None
         """
         Index position on the level
         """
-        self.__level = None
+        self.__level: int | None = None
         """
         Index of level
         """
-        self.__leftNode = None
+        self.__leftNode: SugiyamaNode | None = None
         """
         Node direct on the left on the same level
         """
@@ -67,9 +67,9 @@ class SugiyamaNode:
 
         This function should be overridden.
 
-        Returns:    (float, float): tuple (width, height)
+        Returns:    (int, int): tuple (width, height)
         """
-        pass
+        return -1, -1
 
     def setPosition(self, x, y):
         """
@@ -83,17 +83,17 @@ class SugiyamaNode:
         """
         pass
 
-    def getPosition(self) -> Tuple[float, float]:
+    def getPosition(self) -> Tuple[int, int]:
         """
         Get position of node.
 
         This function has to be implemented.  Should be a 'pass'  But Pycharm complains
         at method self.__pushToRight()
 
-        Returns:    (float, float): tuple (x, y) is absolute coordinates
+        Returns:    (int, int): tuple (x, y) is absolute coordinates
 
         """
-        return 0.0, 0.0
+        return 0, 0
 
     def addParent(self, parent: "SugiyamaNode", link: SugiyamaLink):
         """
@@ -188,7 +188,7 @@ class SugiyamaNode:
         """
         return self.__index
 
-    def setLeftNode(self, node: "SugiyamaNode"):
+    def setLeftNode(self, node: 'SugiyamaNode'):
         """
         Set the left neighbor node.
 
@@ -224,7 +224,7 @@ class SugiyamaNode:
         """
         return self.__rightNode
 
-    def getXMax(self) -> float:
+    def getXMax(self) -> int:
         """
         Get bigger value of x coordinate according to right neighbor position.
 
@@ -233,7 +233,7 @@ class SugiyamaNode:
         Returns:    max x coordinate
         """
         if self.__rightNode is None:
-            return cast(float, None)
+            return cast(int, None)
         else:
             xRightNode = self.__rightNode.getPosition()[0]
             widthSelfNode = self.getSize()[0]
@@ -297,15 +297,15 @@ class SugiyamaNode:
         nodeList = self.__parents + self.__children
         if len(nodeList) == 0:
             # ~ print self.__index, "none"
-            self.__barycenter = None
+            self.__barycenter = cast(int, None)
         else:
             summation = 0
             for (node, link) in nodeList:
                 summation += node.getBarycenter()
             # ~ print self.__index, float(sum) / len(nodeList)
-            self.__barycenter = float(summation) / len(nodeList)
+            self.__barycenter = summation // len(nodeList)
 
-    def __getAverageX(self, nodeList: SugiyamaVEs) -> float:
+    def __getAverageX(self, nodeList: SugiyamaVEs) -> int:
         """
         Compute the average of x coordinates on all the given nodes.
 
@@ -316,12 +316,12 @@ class SugiyamaNode:
                     None if nodeList is empty.
         """
         if len(nodeList) == 0:
-            return cast(float, None)
+            return cast(int, None)
         else:
-            summation: float = 0
+            summation: int = 0
             for (node, link) in nodeList:
-                summation += node.getPosition()[0] + node.getSize()[0] / 2
-            return summation / len(nodeList) - self.getSize()[0] / 2
+                summation += node.getPosition()[0] + node.getSize()[0] // 2
+            return summation // len(nodeList) - self.getSize()[0] // 2
 
     def upBarycenterX(self):
         """
@@ -348,7 +348,7 @@ class SugiyamaNode:
         parentsAndChildren: SugiyamaVEs = cast(SugiyamaVEs, self.__parents + self.__children)
         self.__barycenter = self.__getAverageX(parentsAndChildren)
 
-    def getBarycenter(self) -> float:
+    def getBarycenter(self) -> int:
         """
         Return the pre-computed barycenter value of the node.
 

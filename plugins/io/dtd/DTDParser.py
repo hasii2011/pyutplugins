@@ -15,16 +15,16 @@ from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutField import PyutField
-from pyutmodel.PyutLink import PyutLink
-
 from pyutmodel.PyutLinkType import PyutLinkType
 
 from ogl.OglClass import OglClass
+from ogl.OglLink import OglLink
 
 from plugins.common.ElementTreeData import ElementTreeData
 from plugins.common.LinkMakerMixin import LinkMakerMixin
 from plugins.common.PluginTypes import ClassPair
 from plugins.common.PluginTypes import ClassTree
+
 from core.types.Types import OglClasses
 from core.types.Types import OglLinks
 
@@ -201,7 +201,7 @@ class DTDParser(LinkMakerMixin):
                 dstTreeData: ElementTreeData = self._classTree[associatedClassName]
                 child:       OglClass = dstTreeData.oglClass
 
-                link: PyutLink = self.createLink(parent, child, PyutLinkType.AGGREGATION)
+                link: OglLink = self.createLink(parent, child, PyutLinkType.AGGREGATION)
 
                 self._links.append(link)
 
