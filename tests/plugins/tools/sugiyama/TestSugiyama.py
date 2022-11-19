@@ -78,8 +78,8 @@ class TestSugiyama(TestBase):
         hierarchicalGraphNodes: HierarchicalGraphNodes = sugiyama._hierarchyGraphNodesList
 
         for hierarchicalGraphNode in hierarchicalGraphNodes:
-            nodeName:      str = hierarchicalGraphNode.getName()
-            actualLevel:   int = hierarchicalGraphNode.getLevel()
+            nodeName:      str = hierarchicalGraphNode.getName()    # type: ignore
+            actualLevel:   int = hierarchicalGraphNode.getLevel()   # type: ignore
             try:
                 expectedLevel: int = expectedResults[nodeName]
             except KeyError:

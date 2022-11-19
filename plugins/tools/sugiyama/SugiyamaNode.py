@@ -26,7 +26,7 @@ class SugiyamaNode:
         # on indexes or x coordinate. For more information, see function
         # getBarycenter()
         self.__barycenter: int = cast(int, None)
-        self.__index = None
+        self.__index: int | None = None
         """
         Index position on the level
         """
@@ -163,7 +163,7 @@ class SugiyamaNode:
         """
         self.__level = level
 
-    def getLevel(self) -> int:
+    def getLevel(self) -> int | None:
         """
         Get level index.
 
@@ -180,7 +180,7 @@ class SugiyamaNode:
         """
         self.__index = index
 
-    def getIndex(self) -> int:
+    def getIndex(self) -> int | None:
         """
         Get index of node.
 
@@ -199,11 +199,12 @@ class SugiyamaNode:
 
     def getLeftNode(self) -> "SugiyamaNode":
         """
+        TODO: Fix this on 3.11 when allowed to return self
         Get the left neighbor node.
 
         Returns:    left neighbor
         """
-        return self.__leftNode
+        return self.__leftNode  # type: ignore
 
     def setRightNode(self, node: "SugiyamaNode"):
         """
@@ -218,11 +219,12 @@ class SugiyamaNode:
 
     def getRightNode(self) -> "SugiyamaNode":
         """
+        TODO: Fix this on 3.11 when allowed to return self
         Get the right neighbor node.
 
         Returns:    right neighbor
         """
-        return self.__rightNode
+        return self.__rightNode     # type: ignore
 
     def getXMax(self) -> int:
         """
@@ -239,7 +241,7 @@ class SugiyamaNode:
             widthSelfNode = self.getSize()[0]
             return xRightNode - widthSelfNode - H_SPACE
 
-    def __getAverageIndex(self, nodeList) -> float:
+    def __getAverageIndex(self, nodeList) -> int:
         """
         Compute the average of indices position on all the given nodes.
 
@@ -249,12 +251,12 @@ class SugiyamaNode:
         Returns:  None if nodeList is empty.  float or None : Average of indexes position
         """
         if len(nodeList) == 0:
-            return cast(float, None)
+            return cast(int, None)
         else:
-            summation = 0.0
+            summation = 0
             for (node, link) in nodeList:
                 summation += node.getIndex()
-            return float(summation) / len(nodeList)
+            return summation // len(nodeList)
 
     def fixAnchorPos(self):
         """

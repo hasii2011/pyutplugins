@@ -17,7 +17,8 @@ from ogl.OglObject import OglObject
 from pyutmodel.PyutLinkType import PyutLinkType
 
 from core.IPluginAdapter import IPluginAdapter
-from plugins.tools.sugiyama import SugiyamaNode
+
+from plugins.tools.sugiyama.SugiyamaNode import SugiyamaNode
 from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from plugins.tools.sugiyama.SugiyamaConstants import H_SPACE
 from plugins.tools.sugiyama.SugiyamaConstants import LEFT_MARGIN
@@ -90,10 +91,10 @@ class Sugiyama:
         """
         # Dictionary for oglObjects fast research
         # Key = OglObject, Value = RealSugiyamaNode
-        dictOgl     = {}
+        dictOgl     = {}                # type: ignore
         # Dictionary for RealSugiyamaNode that takes part in hierarchy
         # Key = OglObject, Value = None
-        dictSugiyamaHierarchy = {}
+        dictSugiyamaHierarchy = {}      # type: ignore
 
         def createSugiyamaNode(theOglObject, theDictOgl):
             """
@@ -127,7 +128,7 @@ class Sugiyama:
 
             # Class or Note :
             if isinstance(oglObject, OglObject):
-                createSugiyamaNode(oglObject, dictOgl)
+                createSugiyamaNode(oglObject, dictOgl)      # type: ignore
             # Links
             elif isinstance(oglObject, OglLink):
 
@@ -208,7 +209,7 @@ class Sugiyama:
             # For each father
             for (father, link) in node.getParents():
                 # Mark relation with a '1' on coordinates[index Son][index Father]
-                matrix[node.getIndex()][father.getIndex()] = 1
+                matrix[node.getIndex()][father.getIndex()] = 1      # type: ignore
         # Define levels
 
         # Sum each column of the matrix
@@ -391,7 +392,7 @@ class Sugiyama:
         # Keys are internal respectively external nodes
         # Values :
         #   - externalNodes : # of zLink to internal nodes
-        internalNodes = {}
+        internalNodes = {}  # type: ignore
         externalNodes = {}
 
         # Make dictionary of internal nodes
@@ -413,7 +414,7 @@ class Sugiyama:
         # nodes to put in, create new level
         if not self._levels and externalNodes:
             # Add one level for nodes
-            self._levels.append([])
+            self._levels.append(NodeList([]))
 
         # Function for getting node that has most connections to internal
         # nodes
@@ -477,8 +478,8 @@ class Sugiyama:
                 # Else if current node is nearer to average position or
                 # is at same distance but with less nodes on level
                 # TODO Refactor this test to a method
-                elif abs(nodeLevel - avgLevel) < abs(bestLevel - avgLevel) or (abs(nodeLevel - avgLevel) == abs(bestLevel - avgLevel) and
-                                                                               len(self._levels[nodeLevel]) < len(self._levels[bestLevel])):
+                elif abs(nodeLevel - avgLevel) < abs(bestLevel - avgLevel) or (abs(nodeLevel - avgLevel) == abs(bestLevel - avgLevel) and       # type: ignore
+                                                                               len(self._levels[nodeLevel]) < len(self._levels[bestLevel])):    # type: ignore
 
                     # Store best level
                     bestLevel = nodeLevel
@@ -708,7 +709,7 @@ class Sugiyama:
                 level[i].setRightNode(level[i + 1])
 
             # For first and last nodes of the level
-            level[0].setLeftNode(None)
+            level[0].setLeftNode(None)      # type: ignore
             level[nbNodes - 1].setRightNode(cast(SugiyamaNode, None))
 
     def _fixNodesPositions(self):

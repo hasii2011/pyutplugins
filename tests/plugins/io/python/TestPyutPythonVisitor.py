@@ -128,7 +128,7 @@ class TestPyutPythonVisitor(TestBase):
         self.assertTrue(expectedParent1Child1 in parent1Children, f'Missing child: {expectedParent1Child1} of parent {expectedParentName1}')
         self.assertTrue(expectedParent1Child2 in parent1Children, f'Missing child: {expectedParent1Child2} of parent {expectedParentName1}')
 
-        parent2Children: List[str] = visitor.parents[ParentName(expectedParentName2)]
+        parent2Children: List[str] = visitor.parents[ParentName(expectedParentName2)]   # type: ignore
 
         expectedParent2Child3: str = 'ChildClass3'
         expectedParent2Child4: str = 'ChildClass4'
