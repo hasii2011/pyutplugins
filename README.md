@@ -3,6 +3,8 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 [![Build Status](https://app.travis-ci.com/hasii2011/pyutplugincore.svg?branch=master)](https://app.travis-ci.com/hasii2011/pyutplugincore)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/hasii2011/pyutplugincore/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/hasii2011/pyutplugincore/tree/master)
+
+[![CircleCI](https://dl.circleci.com/insights-snapshot/gh/hasii2011/pyutplugincore/master/main/badge.svg?window=30d)](https://app.circleci.com/insights/github/hasii2011/pyutplugincore/workflows/main/overview?branch=master&reporting-window=last-30-days&insights-snapshot=true)
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
 
