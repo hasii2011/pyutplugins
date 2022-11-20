@@ -18,8 +18,8 @@ click~=8.1.3
 
 wxPython==4.2.0
 pyutmodel==1.2.0
-ogl==0.60.10
-untanglepyut==0.6.1
+ogl==0.60.15
+untanglepyut==0.6.2
 oglio==0.5.16
 
 # Pin networkx to match orthgonal

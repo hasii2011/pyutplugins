@@ -34,9 +34,9 @@ jobs:
             pip install attrdict3
             pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04  wxPython
             pip install pyutmodel==1.2.0
-            pip install ogl==0.60.9
-            pip install untanglepyut==0.6.0
-            pip install oglio==0.5.15
+            pip install ogl==0.60.15
+            pip install untanglepyut==0.6.2
+            pip install oglio==0.5.20
       - run:
             name: run tests
             command: | 
