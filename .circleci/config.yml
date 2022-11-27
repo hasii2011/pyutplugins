@@ -33,6 +33,9 @@ jobs:
             pip install html-testRunner~=1.2.1
             pip install attrdict3
             pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04  wxPython
+            pip install antlr4-python3-runtime==4.11.1
+            pip install networkx==2.8.5
+            pip install orthogonal==1.1.7
             pip install pyutmodel==1.2.0
             pip install ogl==0.60.15
             pip install untanglepyut==0.6.2

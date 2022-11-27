@@ -13,7 +13,7 @@ from antlr4 import ParserRuleContext
 
 
 from plugins.io.python.pyantlrparser.Python3Parser import Python3Parser
-from plugins.io.python.pyantlrparser.Python3Visitor import Python3Visitor
+from plugins.io.python.pyantlrparser.Python3ParserVisitor import Python3ParserVisitor
 
 MethodName          = NewType('MethodName', str)
 PropertyName        = NewType('PropertyName', str)
@@ -42,7 +42,7 @@ PropertyParameters = Dict[PropertyName, ParameterNames]
 DataClassProperties = List[DataClassProperty]
 
 
-class PyutPythonVisitor(Python3Visitor):
+class PyutPythonVisitor(Python3ParserVisitor):
 
     PYTHON_SELF:         str = 'self'
     PYTHON_SELF_COMMA:   str = f'{PYTHON_SELF},'

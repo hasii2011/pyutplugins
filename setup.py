@@ -11,7 +11,7 @@ LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
     name="pyutplugincore",
-    version="0.6.3",
+    version="0.6.2",
     author='Humberto A. Sanchez II',
     author_email='humberto.a.sanchez.ii@gmail.com',
     maintainer='Humberto A. Sanchez II',
@@ -52,7 +52,7 @@ setup(
         'core', 'core.types', 'core.exceptions',
     ],
     install_requires=['click~=8.1.3',
-                      'antlr4-python3-runtime==4.9.3',
+                      'antlr4-python3-runtime==4.11.1',
                       'pyumldiagrams==2.30.8',
                       'networkx==2.8.5',
                       'orthogonal==1.1.7',
