@@ -36,10 +36,10 @@ jobs:
             pip install antlr4-python3-runtime==4.11.1
             pip install networkx==2.8.5
             pip install orthogonal==1.1.7
-            pip install pyutmodel==1.2.0
-            pip install ogl==0.60.15
-            pip install untanglepyut==0.6.2
-            pip install oglio==0.5.20
+            pip install pyutmodel==1.3.3
+            pip install ogl==0.60.25
+            pip install untanglepyut==0.6.4
+            pip install oglio==0.5.30
       - run:
             name: run tests
             command: | 

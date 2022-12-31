@@ -57,9 +57,9 @@ setup(
                       'networkx==2.8.5',
                       'orthogonal==1.1.7',
                       'wxPython~=4.2.0',
-                      'pyutmodel==1.2.0',
-                      'ogl==0.60.15',
-                      'oglio==0.5.20',
-                      'untanglepyut==0.6.2',
+                      'pyutmodel==1.3.3',
+                      'ogl==0.60.25',
+                      'untanglepyut==0.6.4',
+                      'oglio==0.5.30',
                       ]
 )
