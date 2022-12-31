@@ -32,7 +32,7 @@ class IOGML(IOPluginInterface):
         """
 
         Args:
-            pluginAdapter:   A class that implements IMediator
+            pluginAdapter:   A class that implements IPluginAdapter
         """
         super().__init__(pluginAdapter=pluginAdapter)
 
