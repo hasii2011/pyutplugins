@@ -20,6 +20,7 @@ FORMAT_NAME:        FormatName       = FormatName('Ascii')
 PLUGIN_EXTENSION:   PluginExtension  = PluginExtension('acl')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Export OGL as ASCII')
 
+
 class IOAscii(IOPluginInterface):
     """
     Write ASCII and can read ASCII

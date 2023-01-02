@@ -1,7 +1,9 @@
-from logging import Logger
-from logging import getLogger
+
 from typing import List
 from typing import cast
+
+from logging import Logger
+from logging import getLogger
 
 from os import sep as osSep
 

@@ -35,6 +35,7 @@ class ScaffoldApp(App):
 
         ScaffoldApp.setUpLogging()
 
+        # noinspection PyAttributeOutsideInit
         self._frameTop: ScaffoldFrame = ScaffoldFrame(createEmptyProject=self._createEmtpyProject)
 
         self._frameTop.Show(True)
