@@ -54,7 +54,7 @@ class IOAscii(IOPluginInterface):
         return True
 
     def read(self) -> bool:
-        pass
+        return False
 
     def write(self, oglObjects: OglObjects):
         pass

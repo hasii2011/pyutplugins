@@ -7,6 +7,8 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from os import path as osPath
+
 from wx import TreeItemId
 
 from tests.scaffoldv2.PyutDocument import PyutDocument
@@ -15,10 +17,7 @@ from tests.scaffoldv2.umlframes.UmlSequenceDiagramsFrame import UmlSequenceDiagr
 
 PyutDocuments = NewType('PyutDocuments', List[PyutDocument])
 
-# Until I figure out how to stop mypy from complaining
-# TODO:   This should just be the following:
 UmlFrameType = Union[UmlClassDiagramsFrame, UmlSequenceDiagramsFrame]
-# UmlFrameType = NewType('UmlFrameType', Union[UmlClassDiagramsFrame, UmlSequenceDiagramsFrame])  # type: ignore
 
 
 class PyutProject:
@@ -32,15 +31,15 @@ class PyutProject:
     """
     DEFAULT_PROJECT_NAME: str = 'New Project'
 
-    def __init__(self, projectName: str = DEFAULT_PROJECT_NAME, codePath: str = ''):
+    def __init__(self, fileName: str = '', codePath: str = ''):
         """
 
         Args:
-            projectName:    The project name is used as the file name when persisting a project
-            codePath:       If reverse engineered this is where the code is
+            fileName:    The fully qualified filename; Is used as the file name when persisting a project
+            codePath:    If reverse engineered this is where the code is
         """
 
-        self._projectName: str  = projectName
+        self._fileName:    str  = fileName
         self._codePath:    str  = codePath
         self._modified:    bool = False
 
@@ -51,22 +50,32 @@ class PyutProject:
         self._projectTreeRoot: TreeItemId = cast(TreeItemId, None)
 
     @property
+    def fileName(self) -> str:
+        return self._fileName
+
+    @fileName.setter
+    def fileName(self, newValue: str):
+        self._fileName = newValue
+
+    @property
     def projectName(self) -> str:
         """
-        Returns:  The project's filename
-        """
-        return self._projectName
+        Truncates to just the file name and less the suffix.
 
-    @projectName.setter
-    def projectName(self, filename: str):
+        Returns:   Nice short hane
         """
-        Set the project's filename
+        return self._justTheFileName(self._fileName)
 
-        Args:
-            filename:
-        """
-        self._projectName = filename
-        self.updateTreeText()
+    # @projectName.setter
+    # def projectName(self, newValue: str):
+    #     """
+    #     Set the project's filename
+    #
+    #     Args:
+    #         newValue:
+    #     """
+    #     self._projectName = newValue
+    #     self.updateTreeText()
 
     @property
     def codePath(self) -> str:
@@ -138,3 +147,17 @@ class PyutProject:
 
     def updateTreeText(self):
         pass
+
+    def _justTheFileName(self, filename):
+        """
+        Return just the file name portion of the fully qualified path
+
+        Args:
+            filename:  file name to display
+
+        Returns:
+            A better file name
+        """
+        regularFileName: str = osPath.split(filename)[1]
+
+        return regularFileName

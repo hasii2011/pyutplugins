@@ -4,22 +4,12 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from ogl.OglActor import OglActor
-from ogl.OglNote import OglNote
-from ogl.OglText import OglText
-from ogl.OglUseCase import OglUseCase
-from ogl.sd.OglSDInstance import OglSDInstance
-from ogl.sd.OglSDMessage import OglSDMessage
 from wx import CANCEL
 from wx import CENTRE
 from wx import ICON_QUESTION
 from wx import MessageBox
 from wx import YES
 from wx import YES_NO
-
-from ogl.OglClass import OglClass
-from ogl.OglLink import OglLink
-from ogl.OglInterface2 import OglInterface2
 
 from core.IPluginAdapter import IPluginAdapter
 
@@ -81,6 +71,7 @@ class IOXml(IOPluginInterface):
         self._fileToImport: str  = ''
 
         self._requireActiveFrame = False
+        self._requireSelection   = False
 
     def setImportOptions(self) -> bool:
         """
@@ -152,47 +143,93 @@ class IOXml(IOPluginInterface):
         return True
 
     def write(self, oglObjects: OglObjects):
+        """
+        Ignoring the input objects since they are from a single frame
+        Args:
+            oglObjects:
+        """
+
+        self._pluginAdapter.requestCurrentProject(callback=self._currentProjectCallback)
+
+        # oglProject: OglProject = OglProject()
+        # oglProject.version  = self._pluginAdapter.pyutVersion
+        # oglProject.codePath = ''
+        #
+        # oglDocument: OglDocument = OglDocument()
+        # oglDocument.scrollPositionX = 0
+        # oglDocument.scrollPositionY = 0
+        # oglDocument.pixelsPerUnitX = self._pluginAdapter.screenMetrics.dpiX
+        # oglDocument.pixelsPerUnitY = self._pluginAdapter.screenMetrics.dpiY
+        # oglDocument.documentTitle  = OglDocumentTitle(self._frameInformation.diagramTitle)
+        # oglDocument.documentType   = self._frameInformation.diagramType
+        # for oglObject in oglObjects:
+        #     match oglObject:
+        #         case OglClass() as oglObject:
+        #             oglDocument.oglClasses.append(oglObject)
+        #         case OglInterface2() as oglObject:
+        #             # TODO Fix this in oglio
+        #             oglDocument.oglLinks.append(oglObject)  # type: ignore
+        #         case OglLink() as oglObject:
+        #             oglDocument.oglLinks.append(oglObject)
+        #         case OglNote() as oglObject:
+        #             oglDocument.oglNotes.append(oglObject)
+        #         case OglText() as oglObject:
+        #             oglDocument.oglTexts.append(oglObject)
+        #         case OglUseCase() as oglObject:
+        #             oglDocument.oglUseCases.append(oglObject)
+        #         case OglActor() as oglObject:
+        #             oglDocument.oglActors.append(oglObject)
+        #         case OglSDMessage() as oglObject:
+        #             oglSDMessage: OglSDMessage         = cast(OglSDMessage, oglObject)
+        #             modelId:      int                  = oglSDMessage.pyutObject.id
+        #             oglDocument.oglSDMessages[modelId] = oglSDMessage
+        #         case OglSDInstance() as oglObject:
+        #             oglSDInstance: OglSDInstance        = cast(OglSDInstance, oglObject)
+        #             modelId                             = oglSDInstance.pyutObject.id
+        #             oglDocument.oglSDInstances[modelId] = oglSDInstance
+        #         case _:
+        #             self.logger.warning(f'Unsaved {oglObject=}')
+        # oglProject.oglDocuments[oglDocument.documentTitle] = oglDocument
+        #
+        # writer:     Writer = Writer()
+        #
+        # writer.writeXmlFile(oglProject=oglProject, fqFileName=self._fileToExport)
+
+    def _currentProjectCallback(self, pluginProject: PluginProject):
+
+        import oglio
+        assert isinstance(pluginProject, PluginProject)
 
         oglProject: OglProject = OglProject()
-        oglProject.version  = self._pluginAdapter.pyutVersion
-        oglProject.codePath = ''
 
-        oglDocument: OglDocument = OglDocument()
-        oglDocument.scrollPositionX = 0
-        oglDocument.scrollPositionY = 0
-        oglDocument.pixelsPerUnitX = self._pluginAdapter.screenMetrics.dpiX
-        oglDocument.pixelsPerUnitY = self._pluginAdapter.screenMetrics.dpiY
-        oglDocument.documentTitle  = OglDocumentTitle(self._frameInformation.diagramTitle)
-        oglDocument.documentType   = self._frameInformation.diagramType
-        for oglObject in oglObjects:
-            match oglObject:
-                case OglClass() as oglObject:
-                    oglDocument.oglClasses.append(oglObject)
-                case OglInterface2() as oglObject:
-                    # TODO Fix this in oglio
-                    oglDocument.oglLinks.append(oglObject)  # type: ignore
-                case OglLink() as oglObject:
-                    oglDocument.oglLinks.append(oglObject)
-                case OglNote() as oglObject:
-                    oglDocument.oglNotes.append(oglObject)
-                case OglText() as oglObject:
-                    oglDocument.oglTexts.append(oglObject)
-                case OglUseCase() as oglObject:
-                    oglDocument.oglUseCases.append(oglObject)
-                case OglActor() as oglObject:
-                    oglDocument.oglActors.append(oglObject)
-                case OglSDMessage() as oglObject:
-                    oglSDMessage: OglSDMessage         = cast(OglSDMessage, oglObject)
-                    modelId:      int                  = oglSDMessage.pyutObject.id
-                    oglDocument.oglSDMessages[modelId] = oglSDMessage
-                case OglSDInstance() as oglObject:
-                    oglSDInstance: OglSDInstance        = cast(OglSDInstance, oglObject)
-                    modelId                             = oglSDInstance.pyutObject.id
-                    oglDocument.oglSDInstances[modelId] = oglSDInstance
-                case _:
-                    self.logger.warning(f'Unsaved {oglObject=}')
-        oglProject.oglDocuments[oglDocument.documentTitle] = oglDocument
+        oglProject.version  = pluginProject.version
+        oglProject.codePath = pluginProject.codePath
+        oglProject.fileName = pluginProject.fileName
+
+        for document in pluginProject.pluginDocuments.values():
+            pluginDocument: PluginDocument = cast(PluginDocument, document)
+            oglDocument:    OglDocument    = OglDocument()
+
+            oglDocument.scrollPositionX = pluginDocument.scrollPositionX
+            oglDocument.scrollPositionY = pluginDocument.scrollPositionY
+            oglDocument.pixelsPerUnitX  = pluginDocument.pixelsPerUnitX
+            oglDocument.pixelsPerUnitY  = pluginDocument.pixelsPerUnitY
+            oglDocument.documentTitle   = OglDocumentTitle(pluginDocument.documentTitle)
+            oglDocument.documentType    = pluginDocument.documentType.value
+            oglDocument.oglClasses      = cast(oglio.Types.OglClasses, pluginDocument.oglClasses)
+            oglDocument.oglLinks        = cast(oglio.Types.OglLinks, pluginDocument.oglLinks)
+            oglDocument.oglNotes        = cast(oglio.Types.OglNotes, pluginDocument.oglNotes)
+            oglDocument.oglTexts        = cast(oglio.Types.OglTexts, pluginDocument.oglTexts)
+            oglDocument.oglActors       = cast(oglio.Types.OglActors, pluginDocument.oglActors)
+            oglDocument.oglUseCases     = cast(oglio.Types.OglUseCases, pluginDocument.oglUseCases)
+            oglDocument.oglSDMessages   = cast(oglio.Types.OglSDMessages, pluginDocument.oglSDMessages)
+            oglDocument.oglSDInstances  = cast(oglio.Types.OglSDInstances, pluginDocument.oglSDInstances)
+
+            self.logger.debug(f'{oglDocument=}')
+
+            oglProject.oglDocuments[oglDocument.documentTitle] = oglDocument
 
         writer:     Writer = Writer()
 
         writer.writeXmlFile(oglProject=oglProject, fqFileName=self._fileToExport)
+

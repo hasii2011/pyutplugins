@@ -5,7 +5,7 @@ from logging import Logger
 from logging import getLogger
 
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
-from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
+from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
 
 
 class PyutDocument:
@@ -16,7 +16,7 @@ class PyutDocument:
         self.logger:       Logger          = getLogger(__name__)
 
         self._title:        str = cast(str, None)
-        self._diagramFrame: UmlDiagramsFrame = cast(UmlDiagramsFrame, None)
+        self._diagramFrame: UmlClassDiagramsFrame = cast(UmlClassDiagramsFrame, None)
 
     @property
     def title(self) -> str:
@@ -36,7 +36,7 @@ class PyutDocument:
         return self._diagramType
 
     @property
-    def diagramFrame(self) -> UmlDiagramsFrame:
+    def diagramFrame(self) -> UmlClassDiagramsFrame:
         """
         Return the document's uml diagram frame
 
@@ -45,5 +45,5 @@ class PyutDocument:
         return self._diagramFrame
 
     @diagramFrame.setter
-    def diagramFrame(self, umlDiagramsFrame: UmlDiagramsFrame):
-        self._diagramFrame = umlDiagramsFrame
+    def diagramFrame(self, umlClassDiagramsFrame: UmlClassDiagramsFrame):
+        self._diagramFrame = umlClassDiagramsFrame

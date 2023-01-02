@@ -9,10 +9,14 @@ from os import getcwd
 from dataclasses import dataclass
 from typing import Union
 
+from oglio.Reader import Reader
+from oglio.Types import OglProject
 from wx import ACCEL_CTRL
+from wx import FD_CHANGE_DIR
 from wx import FD_FILE_MUST_EXIST
 from wx import FD_OPEN
 from wx import FileDialog
+from wx import FileSelector
 from wx import ID_OK
 from wx import OK
 from wx import ICON_ERROR
@@ -96,8 +100,8 @@ class ScaffoldFrame(Frame):
         Args:
             fqFileName: full qualified file name
         """
-        # self._loadXmlFile(fqFileName=fqFileName)
-        pass
+        self._loadXmlFile(fqFileName=fqFileName)
+
 
     def _createApplicationMenuBar(self):
 
@@ -237,7 +241,16 @@ class ScaffoldFrame(Frame):
     # noinspection PyUnusedLocal
     def _onLoadXmlFile(self, event: CommandEvent):
 
-        self._displayError(message='Use the import plugin')
+        wildcard: str = (
+            f'Extended Markup Language '
+            f' (*, xml '
+            f'|*.xml'
+        )
+
+        selectedFile: str = FileSelector("Choose a file to import", wildcard=wildcard, flags=FD_OPEN | FD_FILE_MUST_EXIST | FD_CHANGE_DIR)
+
+        if selectedFile != '':
+            self._loadXmlFile(selectedFile)
 
     def _onNewDiagram(self, event: CommandEvent):
         eventId: int = event.GetId()
@@ -291,3 +304,11 @@ class ScaffoldFrame(Frame):
 
         booBoo: MessageDialog = MessageDialog(parent=None, message=message, caption='Error', style=OK | ICON_ERROR)
         booBoo.ShowModal()
+
+    def _loadXmlFile(self, fqFileName: str):
+
+        reader: Reader = Reader()
+
+        oglProject: OglProject = reader.readXmlFile(fqFileName=fqFileName)
+
+        self._eventEngine.sendEvent(eventType=EventType.LoadOglProject, oglProject=oglProject)

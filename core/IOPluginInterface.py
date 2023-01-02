@@ -104,7 +104,7 @@ class IOPluginInterface(PluginInterface, ABC):
         else:
             self._selectedOglObjects = frameInformation.selectedOglObjects  # syntactic sugar
 
-            if len(self._selectedOglObjects) == 0:
+            if len(self._selectedOglObjects) == 0 and self._requireSelection is True:
                 self.displayNoSelectedOglObjects()
             else:
                 if self.setExportOptions() is True:

@@ -65,9 +65,11 @@ class PluginManager(Singleton):
     IO_PLUGINS:   PluginList = PluginList([IODTD, IOGML, IOJava, IOPdf, IOPython, IOWxImage, IOXml])
     TOOL_PLUGINS: PluginList = PluginList([ToolArrangeLinks, ToolAscii, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms])
 
+    # noinspection PyAttributeOutsideInit
     def init(self,  *args, **kwargs):
         """
         Expects a pluginAdapter parameter in kwargs
+
         Args:
             *args:
             **kwargs:
@@ -93,6 +95,7 @@ class PluginManager(Singleton):
         Returns:  A list of classes (the plugins classes).
         """
         if self._inputPluginClasses is None:
+            # noinspection PyAttributeOutsideInit
             self._inputPluginClasses = PluginList([])
             for plugin in PluginManager.IO_PLUGINS:
                 pluginClass = cast(type, plugin)
@@ -109,6 +112,7 @@ class PluginManager(Singleton):
         Returns:  A list of classes (the plugins classes).
         """
         if self._outputPluginClasses is None:
+            # noinspection PyAttributeOutsideInit
             self._outputPluginClasses = PluginList([])
             for plugin in PluginManager.IO_PLUGINS:
                 pluginClass = cast(type, plugin)

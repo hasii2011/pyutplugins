@@ -3,11 +3,13 @@ from logging import Logger
 from logging import getLogger
 from typing import Callable
 
+from oglio.Types import OglProject
 from wx import PostEvent
 from wx import PyEventBinder
 from wx import TreeItemId
 from wx import Window
 
+from core.types.Types import CurrentProjectCallback
 from core.types.Types import PluginProject
 from core.types.Types import SelectedOglObjectsCallback
 
@@ -17,9 +19,11 @@ from tests.scaffoldv2.eventengine.Events import AddShapeEvent
 from tests.scaffoldv2.eventengine.Events import EventType
 from tests.scaffoldv2.eventengine.Events import FrameInformationEvent
 from tests.scaffoldv2.eventengine.Events import FrameSizeEvent
+from tests.scaffoldv2.eventengine.Events import LoadOglProjectEvent
 from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
 from tests.scaffoldv2.eventengine.Events import NewDiagramEvent
 from tests.scaffoldv2.eventengine.Events import NewProjectEvent
+from tests.scaffoldv2.eventengine.Events import RequestCurrentProjectEvent
 from tests.scaffoldv2.eventengine.Events import SelectedOglObjectsEvent
 from tests.scaffoldv2.eventengine.Events import UpdateTreeItemNameEvent
 
@@ -28,6 +32,7 @@ from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 NEW_NAME_PARAMETER:       str = 'newName'
 TREE_ITEM_ID_PARAMETER:   str = 'treeItemId'
 PLUGIN_PROJECT_PARAMETER: str = 'pluginProject'
+OGL_PROJECT_PARAMETER:    str = 'oglProject'
 CALLBACK_PARAMETER:       str = 'callback'
 DIAGRAM_TYPE_PARAMETER:   str = 'diagramType'
 SHAPE_PARAMETER:          str = 'shapeToAdd'
@@ -75,6 +80,10 @@ class EventEngine(IEventEngine):
                 self._sendFrameInformationEvent(**kwargs)
             case EventType.FrameSize:
                 self._sendFrameSizeEvent(**kwargs)
+            case EventType.RequestCurrentProject:
+                self._sendRequestCurrentProjectEvent(**kwargs)
+            case EventType.LoadOglProject:
+                self._sendLoadOglProjectEvent(**kwargs)
             case _:
                 assert False, f'Unknown event type: `{eventType}`'
 
@@ -122,6 +131,16 @@ class EventEngine(IEventEngine):
         eventToPost: AddShapeEvent = AddShapeEvent(shapeToAdd=shapeToAdd)
         PostEvent(dest=self._listeningWindow, event=eventToPost)
 
+    def _sendRequestCurrentProjectEvent(self, **kwargs):
+        callback: CurrentProjectCallback = kwargs[CALLBACK_PARAMETER]
+        eventToPost: RequestCurrentProjectEvent = RequestCurrentProjectEvent(callback=callback)
+        PostEvent(dest=self._listeningWindow, event=eventToPost)
+
     def _simpleSendEvent(self, eventType: EventType):
         eventToPost = eventType.commandEvent
+        PostEvent(dest=self._listeningWindow, event=eventToPost)
+
+    def _sendLoadOglProjectEvent(self, **kwargs):
+        oglProject:  OglProject          = kwargs[OGL_PROJECT_PARAMETER]
+        eventToPost: LoadOglProjectEvent = LoadOglProjectEvent(oglProject=oglProject)
         PostEvent(dest=self._listeningWindow, event=eventToPost)

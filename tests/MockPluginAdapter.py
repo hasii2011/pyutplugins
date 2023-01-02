@@ -3,12 +3,11 @@ from typing import cast
 
 from unittest.mock import MagicMock
 
-from os import getcwd
-
 from miniogl.DiagramFrame import DiagramFrame
 
 from core.IPluginAdapter import IPluginAdapter
 from core.IPluginAdapter import ScreenMetrics
+from core.types.Types import CurrentProjectCallback
 from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSizeCallback
 from core.types.Types import OglObjectType
@@ -21,6 +20,7 @@ class MockPluginAdapter(IPluginAdapter):
     """
     A simple mostly do nothing pluginAdapter for unit tests
     """
+
     # noinspection PyUnusedLocal
     def __init__(self):
         """
@@ -82,4 +82,7 @@ class MockPluginAdapter(IPluginAdapter):
         pass
 
     def loadProject(self, pluginProject: PluginProject):
+        pass
+
+    def requestCurrentProject(self, callback: CurrentProjectCallback):
         pass

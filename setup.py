@@ -59,7 +59,7 @@ setup(
                       'wxPython~=4.2.0',
                       'pyutmodel==1.3.3',
                       'ogl==0.60.25',
-                      'untanglepyut==0.6.4',
-                      'oglio==0.5.30',
+                      'untanglepyut==0.6.5',
+                      'oglio==0.5.40',
                       ]
 )

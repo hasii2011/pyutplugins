@@ -4,6 +4,7 @@ from abc import abstractmethod
 
 from dataclasses import dataclass
 
+from core.types.Types import CurrentProjectCallback
 from core.types.Types import OglObjectType
 from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSizeCallback
@@ -112,5 +113,13 @@ class IPluginAdapter(ABC):
         Args:
             pluginProject:
 
+        """
+        pass
+
+    @abstractmethod
+    def requestCurrentProject(self, callback: CurrentProjectCallback):
+        """
+        Request the current project.   The adapter or its surrogate
+        has to convert from a PyutProject to a PluginProject type
         """
         pass

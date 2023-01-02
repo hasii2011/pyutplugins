@@ -6,6 +6,7 @@ from wx import Yield as wxYield
 
 from core.IPluginAdapter import IPluginAdapter
 from core.IPluginAdapter import ScreenMetrics
+from core.types.Types import CurrentProjectCallback
 from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSizeCallback
 from core.types.Types import OglObjectType
@@ -75,3 +76,10 @@ class PluginAdapterV2(IPluginAdapter):
             pluginProject:
         """
         self._eventEngine.sendEvent(eventType=EventType.LoadProjectEvent, pluginProject=pluginProject)
+
+    def requestCurrentProject(self, callback: CurrentProjectCallback):
+        """
+        Request the current project.   The adapter or its surrogate
+        has to convert from a PyutProject to a PluginProject type
+        """
+        self._eventEngine.sendEvent(eventType=EventType.RequestCurrentProject, callback=callback)

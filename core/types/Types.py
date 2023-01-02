@@ -29,8 +29,10 @@ from ogl.OglActor import OglActor
 from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage
 
+HybridLinks = Union[OglLink, OglInterface2]
+
 OglClasses  = NewType('OglClasses',  List[OglClass])
-OglLinks    = NewType('OglLinks',    List[OglLink])
+OglLinks    = NewType('OglLinks',    List[HybridLinks])
 OglNotes    = NewType('OglNotes',    List[OglNote])
 OglTexts    = NewType('OglTexts',    List[OglText])
 OglActors   = NewType('OglActors',   List[OglActor])
@@ -45,7 +47,6 @@ OglObjects = NewType('OglObjects',  List[OglObjectType])
 PyutLinks  = NewType('PyutLinks',   List[PyutLink])
 
 SelectedOglObjectsCallback = Callable[[OglObjects], None]        # Todo: Figure out appropriate type for callback
-
 
 def createOglObjectsFactory() -> OglObjects:
     """
@@ -130,10 +131,10 @@ PluginDocumentTitle = NewType('PluginDocumentTitle', str)
 
 class PluginDocumentType(Enum):
 
-    CLASS_DIAGRAM    = 'Class Diagram'
-    SEQUENCE_DIAGRAM = 'Sequence Diagram'
-    USECASE_DIAGRAM  = 'Use Case Diagram'
-    UNKNOWN_DIAGRAM  = 'Unknown'
+    CLASS_DIAGRAM    = 'CLASS_DIAGRAM'
+    SEQUENCE_DIAGRAM = 'SEQUENCE_DIAGRAM'
+    USECASE_DIAGRAM  = 'USECASE_DIAGRAM'
+    UNKNOWN_DIAGRAM  = 'UNKNOWN_DIAGRAM'
 
     @classmethod
     def toEnum(cls, enumStr: str) -> 'PluginDocumentType':
@@ -212,3 +213,6 @@ class PluginProject:
         projectName:     str  = osPath.splitext(regularFileName)[0]
 
         return projectName
+
+
+CurrentProjectCallback     = Callable[[PluginProject], None]

@@ -11,6 +11,7 @@ from miniogl.DiagramFrame import DiagramFrame
 
 from core.IPluginAdapter import IPluginAdapter
 from core.IPluginAdapter import ScreenMetrics
+from core.types.Types import CurrentProjectCallback
 from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSizeCallback
 from core.types.Types import OglObjectType
@@ -84,4 +85,7 @@ class SampleIPluginAdapter(IPluginAdapter):
         pass
 
     def loadProject(self, pluginProject: PluginProject):
+        pass
+
+    def requestCurrentProject(self, callback: CurrentProjectCallback):
         pass

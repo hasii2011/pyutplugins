@@ -7,11 +7,11 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from miniogl.Diagram import Diagram
-from ogl.sd.OglSDInstance import OglSDInstance
-from ogl.sd.OglSDMessage import OglSDMessage
+from ogl.OglActor import OglActor
+from ogl.OglNote import OglNote
+from ogl.OglText import OglText
+from ogl.OglUseCase import OglUseCase
 from wx import CLIP_CHILDREN
-from wx import ClientDC
 from wx import EVT_TREE_SEL_CHANGED
 from wx import ICON_ERROR
 from wx import ID_ANY
@@ -19,31 +19,41 @@ from wx import OK
 from wx import TR_HAS_BUTTONS
 from wx import TR_HIDE_ROOT
 
+from wx import ClientDC
 from wx import Frame
 from wx import Notebook
 from wx import SplitterWindow
 from wx import TreeCtrl
-
 from wx import MessageDialog
 from wx import TreeEvent
-
 from wx import TreeItemId
 
 from wx import Yield as wxYield
 
 from miniogl.DiagramFrame import DiagramFrame
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
+from miniogl.Diagram import Diagram
 
+from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglObject import OglObject
 from ogl.OglInterface2 import OglInterface2
 
+from ogl.sd.OglSDInstance import OglSDInstance
+from ogl.sd.OglSDMessage import OglSDMessage
+
+from oglio.Types import OglDocument
+from oglio.Types import OglProject
+
+from core.types.Types import CurrentProjectCallback
 from core.types.Types import FrameInformation
 from core.types.Types import FrameInformationCallback
 from core.types.Types import FrameSize
 from core.types.Types import FrameSizeCallback
+from core.types.Types import HybridLinks
 
 from core.types.Types import PluginDocument
+from core.types.Types import PluginDocumentTitle
 from core.types.Types import PluginDocumentType
 from core.types.Types import PluginProject
 from core.types.Types import OglLinks
@@ -56,6 +66,8 @@ from tests.scaffoldv2.PyutProject import UmlFrameType
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.Events import AddShapeEvent
+from tests.scaffoldv2.eventengine.Events import LoadOglProjectEvent
+from tests.scaffoldv2.eventengine.Events import RequestCurrentProjectEvent
 from tests.scaffoldv2.eventengine.Events import DeSelectAllShapesEvent
 from tests.scaffoldv2.eventengine.Events import EVENT_ADD_SHAPE
 
@@ -68,6 +80,7 @@ from tests.scaffoldv2.eventengine.Events import EVENT_SELECT_ALL_SHAPES
 from tests.scaffoldv2.eventengine.Events import EVENT_LOAD_PROJECT
 from tests.scaffoldv2.eventengine.Events import EVENT_NEW_PROJECT
 from tests.scaffoldv2.eventengine.Events import EVENT_SELECTED_OGL_OBJECTS
+from tests.scaffoldv2.eventengine.Events import EventType
 
 from tests.scaffoldv2.eventengine.Events import FrameSizeEvent
 from tests.scaffoldv2.eventengine.Events import FrameInformationEvent
@@ -80,11 +93,14 @@ from tests.scaffoldv2.eventengine.Events import SelectedOglObjectsEvent
 
 from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
 from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
+from tests.scaffoldv2.umlframes.UmlFrame import UmlFrame
 from tests.scaffoldv2.umlframes.UmlFrameShapeHandler import UmlFrameShapeHandler
 
 PyutProjects = NewType('PyutProjects', List[PyutProject])
 
 TreeDataType = Union[PyutProject, UmlClassDiagramsFrame]
+
+NO_DIAGRAM_FRAME: UmlDiagramsFrame = cast(UmlDiagramsFrame, None)
 
 
 class ScaffoldUI:
@@ -113,6 +129,8 @@ class ScaffoldUI:
 
         if createEmptyProject is True:
             self.createEmptyProject()
+
+        self._topLevelFrame.Bind(EVT_TREE_SEL_CHANGED,      self._onProjectTreeSelectionChanged)
 
     def getProjectFromFrame(self, frame: UmlDiagramsFrame) -> PyutProject:
         """
@@ -149,10 +167,48 @@ class ScaffoldUI:
         self._eventEngine.registerListener(EVENT_FRAME_INFORMATION,    self._onFrameInformation)
         self._eventEngine.registerListener(EVENT_ADD_SHAPE,            self._onAddShape)
 
+        self._eventEngine.registerListener(EventType.LoadOglProject.pyEventBinder, self._onLoadOglProject)
+
+        self._eventEngine.registerListener(EventType.RequestCurrentProject.pyEventBinder, self._onRequestCurrentProject)
+
     eventEngine    = property(fset=_setEventEngine)
 
     def createEmptyProject(self):
         self._onNewProject(cast(NewProjectEvent, None))
+
+    def _onProjectTreeSelectionChanged(self, event: TreeEvent):
+        """
+        Called when the selection in the project changes
+
+        Args:
+            event:
+        """
+        itm:      TreeItemId   = event.GetItem()
+        pyutData: TreeDataType = self._projectTree.GetItemData(itm)
+        self.logger.debug(f'Clicked on: {itm=} `{pyutData=}`')
+
+        # Use our own base type
+        if isinstance(pyutData, PyutDocument):
+            pyutDocument: PyutDocument          = cast(PyutDocument, pyutData)
+            frame:        UmlClassDiagramsFrame = pyutDocument.diagramFrame
+
+            self.currentFrame    = frame
+            self.currentDocument = pyutDocument
+
+            self._syncPageFrameAndNotebook(frame=frame)
+
+        elif isinstance(pyutData, PyutProject):
+            project: PyutProject = pyutData
+            self.currentProject = project
+            projectFrames: List[UmlFrameType] = project.frames
+            if len(projectFrames) > 0:
+                self.currentFrame = projectFrames[0]
+            else:
+                self.currentFrame = NO_DIAGRAM_FRAME
+
+            self._syncPageFrameAndNotebook(frame=self.currentFrame)
+            self.currentProject = project
+
 
     # noinspection PyUnusedLocal
     def _onDeSelectAll(self, event: DeSelectAllShapesEvent):
@@ -211,16 +267,17 @@ class ScaffoldUI:
 
         pluginProject:   PluginProject = loadProjectEvent.pluginProject
 
-        pyutProject:     PyutProject = PyutProject(projectName=pluginProject.projectName, codePath=pluginProject.codePath)
+        pyutProject:     PyutProject = PyutProject(fileName=pluginProject.projectName, codePath=pluginProject.codePath)
         projectTreeRoot: TreeItemId  = self._projectTree.AppendItem(self._projectsRoot, pluginProject.projectName, data=pyutProject)
 
         pyutProject.projectTreeRoot = projectTreeRoot
 
         # Add the frames
         for pluginDocument in pluginProject.pluginDocuments.values():
-            # document.addToTree(self._tree, self._treeRoot)
+
             diagramType:  PyutDiagramType = self._toPyutDiagramType(pluginDocument.documentType)
-            pyutDocument: PyutDocument = self._newDiagram(diagramType=diagramType)
+            pyutDocument: PyutDocument    = self._newDiagram(diagramType=diagramType)
+            pyutDocument.title = pluginDocument.documentTitle
 
             itemId: TreeItemId = self._projectTree.AppendItem(parent=projectTreeRoot, text=pyutDocument.title, data=pyutDocument)
             self._projectTree.SelectItem(item=itemId, select=True)
@@ -232,6 +289,38 @@ class ScaffoldUI:
 
         self._addProjectToNotebook(project=pyutProject)
         self._projects.append(pyutProject)
+        self._currentProject = pyutProject
+        self._synchronizeWithSelectedTreeItem()
+
+    def _onLoadOglProject(self, event: LoadOglProjectEvent):
+        oglProject: OglProject = event.oglProject
+        pyutProject: PyutProject = PyutProject(fileName=oglProject.fileName, codePath=oglProject.codePath)
+        projectTreeRoot: TreeItemId  = self._projectTree.AppendItem(self._projectsRoot, pyutProject.projectName, data=pyutProject)
+
+        pyutProject.projectTreeRoot = projectTreeRoot
+
+        # Add the frames
+        for document in oglProject.oglDocuments.values():
+            oglDocument:  OglDocument     = cast(OglDocument, document)
+            diagramType:  PyutDiagramType = PyutDiagramType.toEnum(oglDocument.documentType)
+            pyutDocument: PyutDocument    = self._newDiagram(diagramType=diagramType)
+            pyutDocument.title            = oglDocument.documentTitle
+
+            itemId: TreeItemId = self._projectTree.AppendItem(parent=projectTreeRoot, text=pyutDocument.title, data=pyutDocument)
+            self._projectTree.SelectItem(item=itemId, select=True)
+
+            pyutProject.documents.append(pyutDocument)
+            self._layoutOglDocument(oglDocument=oglDocument, umlFrame=pyutDocument.diagramFrame)
+
+        self._projectTree.Expand(projectTreeRoot)
+
+        self._addProjectToNotebook(project=pyutProject)
+        self._projects.append(pyutProject)
+        self._currentProject = pyutProject
+
+        self.logger.info(f'{oglProject=}')
+        self._synchronizeWithSelectedTreeItem()
+
 
     def _onNewDiagram(self, newDiagramEvent: NewDiagramEvent):
 
@@ -324,13 +413,74 @@ class ScaffoldUI:
 
         match shapeToAdd:
             case OglLink() as shapeToAdd:
-                self._layoutOglLink(umlFrame=umlFrame, oglLink=cast(OglLink, shapeToAdd))
+                self._layoutOglLink(umlFrame=umlFrame, link=cast(OglLink, shapeToAdd))
             case OglSDInstance() as shapeToAdd:
                 self._layoutOglSDInstance(diagram=umlFrame.getDiagram(), oglSDInstance=cast(OglSDInstance, shapeToAdd))
             case OglSDMessage() as shapeToAdd:
                 self._layoutOglSDMessage(diagram=umlFrame.getDiagram(), oglSDMessage=cast(OglSDMessage, shapeToAdd))
             case _:
                 self._layoutAnOglObject(umlFrame=umlFrame, oglObject=shapeToAdd)
+
+    def _onRequestCurrentProject(self, event: RequestCurrentProjectEvent):
+        """
+        Has to return a PluginProject
+        Args:
+            event:
+        """
+        pluginProject: PluginProject =  PluginProject()
+
+        cb:          CurrentProjectCallback = event.callback
+        pyutProject: PyutProject            = self._currentProject
+
+        pluginProject.projectName = pyutProject.projectName
+        pluginProject.fileName    = pyutProject.projectName
+        pluginProject.codePath    = pyutProject.codePath
+
+        for document in pyutProject.documents:
+            pyutDocument:   PyutDocument = cast(PyutDocument, document)
+            pluginDocument: PluginDocument = PluginDocument()
+
+            pluginDocument.documentType  = PluginDocumentType.toEnum(pyutDocument.diagramType.name)
+            pluginDocument.documentTitle = PluginDocumentTitle(pyutDocument.title)
+
+            diagramFrame: UmlFrame = pyutDocument.diagramFrame
+            scrollPosX, scrollPosY = diagramFrame.GetViewStart()
+            xUnit, yUnit = diagramFrame.GetScrollPixelsPerUnit()
+
+            pluginDocument.scrollPositionX = scrollPosX
+            pluginDocument.scrollPositionY = scrollPosY
+            pluginDocument.pixelsPerUnitX  = xUnit
+            pluginDocument.pixelsPerUnitY  = yUnit
+            for umlObject in diagramFrame.umlObjects:
+                match umlObject:
+                    case OglInterface2():
+                        oglInterface2: OglInterface2 = cast(OglInterface2, umlObject)
+                        pluginDocument.oglLinks.append(oglInterface2)
+                    case OglSDInstance():
+                        oglSDInstance: OglSDInstance = cast(OglSDInstance, umlObject)
+                        pluginDocument.oglSDInstances[oglSDInstance.pyutObject.id] = oglSDInstance
+                    case OglSDMessage():
+                        oglSDMessage: OglSDMessage = cast(OglSDMessage, umlObject)
+                        pluginDocument.oglSDMessages[oglSDMessage.pyutObject.id] = oglSDMessage
+                    case OglClass():
+                        pluginDocument.oglClasses.append(umlObject)
+                    case OglLink():
+                        pluginDocument.oglLinks.append(umlObject)
+                    case OglNote():
+                        pluginDocument.oglNotes.append(umlObject)
+                    case OglText():
+                        pluginDocument.oglTexts.append(umlObject)
+                    case OglActor():
+                        pluginDocument.oglActors.append(umlObject)
+                    case OglUseCase():
+                        pluginDocument.oglUseCases.append(umlObject)
+                    case _:
+                        self.logger.error(f'Unknown umlObject: {umlObject=}')
+
+            pluginProject.pluginDocuments[pluginDocument.documentTitle] = pluginDocument
+
+
+        cb(pluginProject)
 
     def _addProjectToNotebook(self, project: PyutProject) -> bool:
 
@@ -382,15 +532,23 @@ class ScaffoldUI:
 
     def _updateTreeNotebookIfPossible(self, project: PyutProject):
 
-        # project.selectFirstDocument()
-
-        # if len(project.getDocuments()) > 0:
         if len(project.documents) > 0:
-            # self._currentFrame = project.getDocuments()[0].getFrame()
+
             self._currentFrame = project.documents[0].diagramFrame
             self._syncPageFrameAndNotebook(frame=self._currentFrame)
 
-    def _syncPageFrameAndNotebook(self, frame):
+    def _synchronizeWithSelectedTreeItem(self):
+
+        selectedItem: TreeItemId = self._projectTree.GetSelection()
+        data = self._projectTree.GetItemData(selectedItem)
+
+        selectedDocument: PyutDocument = cast(PyutDocument, data)
+        assert isinstance(data, PyutDocument), 'Oops not pyut document'
+
+        activeFrame: UmlClassDiagramsFrame = selectedDocument.diagramFrame
+        self._syncPageFrameAndNotebook(frame=activeFrame)
+
+    def _syncPageFrameAndNotebook(self, frame: UmlClassDiagramsFrame):
         for i in range(self._notebook.GetPageCount()):
             pageFrame = self._notebook.GetPage(i)
             if pageFrame is frame:
@@ -473,12 +631,33 @@ class ScaffoldUI:
         for oglSDMessage in pluginDocument.oglSDMessages.values():
             self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglSDMessage)
 
+    def _layoutOglDocument(self, oglDocument: OglDocument, umlFrame: UmlDiagramsFrame):
+        for oglClass in oglDocument.oglClasses:
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglClass)
+        self._layoutLinks(umlFrame=umlFrame, oglLinks=cast(OglLinks, oglDocument.oglLinks))
+        for oglNote in oglDocument.oglNotes:
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglNote)
+        for oglText in oglDocument.oglTexts:
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglText)
+
+        for oglUseCase in oglDocument.oglUseCases:
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglUseCase)
+
+        for oglActor in oglDocument.oglActors:
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglActor)
+
+        for oglSDInstance in oglDocument.oglSDInstances.values():
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglSDInstance)
+
+        for oglSDMessage in oglDocument.oglSDMessages.values():
+            self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglSDMessage)
+
     def _layoutLinks(self, umlFrame: UmlDiagramsFrame, oglLinks: OglLinks):
 
         # umlDiagram = umlFrame.GetDiagram()
 
         for oglLink in oglLinks:
-            self._layoutOglLink(umlFrame=umlFrame, oglLink=oglLink)
+            self._layoutOglLink(umlFrame=umlFrame, link=oglLink)
             # x, y = oglLink.GetPosition()
             # umlFrame.addShape(oglLink, x=x, y=y)
             #
@@ -489,16 +668,17 @@ class ScaffoldUI:
             #     for controlPoint in controlPoints:
             #         umlDiagram.AddShape(controlPoint)
 
-    def _layoutOglLink(self, umlFrame: UmlDiagramsFrame, oglLink: OglLink):
+    def _layoutOglLink(self, umlFrame: UmlDiagramsFrame, link: HybridLinks):
 
-        self._layoutAnOglObject(umlFrame=umlFrame, oglObject=oglLink)
+        self._layoutAnOglObject(umlFrame=umlFrame, oglObject=link)
         # TODO:
         # This is bad mooky here. The Ogl objects were created withing having a Diagram
         # The legacy code deserialized the object while adding them to a frame. This
         # new code deserializes w/o reference to a frame
         # If we don't this the AnchorPoints are not on the diagram and lines ends are not
         # movable.
-        if isinstance(oglLink, OglInterface2) is False:
+        if isinstance(link, OglInterface2) is False:
+            oglLink: OglLink = cast(OglLink, link)
             umlDiagram = umlFrame.GetDiagram()
 
             umlDiagram.AddShape(oglLink.sourceAnchor)
