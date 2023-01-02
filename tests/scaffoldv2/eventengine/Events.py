@@ -23,7 +23,8 @@ FrameSizeEvent,          EVENT_FRAME_SIZE            = NewEvent()
 FrameInformationEvent,   EVENT_FRAME_INFORMATION     = NewEvent()
 LoadOglProjectEvent,     EVENT_LOAD_OGL_PROJECT      = NewEvent()
 
-RequestCurrentProjectEvent, EVENT_REQUEST_CURRENT_PROJECT       = NewEvent()
+RequestCurrentProjectEvent,         EVENT_REQUEST_CURRENT_PROJECT          = NewEvent()
+IndicatePluginModifiedProjectEvent, EVENT_INDICATE_PLUGIN_MODIFIED_PROJECT = NewEvent()
 
 
 class EventType(str, Enum):
@@ -54,4 +55,5 @@ class EventType(str, Enum):
     FrameInformation   = ('FrameInformation',   FrameInformationEvent(),   EVENT_FRAME_INFORMATION)
     LoadOglProject     = ('LoadOglProject',     LoadOglProjectEvent(),     EVENT_LOAD_OGL_PROJECT)
 
-    RequestCurrentProject = ('RequestCurrentProject', RequestCurrentProjectEvent(), EVENT_REQUEST_CURRENT_PROJECT)
+    RequestCurrentProject         = ('RequestCurrentProject',         RequestCurrentProjectEvent(),         EVENT_REQUEST_CURRENT_PROJECT)
+    IndicatePluginModifiedProject = ('IndicatePluginModifiedProject', IndicatePluginModifiedProjectEvent(), EVENT_INDICATE_PLUGIN_MODIFIED_PROJECT)

@@ -123,3 +123,10 @@ class IPluginAdapter(ABC):
         has to convert from a PyutProject to a PluginProject type
         """
         pass
+
+    @abstractmethod
+    def indicatePluginModifiedProject(self):
+        """
+        Plugins always work on the current frame or project
+        """
+        pass

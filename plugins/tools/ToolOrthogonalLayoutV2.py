@@ -46,6 +46,9 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
 
         self.logger: Logger = getLogger(__name__)
 
+        self._layoutWidth:  int = 0
+        self._layoutHeight: int = 0
+
         self._name      = PluginName('Orthogonal Layout')
         self._author    = 'Humberto A. Sanchez II'
         self._version   = '2.1'
@@ -96,11 +99,10 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
             MessageBox(f'{oae}', 'Error', OK | ICON_ERROR)
             return
 
-        # umlFrame: DiagramFrame = self._pluginAdapter.umlFrame
-
         if orthogonalAdapter is not None:
             self._reLayoutNodes(selectedObjects, orthogonalAdapter.oglCoordinates)
-            self._reLayoutLinks(selectedObjects,)
+            self._reLayoutLinks(selectedObjects)
+            self._pluginAdapter.indicatePluginModifiedProject()
 
     def _reLayoutNodes(self, umlObjects: OglObjects, oglCoordinates: OglCoordinates):
         """

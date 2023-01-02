@@ -125,6 +125,7 @@ class IOPython(IOPluginInterface):
         else:
             self._readProgressDlg.Destroy()
             EndBusyCursor()
+            self._pluginAdapter.indicatePluginModifiedProject()
         return status
 
     def write(self, oglObjects: OglObjects):

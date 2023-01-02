@@ -89,3 +89,6 @@ class SampleIPluginAdapter(IPluginAdapter):
 
     def requestCurrentProject(self, callback: CurrentProjectCallback):
         pass
+
+    def indicatePluginModifiedProject(self):
+        pass

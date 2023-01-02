@@ -321,7 +321,6 @@ class ScaffoldUI:
         self.logger.info(f'{oglProject=}')
         self._synchronizeWithSelectedTreeItem()
 
-
     def _onNewDiagram(self, newDiagramEvent: NewDiagramEvent):
 
         diagramType: PyutDiagramType = newDiagramEvent.diagramType
@@ -353,6 +352,7 @@ class ScaffoldUI:
         umlClassDiagramsFrame: UmlClassDiagramsFrame = UmlClassDiagramsFrame(parent=self._notebook)
         pyutDocument.diagramFrame = umlClassDiagramsFrame
 
+        self._currentFrame = umlClassDiagramsFrame
         umlClassDiagramsFrame.Refresh()
         return pyutDocument
 

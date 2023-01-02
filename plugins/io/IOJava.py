@@ -100,6 +100,7 @@ class IOJava(IOPluginInterface):
         self._layoutLinks(oglLinks=cast(OglLinks, javaReader.reversedLinks))
 
         wxEndBusyCursor()
+        self._pluginAdapter.indicatePluginModifiedProject()
         return True
 
     def write(self, oglObjects: OglObjects):

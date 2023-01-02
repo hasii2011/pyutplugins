@@ -62,4 +62,5 @@ class ToolTransforms(ToolPluginInterface):
             self.logger.info(f"x,y: {x},{y} - newX: {newX}")
             oglObject.SetPosition(newX, y)
 
+        self._pluginAdapter.indicatePluginModifiedProject()
         self._pluginAdapter.refreshFrame()

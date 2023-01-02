@@ -4,6 +4,7 @@ from logging import getLogger
 from typing import Callable
 
 from oglio.Types import OglProject
+from wx import MessageBox
 from wx import PostEvent
 from wx import PyEventBinder
 from wx import TreeItemId
@@ -84,6 +85,8 @@ class EventEngine(IEventEngine):
                 self._sendRequestCurrentProjectEvent(**kwargs)
             case EventType.LoadOglProject:
                 self._sendLoadOglProjectEvent(**kwargs)
+            case EventType.IndicatePluginModifiedProject:
+                MessageBox("Project Modified", caption="")
             case _:
                 assert False, f'Unknown event type: `{eventType}`'
 

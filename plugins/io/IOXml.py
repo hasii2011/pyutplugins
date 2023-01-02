@@ -7,9 +7,12 @@ from logging import getLogger
 from wx import CANCEL
 from wx import CENTRE
 from wx import ICON_QUESTION
-from wx import MessageBox
 from wx import YES
 from wx import YES_NO
+
+from wx import MessageBox
+
+from wx import Yield as wxYield
 
 from core.IPluginAdapter import IPluginAdapter
 
@@ -140,6 +143,8 @@ class IOXml(IOPluginInterface):
             pluginProject.pluginDocuments[pluginDocument.documentTitle] = pluginDocument
 
         self._pluginAdapter.loadProject(pluginProject=pluginProject)
+        wxYield()
+        self._pluginAdapter.indicatePluginModifiedProject()
         return True
 
     def write(self, oglObjects: OglObjects):

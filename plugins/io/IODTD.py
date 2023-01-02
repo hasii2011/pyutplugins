@@ -1,6 +1,8 @@
 
 from typing import cast
 
+from wx import Yield as wxYield
+
 from core.types.Types import OglClasses
 from core.types.Types import OglLinks
 from core.types.Types import OglObjects
@@ -66,7 +68,6 @@ class IODTD(IOPluginInterface):
 
         dtdParser.open(filename=filename)
 
-        # TODO use the new PluginProject interface
         oglClasses: OglClasses = dtdParser.oglClasses
         for oglClass in oglClasses:
             self._pluginAdapter.addShape(oglClass)
@@ -76,6 +77,8 @@ class IODTD(IOPluginInterface):
             self._pluginAdapter.addShape(oglLink)
 
         self._pluginAdapter.refreshFrame()
+        wxYield()
+        self._pluginAdapter.indicatePluginModifiedProject()
 
         return True
 

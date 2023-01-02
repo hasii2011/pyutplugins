@@ -82,6 +82,7 @@ class ToolSugiyama(ToolPluginInterface):
         sugiyama.addNonHierarchicalNodes()
         sugiyama.fixPositions()
 
+        self._pluginAdapter.indicatePluginModifiedProject()
         self._pluginAdapter.refreshFrame()
 
         self.logger.info('End Sugiyama algorithm')

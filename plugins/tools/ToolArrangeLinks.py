@@ -45,12 +45,16 @@ class ToolArrangeLinks(ToolPluginInterface):
 
     def _doAction(self, oglObjects: OglObjects):
 
+        modified: bool = False
         for oglObject in oglObjects:
             if isinstance(oglObject, OglLink):
                 oglLink: OglLink = cast(OglLink, oglObject)
                 self.logger.info(f"Optimizing: {oglLink}")
                 oglLink.optimizeLine()
+                modified = True
             else:
                 self.logger.debug(f"No line optimizing for: {oglObject}")
 
-        self._pluginAdapter.refreshFrame()
+        if modified is True:
+            self._pluginAdapter.refreshFrame()
+            self._pluginAdapter.indicatePluginModifiedProject()

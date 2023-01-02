@@ -83,3 +83,6 @@ class PluginAdapterV2(IPluginAdapter):
         has to convert from a PyutProject to a PluginProject type
         """
         self._eventEngine.sendEvent(eventType=EventType.RequestCurrentProject, callback=callback)
+
+    def indicatePluginModifiedProject(self):
+        self._eventEngine.sendEvent(EventType.IndicatePluginModifiedProject)
