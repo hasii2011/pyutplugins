@@ -18,9 +18,9 @@ from core.coretypes.PluginDataTypes import PluginName
 from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 from core.coretypes.Types import OglObjects
-from plugins.io.pdf.ImageFormat import ImageFormat
-from plugins.io.pdf.ImageOptions import ImageOptions
-from plugins.io.pdf.OglToPyUmlDefinition import OglToPyUmlDefinition
+from plugins.ioplugins.pdf.ImageFormat import ImageFormat
+from plugins.ioplugins.pdf.ImageOptions import ImageOptions
+from plugins.ioplugins.pdf.OglToPyUmlDefinition import OglToPyUmlDefinition
 
 FORMAT_NAME:        FormatName = FormatName('PDF')
 PLUGIN_EXTENSION:   PluginExtension = PluginExtension('pdf')

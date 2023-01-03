@@ -22,7 +22,7 @@ from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 
 from core.coretypes.Types import OglObjects
-from plugins.io.gml.GMLExporter import GMLExporter
+from plugins.ioplugins.gml.GMLExporter import GMLExporter
 
 from tests.TestBase import TestBase
 

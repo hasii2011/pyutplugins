@@ -32,21 +32,21 @@ from plugins.common.LinkMakerMixin import LinkMakerMixin
 from core.coretypes.Types import OglClasses
 from core.coretypes.Types import OglLinks
 
-from plugins.io.python.PythonParseException import PythonParseException
-from plugins.io.python.PyutPythonVisitor import ChildName
-from plugins.io.python.PyutPythonVisitor import Children
-from plugins.io.python.PyutPythonVisitor import ClassName
-from plugins.io.python.PyutPythonVisitor import ClassNames
-from plugins.io.python.PyutPythonVisitor import DataClassProperties
-from plugins.io.python.PyutPythonVisitor import MethodName
-from plugins.io.python.PyutPythonVisitor import MethodNames
-from plugins.io.python.PyutPythonVisitor import MultiParameterNames
-from plugins.io.python.PyutPythonVisitor import Parameters
-from plugins.io.python.PyutPythonVisitor import ParentName
-from plugins.io.python.PyutPythonVisitor import Parents
-from plugins.io.python.PyutPythonVisitor import PyutPythonVisitor
-from plugins.io.python.pyantlrparser.Python3Lexer import Python3Lexer
-from plugins.io.python.pyantlrparser.Python3Parser import Python3Parser
+from plugins.ioplugins.python.PythonParseException import PythonParseException
+from plugins.ioplugins.python.PyutPythonVisitor import ChildName
+from plugins.ioplugins.python.PyutPythonVisitor import Children
+from plugins.ioplugins.python.PyutPythonVisitor import ClassName
+from plugins.ioplugins.python.PyutPythonVisitor import ClassNames
+from plugins.ioplugins.python.PyutPythonVisitor import DataClassProperties
+from plugins.ioplugins.python.PyutPythonVisitor import MethodName
+from plugins.ioplugins.python.PyutPythonVisitor import MethodNames
+from plugins.ioplugins.python.PyutPythonVisitor import MultiParameterNames
+from plugins.ioplugins.python.PyutPythonVisitor import Parameters
+from plugins.ioplugins.python.PyutPythonVisitor import ParentName
+from plugins.ioplugins.python.PyutPythonVisitor import Parents
+from plugins.ioplugins.python.PyutPythonVisitor import PyutPythonVisitor
+from plugins.ioplugins.python.pyantlrparser.Python3Lexer import Python3Lexer
+from plugins.ioplugins.python.pyantlrparser.Python3Parser import Python3Parser
 
 PyutClassName  = NewType('PyutClassName', str)
 PyutClasses    = NewType('PyutClasses', Dict[PyutClassName, PyutClass])

@@ -28,8 +28,8 @@ from plugins.common.PluginTypes import ClassTree
 from core.coretypes.Types import OglClasses
 from core.coretypes.Types import OglLinks
 
-from plugins.io.dtd.DTDAttribute import DTDAttribute
-from plugins.io.dtd.DTDElementTypes import DTDElementTypes
+from plugins.ioplugins.dtd.DTDAttribute import DTDAttribute
+from plugins.ioplugins.dtd.DTDElementTypes import DTDElementTypes
 
 DTDElements   = NewType('DTDElements',   Dict[str, Tuple])
 DTDAttributes = NewType('DTDAttributes', List[DTDAttribute])

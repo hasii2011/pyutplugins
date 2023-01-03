@@ -29,14 +29,14 @@ from wx.py.frame import Frame
 
 from core.coretypes.Types import OglClasses
 from core.coretypes.Types import OglLinks
-from plugins.io.python.PyutPythonVisitor import ClassName
-from plugins.io.python.PyutPythonVisitor import DataClassProperties
-from plugins.io.python.PyutPythonVisitor import DataClassProperty
-from plugins.io.python.PyutPythonVisitor import ExpressionText
-from plugins.io.python.PyutPythonVisitor import MultiParameterNames
+from plugins.ioplugins.python.PyutPythonVisitor import ClassName
+from plugins.ioplugins.python.PyutPythonVisitor import DataClassProperties
+from plugins.ioplugins.python.PyutPythonVisitor import DataClassProperty
+from plugins.ioplugins.python.PyutPythonVisitor import ExpressionText
+from plugins.ioplugins.python.PyutPythonVisitor import MultiParameterNames
 
-from plugins.io.python.PyutPythonVisitor import PyutPythonVisitor
-from plugins.io.python.ReverseEngineerPython2 import ReverseEngineerPython2
+from plugins.ioplugins.python.PyutPythonVisitor import PyutPythonVisitor
+from plugins.ioplugins.python.ReverseEngineerPython2 import ReverseEngineerPython2
 
 from tests.TestBase import TestBase
 

@@ -42,8 +42,8 @@ from ogl.OglLink import OglLink
 
 from core.coretypes.Types import OglObjects
 
-from plugins.io.pdf.ImageFormat import ImageFormat
-from plugins.io.pdf.ImageOptions import ImageOptions
+from plugins.ioplugins.pdf.ImageFormat import ImageFormat
+from plugins.ioplugins.pdf.ImageOptions import ImageOptions
 
 
 class OglToPyUmlDefinition:

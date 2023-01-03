@@ -15,10 +15,10 @@ from wx import App
 from pyutmodel.ModelTypes import Implementors
 from ogl.OglClass import OglClass
 
-from plugins.io.java.JavaReader import Extenders
-from plugins.io.java.JavaReader import InterfaceMap
-from plugins.io.java.JavaReader import JavaReader
-from plugins.io.java.JavaReader import ReversedClasses
+from plugins.ioplugins.java.JavaReader import Extenders
+from plugins.ioplugins.java.JavaReader import InterfaceMap
+from plugins.ioplugins.java.JavaReader import JavaReader
+from plugins.ioplugins.java.JavaReader import ReversedClasses
 
 from tests.TestBase import TestBase
 

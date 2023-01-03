@@ -26,8 +26,8 @@ from core.coretypes.PluginDataTypes import PluginName
 from core.coretypes.Types import FrameInformation
 from core.coretypes.Types import OglObjects
 
-from plugins.io.wximage.DlgWxImageOptions import DlgWxImageOptions
-from plugins.io.wximage.WxImageFormat import WxImageFormat
+from plugins.ioplugins.wximage.DlgWxImageOptions import DlgWxImageOptions
+from plugins.ioplugins.wximage.WxImageFormat import WxImageFormat
 
 FORMAT_NAME:        FormatName = FormatName('Wx Image')
 PLUGIN_EXTENSION:   PluginExtension = PluginExtension('png')

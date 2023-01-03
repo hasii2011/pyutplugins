@@ -7,7 +7,7 @@ from core.coretypes.Types import OglClasses
 from core.coretypes.Types import OglLinks
 from core.coretypes.Types import OglObjects
 
-from plugins.io.dtd.DTDParser import DTDParser
+from plugins.ioplugins.dtd.DTDParser import DTDParser
 
 from core.IPluginAdapter import IPluginAdapter
 from core.IOPluginInterface import IOPluginInterface

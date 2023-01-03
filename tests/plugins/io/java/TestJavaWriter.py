@@ -17,7 +17,7 @@ from core.coretypes.Types import OglObjects
 
 from tests.TestBase import TestBase
 
-from plugins.io.java.JavaWriter import JavaWriter
+from plugins.ioplugins.java.JavaWriter import JavaWriter
 
 
 class TestJavaWriter(TestBase):

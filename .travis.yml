@@ -16,7 +16,7 @@ cache: pip
 before_install:
   - brew list
   - brew upgrade python
-  - curl https://bootstrap.pypa.io/get-pip.py | python3
+  - curl https://bootstrap.pypa.ioplugins/get-pip.py | python3
 
 # command to install dependencies
 

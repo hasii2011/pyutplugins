@@ -41,9 +41,9 @@ from core.coretypes.Types import OglClasses
 from core.coretypes.Types import OglLinks
 from core.coretypes.Types import OglObjects
 
-from plugins.io.python.PyutToPython import MethodsCodeType
-from plugins.io.python.PyutToPython import PyutToPython
-from plugins.io.python.ReverseEngineerPython2 import ReverseEngineerPython2
+from plugins.ioplugins.python.PyutToPython import MethodsCodeType
+from plugins.ioplugins.python.PyutToPython import PyutToPython
+from plugins.ioplugins.python.ReverseEngineerPython2 import ReverseEngineerPython2
 
 FORMAT_NAME:        FormatName        = FormatName("Python File(s)")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('py')

@@ -6,7 +6,7 @@ from logging import getLogger
 
 from core.coretypes.Types import OglObjects
 
-from plugins.io.gml.GMLExporter import GMLExporter
+from plugins.ioplugins.gml.GMLExporter import GMLExporter
 
 from core.IOPluginInterface import IOPluginInterface
 from core.IPluginAdapter import IPluginAdapter

@@ -8,9 +8,9 @@ else:
 
 
 if __name__ is not None and "." in __name__:
-    from plugins.io.python.Python3LexerBase import Python3LexerBase
+    from plugins.ioplugins.python.Python3LexerBase import Python3LexerBase
 else:
-    from plugins.io.python.Python3LexerBase import Python3LexerBase
+    from plugins.ioplugins.python.Python3LexerBase import Python3LexerBase
 
 def serializedATN():
     return [

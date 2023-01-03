@@ -26,13 +26,13 @@ from core.coretypes.PluginDataTypes import OutputPluginMap
 from core.coretypes.PluginDataTypes import PluginList
 from core.coretypes.PluginDataTypes import PluginIDMap
 
-from plugins.io.IODTD import IODTD
-from plugins.io.IOGML import IOGML
-from plugins.io.IOJava import IOJava
-from plugins.io.IOPdf import IOPdf
-from plugins.io.IOPython import IOPython
-from plugins.io.IOWxImage import IOWxImage
-from plugins.io.IOXml import IOXml
+from plugins.ioplugins.IODTD import IODTD
+from plugins.ioplugins.IOGML import IOGML
+from plugins.ioplugins.IOJava import IOJava
+from plugins.ioplugins.IOPdf import IOPdf
+from plugins.ioplugins.IOPython import IOPython
+from plugins.ioplugins.IOWxImage import IOWxImage
+from plugins.ioplugins.IOXml import IOXml
 
 from plugins.tools.ToolArrangeLinks import ToolArrangeLinks
 from plugins.tools.ToolAscii import ToolAscii

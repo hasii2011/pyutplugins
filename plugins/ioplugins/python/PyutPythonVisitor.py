@@ -12,8 +12,8 @@ from logging import getLogger
 from antlr4 import ParserRuleContext
 
 
-from plugins.io.python.pyantlrparser.Python3Parser import Python3Parser
-from plugins.io.python.pyantlrparser.Python3ParserVisitor import Python3ParserVisitor
+from plugins.ioplugins.python.pyantlrparser.Python3Parser import Python3Parser
+from plugins.ioplugins.python.pyantlrparser.Python3ParserVisitor import Python3ParserVisitor
 
 MethodName          = NewType('MethodName', str)
 PropertyName        = NewType('PropertyName', str)

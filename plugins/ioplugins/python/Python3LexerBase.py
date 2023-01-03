@@ -2,7 +2,7 @@
 from typing import TextIO
 from antlr4 import *
 from antlr4.Token import CommonToken
-from plugins.io.python.pyantlrparser.Python3Parser import Python3Parser;
+from plugins.ioplugins.python.pyantlrparser.Python3Parser import Python3Parser;
 
 import sys
 from typing import TextIO

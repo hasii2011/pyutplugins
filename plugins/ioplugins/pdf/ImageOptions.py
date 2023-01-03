@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from pyumldiagrams import Defaults
 
-from plugins.io.pdf.ImageFormat import ImageFormat
+from plugins.ioplugins.pdf.ImageFormat import ImageFormat
 
 
 @dataclass

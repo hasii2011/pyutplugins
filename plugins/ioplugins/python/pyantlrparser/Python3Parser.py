@@ -8,9 +8,9 @@ else:
 	from typing.io import TextIO
 
 if __name__ is not None and "." in __name__:
-    from plugins.io.python.Python3ParserBase import Python3ParserBase
+    from plugins.ioplugins.python.Python3ParserBase import Python3ParserBase
 else:
-    from plugins.io.python.Python3ParserBase import Python3ParserBase
+    from plugins.ioplugins.python.Python3ParserBase import Python3ParserBase
 
 def serializedATN():
     return [

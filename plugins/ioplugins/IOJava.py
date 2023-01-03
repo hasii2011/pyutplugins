@@ -29,8 +29,8 @@ from core.coretypes.Types import OglLinks
 
 from core.coretypes.Types import OglObjects
 
-from plugins.io.java.JavaReader import JavaReader
-from plugins.io.java.JavaWriter import JavaWriter
+from plugins.ioplugins.java.JavaReader import JavaReader
+from plugins.ioplugins.java.JavaWriter import JavaWriter
 
 FORMAT_NAME:        FormatName        = FormatName("Java")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('java')

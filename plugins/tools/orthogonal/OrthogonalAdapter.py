@@ -27,7 +27,7 @@ from orthogonal.topologyShapeMetric.Orthogonalization import Orthogonalization
 from orthogonal.topologyShapeMetric.Planarization import Planarization
 
 from core.coretypes.Types import OglObjects
-from plugins.io.gml.GMLExporter import GMLExporter
+from plugins.ioplugins.gml.GMLExporter import GMLExporter
 from plugins.tools.orthogonal.OrthogonalAdapterException import OrthogonalAdapterException
 
 GraphicsCoordinates = NewType('GraphicsCoordinates', Tuple[int, int])

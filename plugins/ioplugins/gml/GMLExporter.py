@@ -19,7 +19,7 @@ from ogl.OglNote import OglNote
 
 from core.coretypes.Types import OglObjects
 
-from plugins.io.gml.UnsupportedOperation import UnsupportedOperation
+from plugins.ioplugins.gml.UnsupportedOperation import UnsupportedOperation
 
 
 class GMLExporter:

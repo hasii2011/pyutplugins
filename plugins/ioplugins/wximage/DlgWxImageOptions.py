@@ -41,7 +41,7 @@ from wx import Yield as wxYield
 from wx import NewIdRef
 
 from plugins.common.ui.BaseDlgEdit import BaseDlgEdit
-from plugins.io.wximage.WxImageFormat import WxImageFormat
+from plugins.ioplugins.wximage.WxImageFormat import WxImageFormat
 
 
 class DlgWxImageOptions(BaseDlgEdit):
