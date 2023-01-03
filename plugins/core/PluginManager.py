@@ -15,16 +15,16 @@ from wx import EndBusyCursor
 
 from wx import Yield as wxYield
 
-from core.ToolPluginInterface import ToolPluginInterface
-from core.IOPluginInterface import IOPluginInterface
-from core.IPluginAdapter import IPluginAdapter
-from core.Singleton import Singleton
+from plugins.core.ToolPluginInterface import ToolPluginInterface
+from plugins.core.IOPluginInterface import IOPluginInterface
+from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.core.Singleton import Singleton
 
-from core.coretypes.PluginDataTypes import ToolsPluginMap
-from core.coretypes.PluginDataTypes import InputPluginMap
-from core.coretypes.PluginDataTypes import OutputPluginMap
-from core.coretypes.PluginDataTypes import PluginList
-from core.coretypes.PluginDataTypes import PluginIDMap
+from plugins.core.coretypes.PluginDataTypes import ToolsPluginMap
+from plugins.core.coretypes.PluginDataTypes import InputPluginMap
+from plugins.core.coretypes.PluginDataTypes import OutputPluginMap
+from plugins.core.coretypes.PluginDataTypes import PluginList
+from plugins.core.coretypes.PluginDataTypes import PluginIDMap
 
 from plugins.ioplugins.IODTD import IODTD
 from plugins.ioplugins.IOGML import IOGML

@@ -3,7 +3,7 @@ from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .Python3Parser import Python3Parser
 else:
-    from Python3Parser import Python3Parser
+    from plugins.ioplugins.python.pyantlrparser.Python3Parser import Python3Parser
 
 # This class defines a complete generic visitor for a parse tree produced by Python3Parser.
 

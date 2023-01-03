@@ -2,9 +2,9 @@
 from abc import ABC
 from abc import abstractmethod
 
-from core.PluginInterface import PluginInterface
+from plugins.core.PluginInterface import PluginInterface
 
-from core.IPluginAdapter import IPluginAdapter
+from plugins.core.IPluginAdapter import IPluginAdapter
 
 
 class ToolPluginInterface(PluginInterface, ABC):

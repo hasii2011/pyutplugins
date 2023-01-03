@@ -6,13 +6,13 @@ from logging import getLogger
 
 from ogl.OglObject import OglObject
 
-from core.IPluginAdapter import IPluginAdapter
+from plugins.core.coretypes.Types import FrameInformation
+from plugins.core.coretypes.Types import OglObjects
 
-from core.ToolPluginInterface import ToolPluginInterface
+from plugins.core.IOPluginInterface import IPluginAdapter
+from plugins.core.ToolPluginInterface import ToolPluginInterface
 
-from core.coretypes.PluginDataTypes import PluginName
-from core.coretypes.Types import FrameInformation
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.PluginDataTypes import PluginName
 
 
 class ToolTransforms(ToolPluginInterface):
@@ -39,13 +39,7 @@ class ToolTransforms(ToolPluginInterface):
     def doAction(self):
         # self._pluginAdapter.getSelectedOglObjects(callback=self._stashSelectedObjects)
         self._pluginAdapter.getFrameInformation(callback=self._doAction)
-    # def _stashSelectedObjects(self, selectedOglObjects: OglObjects):
-    #
-    #     self._selectedOglObjects = selectedOglObjects
-    #
-    #     self._pluginAdapter.getFrameSize(callback=self._doAction)
 
-    # def _doAction(self, frameSize: FrameSize):
     def _doAction(self, frameInformation: FrameInformation):
 
         selectedObjects: OglObjects = frameInformation.selectedOglObjects

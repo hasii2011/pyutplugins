@@ -10,6 +10,8 @@ from miniogl.DiagramFrame import DiagramFrame
 from pkg_resources import resource_filename
 
 from wx import App
+from wx import ID_ANY
+from wx.py.frame import Frame
 
 from unittest import TestSuite
 from unittest import main as unitTestMain
@@ -24,11 +26,10 @@ from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
-from wx import ID_ANY
-from wx.py.frame import Frame
 
-from core.coretypes.Types import OglClasses
-from core.coretypes.Types import OglLinks
+from plugins.core.coretypes.Types import OglClasses
+from plugins.core.coretypes.Types import OglLinks
+
 from plugins.ioplugins.python.PyutPythonVisitor import ClassName
 from plugins.ioplugins.python.PyutPythonVisitor import DataClassProperties
 from plugins.ioplugins.python.PyutPythonVisitor import DataClassProperty
@@ -293,7 +294,7 @@ class TestReverseEngineerPython2(TestBase):
         return pyutClass
 
     def _fakeProgressCallback(self, currentFileCount: int, msg: str):
-        self.logger.info(f'{currentFileCount} - msg')
+        self.logger.info(f'{currentFileCount} - {msg}')
 
     def __setMockVisitorPropertyNames(self):
         mockVisitor: Mock = Mock(spec=PyutPythonVisitor)

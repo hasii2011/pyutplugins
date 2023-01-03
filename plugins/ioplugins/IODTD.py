@@ -3,23 +3,20 @@ from typing import cast
 
 from wx import Yield as wxYield
 
-from core.coretypes.Types import OglClasses
-from core.coretypes.Types import OglLinks
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.InputFormat import InputFormat
+from plugins.core.coretypes.OutputFormat import OutputFormat
+from plugins.core.coretypes.PluginDataTypes import PluginName
+from plugins.core.coretypes.PluginDataTypes import PluginDescription
+from plugins.core.coretypes.PluginDataTypes import PluginExtension
+from plugins.core.coretypes.PluginDataTypes import FormatName
+from plugins.core.coretypes.Types import OglClasses
+from plugins.core.coretypes.Types import OglLinks
+from plugins.core.coretypes.Types import OglObjects
+from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.core.IOPluginInterface import IOPluginInterface
+from plugins.core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 from plugins.ioplugins.dtd.DTDParser import DTDParser
-
-from core.IPluginAdapter import IPluginAdapter
-from core.IOPluginInterface import IOPluginInterface
-
-from core.coretypes.InputFormat import InputFormat
-from core.coretypes.OutputFormat import OutputFormat
-
-from core.coretypes.PluginDataTypes import PluginDescription
-from core.coretypes.PluginDataTypes import PluginExtension
-from core.coretypes.PluginDataTypes import FormatName
-from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
-from core.coretypes.PluginDataTypes import PluginName
 
 FORMAT_NAME:        FormatName        = FormatName("DTD")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('dtd')

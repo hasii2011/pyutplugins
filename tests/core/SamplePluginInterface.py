@@ -2,16 +2,16 @@
 from logging import Logger
 from logging import getLogger
 
-from core.PluginInterface import PluginInterface
+from plugins.core.PluginInterface import PluginInterface
+from plugins.core.IPluginAdapter import IPluginAdapter
 
-from core.coretypes.PluginDataTypes import PluginDescription
-from core.coretypes.PluginDataTypes import PluginExtension
-from core.coretypes.PluginDataTypes import FormatName
+from plugins.core.coretypes.PluginDataTypes import PluginName
+from plugins.core.coretypes.PluginDataTypes import PluginExtension
+from plugins.core.coretypes.PluginDataTypes import PluginDescription
+from plugins.core.coretypes.PluginDataTypes import FormatName
 
-from core.IPluginAdapter import IPluginAdapter
-from core.coretypes.InputFormat import InputFormat
-from core.coretypes.OutputFormat import OutputFormat
-from core.coretypes.PluginDataTypes import PluginName
+from plugins.core.coretypes.InputFormat import InputFormat
+from plugins.core.coretypes.OutputFormat import OutputFormat
 
 
 SAMPLE_PLUGIN_NAME: PluginName        = PluginName('Sample Plugin')

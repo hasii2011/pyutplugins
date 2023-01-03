@@ -16,13 +16,13 @@ from wx import Menu
 from wx import MenuBar
 from wx import MenuItem
 
-from core.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
-from core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
-from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+from plugins.core.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
+from plugins.core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
+from plugins.core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 from tests.core.SamplePluginInterface import SamplePluginInterface
 
-from tests.core.SampleIMediator import SampleIPluginAdapter
+from tests.core.SampleIPluginAdapter import SampleIPluginAdapter
 
 from tests.TestBase import TestBase
 

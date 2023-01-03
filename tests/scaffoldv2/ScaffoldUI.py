@@ -11,6 +11,7 @@ from ogl.OglActor import OglActor
 from ogl.OglNote import OglNote
 from ogl.OglText import OglText
 from ogl.OglUseCase import OglUseCase
+
 from wx import CLIP_CHILDREN
 from wx import EVT_TREE_SEL_CHANGED
 from wx import ICON_ERROR
@@ -45,19 +46,18 @@ from ogl.sd.OglSDMessage import OglSDMessage
 from oglio.Types import OglDocument
 from oglio.Types import OglProject
 
-from core.coretypes.Types import CurrentProjectCallback
-from core.coretypes.Types import FrameInformation
-from core.coretypes.Types import FrameInformationCallback
-from core.coretypes.Types import FrameSize
-from core.coretypes.Types import FrameSizeCallback
-from core.coretypes.Types import HybridLinks
-
-from core.coretypes.Types import PluginDocument
-from core.coretypes.Types import PluginDocumentTitle
-from core.coretypes.Types import PluginDocumentType
-from core.coretypes.Types import PluginProject
-from core.coretypes.Types import OglLinks
-from core.coretypes.Types import SelectedOglObjectsCallback
+from plugins.core.coretypes.Types import CurrentProjectCallback
+from plugins.core.coretypes.Types import FrameInformation
+from plugins.core.coretypes.Types import FrameInformationCallback
+from plugins.core.coretypes.Types import FrameSize
+from plugins.core.coretypes.Types import FrameSizeCallback
+from plugins.core.coretypes.Types import HybridLinks
+from plugins.core.coretypes.Types import OglLinks
+from plugins.core.coretypes.Types import PluginDocument
+from plugins.core.coretypes.Types import PluginDocumentTitle
+from plugins.core.coretypes.Types import PluginDocumentType
+from plugins.core.coretypes.Types import PluginProject
+from plugins.core.coretypes.Types import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.PyutDocument import PyutDocument
@@ -208,7 +208,6 @@ class ScaffoldUI:
 
             self._syncPageFrameAndNotebook(frame=self.currentFrame)
             self.currentProject = project
-
 
     # noinspection PyUnusedLocal
     def _onDeSelectAll(self, event: DeSelectAllShapesEvent):
@@ -427,7 +426,7 @@ class ScaffoldUI:
         Args:
             event:
         """
-        pluginProject: PluginProject =  PluginProject()
+        pluginProject: PluginProject = PluginProject()
 
         cb:          CurrentProjectCallback = event.callback
         pyutProject: PyutProject            = self._currentProject
@@ -478,7 +477,6 @@ class ScaffoldUI:
                         self.logger.error(f'Unknown umlObject: {umlObject=}')
 
             pluginProject.pluginDocuments[pluginDocument.documentTitle] = pluginDocument
-
 
         cb(pluginProject)
 

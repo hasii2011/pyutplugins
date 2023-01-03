@@ -6,12 +6,12 @@ from logging import getLogger
 
 from ogl.OglLink import OglLink
 
-from core.IPluginAdapter import IPluginAdapter
-from core.ToolPluginInterface import ToolPluginInterface
+from plugins.core.IPluginAdapter import IPluginAdapter
 
-from core.coretypes.PluginDataTypes import PluginName
+from plugins.core.ToolPluginInterface import ToolPluginInterface
+from plugins.core.coretypes.PluginDataTypes import PluginName
 
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.Types import OglObjects
 
 
 class ToolArrangeLinks(ToolPluginInterface):

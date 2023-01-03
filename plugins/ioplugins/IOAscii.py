@@ -4,16 +4,16 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from core.IOPluginInterface import IOPluginInterface
-from core.IPluginAdapter import IPluginAdapter
+from plugins.core.IOPluginInterface import IOPluginInterface
+from plugins.core.IPluginAdapter import IPluginAdapter
 
-from core.coretypes.InputFormat import InputFormat
-from core.coretypes.OutputFormat import OutputFormat
-from core.coretypes.PluginDataTypes import FormatName
-from core.coretypes.PluginDataTypes import PluginDescription
-from core.coretypes.PluginDataTypes import PluginExtension
-from core.coretypes.PluginDataTypes import PluginName
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.InputFormat import InputFormat
+from plugins.core.coretypes.OutputFormat import OutputFormat
+from plugins.core.coretypes.PluginDataTypes import FormatName
+from plugins.core.coretypes.PluginDataTypes import PluginDescription
+from plugins.core.coretypes.PluginDataTypes import PluginExtension
+from plugins.core.coretypes.PluginDataTypes import PluginName
+from plugins.core.coretypes.Types import OglObjects
 
 
 FORMAT_NAME:        FormatName       = FormatName('Ascii')

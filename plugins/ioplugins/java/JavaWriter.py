@@ -23,8 +23,8 @@ from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutStereotype import PyutStereotype
 
-from core.coretypes.Types import OglClasses
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.Types import OglClasses
+from plugins.core.coretypes.Types import OglObjects
 
 
 class JavaWriter:
@@ -35,13 +35,8 @@ class JavaWriter:
         Args:
             writeDirectory:
         """
-
         self.logger:          Logger = getLogger(__name__)
         self._writeDirectory: str    = writeDirectory
-
-    def write(self, oglObjects: OglObjects):
-
-        oglClasses: OglClasses = cast(OglClasses, [oglObject for oglObject in oglObjects if isinstance(oglObject, OglClass)])
 
         # defining Constants    TODO: Make REAL constants
         self.__tab = "    "
@@ -50,6 +45,10 @@ class JavaWriter:
             "-": "private",
             "#": "protected"
         }
+
+    def write(self, oglObjects: OglObjects):
+
+        oglClasses: OglClasses = cast(OglClasses, [oglObject for oglObject in oglObjects if isinstance(oglObject, OglClass)])
 
         for oglClass in oglClasses:
             self.logger.debug(f'{oglClass=}')

@@ -11,7 +11,7 @@ from wx import MessageBox
 
 from wx import Yield as wxYield
 
-from core.IPluginAdapter import IPluginAdapter
+from plugins.core.IPluginAdapter import IPluginAdapter
 
 from plugins.toolplugins.sugiyama.SugiyamaNode import SugiyamaNode
 
@@ -75,11 +75,11 @@ class SugiyamaGlobals:
             return cmp(xNode.getBarycenter(), yNode.getBarycenter())
 
     @staticmethod
-    def waitKey(mediator: IPluginAdapter, optionalMessage: str | None):
+    def waitKey(pluginAdapter: IPluginAdapter, optionalMessage: str | None):
         # input('Press enter to continue')
         if optionalMessage is None:
             MessageBox('Press Ok to continue', 'Confirm', style=OK | CENTRE)
         else:
             MessageBox(optionalMessage, 'Press Ok to continue', style=OK | CENTRE)
-        mediator.refreshFrame()
+        pluginAdapter.refreshFrame()
         wxYield()

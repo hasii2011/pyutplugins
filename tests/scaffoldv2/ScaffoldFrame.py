@@ -1,3 +1,5 @@
+
+from typing import Union
 from typing import List
 from typing import Callable
 
@@ -7,16 +9,11 @@ from logging import getLogger
 from os import getcwd
 
 from dataclasses import dataclass
-from typing import Union
 
-from oglio.Reader import Reader
-from oglio.Types import OglProject
 from wx import ACCEL_CTRL
 from wx import FD_CHANGE_DIR
 from wx import FD_FILE_MUST_EXIST
 from wx import FD_OPEN
-from wx import FileDialog
-from wx import FileSelector
 from wx import ID_OK
 from wx import OK
 from wx import ICON_ERROR
@@ -29,22 +26,25 @@ from wx import CommandEvent
 from wx import Frame
 from wx import Menu
 from wx import MenuBar
-
 from wx import AcceleratorEntry
 from wx import AcceleratorTable
+from wx import FileDialog
+from wx import FileSelector
 
 from wx import MessageDialog
 from wx import NewIdRef
 
+from oglio.Reader import Reader
+from oglio.Types import OglProject
 
-from core.IOPluginInterface import IOPluginInterface
-from core.PluginManager import PluginManager
-from core.ToolPluginInterface import ToolPluginInterface
-from core.coretypes.PluginDataTypes import InputPluginMap
-from core.coretypes.PluginDataTypes import OutputPluginMap
+from plugins.core.coretypes.PluginDataTypes import InputPluginMap
+from plugins.core.coretypes.PluginDataTypes import OutputPluginMap
+from plugins.core.coretypes.PluginDataTypes import PluginIDMap
+from plugins.core.coretypes.PluginDataTypes import PluginMapType
 
-from core.coretypes.PluginDataTypes import PluginMapType
-from core.coretypes.PluginDataTypes import PluginIDMap
+from plugins.core.IOPluginInterface import IOPluginInterface
+from plugins.core.PluginManager import PluginManager
+from plugins.core.ToolPluginInterface import ToolPluginInterface
 
 from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
@@ -101,7 +101,6 @@ class ScaffoldFrame(Frame):
             fqFileName: full qualified file name
         """
         self._loadXmlFile(fqFileName=fqFileName)
-
 
     def _createApplicationMenuBar(self):
 

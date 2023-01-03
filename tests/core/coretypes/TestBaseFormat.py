@@ -7,14 +7,13 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from core.coretypes.PluginDataTypes import PluginDescription
-from core.coretypes.PluginDataTypes import PluginExtension
-from core.coretypes.PluginDataTypes import FormatName
+from plugins.core.coretypes.PluginDataTypes import FormatName
+from plugins.core.coretypes.PluginDataTypes import PluginDescription
+from plugins.core.coretypes.PluginDataTypes import PluginExtension
+from plugins.core.coretypes.BaseFormat import BaseFormat
 
-from core.coretypes.BaseFormat import BaseFormat
-
-from core.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
-from core.exceptions.InvalidPluginNameException import InvalidPluginNameException
+from plugins.core.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
+from plugins.core.exceptions.InvalidPluginNameException import InvalidPluginNameException
 
 from tests.TestBase import TestBase
 

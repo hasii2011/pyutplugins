@@ -9,9 +9,8 @@ from unittest import main as unitTestMain
 
 from wx import Window
 
-from core.IPluginAdapter import IPluginAdapter
-from core.PluginManager import PluginManager
-from core.coretypes.PluginDataTypes import PluginIDMap
+from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.core.PluginManager import PluginManager
 
 from tests.TestBase import TestBase
 from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
@@ -22,7 +21,7 @@ from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 class TestPluginManager(TestBase):
     """
     Does not test any execution of the plugins;  Only the interfaces needed by Pyut
-    to set up menu times and test whether or not we actually dynamically loaded the plugins
+    to set up menu times and test whether we actually dynamically loaded the plugins
     """
     clsLogger: Logger = cast(Logger, None)
 

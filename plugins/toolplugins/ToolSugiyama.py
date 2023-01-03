@@ -5,12 +5,11 @@ from typing import Union
 from logging import Logger
 from logging import getLogger
 
-from core.IPluginAdapter import IPluginAdapter
-from core.ToolPluginInterface import ToolPluginInterface
+from plugins.core.coretypes.PluginDataTypes import PluginName
+from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.core.ToolPluginInterface import ToolPluginInterface
 
-from core.coretypes.PluginDataTypes import PluginName
-
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.Types import OglObjects
 
 from plugins.toolplugins.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from plugins.toolplugins.sugiyama.Sugiyama import Sugiyama
@@ -70,7 +69,7 @@ class ToolSugiyama(ToolPluginInterface):
 
         self.logger.info(f'Begin Sugiyama algorithm')
 
-        sugiyama: Sugiyama = Sugiyama(mediator=self._pluginAdapter)
+        sugiyama: Sugiyama = Sugiyama(pluginAdapter=self._pluginAdapter)
         sugiyama.createInterfaceOglALayout(oglObjects=selectedObjects)
         sugiyama.levelFind()
         sugiyama.addVirtualNodes()

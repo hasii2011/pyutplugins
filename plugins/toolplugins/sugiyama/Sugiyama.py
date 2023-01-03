@@ -16,7 +16,7 @@ from ogl.OglObject import OglObject
 
 from pyutmodel.PyutLinkType import PyutLinkType
 
-from core.IPluginAdapter import IPluginAdapter
+from plugins.core.IPluginAdapter import IPluginAdapter
 
 from plugins.toolplugins.sugiyama.SugiyamaNode import SugiyamaNode
 from plugins.toolplugins.sugiyama.RealSugiyamaNode import RealSugiyamaNode
@@ -48,11 +48,11 @@ class Sugiyama:
     """
     STEP_BY_STEP: bool = False  # Do Sugiyama Step by step
 
-    def __init__(self, mediator: IPluginAdapter):
+    def __init__(self, pluginAdapter: IPluginAdapter):
 
         self.logger: Logger = getLogger(__name__)
 
-        self._mediator: IPluginAdapter = mediator
+        self._pluginAdapter: IPluginAdapter = pluginAdapter
         # Sugiyama nodes and links
         self.__realSugiyamaNodesList: List[RealSugiyamaNode] = []   # List of all RealSugiyamaNode's
         self._sugiyamaLinksList:      List[SugiyamaLink]     = []   # List of all SugiyamaLink's
@@ -728,7 +728,7 @@ class Sugiyama:
             y += maxHeight + V_SPACE
 
         if Sugiyama.STEP_BY_STEP:     # TODO Make this a User/Plugin Preference
-            SugiyamaGlobals.waitKey(self._mediator, optionalMessage=None)
+            SugiyamaGlobals.waitKey(self._pluginAdapter, optionalMessage=None)
         else:
             self.logger.info(f'.__fixNodesPositions() is complete')
 
@@ -743,7 +743,7 @@ class Sugiyama:
                         moved = True
                         msg: str = f'LEVEL - node: {node} {level}'
                         if Sugiyama.STEP_BY_STEP:
-                            SugiyamaGlobals.waitKey(self._mediator, msg)
+                            SugiyamaGlobals.waitKey(self._pluginAdapter, msg)
                         else:
                             self.logger.info(msg)
 

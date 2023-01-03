@@ -6,18 +6,20 @@ from logging import getLogger
 
 from wx import Yield as wxYield
 
-from core.IPluginAdapter import IPluginAdapter
-from core.IPluginAdapter import ScreenMetrics
-from core.IOPluginInterface import IOPluginInterface
-from core.coretypes.InputFormat import InputFormat
-from core.coretypes.OutputFormat import OutputFormat
-from core.coretypes.PluginDataTypes import FormatName
-from core.coretypes.PluginDataTypes import PluginDescription
-from core.coretypes.PluginDataTypes import PluginExtension
-from core.coretypes.PluginDataTypes import PluginName
-from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.core.IPluginAdapter import ScreenMetrics
+from plugins.core.IOPluginInterface import IOPluginInterface
 
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.Types import OglObjects
+
+from plugins.core.coretypes.PluginDataTypes import PluginName
+from plugins.core.coretypes.PluginDataTypes import FormatName
+from plugins.core.coretypes.PluginDataTypes import PluginDescription
+from plugins.core.coretypes.PluginDataTypes import PluginExtension
+from plugins.core.coretypes.InputFormat import InputFormat
+from plugins.core.coretypes.OutputFormat import OutputFormat
+from plugins.core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+
 from plugins.ioplugins.pdf.ImageFormat import ImageFormat
 from plugins.ioplugins.pdf.ImageOptions import ImageOptions
 from plugins.ioplugins.pdf.OglToPyUmlDefinition import OglToPyUmlDefinition

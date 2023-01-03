@@ -14,23 +14,6 @@ from wx import MessageBox
 
 from wx import Yield as wxYield
 
-from core.IPluginAdapter import IPluginAdapter
-
-from core.IOPluginInterface import IOPluginInterface
-
-from core.coretypes.InputFormat import InputFormat
-from core.coretypes.OutputFormat import OutputFormat
-from core.coretypes.PluginDataTypes import FormatName
-from core.coretypes.PluginDataTypes import PluginDescription
-from core.coretypes.PluginDataTypes import PluginExtension
-from core.coretypes.PluginDataTypes import PluginName
-from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
-
-from core.coretypes.Types import OglActors
-from core.coretypes.Types import OglLinks
-from core.coretypes.Types import OglNotes
-from core.coretypes.Types import OglObjects
-
 from oglio.Reader import Reader
 from oglio.Writer import Writer
 from oglio.Types import OglProject
@@ -38,15 +21,30 @@ from oglio.Types import OglDocument
 from oglio.Types import OglDocuments
 from oglio.Types import OglDocumentTitle
 
-from core.coretypes.Types import OglClasses
-from core.coretypes.Types import OglSDInstances
-from core.coretypes.Types import OglSDMessages
-from core.coretypes.Types import OglTexts
-from core.coretypes.Types import OglUseCases
-from core.coretypes.Types import PluginDocument
-from core.coretypes.Types import PluginDocumentType
-from core.coretypes.Types import PluginDocumentTitle
-from core.coretypes.Types import PluginProject
+from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.core.IOPluginInterface import IOPluginInterface
+
+from plugins.core.coretypes.InputFormat import InputFormat
+from plugins.core.coretypes.OutputFormat import OutputFormat
+from plugins.core.coretypes.PluginDataTypes import FormatName
+from plugins.core.coretypes.PluginDataTypes import PluginDescription
+from plugins.core.coretypes.PluginDataTypes import PluginExtension
+from plugins.core.coretypes.PluginDataTypes import PluginName
+from plugins.core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+
+from plugins.core.coretypes.Types import OglClasses
+from plugins.core.coretypes.Types import OglLinks
+from plugins.core.coretypes.Types import OglSDInstances
+from plugins.core.coretypes.Types import OglSDMessages
+from plugins.core.coretypes.Types import OglTexts
+from plugins.core.coretypes.Types import OglActors
+from plugins.core.coretypes.Types import OglNotes
+from plugins.core.coretypes.Types import OglObjects
+from plugins.core.coretypes.Types import OglUseCases
+from plugins.core.coretypes.Types import PluginDocument
+from plugins.core.coretypes.Types import PluginDocumentType
+from plugins.core.coretypes.Types import PluginDocumentTitle
+from plugins.core.coretypes.Types import PluginProject
 
 FORMAT_NAME:        FormatName        = FormatName("XML")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('xml')
@@ -237,4 +235,3 @@ class IOXml(IOPluginInterface):
         writer:     Writer = Writer()
 
         writer.writeXmlFile(oglProject=oglProject, fqFileName=self._fileToExport)
-

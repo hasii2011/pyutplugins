@@ -8,12 +8,12 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.Types import OglObjects
+
 from plugins.toolplugins.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from plugins.toolplugins.sugiyama.Sugiyama import HierarchicalGraphNodes
 from plugins.toolplugins.sugiyama.Sugiyama import NodeList
 from plugins.toolplugins.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
-
 from plugins.toolplugins.sugiyama.Sugiyama import Sugiyama
 
 from tests.MockPluginAdapter import MockPluginAdapter
@@ -36,7 +36,7 @@ class TestSugiyama(TestBase):
         self.logger: Logger = TestSugiyama.clsLogger
 
         mockMediator: MockPluginAdapter = MockPluginAdapter()
-        self._sugiyama: Sugiyama = Sugiyama(mediator=mockMediator)
+        self._sugiyama: Sugiyama = Sugiyama(pluginAdapter=mockMediator)
 
         self._oglObjects: OglObjects = self._xmlFileToOglObjects(filename='SugiyamaTest.xml', documentName='Sugiyama')
 

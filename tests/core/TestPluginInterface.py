@@ -7,8 +7,8 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from core.PluginInterface import PluginInterface
-from core.IPluginAdapter import IPluginAdapter
+from plugins.core.PluginInterface import PluginInterface
+from plugins.core.IPluginAdapter import IPluginAdapter
 
 from tests.TestBase import TestBase
 

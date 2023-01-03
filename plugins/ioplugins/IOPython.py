@@ -24,22 +24,21 @@ from wx import ProgressDialog
 
 from wx import Yield as wxYield
 
-from core.IPluginAdapter import IPluginAdapter
-from core.IOPluginInterface import IOPluginInterface
+from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.core.IOPluginInterface import IOPluginInterface
 
-from core.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
-from core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
-from core.coretypes.InputFormat import InputFormat
-from core.coretypes.OutputFormat import OutputFormat
+from plugins.core.coretypes.PluginDataTypes import PluginExtension
+from plugins.core.coretypes.PluginDataTypes import PluginName
+from plugins.core.coretypes.Types import OglClasses
+from plugins.core.coretypes.Types import OglLinks
+from plugins.core.coretypes.Types import OglObjects
 
-from core.coretypes.PluginDataTypes import PluginDescription
-from core.coretypes.PluginDataTypes import PluginExtension
-from core.coretypes.PluginDataTypes import FormatName
-from core.coretypes.PluginDataTypes import PluginName
-
-from core.coretypes.Types import OglClasses
-from core.coretypes.Types import OglLinks
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
+from plugins.core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
+from plugins.core.coretypes.InputFormat import InputFormat
+from plugins.core.coretypes.OutputFormat import OutputFormat
+from plugins.core.coretypes.PluginDataTypes import FormatName
+from plugins.core.coretypes.PluginDataTypes import PluginDescription
 
 from plugins.ioplugins.python.PyutToPython import MethodsCodeType
 from plugins.ioplugins.python.PyutToPython import PyutToPython

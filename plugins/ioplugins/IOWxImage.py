@@ -14,23 +14,25 @@ from wx import MemoryDC
 from wx import NullBitmap
 from wx import OK
 
-from core.IPluginAdapter import IPluginAdapter
-from core.IOPluginInterface import IOPluginInterface
+from plugins.core.coretypes.PluginDataTypes import FormatName
+from plugins.core.coretypes.PluginDataTypes import PluginDescription
+from plugins.core.coretypes.PluginDataTypes import PluginExtension
+from plugins.core.coretypes.PluginDataTypes import PluginName
 
-from core.coretypes.InputFormat import InputFormat
-from core.coretypes.OutputFormat import OutputFormat
-from core.coretypes.PluginDataTypes import FormatName
-from core.coretypes.PluginDataTypes import PluginDescription
-from core.coretypes.PluginDataTypes import PluginExtension
-from core.coretypes.PluginDataTypes import PluginName
-from core.coretypes.Types import FrameInformation
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.Types import FrameInformation
+from plugins.core.coretypes.Types import OglObjects
+
+from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.core.IOPluginInterface import IOPluginInterface
+
+from plugins.core.coretypes.InputFormat import InputFormat
+from plugins.core.coretypes.OutputFormat import OutputFormat
 
 from plugins.ioplugins.wximage.DlgWxImageOptions import DlgWxImageOptions
 from plugins.ioplugins.wximage.WxImageFormat import WxImageFormat
 
-FORMAT_NAME:        FormatName = FormatName('Wx Image')
-PLUGIN_EXTENSION:   PluginExtension = PluginExtension('png')
+FORMAT_NAME:        FormatName        = FormatName('Wx Image')
+PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('png')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('png, bmp, gif, or jpg')
 
 
@@ -55,6 +57,9 @@ class IOWxImage(IOPluginInterface):
 
         self._autoSelectAll = True     # we are taking a picture of the entire diagram
 
+        self._imageFormat:    WxImageFormat = cast(WxImageFormat, None)
+        self._outputFileName: str           = cast(str, None)
+
     def setImportOptions(self) -> bool:
         return False
 
@@ -68,8 +73,8 @@ class IOWxImage(IOPluginInterface):
         with DlgWxImageOptions(None) as dlg:
             if dlg.ShowModal() == OK:
                 self.logger.warning(f'{dlg.imageFormat=} {dlg.outputFileName=}')
-                self._imageFormat:    WxImageFormat = dlg.imageFormat
-                self._outputFileName: str           = dlg.outputFileName
+                self._imageFormat    = dlg.imageFormat
+                self._outputFileName = dlg.outputFileName
 
             else:
                 self.logger.warning(f'Cancelled')

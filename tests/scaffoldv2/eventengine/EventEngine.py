@@ -3,16 +3,17 @@ from logging import Logger
 from logging import getLogger
 from typing import Callable
 
-from oglio.Types import OglProject
 from wx import MessageBox
 from wx import PostEvent
 from wx import PyEventBinder
 from wx import TreeItemId
 from wx import Window
 
-from core.coretypes.Types import CurrentProjectCallback
-from core.coretypes.Types import PluginProject
-from core.coretypes.Types import SelectedOglObjectsCallback
+from oglio.Types import OglProject
+
+from plugins.core.coretypes.Types import CurrentProjectCallback
+from plugins.core.coretypes.Types import PluginProject
+from plugins.core.coretypes.Types import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.eventengine.Events import AddShapeEvent

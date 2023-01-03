@@ -4,11 +4,11 @@ from typing import cast
 from abc import ABC
 from abc import abstractmethod
 
-from core.PluginInterface import PluginInterface
-from core.IPluginAdapter import IPluginAdapter
+from plugins.core.PluginInterface import PluginInterface
+from plugins.core.IPluginAdapter import IPluginAdapter
 
-from core.coretypes.Types import FrameInformation
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.Types import FrameInformation
+from plugins.core.coretypes.Types import OglObjects
 
 
 class IOPluginInterface(PluginInterface, ABC):

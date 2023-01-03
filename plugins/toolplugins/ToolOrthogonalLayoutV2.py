@@ -19,12 +19,12 @@ from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglNote import OglNote
 
-from core.IPluginAdapter import IPluginAdapter
+from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.core.ToolPluginInterface import ToolPluginInterface
 
-from core.ToolPluginInterface import ToolPluginInterface
+from plugins.core.coretypes.Types import OglObjects
 
-from core.coretypes.PluginDataTypes import PluginName
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.PluginDataTypes import PluginName
 
 from plugins.toolplugins.orthogonal.DlgLayoutSize import DlgLayoutSize
 from plugins.toolplugins.orthogonal.OrthogonalAdapter import LayoutAreaSize

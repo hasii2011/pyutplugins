@@ -1,10 +1,10 @@
 
-from core.coretypes.PluginDataTypes import PluginDescription
-from core.coretypes.PluginDataTypes import PluginExtension
-from core.coretypes.PluginDataTypes import FormatName
+from plugins.core.coretypes.PluginDataTypes import PluginDescription
+from plugins.core.coretypes.PluginDataTypes import PluginExtension
+from plugins.core.coretypes.PluginDataTypes import FormatName
 
-from core.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
-from core.exceptions.InvalidPluginNameException import InvalidPluginNameException
+from plugins.core.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
+from plugins.core.exceptions.InvalidPluginNameException import InvalidPluginNameException
 
 DOT:                str = '.'
 SPECIAL_CHARACTERS: str = '!@#$%^&*_+-=[]{};:,.<>?/|\'\"'

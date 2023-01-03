@@ -4,21 +4,20 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from core.coretypes.Types import OglObjects
+from plugins.core.coretypes.PluginDataTypes import PluginName
+from plugins.core.coretypes.PluginDataTypes import PluginDescription
+from plugins.core.coretypes.PluginDataTypes import PluginExtension
+from plugins.core.coretypes.PluginDataTypes import FormatName
+from plugins.core.coretypes.InputFormat import InputFormat
+from plugins.core.coretypes.OutputFormat import OutputFormat
+from plugins.core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 from plugins.ioplugins.gml.GMLExporter import GMLExporter
 
-from core.IOPluginInterface import IOPluginInterface
-from core.IPluginAdapter import IPluginAdapter
+from plugins.core.coretypes.Types import OglObjects
 
-from core.coretypes.PluginDataTypes import PluginName
-from core.coretypes.InputFormat import InputFormat
-from core.coretypes.OutputFormat import OutputFormat
-from core.coretypes.PluginDataTypes import PluginDescription
-from core.coretypes.PluginDataTypes import PluginExtension
-from core.coretypes.PluginDataTypes import FormatName
-from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
-
+from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.core.IOPluginInterface import IOPluginInterface
 
 FORMAT_NAME:        FormatName = FormatName('GML')
 PLUGIN_EXTENSION:   PluginExtension = PluginExtension('gml')
