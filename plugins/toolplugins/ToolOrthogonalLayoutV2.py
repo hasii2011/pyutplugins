@@ -26,12 +26,12 @@ from core.ToolPluginInterface import ToolPluginInterface
 from core.coretypes.PluginDataTypes import PluginName
 from core.coretypes.Types import OglObjects
 
-from plugins.tools.orthogonal.DlgLayoutSize import DlgLayoutSize
-from plugins.tools.orthogonal.OrthogonalAdapter import LayoutAreaSize
-from plugins.tools.orthogonal.OrthogonalAdapter import OglCoordinate
-from plugins.tools.orthogonal.OrthogonalAdapter import OglCoordinates
-from plugins.tools.orthogonal.OrthogonalAdapter import OrthogonalAdapter
-from plugins.tools.orthogonal.OrthogonalAdapterException import OrthogonalAdapterException
+from plugins.toolplugins.orthogonal.DlgLayoutSize import DlgLayoutSize
+from plugins.toolplugins.orthogonal.OrthogonalAdapter import LayoutAreaSize
+from plugins.toolplugins.orthogonal.OrthogonalAdapter import OglCoordinate
+from plugins.toolplugins.orthogonal.OrthogonalAdapter import OglCoordinates
+from plugins.toolplugins.orthogonal.OrthogonalAdapter import OrthogonalAdapter
+from plugins.toolplugins.orthogonal.OrthogonalAdapterException import OrthogonalAdapterException
 
 
 class ToolOrthogonalLayoutV2(ToolPluginInterface):

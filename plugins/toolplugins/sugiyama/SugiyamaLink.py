@@ -1,5 +1,5 @@
 
-from plugins.tools.sugiyama.ALayoutLink import ALayoutLink
+from plugins.toolplugins.sugiyama.ALayoutLink import ALayoutLink
 
 from miniogl.ControlPoint import ControlPoint
 
@@ -46,7 +46,7 @@ class SugiyamaLink(ALayoutLink):
                 neighbor = vnode.getRightNode()
                 #
                 # Don't like embedded imports, but need to avoid cyclical dependency
-                from plugins.tools.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
+                from plugins.toolplugins.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
 
                 while isinstance(neighbor, VirtualSugiyamaNode) and neighbor is not None:
 
@@ -60,7 +60,7 @@ class SugiyamaLink(ALayoutLink):
 
             else:   # If link goes to up-right
                 # Don't like embedded imports, but need to avoid cyclical dependency
-                from plugins.tools.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
+                from plugins.toolplugins.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
                 # Find the first real node on the left of the virtual node
                 neighbor = vnode.getLeftNode()
                 while isinstance(neighbor, VirtualSugiyamaNode) and neighbor is not None:

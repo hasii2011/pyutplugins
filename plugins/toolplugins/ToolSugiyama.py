@@ -12,10 +12,10 @@ from core.coretypes.PluginDataTypes import PluginName
 
 from core.coretypes.Types import OglObjects
 
-from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
-from plugins.tools.sugiyama.Sugiyama import Sugiyama
-from plugins.tools.sugiyama.SugiyamaLink import SugiyamaLink
-from plugins.tools.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
+from plugins.toolplugins.sugiyama.RealSugiyamaNode import RealSugiyamaNode
+from plugins.toolplugins.sugiyama.Sugiyama import Sugiyama
+from plugins.toolplugins.sugiyama.SugiyamaLink import SugiyamaLink
+from plugins.toolplugins.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
 
 
 class ToolSugiyama(ToolPluginInterface):

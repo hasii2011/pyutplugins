@@ -34,11 +34,11 @@ from plugins.ioplugins.IOPython import IOPython
 from plugins.ioplugins.IOWxImage import IOWxImage
 from plugins.ioplugins.IOXml import IOXml
 
-from plugins.tools.ToolArrangeLinks import ToolArrangeLinks
-from plugins.tools.ToolAscii import ToolAscii
-from plugins.tools.ToolOrthogonalLayoutV2 import ToolOrthogonalLayoutV2
-from plugins.tools.ToolSugiyama import ToolSugiyama
-from plugins.tools.ToolTransforms import ToolTransforms
+from plugins.toolplugins.ToolArrangeLinks import ToolArrangeLinks
+from plugins.toolplugins.ToolAscii import ToolAscii
+from plugins.toolplugins.ToolOrthogonalLayoutV2 import ToolOrthogonalLayoutV2
+from plugins.toolplugins.ToolSugiyama import ToolSugiyama
+from plugins.toolplugins.ToolTransforms import ToolTransforms
 
 TOOL_PLUGIN_NAME_PREFIX: str = 'Tool'
 IO_PLUGIN_NAME_PREFIX:   str = 'IO'

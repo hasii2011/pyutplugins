@@ -28,7 +28,7 @@ from orthogonal.topologyShapeMetric.Planarization import Planarization
 
 from core.coretypes.Types import OglObjects
 from plugins.ioplugins.gml.GMLExporter import GMLExporter
-from plugins.tools.orthogonal.OrthogonalAdapterException import OrthogonalAdapterException
+from plugins.toolplugins.orthogonal.OrthogonalAdapterException import OrthogonalAdapterException
 
 GraphicsCoordinates = NewType('GraphicsCoordinates', Tuple[int, int])
 LayoutEngineInput   = NewType('LayoutEngineInput', Dict[str, GraphicsCoordinates])

@@ -1,11 +1,11 @@
 from typing import Tuple
 
-from plugins.tools.sugiyama.SugiyamaNode import SugiyamaNode
-from plugins.tools.sugiyama.SugiyamaNode import SugiyamaVEs
+from plugins.toolplugins.sugiyama.SugiyamaNode import SugiyamaNode
+from plugins.toolplugins.sugiyama.SugiyamaNode import SugiyamaVEs
 
-from plugins.tools.sugiyama.ALayoutNode import ALayoutNode
+from plugins.toolplugins.sugiyama.ALayoutNode import ALayoutNode
 
-from plugins.tools.sugiyama.SugiyamaGlobals import SugiyamaGlobals
+from plugins.toolplugins.sugiyama.SugiyamaGlobals import SugiyamaGlobals
 
 
 class RealSugiyamaNode(SugiyamaNode):

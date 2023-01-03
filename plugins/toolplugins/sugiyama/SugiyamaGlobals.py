@@ -13,7 +13,7 @@ from wx import Yield as wxYield
 
 from core.IPluginAdapter import IPluginAdapter
 
-from plugins.tools.sugiyama.SugiyamaNode import SugiyamaNode
+from plugins.toolplugins.sugiyama.SugiyamaNode import SugiyamaNode
 
 
 def cmp(left, right):

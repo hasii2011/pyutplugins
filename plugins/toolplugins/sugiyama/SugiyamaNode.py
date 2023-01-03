@@ -4,8 +4,8 @@ from typing import NewType
 from typing import Tuple
 from typing import List
 
-from plugins.tools.sugiyama.SugiyamaConstants import H_SPACE
-from plugins.tools.sugiyama.SugiyamaLink import SugiyamaLink
+from plugins.toolplugins.sugiyama.SugiyamaConstants import H_SPACE
+from plugins.toolplugins.sugiyama.SugiyamaLink import SugiyamaLink
 
 SugiyamaVertexEdge = NewType("SugiyamaVertexEdge", Tuple["SugiyamaNode", SugiyamaLink])
 SugiyamaVEs        = NewType("SugiyamaVEs", List[SugiyamaVertexEdge])

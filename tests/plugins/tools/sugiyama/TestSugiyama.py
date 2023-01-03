@@ -9,12 +9,12 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from core.coretypes.Types import OglObjects
-from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
-from plugins.tools.sugiyama.Sugiyama import HierarchicalGraphNodes
-from plugins.tools.sugiyama.Sugiyama import NodeList
-from plugins.tools.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
+from plugins.toolplugins.sugiyama.RealSugiyamaNode import RealSugiyamaNode
+from plugins.toolplugins.sugiyama.Sugiyama import HierarchicalGraphNodes
+from plugins.toolplugins.sugiyama.Sugiyama import NodeList
+from plugins.toolplugins.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
 
-from plugins.tools.sugiyama.Sugiyama import Sugiyama
+from plugins.toolplugins.sugiyama.Sugiyama import Sugiyama
 
 from tests.MockPluginAdapter import MockPluginAdapter
 from tests.TestBase import TestBase

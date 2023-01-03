@@ -18,15 +18,15 @@ from pyutmodel.PyutLinkType import PyutLinkType
 
 from core.IPluginAdapter import IPluginAdapter
 
-from plugins.tools.sugiyama.SugiyamaNode import SugiyamaNode
-from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
-from plugins.tools.sugiyama.SugiyamaConstants import H_SPACE
-from plugins.tools.sugiyama.SugiyamaConstants import LEFT_MARGIN
-from plugins.tools.sugiyama.SugiyamaConstants import UP_MARGIN
-from plugins.tools.sugiyama.SugiyamaConstants import V_SPACE
-from plugins.tools.sugiyama.SugiyamaGlobals import SugiyamaGlobals
-from plugins.tools.sugiyama.SugiyamaLink import SugiyamaLink
-from plugins.tools.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
+from plugins.toolplugins.sugiyama.SugiyamaNode import SugiyamaNode
+from plugins.toolplugins.sugiyama.RealSugiyamaNode import RealSugiyamaNode
+from plugins.toolplugins.sugiyama.SugiyamaConstants import H_SPACE
+from plugins.toolplugins.sugiyama.SugiyamaConstants import LEFT_MARGIN
+from plugins.toolplugins.sugiyama.SugiyamaConstants import UP_MARGIN
+from plugins.toolplugins.sugiyama.SugiyamaConstants import V_SPACE
+from plugins.toolplugins.sugiyama.SugiyamaGlobals import SugiyamaGlobals
+from plugins.toolplugins.sugiyama.SugiyamaLink import SugiyamaLink
+from plugins.toolplugins.sugiyama.VirtualSugiyamaNode import VirtualSugiyamaNode
 
 Nodes    = Union[RealSugiyamaNode, VirtualSugiyamaNode]
 NodeList = NewType('NodeList', List[Nodes])

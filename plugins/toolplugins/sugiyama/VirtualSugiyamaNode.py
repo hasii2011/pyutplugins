@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from plugins.tools.sugiyama.SugiyamaNode import SugiyamaNode
+from plugins.toolplugins.sugiyama.SugiyamaNode import SugiyamaNode
 
 
 class VirtualSugiyamaNode(SugiyamaNode):
