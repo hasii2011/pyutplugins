@@ -46,18 +46,18 @@ from ogl.sd.OglSDMessage import OglSDMessage
 from oglio.Types import OglDocument
 from oglio.Types import OglProject
 
-from plugins.core.coretypes.Types import CurrentProjectCallback
-from plugins.core.coretypes.Types import FrameInformation
-from plugins.core.coretypes.Types import FrameInformationCallback
-from plugins.core.coretypes.Types import FrameSize
-from plugins.core.coretypes.Types import FrameSizeCallback
-from plugins.core.coretypes.Types import HybridLinks
-from plugins.core.coretypes.Types import OglLinks
-from plugins.core.coretypes.Types import PluginDocument
-from plugins.core.coretypes.Types import PluginDocumentTitle
-from plugins.core.coretypes.Types import PluginDocumentType
-from plugins.core.coretypes.Types import PluginProject
-from plugins.core.coretypes.Types import SelectedOglObjectsCallback
+from plugins.core.coretypes.CoreTypes import CurrentProjectCallback
+from plugins.core.coretypes.CoreTypes import FrameInformation
+from plugins.core.coretypes.CoreTypes import FrameInformationCallback
+from plugins.core.coretypes.CoreTypes import FrameSize
+from plugins.core.coretypes.CoreTypes import FrameSizeCallback
+from plugins.core.coretypes.CoreTypes import HybridLinks
+from plugins.core.coretypes.CoreTypes import OglLinks
+from plugins.core.coretypes.CoreTypes import PluginDocument
+from plugins.core.coretypes.CoreTypes import PluginDocumentTitle
+from plugins.core.coretypes.CoreTypes import PluginDocumentType
+from plugins.core.coretypes.CoreTypes import PluginProject
+from plugins.core.coretypes.CoreTypes import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.PyutDocument import PyutDocument

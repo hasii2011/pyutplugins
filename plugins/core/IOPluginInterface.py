@@ -7,8 +7,8 @@ from abc import abstractmethod
 from plugins.core.PluginInterface import PluginInterface
 from plugins.core.IPluginAdapter import IPluginAdapter
 
-from plugins.core.coretypes.Types import FrameInformation
-from plugins.core.coretypes.Types import OglObjects
+from plugins.core.coretypes.CoreTypes import FrameInformation
+from plugins.core.coretypes.CoreTypes import OglObjects
 
 
 class IOPluginInterface(PluginInterface, ABC):

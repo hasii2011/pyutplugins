@@ -29,9 +29,9 @@ from plugins.core.IOPluginInterface import IOPluginInterface
 
 from plugins.core.coretypes.PluginDataTypes import PluginExtension
 from plugins.core.coretypes.PluginDataTypes import PluginName
-from plugins.core.coretypes.Types import OglClasses
-from plugins.core.coretypes.Types import OglLinks
-from plugins.core.coretypes.Types import OglObjects
+from plugins.core.coretypes.CoreTypes import OglClasses
+from plugins.core.coretypes.CoreTypes import OglLinks
+from plugins.core.coretypes.CoreTypes import OglObjects
 
 from plugins.core.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
 from plugins.core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse

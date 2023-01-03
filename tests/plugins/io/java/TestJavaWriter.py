@@ -12,8 +12,8 @@ from pkg_resources import resource_filename
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from plugins.core.coretypes.Types import OglClasses
-from plugins.core.coretypes.Types import OglObjects
+from plugins.core.coretypes.CoreTypes import OglClasses
+from plugins.core.coretypes.CoreTypes import OglObjects
 
 from tests.TestBase import TestBase
 

@@ -23,8 +23,8 @@ from plugins.core.IPluginAdapter import IPluginAdapter
 from plugins.core.coretypes.InputFormat import InputFormat
 from plugins.core.coretypes.OutputFormat import OutputFormat
 
-from plugins.core.coretypes.Types import OglClasses
-from plugins.core.coretypes.Types import OglLinks
+from plugins.core.coretypes.CoreTypes import OglClasses
+from plugins.core.coretypes.CoreTypes import OglLinks
 from plugins.core.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
 from plugins.core.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
 from plugins.core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse

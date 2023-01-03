@@ -19,8 +19,8 @@ from plugins.core.coretypes.PluginDataTypes import PluginDescription
 from plugins.core.coretypes.PluginDataTypes import PluginExtension
 from plugins.core.coretypes.PluginDataTypes import PluginName
 
-from plugins.core.coretypes.Types import FrameInformation
-from plugins.core.coretypes.Types import OglObjects
+from plugins.core.coretypes.CoreTypes import FrameInformation
+from plugins.core.coretypes.CoreTypes import OglObjects
 
 from plugins.core.IPluginAdapter import IPluginAdapter
 from plugins.core.IOPluginInterface import IOPluginInterface

@@ -22,7 +22,7 @@ from ogl.OglNote import OglNote
 from plugins.core.IPluginAdapter import IPluginAdapter
 from plugins.core.ToolPluginInterface import ToolPluginInterface
 
-from plugins.core.coretypes.Types import OglObjects
+from plugins.core.coretypes.CoreTypes import OglObjects
 
 from plugins.core.coretypes.PluginDataTypes import PluginName
 

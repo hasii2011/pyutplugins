@@ -5,12 +5,12 @@ from unittest.mock import MagicMock
 
 from miniogl.DiagramFrame import DiagramFrame
 
-from plugins.core.coretypes.Types import CurrentProjectCallback
-from plugins.core.coretypes.Types import FrameInformationCallback
-from plugins.core.coretypes.Types import FrameSizeCallback
-from plugins.core.coretypes.Types import OglObjectType
-from plugins.core.coretypes.Types import PluginProject
-from plugins.core.coretypes.Types import SelectedOglObjectsCallback
+from plugins.core.coretypes.CoreTypes import CurrentProjectCallback
+from plugins.core.coretypes.CoreTypes import FrameInformationCallback
+from plugins.core.coretypes.CoreTypes import FrameSizeCallback
+from plugins.core.coretypes.CoreTypes import OglObjectType
+from plugins.core.coretypes.CoreTypes import PluginProject
+from plugins.core.coretypes.CoreTypes import SelectedOglObjectsCallback
 
 from plugins.core.IPluginAdapter import IPluginAdapter
 from plugins.core.IPluginAdapter import ScreenMetrics

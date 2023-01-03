@@ -13,7 +13,7 @@ from plugins.core.coretypes.PluginDataTypes import FormatName
 from plugins.core.coretypes.PluginDataTypes import PluginDescription
 from plugins.core.coretypes.PluginDataTypes import PluginExtension
 from plugins.core.coretypes.PluginDataTypes import PluginName
-from plugins.core.coretypes.Types import OglObjects
+from plugins.core.coretypes.CoreTypes import OglObjects
 
 
 FORMAT_NAME:        FormatName       = FormatName('Ascii')

@@ -32,19 +32,19 @@ from plugins.core.coretypes.PluginDataTypes import PluginExtension
 from plugins.core.coretypes.PluginDataTypes import PluginName
 from plugins.core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
-from plugins.core.coretypes.Types import OglClasses
-from plugins.core.coretypes.Types import OglLinks
-from plugins.core.coretypes.Types import OglSDInstances
-from plugins.core.coretypes.Types import OglSDMessages
-from plugins.core.coretypes.Types import OglTexts
-from plugins.core.coretypes.Types import OglActors
-from plugins.core.coretypes.Types import OglNotes
-from plugins.core.coretypes.Types import OglObjects
-from plugins.core.coretypes.Types import OglUseCases
-from plugins.core.coretypes.Types import PluginDocument
-from plugins.core.coretypes.Types import PluginDocumentType
-from plugins.core.coretypes.Types import PluginDocumentTitle
-from plugins.core.coretypes.Types import PluginProject
+from plugins.core.coretypes.CoreTypes import OglClasses
+from plugins.core.coretypes.CoreTypes import OglLinks
+from plugins.core.coretypes.CoreTypes import OglSDInstances
+from plugins.core.coretypes.CoreTypes import OglSDMessages
+from plugins.core.coretypes.CoreTypes import OglTexts
+from plugins.core.coretypes.CoreTypes import OglActors
+from plugins.core.coretypes.CoreTypes import OglNotes
+from plugins.core.coretypes.CoreTypes import OglObjects
+from plugins.core.coretypes.CoreTypes import OglUseCases
+from plugins.core.coretypes.CoreTypes import PluginDocument
+from plugins.core.coretypes.CoreTypes import PluginDocumentType
+from plugins.core.coretypes.CoreTypes import PluginDocumentTitle
+from plugins.core.coretypes.CoreTypes import PluginProject
 
 FORMAT_NAME:        FormatName        = FormatName("XML")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('xml')
