@@ -27,19 +27,19 @@ from wx import Yield as wxYield
 from core.IPluginAdapter import IPluginAdapter
 from core.IOPluginInterface import IOPluginInterface
 
-from core.types.ExportDirectoryResponse import ExportDirectoryResponse
-from core.types.MultipleFileRequestResponse import MultipleFileRequestResponse
-from core.types.InputFormat import InputFormat
-from core.types.OutputFormat import OutputFormat
+from core.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
+from core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
+from core.coretypes.InputFormat import InputFormat
+from core.coretypes.OutputFormat import OutputFormat
 
-from core.types.PluginDataTypes import PluginDescription
-from core.types.PluginDataTypes import PluginExtension
-from core.types.PluginDataTypes import FormatName
-from core.types.PluginDataTypes import PluginName
+from core.coretypes.PluginDataTypes import PluginDescription
+from core.coretypes.PluginDataTypes import PluginExtension
+from core.coretypes.PluginDataTypes import FormatName
+from core.coretypes.PluginDataTypes import PluginName
 
-from core.types.Types import OglClasses
-from core.types.Types import OglLinks
-from core.types.Types import OglObjects
+from core.coretypes.Types import OglClasses
+from core.coretypes.Types import OglLinks
+from core.coretypes.Types import OglObjects
 
 from plugins.io.python.PyutToPython import MethodsCodeType
 from plugins.io.python.PyutToPython import PyutToPython

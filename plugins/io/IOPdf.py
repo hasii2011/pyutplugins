@@ -9,15 +9,15 @@ from wx import Yield as wxYield
 from core.IPluginAdapter import IPluginAdapter
 from core.IPluginAdapter import ScreenMetrics
 from core.IOPluginInterface import IOPluginInterface
-from core.types.InputFormat import InputFormat
-from core.types.OutputFormat import OutputFormat
-from core.types.PluginDataTypes import FormatName
-from core.types.PluginDataTypes import PluginDescription
-from core.types.PluginDataTypes import PluginExtension
-from core.types.PluginDataTypes import PluginName
-from core.types.SingleFileRequestResponse import SingleFileRequestResponse
+from core.coretypes.InputFormat import InputFormat
+from core.coretypes.OutputFormat import OutputFormat
+from core.coretypes.PluginDataTypes import FormatName
+from core.coretypes.PluginDataTypes import PluginDescription
+from core.coretypes.PluginDataTypes import PluginExtension
+from core.coretypes.PluginDataTypes import PluginName
+from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
-from core.types.Types import OglObjects
+from core.coretypes.Types import OglObjects
 from plugins.io.pdf.ImageFormat import ImageFormat
 from plugins.io.pdf.ImageOptions import ImageOptions
 from plugins.io.pdf.OglToPyUmlDefinition import OglToPyUmlDefinition

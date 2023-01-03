@@ -6,13 +6,13 @@ from wx import Yield as wxYield
 
 from core.IPluginAdapter import IPluginAdapter
 from core.IPluginAdapter import ScreenMetrics
-from core.types.Types import CurrentProjectCallback
-from core.types.Types import FrameInformationCallback
-from core.types.Types import FrameSizeCallback
-from core.types.Types import OglObjectType
+from core.coretypes.Types import CurrentProjectCallback
+from core.coretypes.Types import FrameInformationCallback
+from core.coretypes.Types import FrameSizeCallback
+from core.coretypes.Types import OglObjectType
 
-from core.types.Types import PluginProject
-from core.types.Types import SelectedOglObjectsCallback
+from core.coretypes.Types import PluginProject
+from core.coretypes.Types import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.eventengine.Events import EventType
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine

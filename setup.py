@@ -36,7 +36,7 @@ setup(
         'plugins.tools.orthogonal':        ['py.typed'],
         'plugins.tools.sugiyama':          ['py.typed'],
         'core':            ['py.typed'],
-        'core.types':      ['py.typed'],
+        'core.coretypes':      ['py.typed'],
         'core.exceptions': ['py.typed'],
     },
     packages=[
@@ -49,7 +49,7 @@ setup(
         'plugins.io.python', 'plugins.io.python.pyantlrparser',
         'plugins.io.wximage',
         'plugins.tools', 'plugins.tools.orthogonal', 'plugins.tools.sugiyama',
-        'core', 'core.types', 'core.exceptions',
+        'core', 'core.coretypes', 'core.exceptions',
     ],
     install_requires=['click~=8.1.3',
                       'antlr4-python3-runtime==4.11.1',

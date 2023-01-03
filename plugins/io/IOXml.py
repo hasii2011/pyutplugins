@@ -18,18 +18,18 @@ from core.IPluginAdapter import IPluginAdapter
 
 from core.IOPluginInterface import IOPluginInterface
 
-from core.types.InputFormat import InputFormat
-from core.types.OutputFormat import OutputFormat
-from core.types.PluginDataTypes import FormatName
-from core.types.PluginDataTypes import PluginDescription
-from core.types.PluginDataTypes import PluginExtension
-from core.types.PluginDataTypes import PluginName
-from core.types.SingleFileRequestResponse import SingleFileRequestResponse
+from core.coretypes.InputFormat import InputFormat
+from core.coretypes.OutputFormat import OutputFormat
+from core.coretypes.PluginDataTypes import FormatName
+from core.coretypes.PluginDataTypes import PluginDescription
+from core.coretypes.PluginDataTypes import PluginExtension
+from core.coretypes.PluginDataTypes import PluginName
+from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
-from core.types.Types import OglActors
-from core.types.Types import OglLinks
-from core.types.Types import OglNotes
-from core.types.Types import OglObjects
+from core.coretypes.Types import OglActors
+from core.coretypes.Types import OglLinks
+from core.coretypes.Types import OglNotes
+from core.coretypes.Types import OglObjects
 
 from oglio.Reader import Reader
 from oglio.Writer import Writer
@@ -38,15 +38,15 @@ from oglio.Types import OglDocument
 from oglio.Types import OglDocuments
 from oglio.Types import OglDocumentTitle
 
-from core.types.Types import OglClasses
-from core.types.Types import OglSDInstances
-from core.types.Types import OglSDMessages
-from core.types.Types import OglTexts
-from core.types.Types import OglUseCases
-from core.types.Types import PluginDocument
-from core.types.Types import PluginDocumentType
-from core.types.Types import PluginDocumentTitle
-from core.types.Types import PluginProject
+from core.coretypes.Types import OglClasses
+from core.coretypes.Types import OglSDInstances
+from core.coretypes.Types import OglSDMessages
+from core.coretypes.Types import OglTexts
+from core.coretypes.Types import OglUseCases
+from core.coretypes.Types import PluginDocument
+from core.coretypes.Types import PluginDocumentType
+from core.coretypes.Types import PluginDocumentTitle
+from core.coretypes.Types import PluginProject
 
 FORMAT_NAME:        FormatName        = FormatName("XML")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('xml')

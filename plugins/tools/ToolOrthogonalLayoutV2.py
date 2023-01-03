@@ -23,8 +23,8 @@ from core.IPluginAdapter import IPluginAdapter
 
 from core.ToolPluginInterface import ToolPluginInterface
 
-from core.types.PluginDataTypes import PluginName
-from core.types.Types import OglObjects
+from core.coretypes.PluginDataTypes import PluginName
+from core.coretypes.Types import OglObjects
 
 from plugins.tools.orthogonal.DlgLayoutSize import DlgLayoutSize
 from plugins.tools.orthogonal.OrthogonalAdapter import LayoutAreaSize

@@ -1,7 +1,7 @@
 
 from dataclasses import dataclass
 
-from core.types.BaseRequestResponse import BaseRequestResponse
+from core.coretypes.BaseRequestResponse import BaseRequestResponse
 
 
 @dataclass

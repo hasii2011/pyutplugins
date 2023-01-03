@@ -26,7 +26,7 @@ from orthogonal.topologyShapeMetric.OrthogonalException import OrthogonalExcepti
 from orthogonal.topologyShapeMetric.Orthogonalization import Orthogonalization
 from orthogonal.topologyShapeMetric.Planarization import Planarization
 
-from core.types.Types import OglObjects
+from core.coretypes.Types import OglObjects
 from plugins.io.gml.GMLExporter import GMLExporter
 from plugins.tools.orthogonal.OrthogonalAdapterException import OrthogonalAdapterException
 

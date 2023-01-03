@@ -20,11 +20,11 @@ from core.IOPluginInterface import IOPluginInterface
 from core.IPluginAdapter import IPluginAdapter
 from core.Singleton import Singleton
 
-from core.types.PluginDataTypes import ToolsPluginMap
-from core.types.PluginDataTypes import InputPluginMap
-from core.types.PluginDataTypes import OutputPluginMap
-from core.types.PluginDataTypes import PluginList
-from core.types.PluginDataTypes import PluginIDMap
+from core.coretypes.PluginDataTypes import ToolsPluginMap
+from core.coretypes.PluginDataTypes import InputPluginMap
+from core.coretypes.PluginDataTypes import OutputPluginMap
+from core.coretypes.PluginDataTypes import PluginList
+from core.coretypes.PluginDataTypes import PluginIDMap
 
 from plugins.io.IODTD import IODTD
 from plugins.io.IOGML import IOGML

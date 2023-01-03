@@ -1,7 +1,7 @@
 
-from core.types.PluginDataTypes import PluginDescription
-from core.types.PluginDataTypes import PluginExtension
-from core.types.PluginDataTypes import FormatName
+from core.coretypes.PluginDataTypes import PluginDescription
+from core.coretypes.PluginDataTypes import PluginExtension
+from core.coretypes.PluginDataTypes import FormatName
 
 from core.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
 from core.exceptions.InvalidPluginNameException import InvalidPluginNameException

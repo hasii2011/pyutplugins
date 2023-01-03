@@ -12,8 +12,8 @@ from pkg_resources import resource_filename
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from core.types.Types import OglClasses
-from core.types.Types import OglObjects
+from core.coretypes.Types import OglClasses
+from core.coretypes.Types import OglObjects
 
 from tests.TestBase import TestBase
 
@@ -54,7 +54,7 @@ class TestJavaWriter(TestBase):
 
     def testComplexClass(self):
         """
-        Test multiple classes with parameters and return types
+        Test multiple classes with parameters and return coretypes
         """
         generatedFileNames: List[str] = ['Account.java', 'ATM.java', 'Bank.java', 'CheckingAccount.java', 'Customer.java', 'SavingsAccount.java']
 

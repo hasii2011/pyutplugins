@@ -15,14 +15,14 @@ from ogl.OglClass import OglClass
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutStereotype import PyutStereotype
 
-from core.types.PluginDataTypes import PluginName
+from core.coretypes.PluginDataTypes import PluginName
 
 from core.ToolPluginInterface import ToolPluginInterface
 
 from core.IPluginAdapter import IPluginAdapter
 
-from core.types.ExportDirectoryResponse import ExportDirectoryResponse
-from core.types.Types import OglObjects
+from core.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
+from core.coretypes.Types import OglObjects
 
 
 class ToolAscii(ToolPluginInterface):

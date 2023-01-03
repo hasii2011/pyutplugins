@@ -10,9 +10,9 @@ from core.IPluginAdapter import IPluginAdapter
 
 from core.ToolPluginInterface import ToolPluginInterface
 
-from core.types.PluginDataTypes import PluginName
-from core.types.Types import FrameInformation
-from core.types.Types import OglObjects
+from core.coretypes.PluginDataTypes import PluginName
+from core.coretypes.Types import FrameInformation
+from core.coretypes.Types import OglObjects
 
 
 class ToolTransforms(ToolPluginInterface):

@@ -40,11 +40,11 @@ from wx import NewIdRef
 from core.IOPluginInterface import IOPluginInterface
 from core.PluginManager import PluginManager
 from core.ToolPluginInterface import ToolPluginInterface
-from core.types.PluginDataTypes import InputPluginMap
-from core.types.PluginDataTypes import OutputPluginMap
+from core.coretypes.PluginDataTypes import InputPluginMap
+from core.coretypes.PluginDataTypes import OutputPluginMap
 
-from core.types.PluginDataTypes import PluginMapType
-from core.types.PluginDataTypes import PluginIDMap
+from core.coretypes.PluginDataTypes import PluginMapType
+from core.coretypes.PluginDataTypes import PluginIDMap
 
 from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType

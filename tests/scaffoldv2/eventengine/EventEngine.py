@@ -10,9 +10,9 @@ from wx import PyEventBinder
 from wx import TreeItemId
 from wx import Window
 
-from core.types.Types import CurrentProjectCallback
-from core.types.Types import PluginProject
-from core.types.Types import SelectedOglObjectsCallback
+from core.coretypes.Types import CurrentProjectCallback
+from core.coretypes.Types import PluginProject
+from core.coretypes.Types import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.eventengine.Events import AddShapeEvent

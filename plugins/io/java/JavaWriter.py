@@ -23,8 +23,8 @@ from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutStereotype import PyutStereotype
 
-from core.types.Types import OglClasses
-from core.types.Types import OglObjects
+from core.coretypes.Types import OglClasses
+from core.coretypes.Types import OglObjects
 
 
 class JavaWriter:
@@ -107,7 +107,7 @@ class JavaWriter:
 
     def _separateLinks(self, allLinks, interfaces, links):
         """
-        Separate the different types of links into lists.
+        Separate the different coretypes of links into lists.
 
         Args:
             allLinks:   list of links of the class

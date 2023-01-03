@@ -40,7 +40,7 @@ from miniogl.ControlPoint import ControlPoint
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 
-from core.types.Types import OglObjects
+from core.coretypes.Types import OglObjects
 
 from plugins.io.pdf.ImageFormat import ImageFormat
 from plugins.io.pdf.ImageOptions import ImageOptions

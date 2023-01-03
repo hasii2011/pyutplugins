@@ -4,14 +4,14 @@ from logging import getLogger
 
 from core.PluginInterface import PluginInterface
 
-from core.types.PluginDataTypes import PluginDescription
-from core.types.PluginDataTypes import PluginExtension
-from core.types.PluginDataTypes import FormatName
+from core.coretypes.PluginDataTypes import PluginDescription
+from core.coretypes.PluginDataTypes import PluginExtension
+from core.coretypes.PluginDataTypes import FormatName
 
 from core.IPluginAdapter import IPluginAdapter
-from core.types.InputFormat import InputFormat
-from core.types.OutputFormat import OutputFormat
-from core.types.PluginDataTypes import PluginName
+from core.coretypes.InputFormat import InputFormat
+from core.coretypes.OutputFormat import OutputFormat
+from core.coretypes.PluginDataTypes import PluginName
 
 
 SAMPLE_PLUGIN_NAME: PluginName        = PluginName('Sample Plugin')

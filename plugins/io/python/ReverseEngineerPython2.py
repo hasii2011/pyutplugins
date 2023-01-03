@@ -29,8 +29,8 @@ from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
 from plugins.common.LinkMakerMixin import LinkMakerMixin
-from core.types.Types import OglClasses
-from core.types.Types import OglLinks
+from core.coretypes.Types import OglClasses
+from core.coretypes.Types import OglLinks
 
 from plugins.io.python.PythonParseException import PythonParseException
 from plugins.io.python.PyutPythonVisitor import ChildName

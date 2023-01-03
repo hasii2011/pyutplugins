@@ -11,7 +11,7 @@ from wx import Window
 
 from core.IPluginAdapter import IPluginAdapter
 from core.PluginManager import PluginManager
-from core.types.PluginDataTypes import PluginIDMap
+from core.coretypes.PluginDataTypes import PluginIDMap
 
 from tests.TestBase import TestBase
 from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2

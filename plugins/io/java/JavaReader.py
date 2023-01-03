@@ -287,7 +287,7 @@ class JavaReader(LinkMakerMixin):
         @param currentPos : current position in the list
         @param className : current class name, used to detect constructors
         @param returnValues : bool, indicate if we must return values
-                              (types, ...)
+                              (coretypes, ...)
         @return bool : True if a variable start at the given position
                 or tuple : (bool, True if succeeded;
                             tuple : (modifiers, type, name, parameters),
@@ -411,7 +411,7 @@ class JavaReader(LinkMakerMixin):
         @param lstFile : list of instructions read from the file to analyze
         @param currentPos : current position in the list
         @param returnValues : bool, indicate if we must return values
-                              (types, ...)
+                              (coretypes, ...)
         @return bool : True if a variable start at the given position
                 or tuple : (bool, True if succeeded;
                             tuple : (modifiers, type, tuple: (name, values));

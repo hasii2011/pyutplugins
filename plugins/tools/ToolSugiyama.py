@@ -8,9 +8,9 @@ from logging import getLogger
 from core.IPluginAdapter import IPluginAdapter
 from core.ToolPluginInterface import ToolPluginInterface
 
-from core.types.PluginDataTypes import PluginName
+from core.coretypes.PluginDataTypes import PluginName
 
-from core.types.Types import OglObjects
+from core.coretypes.Types import OglObjects
 
 from plugins.tools.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from plugins.tools.sugiyama.Sugiyama import Sugiyama

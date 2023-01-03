@@ -16,9 +16,9 @@ from wx import Menu
 from wx import MenuBar
 from wx import MenuItem
 
-from core.types.ImportDirectoryResponse import ImportDirectoryResponse
-from core.types.MultipleFileRequestResponse import MultipleFileRequestResponse
-from core.types.SingleFileRequestResponse import SingleFileRequestResponse
+from core.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
+from core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
+from core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 from tests.core.SamplePluginInterface import SamplePluginInterface
 
