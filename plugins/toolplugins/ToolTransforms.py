@@ -6,8 +6,8 @@ from logging import getLogger
 
 from ogl.OglObject import OglObject
 
-from plugins.core.coretypes.CoreTypes import FrameInformation
-from plugins.core.coretypes.CoreTypes import OglObjects
+from plugins.CoreTypes import FrameInformation
+from plugins.CoreTypes import OglObjects
 
 from plugins.core.IOPluginInterface import IPluginAdapter
 from plugins.core.ToolPluginInterface import ToolPluginInterface

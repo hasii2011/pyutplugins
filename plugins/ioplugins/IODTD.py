@@ -9,9 +9,9 @@ from plugins.core.coretypes.PluginDataTypes import PluginName
 from plugins.core.coretypes.PluginDataTypes import PluginDescription
 from plugins.core.coretypes.PluginDataTypes import PluginExtension
 from plugins.core.coretypes.PluginDataTypes import FormatName
-from plugins.core.coretypes.CoreTypes import OglClasses
-from plugins.core.coretypes.CoreTypes import OglLinks
-from plugins.core.coretypes.CoreTypes import OglObjects
+from plugins.CoreTypes import OglClasses
+from plugins.CoreTypes import OglLinks
+from plugins.CoreTypes import OglObjects
 from plugins.core.IPluginAdapter import IPluginAdapter
 from plugins.core.IOPluginInterface import IOPluginInterface
 from plugins.core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse

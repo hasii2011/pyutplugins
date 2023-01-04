@@ -8,9 +8,9 @@ from logging import getLogger
 
 from os import sep as osSep
 
-from ogl.OglClass import OglClass
-
 from pyutmodel.PyutClass import PyutClass
+
+from ogl.OglClass import OglClass
 
 from wx import ICON_ERROR
 from wx import OK
@@ -29,9 +29,9 @@ from plugins.core.IOPluginInterface import IOPluginInterface
 
 from plugins.core.coretypes.PluginDataTypes import PluginExtension
 from plugins.core.coretypes.PluginDataTypes import PluginName
-from plugins.core.coretypes.CoreTypes import OglClasses
-from plugins.core.coretypes.CoreTypes import OglLinks
-from plugins.core.coretypes.CoreTypes import OglObjects
+from plugins.CoreTypes import OglClasses
+from plugins.CoreTypes import OglLinks
+from plugins.CoreTypes import OglObjects
 
 from plugins.core.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
 from plugins.core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse

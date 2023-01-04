@@ -4,12 +4,12 @@ from abc import abstractmethod
 
 from dataclasses import dataclass
 
-from plugins.core.coretypes.CoreTypes import CurrentProjectCallback
-from plugins.core.coretypes.CoreTypes import OglObjectType
-from plugins.core.coretypes.CoreTypes import FrameInformationCallback
-from plugins.core.coretypes.CoreTypes import FrameSizeCallback
-from plugins.core.coretypes.CoreTypes import PluginProject
-from plugins.core.coretypes.CoreTypes import SelectedOglObjectsCallback
+from plugins.CoreTypes import CurrentProjectCallback
+from plugins.CoreTypes import OglObjectType
+from plugins.CoreTypes import FrameInformationCallback
+from plugins.CoreTypes import FrameSizeCallback
+from plugins.CoreTypes import PluginProject
+from plugins.CoreTypes import SelectedOglObjectsCallback
 
 
 @dataclass

@@ -9,7 +9,7 @@ from plugins.core.coretypes.PluginDataTypes import PluginName
 from plugins.core.IPluginAdapter import IPluginAdapter
 from plugins.core.ToolPluginInterface import ToolPluginInterface
 
-from plugins.core.coretypes.CoreTypes import OglObjects
+from plugins.CoreTypes import OglObjects
 
 from plugins.toolplugins.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from plugins.toolplugins.sugiyama.Sugiyama import Sugiyama

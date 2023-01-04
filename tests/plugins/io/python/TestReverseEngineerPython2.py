@@ -27,8 +27,8 @@ from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
-from plugins.core.coretypes.CoreTypes import OglClasses
-from plugins.core.coretypes.CoreTypes import OglLinks
+from plugins.CoreTypes import OglClasses
+from plugins.CoreTypes import OglLinks
 
 from plugins.ioplugins.python.PyutPythonVisitor import ClassName
 from plugins.ioplugins.python.PyutPythonVisitor import DataClassProperties

@@ -14,7 +14,7 @@ from plugins.core.coretypes.SingleFileRequestResponse import SingleFileRequestRe
 
 from plugins.ioplugins.gml.GMLExporter import GMLExporter
 
-from plugins.core.coretypes.CoreTypes import OglObjects
+from plugins.CoreTypes import OglObjects
 
 from plugins.core.IPluginAdapter import IPluginAdapter
 from plugins.core.IOPluginInterface import IOPluginInterface

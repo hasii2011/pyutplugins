@@ -21,7 +21,7 @@ from miniogl.AnchorPoint import AnchorPoint
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 
-from plugins.core.coretypes.CoreTypes import OglObjects
+from plugins.CoreTypes import OglObjects
 
 from plugins.ioplugins.gml.GMLExporter import GMLExporter
 

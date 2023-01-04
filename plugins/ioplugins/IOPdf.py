@@ -10,7 +10,7 @@ from plugins.core.IPluginAdapter import IPluginAdapter
 from plugins.core.IPluginAdapter import ScreenMetrics
 from plugins.core.IOPluginInterface import IOPluginInterface
 
-from plugins.core.coretypes.CoreTypes import OglObjects
+from plugins.CoreTypes import OglObjects
 
 from plugins.core.coretypes.PluginDataTypes import PluginName
 from plugins.core.coretypes.PluginDataTypes import FormatName

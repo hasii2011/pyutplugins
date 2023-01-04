@@ -11,7 +11,7 @@ from plugins.core.IPluginAdapter import IPluginAdapter
 from plugins.core.ToolPluginInterface import ToolPluginInterface
 from plugins.core.coretypes.PluginDataTypes import PluginName
 
-from plugins.core.coretypes.CoreTypes import OglObjects
+from plugins.CoreTypes import OglObjects
 
 
 class ToolArrangeLinks(ToolPluginInterface):
