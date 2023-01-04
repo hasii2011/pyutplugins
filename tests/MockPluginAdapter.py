@@ -5,15 +5,15 @@ from unittest.mock import MagicMock
 
 from miniogl.DiagramFrame import DiagramFrame
 
-from plugins.CoreTypes import CurrentProjectCallback
-from plugins.CoreTypes import FrameInformationCallback
-from plugins.CoreTypes import FrameSizeCallback
-from plugins.CoreTypes import OglObjectType
-from plugins.CoreTypes import PluginProject
-from plugins.CoreTypes import SelectedOglObjectsCallback
+from pyutplugins.CoreTypes import CurrentProjectCallback
+from pyutplugins.CoreTypes import FrameInformationCallback
+from pyutplugins.CoreTypes import FrameSizeCallback
+from pyutplugins.CoreTypes import OglObjectType
+from pyutplugins.CoreTypes import PluginProject
+from pyutplugins.CoreTypes import SelectedOglObjectsCallback
 
-from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
-from plugins.coreinterfaces.IPluginAdapter import ScreenMetrics
+from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.coreinterfaces.IPluginAdapter import ScreenMetrics
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 

@@ -16,9 +16,9 @@ from wx import Menu
 from wx import MenuBar
 from wx import MenuItem
 
-from plugins.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
-from plugins.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
-from plugins.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+from pyutplugins.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
+from pyutplugins.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
+from pyutplugins.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 from tests.plugins.coreinterfaces.SamplePluginInterface import SamplePluginInterface
 

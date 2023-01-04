@@ -13,10 +13,10 @@ from unittest import main as unitTestMain
 from antlr4 import CommonTokenStream
 from antlr4 import FileStream
 
-from plugins.ioplugins.python.PyutPythonVisitor import ParentName
-from plugins.ioplugins.python.pyantlrparser.Python3Lexer import Python3Lexer
-from plugins.ioplugins.python.pyantlrparser.Python3Parser import Python3Parser
-from plugins.ioplugins.python.PyutPythonVisitor import PyutPythonVisitor
+from pyutplugins.ioplugins.python.PyutPythonVisitor import ParentName
+from pyutplugins.ioplugins.python.pyantlrparser.Python3Lexer import Python3Lexer
+from pyutplugins.ioplugins.python.pyantlrparser.Python3Parser import Python3Parser
+from pyutplugins.ioplugins.python.PyutPythonVisitor import PyutPythonVisitor
 
 from tests.TestBase import TestBase
 

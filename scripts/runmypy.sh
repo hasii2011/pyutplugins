@@ -13,9 +13,9 @@ changeToProjectRoot
 
 echo "current: $(pwd)"
 
-mypy --config-file .mypi.ini --pretty --no-color-output --show-error-codes  --check-untyped-defs plugins tests
-# mypy --config-file .mypi.ini --pretty --no-color-output --show-error-codes --no-incremental coreinterfaces plugins tests
-# mypy --config-file .mypi.ini --pretty  --show-error-codes coreinterfaces plugins tests
+mypy --config-file .mypi.ini --pretty --no-color-output --show-error-codes  --check-untyped-defs pyutplugins tests
+# mypy --config-file .mypi.ini --pretty --no-color-output --show-error-codes --no-incremental coreinterfaces pyutplugins tests
+# mypy --config-file .mypi.ini --pretty  --show-error-codes coreinterfaces pyutplugins tests
 status=$?
 
 echo "Exit with status: ${status}"

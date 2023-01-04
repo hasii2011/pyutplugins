@@ -4,15 +4,15 @@ from logging import getLogger
 
 from wx import Yield as wxYield
 
-from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
-from plugins.coreinterfaces.IPluginAdapter import ScreenMetrics
+from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.coreinterfaces.IPluginAdapter import ScreenMetrics
 
-from plugins.CoreTypes import PluginProject
-from plugins.CoreTypes import SelectedOglObjectsCallback
-from plugins.CoreTypes import CurrentProjectCallback
-from plugins.CoreTypes import FrameInformationCallback
-from plugins.CoreTypes import FrameSizeCallback
-from plugins.CoreTypes import OglObjectType
+from pyutplugins.CoreTypes import PluginProject
+from pyutplugins.CoreTypes import SelectedOglObjectsCallback
+from pyutplugins.CoreTypes import CurrentProjectCallback
+from pyutplugins.CoreTypes import FrameInformationCallback
+from pyutplugins.CoreTypes import FrameSizeCallback
+from pyutplugins.CoreTypes import OglObjectType
 
 
 from tests.scaffoldv2.eventengine.Events import EventType

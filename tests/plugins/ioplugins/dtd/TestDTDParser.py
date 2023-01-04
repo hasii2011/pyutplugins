@@ -14,8 +14,8 @@ from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutField import PyutField
 from wx import App
 
-from plugins.common.ElementTreeData import ElementTreeData
-from plugins.ioplugins.dtd.DTDParser import DTDParser
+from pyutplugins.common.ElementTreeData import ElementTreeData
+from pyutplugins.ioplugins.dtd.DTDParser import DTDParser
 
 from tests.TestBase import TestBase
 

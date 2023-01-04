@@ -37,15 +37,15 @@ from wx import NewIdRef
 from oglio.Reader import Reader
 from oglio.Types import OglProject
 
-from plugins.PluginManager import PluginManager
+from pyutplugins.PluginManager import PluginManager
 
-from plugins.coretypes.PluginDataTypes import InputPluginMap
-from plugins.coretypes.PluginDataTypes import OutputPluginMap
-from plugins.coretypes.PluginDataTypes import PluginIDMap
-from plugins.coretypes.PluginDataTypes import PluginMapType
+from pyutplugins.coretypes.PluginDataTypes import InputPluginMap
+from pyutplugins.coretypes.PluginDataTypes import OutputPluginMap
+from pyutplugins.coretypes.PluginDataTypes import PluginIDMap
+from pyutplugins.coretypes.PluginDataTypes import PluginMapType
 
-from plugins.coreinterfaces.IOPluginInterface import IOPluginInterface
-from plugins.coreinterfaces.ToolPluginInterface import ToolPluginInterface
+from pyutplugins.coreinterfaces.IOPluginInterface import IOPluginInterface
+from pyutplugins.coreinterfaces.ToolPluginInterface import ToolPluginInterface
 
 from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
@@ -83,7 +83,7 @@ class ScaffoldFrame(Frame):
 
         self._pluginAdapter: PluginAdapterV2 = PluginAdapterV2(eventEngine=self._eventEngine)
         #
-        # The plugin manager needs this to allow the plugins to send us messages
+        # The plugin manager needs this to allow the pyutplugins to send us messages
         #
         self._pluginManager:   PluginManager = PluginManager(pluginAdapter=self._pluginAdapter)
 

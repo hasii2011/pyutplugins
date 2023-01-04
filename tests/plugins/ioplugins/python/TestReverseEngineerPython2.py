@@ -27,17 +27,17 @@ from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
-from plugins.CoreTypes import OglClasses
-from plugins.CoreTypes import OglLinks
+from pyutplugins.CoreTypes import OglClasses
+from pyutplugins.CoreTypes import OglLinks
 
-from plugins.ioplugins.python.PyutPythonVisitor import ClassName
-from plugins.ioplugins.python.PyutPythonVisitor import DataClassProperties
-from plugins.ioplugins.python.PyutPythonVisitor import DataClassProperty
-from plugins.ioplugins.python.PyutPythonVisitor import ExpressionText
-from plugins.ioplugins.python.PyutPythonVisitor import MultiParameterNames
+from pyutplugins.ioplugins.python.PyutPythonVisitor import ClassName
+from pyutplugins.ioplugins.python.PyutPythonVisitor import DataClassProperties
+from pyutplugins.ioplugins.python.PyutPythonVisitor import DataClassProperty
+from pyutplugins.ioplugins.python.PyutPythonVisitor import ExpressionText
+from pyutplugins.ioplugins.python.PyutPythonVisitor import MultiParameterNames
 
-from plugins.ioplugins.python.PyutPythonVisitor import PyutPythonVisitor
-from plugins.ioplugins.python.ReverseEngineerPython2 import ReverseEngineerPython2
+from pyutplugins.ioplugins.python.PyutPythonVisitor import PyutPythonVisitor
+from pyutplugins.ioplugins.python.ReverseEngineerPython2 import ReverseEngineerPython2
 
 from tests.TestBase import TestBase
 

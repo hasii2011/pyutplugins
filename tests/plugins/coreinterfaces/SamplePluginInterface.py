@@ -2,16 +2,16 @@
 from logging import Logger
 from logging import getLogger
 
-from plugins.coreinterfaces.BasePluginInterface import BasePluginInterface
-from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.coreinterfaces.BasePluginInterface import BasePluginInterface
+from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
 
-from plugins.coretypes.PluginDataTypes import PluginName
-from plugins.coretypes.PluginDataTypes import PluginExtension
-from plugins.coretypes.PluginDataTypes import PluginDescription
-from plugins.coretypes.PluginDataTypes import FormatName
+from pyutplugins.coretypes.PluginDataTypes import PluginName
+from pyutplugins.coretypes.PluginDataTypes import PluginExtension
+from pyutplugins.coretypes.PluginDataTypes import PluginDescription
+from pyutplugins.coretypes.PluginDataTypes import FormatName
 
-from plugins.coretypes.InputFormat import InputFormat
-from plugins.coretypes.OutputFormat import OutputFormat
+from pyutplugins.coretypes.InputFormat import InputFormat
+from pyutplugins.coretypes.OutputFormat import OutputFormat
 
 
 SAMPLE_PLUGIN_NAME: PluginName        = PluginName('Sample Plugin')

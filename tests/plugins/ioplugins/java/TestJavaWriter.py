@@ -12,12 +12,12 @@ from pkg_resources import resource_filename
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from plugins.CoreTypes import OglClasses
-from plugins.CoreTypes import OglObjects
+from pyutplugins.CoreTypes import OglClasses
+from pyutplugins.CoreTypes import OglObjects
 
 from tests.TestBase import TestBase
 
-from plugins.ioplugins.java.JavaWriter import JavaWriter
+from pyutplugins.ioplugins.java.JavaWriter import JavaWriter
 
 
 class TestJavaWriter(TestBase):
