@@ -2,8 +2,8 @@
 from logging import Logger
 from logging import getLogger
 
-from plugins.core.BasePluginInterface import BasePluginInterface
-from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.BasePluginInterface import BasePluginInterface
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
 
 from plugins.coretypes.PluginDataTypes import PluginName
 from plugins.coretypes.PluginDataTypes import PluginExtension

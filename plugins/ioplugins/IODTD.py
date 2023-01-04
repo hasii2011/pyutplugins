@@ -15,8 +15,8 @@ from plugins.CoreTypes import OglClasses
 from plugins.CoreTypes import OglLinks
 from plugins.CoreTypes import OglObjects
 
-from plugins.core.IPluginAdapter import IPluginAdapter
-from plugins.core.IOPluginInterface import IOPluginInterface
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.IOPluginInterface import IOPluginInterface
 
 from plugins.ioplugins.dtd.DTDParser import DTDParser
 

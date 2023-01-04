@@ -12,8 +12,8 @@ from plugins.CoreTypes import OglObjectType
 from plugins.CoreTypes import PluginProject
 from plugins.CoreTypes import SelectedOglObjectsCallback
 
-from plugins.core.IPluginAdapter import IPluginAdapter
-from plugins.core.IPluginAdapter import ScreenMetrics
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.IPluginAdapter import ScreenMetrics
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 

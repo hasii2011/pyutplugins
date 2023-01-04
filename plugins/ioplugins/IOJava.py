@@ -11,8 +11,8 @@ from wx import BeginBusyCursor
 from wx import EndBusyCursor as wxEndBusyCursor
 from wx import Yield as wxYield
 
-from plugins.core.IPluginAdapter import IPluginAdapter
-from plugins.core.IOPluginInterface import IOPluginInterface
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.IOPluginInterface import IOPluginInterface
 
 from plugins.CoreTypes import OglObjects
 from plugins.CoreTypes import OglClasses

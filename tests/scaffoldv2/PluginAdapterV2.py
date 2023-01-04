@@ -4,8 +4,8 @@ from logging import getLogger
 
 from wx import Yield as wxYield
 
-from plugins.core.IPluginAdapter import IPluginAdapter
-from plugins.core.IPluginAdapter import ScreenMetrics
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.IPluginAdapter import ScreenMetrics
 
 from plugins.CoreTypes import PluginProject
 from plugins.CoreTypes import SelectedOglObjectsCallback

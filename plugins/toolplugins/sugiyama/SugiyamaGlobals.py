@@ -11,7 +11,7 @@ from wx import MessageBox
 
 from wx import Yield as wxYield
 
-from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
 
 from plugins.toolplugins.sugiyama.SugiyamaNode import SugiyamaNode
 

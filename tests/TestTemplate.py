@@ -12,7 +12,7 @@ from tests.TestBase import TestBase
 # noinspection SpellCheckingInspection
 """
 import the class you want to test here
-from core.CoreTypes import BaseFormat
+from coreinterfaces.CoreTypes import BaseFormat
 """
 
 

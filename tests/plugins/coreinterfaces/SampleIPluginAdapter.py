@@ -8,8 +8,8 @@ from wx import Frame
 
 from miniogl.DiagramFrame import DiagramFrame
 
-from plugins.core.IPluginAdapter import IPluginAdapter
-from plugins.core.IPluginAdapter import ScreenMetrics
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.IPluginAdapter import ScreenMetrics
 
 from plugins.CoreTypes import CurrentProjectCallback
 from plugins.CoreTypes import FrameInformationCallback

@@ -3,8 +3,8 @@ from plugins.coretypes.PluginDataTypes import PluginDescription
 from plugins.coretypes.PluginDataTypes import PluginExtension
 from plugins.coretypes.PluginDataTypes import FormatName
 
-from plugins.core.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
-from plugins.core.exceptions.InvalidPluginNameException import InvalidPluginNameException
+from plugins.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
+from plugins.exceptions.InvalidPluginNameException import InvalidPluginNameException
 
 DOT:                str = '.'
 SPECIAL_CHARACTERS: str = '!@#$%^&*_+-=[]{};:,.<>?/|\'\"'

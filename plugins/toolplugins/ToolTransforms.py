@@ -9,8 +9,8 @@ from ogl.OglObject import OglObject
 from plugins.CoreTypes import FrameInformation
 from plugins.CoreTypes import OglObjects
 
-from plugins.core.IOPluginInterface import IPluginAdapter
-from plugins.core.ToolPluginInterface import ToolPluginInterface
+from plugins.coreinterfaces.IOPluginInterface import IPluginAdapter
+from plugins.coreinterfaces.ToolPluginInterface import ToolPluginInterface
 
 from plugins.coretypes.PluginDataTypes import PluginName
 

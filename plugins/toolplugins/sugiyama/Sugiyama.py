@@ -16,7 +16,7 @@ from ogl.OglObject import OglObject
 
 from pyutmodel.PyutLinkType import PyutLinkType
 
-from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
 
 from plugins.toolplugins.sugiyama.SugiyamaNode import SugiyamaNode
 from plugins.toolplugins.sugiyama.RealSugiyamaNode import RealSugiyamaNode

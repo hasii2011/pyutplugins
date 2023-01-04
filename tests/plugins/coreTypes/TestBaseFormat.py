@@ -13,8 +13,8 @@ from plugins.coretypes.PluginDataTypes import PluginExtension
 
 from plugins.coretypes.BaseFormat import BaseFormat
 
-from plugins.core.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
-from plugins.core.exceptions.InvalidPluginNameException import InvalidPluginNameException
+from plugins.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
+from plugins.exceptions.InvalidPluginNameException import InvalidPluginNameException
 
 from tests.TestBase import TestBase
 

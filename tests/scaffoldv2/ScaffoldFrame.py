@@ -44,8 +44,8 @@ from plugins.coretypes.PluginDataTypes import OutputPluginMap
 from plugins.coretypes.PluginDataTypes import PluginIDMap
 from plugins.coretypes.PluginDataTypes import PluginMapType
 
-from plugins.core.IOPluginInterface import IOPluginInterface
-from plugins.core.ToolPluginInterface import ToolPluginInterface
+from plugins.coreinterfaces.IOPluginInterface import IOPluginInterface
+from plugins.coreinterfaces.ToolPluginInterface import ToolPluginInterface
 
 from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType

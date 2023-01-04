@@ -20,9 +20,9 @@ from plugins.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
 from plugins.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
 from plugins.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
-from tests.core.SamplePluginInterface import SamplePluginInterface
+from tests.plugins.coreinterfaces.SamplePluginInterface import SamplePluginInterface
 
-from tests.core.SampleIPluginAdapter import SampleIPluginAdapter
+from tests.plugins.coreinterfaces.SampleIPluginAdapter import SampleIPluginAdapter
 
 from tests.TestBase import TestBase
 

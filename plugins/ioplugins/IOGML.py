@@ -17,8 +17,8 @@ from plugins.ioplugins.gml.GMLExporter import GMLExporter
 
 from plugins.CoreTypes import OglObjects
 
-from plugins.core.IPluginAdapter import IPluginAdapter
-from plugins.core.IOPluginInterface import IOPluginInterface
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.IOPluginInterface import IOPluginInterface
 
 FORMAT_NAME:        FormatName = FormatName('GML')
 PLUGIN_EXTENSION:   PluginExtension = PluginExtension('gml')

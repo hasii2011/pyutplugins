@@ -4,8 +4,8 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from plugins.core.IOPluginInterface import IOPluginInterface
-from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.IOPluginInterface import IOPluginInterface
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
 
 from plugins.coretypes.InputFormat import InputFormat
 from plugins.coretypes.OutputFormat import OutputFormat

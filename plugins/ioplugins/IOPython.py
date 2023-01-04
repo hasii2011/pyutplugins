@@ -24,8 +24,8 @@ from wx import ProgressDialog
 
 from wx import Yield as wxYield
 
-from plugins.core.IPluginAdapter import IPluginAdapter
-from plugins.core.IOPluginInterface import IOPluginInterface
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.IOPluginInterface import IOPluginInterface
 
 from plugins.CoreTypes import OglClasses
 from plugins.CoreTypes import OglLinks

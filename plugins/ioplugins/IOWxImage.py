@@ -22,8 +22,8 @@ from plugins.coretypes.PluginDataTypes import PluginName
 from plugins.CoreTypes import FrameInformation
 from plugins.CoreTypes import OglObjects
 
-from plugins.core.IPluginAdapter import IPluginAdapter
-from plugins.core.IOPluginInterface import IOPluginInterface
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.IOPluginInterface import IOPluginInterface
 
 from plugins.coretypes.InputFormat import InputFormat
 from plugins.coretypes.OutputFormat import OutputFormat

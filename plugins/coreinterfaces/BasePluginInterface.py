@@ -21,7 +21,7 @@ from wx import Yield as wxYield
 from plugins.CoreTypes import OglClasses
 from plugins.CoreTypes import OglLinks
 
-from plugins.core.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
 
 from plugins.coretypes.InputFormat import InputFormat
 from plugins.coretypes.OutputFormat import OutputFormat

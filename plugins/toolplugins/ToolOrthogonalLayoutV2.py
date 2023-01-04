@@ -19,8 +19,8 @@ from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglNote import OglNote
 
-from plugins.core.IPluginAdapter import IPluginAdapter
-from plugins.core.ToolPluginInterface import ToolPluginInterface
+from plugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from plugins.coreinterfaces.ToolPluginInterface import ToolPluginInterface
 
 from plugins.CoreTypes import OglObjects
 
