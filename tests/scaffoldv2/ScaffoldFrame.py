@@ -37,13 +37,14 @@ from wx import NewIdRef
 from oglio.Reader import Reader
 from oglio.Types import OglProject
 
+from plugins.PluginManager import PluginManager
+
 from plugins.coretypes.PluginDataTypes import InputPluginMap
 from plugins.coretypes.PluginDataTypes import OutputPluginMap
 from plugins.coretypes.PluginDataTypes import PluginIDMap
 from plugins.coretypes.PluginDataTypes import PluginMapType
 
 from plugins.core.IOPluginInterface import IOPluginInterface
-from plugins.core.PluginManager import PluginManager
 from plugins.core.ToolPluginInterface import ToolPluginInterface
 
 from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
