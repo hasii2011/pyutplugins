@@ -1,7 +1,7 @@
 
 from dataclasses import dataclass
 
-from plugins.core.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
+from plugins.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
 
 
 @dataclass

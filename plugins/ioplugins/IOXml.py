@@ -24,13 +24,13 @@ from oglio.Types import OglDocumentTitle
 from plugins.core.IPluginAdapter import IPluginAdapter
 from plugins.core.IOPluginInterface import IOPluginInterface
 
-from plugins.core.coretypes.InputFormat import InputFormat
-from plugins.core.coretypes.OutputFormat import OutputFormat
-from plugins.core.coretypes.PluginDataTypes import FormatName
-from plugins.core.coretypes.PluginDataTypes import PluginDescription
-from plugins.core.coretypes.PluginDataTypes import PluginExtension
-from plugins.core.coretypes.PluginDataTypes import PluginName
-from plugins.core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+from plugins.coretypes.InputFormat import InputFormat
+from plugins.coretypes.OutputFormat import OutputFormat
+from plugins.coretypes.PluginDataTypes import FormatName
+from plugins.coretypes.PluginDataTypes import PluginDescription
+from plugins.coretypes.PluginDataTypes import PluginExtension
+from plugins.coretypes.PluginDataTypes import PluginName
+from plugins.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 from plugins.CoreTypes import OglClasses
 from plugins.CoreTypes import OglLinks

@@ -4,13 +4,14 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from plugins.core.coretypes.PluginDataTypes import PluginName
-from plugins.core.coretypes.PluginDataTypes import PluginDescription
-from plugins.core.coretypes.PluginDataTypes import PluginExtension
-from plugins.core.coretypes.PluginDataTypes import FormatName
-from plugins.core.coretypes.InputFormat import InputFormat
-from plugins.core.coretypes.OutputFormat import OutputFormat
-from plugins.core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+from plugins.coretypes.PluginDataTypes import PluginName
+from plugins.coretypes.PluginDataTypes import PluginDescription
+from plugins.coretypes.PluginDataTypes import PluginExtension
+from plugins.coretypes.PluginDataTypes import FormatName
+
+from plugins.coretypes.InputFormat import InputFormat
+from plugins.coretypes.OutputFormat import OutputFormat
+from plugins.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
 from plugins.ioplugins.gml.GMLExporter import GMLExporter
 

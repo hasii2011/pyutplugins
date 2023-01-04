@@ -1,9 +1,9 @@
 
-from plugins.core.coretypes.PluginDataTypes import PluginDescription
-from plugins.core.coretypes.PluginDataTypes import PluginExtension
-from plugins.core.coretypes.PluginDataTypes import FormatName
+from plugins.coretypes.PluginDataTypes import PluginDescription
+from plugins.coretypes.PluginDataTypes import PluginExtension
+from plugins.coretypes.PluginDataTypes import FormatName
 
-from plugins.core.coretypes.BaseFormat import BaseFormat
+from plugins.coretypes.BaseFormat import BaseFormat
 
 
 class InputFormat(BaseFormat):

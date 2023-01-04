@@ -24,7 +24,7 @@ from plugins.core.ToolPluginInterface import ToolPluginInterface
 
 from plugins.CoreTypes import OglObjects
 
-from plugins.core.coretypes.PluginDataTypes import PluginName
+from plugins.coretypes.PluginDataTypes import PluginName
 
 from plugins.toolplugins.orthogonal.DlgLayoutSize import DlgLayoutSize
 from plugins.toolplugins.orthogonal.OrthogonalAdapter import LayoutAreaSize

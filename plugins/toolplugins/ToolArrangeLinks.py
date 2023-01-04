@@ -7,9 +7,9 @@ from logging import getLogger
 from ogl.OglLink import OglLink
 
 from plugins.core.IPluginAdapter import IPluginAdapter
-
 from plugins.core.ToolPluginInterface import ToolPluginInterface
-from plugins.core.coretypes.PluginDataTypes import PluginName
+
+from plugins.coretypes.PluginDataTypes import PluginName
 
 from plugins.CoreTypes import OglObjects
 

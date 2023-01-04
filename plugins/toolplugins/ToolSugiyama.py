@@ -5,7 +5,7 @@ from typing import Union
 from logging import Logger
 from logging import getLogger
 
-from plugins.core.coretypes.PluginDataTypes import PluginName
+from plugins.coretypes.PluginDataTypes import PluginName
 from plugins.core.IPluginAdapter import IPluginAdapter
 from plugins.core.ToolPluginInterface import ToolPluginInterface
 

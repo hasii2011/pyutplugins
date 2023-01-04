@@ -18,22 +18,22 @@ from wx import FileSelector
 from wx import MessageDialog
 from wx import Yield as wxYield
 
-from plugins.core.IPluginAdapter import IPluginAdapter
-
-from plugins.core.coretypes.InputFormat import InputFormat
-from plugins.core.coretypes.OutputFormat import OutputFormat
-
 from plugins.CoreTypes import OglClasses
 from plugins.CoreTypes import OglLinks
 
-from plugins.core.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
-from plugins.core.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
-from plugins.core.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
-from plugins.core.coretypes.PluginDataTypes import PluginDescription
-from plugins.core.coretypes.PluginDataTypes import PluginExtension
-from plugins.core.coretypes.PluginDataTypes import FormatName
-from plugins.core.coretypes.PluginDataTypes import PluginName
-from plugins.core.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+from plugins.core.IPluginAdapter import IPluginAdapter
+
+from plugins.coretypes.InputFormat import InputFormat
+from plugins.coretypes.OutputFormat import OutputFormat
+from plugins.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
+from plugins.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
+from plugins.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
+from plugins.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+
+from plugins.coretypes.PluginDataTypes import PluginDescription
+from plugins.coretypes.PluginDataTypes import PluginExtension
+from plugins.coretypes.PluginDataTypes import FormatName
+from plugins.coretypes.PluginDataTypes import PluginName
 
 UNSPECIFIED_NAME:        FormatName        = FormatName('Unspecified Plugin Name')
 UNSPECIFIED_EXTENSION:   PluginExtension   = PluginExtension('*')
