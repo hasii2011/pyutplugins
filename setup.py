@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
-    name="pyutplugincore",
+    name="pyutplugins",
     version="0.6.6",
     author='Humberto A. Sanchez II',
     author_email='humberto.a.sanchez.ii@gmail.com',
@@ -19,7 +19,7 @@ setup(
     description='Pyut Plugins',
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/hasii2011/pyutplugincore",
+    url="https://github.com/hasii2011/pyutplugina",
     package_data={
         'pyutplugins':                 ['py.typed'],
         'pyutplugins.common':          ['py.typed'],
