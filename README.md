@@ -5,6 +5,7 @@
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/hasii2011/pyutplugins/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/hasii2011/pyutplugins/tree/master)
 
 [![CircleCI](https://dl.circleci.com/insights-snapshot/gh/hasii2011/pyutplugins/master/main/badge.svg?window=30d)](https://app.circleci.com/insights/github/hasii2011/pyutplugins/workflows/main/overview?branch=master&reporting-window=last-30-days&insights-snapshot=true)
+
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
 
