@@ -2,12 +2,12 @@
 from abc import ABC
 from abc import abstractmethod
 
-from plugins.core.PluginInterface import PluginInterface
+from plugins.core.BasePluginInterface import BasePluginInterface
 
 from plugins.core.IPluginAdapter import IPluginAdapter
 
 
-class ToolPluginInterface(PluginInterface, ABC):
+class ToolPluginInterface(BasePluginInterface, ABC):
     """
     This interface defines the methods and properties that Pyut Tool
     plugins must implement.

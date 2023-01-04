@@ -2,7 +2,7 @@
 from logging import Logger
 from logging import getLogger
 
-from plugins.core.PluginInterface import PluginInterface
+from plugins.core.BasePluginInterface import BasePluginInterface
 from plugins.core.IPluginAdapter import IPluginAdapter
 
 from plugins.coretypes.PluginDataTypes import PluginName
@@ -20,7 +20,7 @@ SAMPLE_EXTENSION:   PluginExtension   = PluginExtension('sample')
 SAMPLE_DESCRIPTION: PluginDescription = PluginDescription('Unspecified Plugin Description')
 
 
-class SamplePluginInterface(PluginInterface):
+class SamplePluginInterface(BasePluginInterface):
     """
     TODO make this a Sample Tool Plugin
     """

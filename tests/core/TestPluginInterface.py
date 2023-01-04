@@ -7,7 +7,7 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from plugins.core.PluginInterface import PluginInterface
+from plugins.core.BasePluginInterface import BasePluginInterface
 from plugins.core.IPluginAdapter import IPluginAdapter
 
 from tests.TestBase import TestBase
@@ -37,7 +37,7 @@ class TestPluginInterface(TestBase):
 
         mediator: IPluginAdapter = cast(IPluginAdapter, None)
         # noinspection PyUnusedLocal
-        abc: PluginInterface = PluginInterface(pluginAdapter=mediator, )
+        abc: BasePluginInterface = BasePluginInterface(pluginAdapter=mediator, )
 
 
 def suite() -> TestSuite:

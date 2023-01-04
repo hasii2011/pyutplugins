@@ -4,14 +4,14 @@ from typing import cast
 from abc import ABC
 from abc import abstractmethod
 
-from plugins.core.PluginInterface import PluginInterface
+from plugins.core.BasePluginInterface import BasePluginInterface
 from plugins.core.IPluginAdapter import IPluginAdapter
 
 from plugins.CoreTypes import FrameInformation
 from plugins.CoreTypes import OglObjects
 
 
-class IOPluginInterface(PluginInterface, ABC):
+class IOPluginInterface(BasePluginInterface, ABC):
     """
     Abstract class for input/output plug-ins.
 

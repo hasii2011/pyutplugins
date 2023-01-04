@@ -40,7 +40,7 @@ UNSPECIFIED_EXTENSION:   PluginExtension   = PluginExtension('*')
 UNSPECIFIED_DESCRIPTION: PluginDescription = PluginDescription('Unspecified Plugin Description')
 
 
-class PluginInterface:
+class BasePluginInterface:
     """
     This is meant to provide base properties and methods for the Input/Output
     plugins and the Tool Plugins
