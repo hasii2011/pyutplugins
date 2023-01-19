@@ -12,7 +12,8 @@ from os import getenv as osGetEnv
 from configparser import ConfigParser
 
 from pyutplugins.coreinterfaces.Singleton import Singleton
-from pyutplugins.toolplugins.orthogonal.OrthogonalAdapter import LayoutAreaSize
+
+from pyutplugins.toolplugins.orthogonal.LayoutAreaSize import LayoutAreaSize
 
 
 PLUGIN_PREFS_NAME_VALUES = Dict[str, str]
@@ -24,11 +25,18 @@ class PluginPreferences(Singleton):
     THE_GREAT_MAC_PLATFORM: str = 'darwin'
 
     PYUT_PLUGINS_PREFERENCES_SECTION: str = 'PyutPlugins'
+    DEBUG_SECTION:                    str = 'Debug'
 
     ORTHOGONAL_LAYOUT_SIZE: str = 'orthogonal_layout_size'
 
     PLUGIN_PREFERENCES: PLUGIN_PREFS_NAME_VALUES = {
         ORTHOGONAL_LAYOUT_SIZE:   LayoutAreaSize(1000, 1000).__str__(),
+    }
+
+    DEBUG_TEMP_FILE_LOCATION: str = 'debug_temp_file_location'
+
+    DEBUG_PREFERENCES: PLUGIN_PREFS_NAME_VALUES = {
+        DEBUG_TEMP_FILE_LOCATION: 'False'
     }
 
     # noinspection PyAttributeOutsideInit
@@ -50,6 +58,16 @@ class PluginPreferences(Singleton):
     @orthogonalLayoutSize.setter
     def orthogonalLayoutSize(self, newValue: LayoutAreaSize):
         self._config.set(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, PluginPreferences.ORTHOGONAL_LAYOUT_SIZE, newValue.__str__())
+        self._saveConfig()
+
+    @property
+    def debugTempFileLocation(self) -> bool:
+        ans: bool = self._config.getboolean(PluginPreferences.DEBUG_SECTION, PluginPreferences.DEBUG_TEMP_FILE_LOCATION)
+        return ans
+
+    @debugTempFileLocation.setter
+    def debugTempFileLocation(self, theNewValue: bool):
+        self._config.set(PluginPreferences.DEBUG_SECTION, PluginPreferences.DEBUG_TEMP_FILE_LOCATION, str(theNewValue))
         self._saveConfig()
 
     def _getPreferencesLocation(self) -> str:
@@ -96,11 +114,20 @@ class PluginPreferences(Singleton):
                 if self._config.has_option(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, prefName) is False:
                     self._addMissingPluginPreference(prefName, PluginPreferences.PLUGIN_PREFERENCES[prefName])
 
+            if self._config.has_section(PluginPreferences.DEBUG_SECTION) is False:
+                self._config.add_section(PluginPreferences.DEBUG_SECTION)
+            for prefName in PluginPreferences.DEBUG_PREFERENCES:
+                if self._config.has_option(PluginPreferences.DEBUG_SECTION, prefName) is False:
+                    self._addMissingDebugPreference(prefName, PluginPreferences.DEBUG_PREFERENCES[prefName])
+
         except (ValueError, Exception) as e:
             self.logger.error(f"Error: {e}")
 
-    def _addMissingPluginPreference(self, preferenceName, value):
+    def _addMissingPluginPreference(self, preferenceName: str, value: str):
         self._addMissingPreference(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, preferenceName, value)
+
+    def _addMissingDebugPreference(self, preferenceName: str, value: str):
+        self._addMissingPreference(PluginPreferences.DEBUG_SECTION, preferenceName, value)
 
     def _addMissingPreference(self, sectionName: str, preferenceName: str, value: str):
         self._config.set(sectionName, preferenceName, value)

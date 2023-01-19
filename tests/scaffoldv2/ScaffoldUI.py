@@ -231,7 +231,7 @@ class ScaffoldUI:
             selected: 'True' selects them all, 'False' deselects them
         """
 
-        shapes = self._currentFrame.GetDiagram().GetShapes()
+        shapes = self._currentFrame.diagram.GetShapes()
         for shape in shapes:
             shape.SetSelected(selected)
             self._currentFrame.GetSelectedShapes()
@@ -677,7 +677,7 @@ class ScaffoldUI:
         # movable.
         if isinstance(link, OglInterface2) is False:
             oglLink: OglLink = cast(OglLink, link)
-            umlDiagram = umlFrame.GetDiagram()
+            umlDiagram = umlFrame.diagram
 
             umlDiagram.AddShape(oglLink.sourceAnchor)
             umlDiagram.AddShape(oglLink.destinationAnchor)

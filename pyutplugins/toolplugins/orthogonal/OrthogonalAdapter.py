@@ -1,4 +1,4 @@
-from typing import List
+
 from typing import NewType
 from typing import cast
 from typing import Dict
@@ -30,6 +30,8 @@ from orthogonal.topologyShapeMetric.Planarization import Planarization
 from pyutplugins.CoreTypes import OglObjects
 
 from pyutplugins.ioplugins.gml.GMLExporter import GMLExporter
+from pyutplugins.preferences.PluginPreferences import PluginPreferences
+from pyutplugins.toolplugins.orthogonal.LayoutAreaSize import LayoutAreaSize
 from pyutplugins.toolplugins.orthogonal.OrthogonalAdapterException import OrthogonalAdapterException
 
 GraphicsCoordinates = NewType('GraphicsCoordinates', Tuple[int, int])
@@ -51,37 +53,6 @@ class OglCoordinate:
 OglCoordinates = Dict[str, OglCoordinate]
 
 
-@dataclass
-class LayoutAreaSize:
-
-    width:  int = 0
-    height: int = 0
-
-    @classmethod
-    def deSerialize(cls, value: str) -> 'LayoutAreaSize':
-
-        layoutAreaSize: LayoutAreaSize = LayoutAreaSize()
-
-        widthHeight: List[str] = value.split(sep=',')
-
-        assert len(widthHeight) == 2, 'Incorrectly formatted dimensions'
-        assert value.replace(',', '', 1).isdigit(), 'String must be numeric'
-
-        layoutAreaSize.width  = int(widthHeight[0])
-        layoutAreaSize.height = int(widthHeight[1])
-
-        return layoutAreaSize
-
-    def __str__(self):
-        return f'{self.width},{self.height}'
-
-    def __repr__(self):
-        return self.__str__()
-
-
-USE_DEBUG_TEMP_FILE_LOCATION: bool = True       # TODO make a preference
-
-
 class OrthogonalAdapter:
 
     TEMPORARY_GML_LAYOUT_FILENAME: str = 'toOrthogonalLayoutV2.gml'
@@ -93,8 +64,7 @@ class OrthogonalAdapter:
 
         gmlExporter.translate(umlObjects=umlObjects)
 
-        # if PyutPreferences().useDebugTempFileLocation is True:
-        if USE_DEBUG_TEMP_FILE_LOCATION is True:
+        if PluginPreferences().debugTempFileLocation is True:
             self._pathToLayout = f'{OrthogonalAdapter.TEMPORARY_GML_LAYOUT_FILENAME}'
         else:
             tempDir: str = gettempdir()

@@ -18,8 +18,10 @@ from wx import NewIdRef
 
 from pyutplugins.common.ui.BaseDlgEdit import BaseDlgEdit
 from pyutplugins.common.ui.DimensionsContainer import DimensionsContainer
+
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
-from pyutplugins.toolplugins.orthogonal.OrthogonalAdapter import LayoutAreaSize
+
+from pyutplugins.toolplugins.orthogonal.LayoutAreaSize import LayoutAreaSize
 
 
 class DlgLayoutSize(BaseDlgEdit):
