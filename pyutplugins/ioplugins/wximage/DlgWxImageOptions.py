@@ -42,11 +42,11 @@ from wx import NewIdRef
 
 from pyutplugins.common.ui.BaseDlgEdit import BaseDlgEdit
 from pyutplugins.ioplugins.wximage.WxImageFormat import WxImageFormat
+from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
 
 class DlgWxImageOptions(BaseDlgEdit):
 
-    DEFAULT_FILE_NAME: str = 'ImageDump'    # TODO this goes in plugin preferences
     HORIZONTAL_GAP: int = 5
 
     MIN_UML_SHAPE_GAP: int = 0
@@ -66,7 +66,7 @@ class DlgWxImageOptions(BaseDlgEdit):
         self.__fileSelectBtn:       int = NewIdRef()
         self.__imageFormatChoiceId: int = NewIdRef()
 
-        self._outputFileName: str           = DlgWxImageOptions.DEFAULT_FILE_NAME
+        self._outputFileName: str           = PluginPreferences().wxImageFileName
         self._imageFormat:    WxImageFormat = WxImageFormat.PNG
 
         fs:   StaticBoxSizer = self.__layoutFileSelection()

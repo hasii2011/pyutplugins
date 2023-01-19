@@ -28,9 +28,11 @@ class PluginPreferences(Singleton):
     DEBUG_SECTION:                    str = 'Debug'
 
     ORTHOGONAL_LAYOUT_SIZE: str = 'orthogonal_layout_size'
+    WX_IMAGE_FILENAME:      str = 'wx_image_filename'
 
     PLUGIN_PREFERENCES: PLUGIN_PREFS_NAME_VALUES = {
-        ORTHOGONAL_LAYOUT_SIZE:   LayoutAreaSize(1000, 1000).__str__(),
+        ORTHOGONAL_LAYOUT_SIZE: LayoutAreaSize(1000, 1000).__str__(),
+        WX_IMAGE_FILENAME:      'WxImageDump'
     }
 
     DEBUG_TEMP_FILE_LOCATION: str = 'debug_temp_file_location'
@@ -58,6 +60,15 @@ class PluginPreferences(Singleton):
     @orthogonalLayoutSize.setter
     def orthogonalLayoutSize(self, newValue: LayoutAreaSize):
         self._config.set(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, PluginPreferences.ORTHOGONAL_LAYOUT_SIZE, newValue.__str__())
+        self._saveConfig()
+
+    @property
+    def wxImageFileName(self) -> str:
+        return self._config.get(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, PluginPreferences.WX_IMAGE_FILENAME)
+
+    @wxImageFileName.setter
+    def wxImageFileName(self, newValue: str):
+        self._config.set(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, PluginPreferences.WX_IMAGE_FILENAME, newValue)
         self._saveConfig()
 
     @property
