@@ -29,10 +29,12 @@ class PluginPreferences(Singleton):
 
     ORTHOGONAL_LAYOUT_SIZE: str = 'orthogonal_layout_size'
     WX_IMAGE_FILENAME:      str = 'wx_image_filename'
+    SUGIYAMA_STEP_BY_STEP:  str = 'sugiyama_step_by_step'
 
     PLUGIN_PREFERENCES: PLUGIN_PREFS_NAME_VALUES = {
         ORTHOGONAL_LAYOUT_SIZE: LayoutAreaSize(1000, 1000).__str__(),
-        WX_IMAGE_FILENAME:      'WxImageDump'
+        WX_IMAGE_FILENAME:      'WxImageDump',
+        SUGIYAMA_STEP_BY_STEP:  'False',
     }
 
     DEBUG_TEMP_FILE_LOCATION: str = 'debug_temp_file_location'
@@ -72,13 +74,23 @@ class PluginPreferences(Singleton):
         self._saveConfig()
 
     @property
+    def sugiyamaStepByStep(self) -> bool:
+        ans: bool = self._config.getboolean(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, PluginPreferences.SUGIYAMA_STEP_BY_STEP)
+        return ans
+
+    @sugiyamaStepByStep.setter
+    def sugiyamaStepByStep(self, newValue: bool):
+        self._config.set(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, PluginPreferences.SUGIYAMA_STEP_BY_STEP, str(newValue))
+        self._saveConfig()
+
+    @property
     def debugTempFileLocation(self) -> bool:
         ans: bool = self._config.getboolean(PluginPreferences.DEBUG_SECTION, PluginPreferences.DEBUG_TEMP_FILE_LOCATION)
         return ans
 
     @debugTempFileLocation.setter
-    def debugTempFileLocation(self, theNewValue: bool):
-        self._config.set(PluginPreferences.DEBUG_SECTION, PluginPreferences.DEBUG_TEMP_FILE_LOCATION, str(theNewValue))
+    def debugTempFileLocation(self, newValue: bool):
+        self._config.set(PluginPreferences.DEBUG_SECTION, PluginPreferences.DEBUG_TEMP_FILE_LOCATION, str(newValue))
         self._saveConfig()
 
     def _getPreferencesLocation(self) -> str:

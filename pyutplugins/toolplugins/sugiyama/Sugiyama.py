@@ -17,6 +17,7 @@ from ogl.OglObject import OglObject
 from pyutmodel.PyutLinkType import PyutLinkType
 
 from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
 from pyutplugins.toolplugins.sugiyama.SugiyamaNode import SugiyamaNode
 from pyutplugins.toolplugins.sugiyama.RealSugiyamaNode import RealSugiyamaNode
@@ -46,13 +47,13 @@ class Sugiyama:
     association relations.
 
     """
-    STEP_BY_STEP: bool = False  # Do Sugiyama Step by step
 
     def __init__(self, pluginAdapter: IPluginAdapter):
 
         self.logger: Logger = getLogger(__name__)
 
-        self._pluginAdapter: IPluginAdapter = pluginAdapter
+        self._pluginAdapter: IPluginAdapter    = pluginAdapter
+        self._preferences:   PluginPreferences = PluginPreferences()
         # Sugiyama nodes and links
         self.__realSugiyamaNodesList: List[RealSugiyamaNode] = []   # List of all RealSugiyamaNode's
         self._sugiyamaLinksList:      List[SugiyamaLink]     = []   # List of all SugiyamaLink's
@@ -727,7 +728,7 @@ class Sugiyama:
                 maxHeight = max(maxHeight, height)
             y += maxHeight + V_SPACE
 
-        if Sugiyama.STEP_BY_STEP:     # TODO Make this a User/Plugin Preference
+        if self._preferences.sugiyamaStepByStep is True:
             SugiyamaGlobals.waitKey(self._pluginAdapter, optionalMessage=None)
         else:
             self.logger.info(f'.__fixNodesPositions() is complete')
@@ -742,7 +743,7 @@ class Sugiyama:
                     if node.balance():
                         moved = True
                         msg: str = f'LEVEL - node: {node} {level}'
-                        if Sugiyama.STEP_BY_STEP:
+                        if self._preferences.sugiyamaStepByStep is True:
                             SugiyamaGlobals.waitKey(self._pluginAdapter, msg)
                         else:
                             self.logger.info(msg)
