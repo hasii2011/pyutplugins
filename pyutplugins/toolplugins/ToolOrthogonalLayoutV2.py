@@ -69,24 +69,7 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
         return True
 
     def doAction(self):
-
         self._pluginAdapter.getSelectedOglObjects(callback=self._doAction)
-        # selectedObjects: OglObjects = self._pluginAdapter.selectedOglObjects
-        #
-        # try:
-        #     orthogonalAdapter: OrthogonalAdapter = OrthogonalAdapter(umlObjects=selectedObjects)
-        #
-        #     layoutAreaSize: LayoutAreaSize = LayoutAreaSize(self._layoutWidth, self._layoutHeight)
-        #     orthogonalAdapter.doLayout(layoutAreaSize)
-        # except OrthogonalAdapterException as oae:
-        #     MessageBox(f'{oae}', 'Error', OK | ICON_ERROR)
-        #     return
-        #
-        # umlFrame: DiagramFrame = self._pluginAdapter.umlFrame
-        #
-        # if orthogonalAdapter is not None:
-        #     self._reLayoutNodes(selectedObjects, umlFrame, orthogonalAdapter.oglCoordinates)
-        #     self._reLayoutLinks(selectedObjects, umlFrame)
 
     def _doAction(self, selectedObjects: OglObjects):
 

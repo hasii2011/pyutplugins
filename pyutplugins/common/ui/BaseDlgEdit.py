@@ -29,7 +29,7 @@ class BaseDlgEdit(Dialog):
         hs: Sizer = self.CreateSeparatedButtonSizer(buttons)
         return hs
 
-    def _convertNone (self, theString: str):
+    def _convertNone(self, theString: str):
         """
         Return the same string, if string = None, return an empty string.
 

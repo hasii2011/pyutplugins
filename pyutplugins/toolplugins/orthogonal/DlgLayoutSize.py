@@ -17,21 +17,19 @@ from wx import BoxSizer
 from wx import NewIdRef
 
 from pyutplugins.common.ui.BaseDlgEdit import BaseDlgEdit
-from pyutplugins.common.ui.Dimensions import Dimensions
 from pyutplugins.common.ui.DimensionsContainer import DimensionsContainer
+from pyutplugins.preferences.PluginPreferences import PluginPreferences
+from pyutplugins.toolplugins.orthogonal.OrthogonalAdapter import LayoutAreaSize
 
 
 class DlgLayoutSize(BaseDlgEdit):
-
-    ORTHOGONAL_LAYOUT_WIDTH:  int = 500     # These belong in new plugin preferences
-    ORTHOGONAL_LAYOUT_HEIGHT: int = 500
 
     HORIZONTAL_GAP: int = 5
 
     DEFAULT_LAYOUT_WIDTH:  int = 1000
     DEFAULT_LAYOUT_HEIGHT: int = 1000
 
-    DEFAULT_MAX_LAYOUT_WIDTH: int = 3000
+    DEFAULT_MAX_LAYOUT_WIDTH:  int = 3000
     DEFAULT_MAX_LAYOUT_HEIGHT: int = 3000
 
     def __init__(self, parent):
@@ -43,8 +41,11 @@ class DlgLayoutSize(BaseDlgEdit):
 
         self.logger:       Logger          = getLogger(__name__)
 
-        self._layoutWidth:  int = DlgLayoutSize.ORTHOGONAL_LAYOUT_WIDTH
-        self._layoutHeight: int = DlgLayoutSize.ORTHOGONAL_LAYOUT_HEIGHT
+        self._preferences:  PluginPreferences = PluginPreferences()
+
+        layoutAreaSize: LayoutAreaSize = self._preferences.orthogonalLayoutSize
+        self._layoutWidth:  int = layoutAreaSize.width
+        self._layoutHeight: int = layoutAreaSize.height
 
         hs:             Sizer               = self._createDialogButtonsContainer(buttons=OK | CANCEL)
         layoutControls: DimensionsContainer = self.__createLayoutSizeControls()
@@ -78,12 +79,12 @@ class DlgLayoutSize(BaseDlgEdit):
 
         layoutWidth:  int = self._layoutWidth
         layoutHeight: int = self._layoutHeight
-        self._layoutSizeContainer.dimensions = Dimensions(width=layoutWidth, height=layoutHeight)
+        self._layoutSizeContainer.dimensions = LayoutAreaSize(width=layoutWidth, height=layoutHeight)
         return self._layoutSizeContainer
 
-    def __onSizeChange(self, newValue: Dimensions):
+    def __onSizeChange(self, newValue: LayoutAreaSize):
 
         self._layoutWidth  = newValue.width
         self._layoutHeight = newValue.height
 
-        # self._preferences.orthogonalLayoutSize = newValue    Coming soon to a preferences file
+        self._preferences.orthogonalLayoutSize = newValue

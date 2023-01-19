@@ -33,6 +33,7 @@ from pyutplugins.ioplugins.IOPdf import IOPdf
 from pyutplugins.ioplugins.IOPython import IOPython
 from pyutplugins.ioplugins.IOWxImage import IOWxImage
 from pyutplugins.ioplugins.IOXml import IOXml
+from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
 from pyutplugins.toolplugins.ToolArrangeLinks import ToolArrangeLinks
 from pyutplugins.toolplugins.ToolAscii import ToolAscii
@@ -77,6 +78,7 @@ class PluginManager(Singleton):
 
         self.logger: Logger = getLogger(__name__)
 
+        self._pluginPreferences: PluginPreferences = PluginPreferences()
         # These are lazily built
         self._toolPluginsMap:   ToolsPluginMap   = ToolsPluginMap()
         self._inputPluginsMap:  InputPluginMap   = InputPluginMap()
