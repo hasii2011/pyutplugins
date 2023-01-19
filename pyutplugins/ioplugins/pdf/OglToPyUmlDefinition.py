@@ -29,6 +29,7 @@ from pyumldiagrams.image.ImageDiagram import ImageDiagram
 from pyumldiagrams.pdf.PdfDiagram import PdfDiagram
 
 from pyutmodel.PyutClass import PyutClass
+from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
 from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
@@ -101,7 +102,7 @@ class OglToPyUmlDefinition:
 
             classDefinition: ClassDefinition = ClassDefinition(name=pyutClass.name, position=position, size=size)
 
-            if pyutClass.displayParameters is True:
+            if pyutClass.displayParameters is PyutDisplayParameters.DISPLAY:
                 classDefinition.displayMethodParameters = DisplayMethodParameters.DISPLAY
             else:
                 classDefinition.displayMethodParameters = DisplayMethodParameters.DO_NOT_DISPLAY

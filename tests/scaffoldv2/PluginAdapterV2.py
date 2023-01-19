@@ -33,7 +33,7 @@ class PluginAdapterV2(IPluginAdapter):
 
     @property
     def pyutVersion(self) -> str:
-        return 'MediatorV2'
+        return 'ScaffoldV2'
 
     @property
     def screenMetrics(self) -> ScreenMetrics:
