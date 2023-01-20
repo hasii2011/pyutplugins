@@ -7,13 +7,13 @@ from logging import getLogger
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
-from pyutplugins.coretypes.InputFormat import InputFormat
-from pyutplugins.coretypes.OutputFormat import OutputFormat
+from pyutplugins.plugintypes.InputFormat import InputFormat
+from pyutplugins.plugintypes.OutputFormat import OutputFormat
 
-from pyutplugins.coretypes.PluginDataTypes import FormatName
-from pyutplugins.coretypes.PluginDataTypes import PluginDescription
-from pyutplugins.coretypes.PluginDataTypes import PluginExtension
-from pyutplugins.coretypes.PluginDataTypes import PluginName
+from pyutplugins.plugintypes.PluginDataTypes import FormatName
+from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
+from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
+from pyutplugins.plugintypes.PluginDataTypes import PluginName
 
 from pyutplugins.ExternalTypes import OglObjects
 

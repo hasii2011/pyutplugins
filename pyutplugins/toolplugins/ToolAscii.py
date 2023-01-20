@@ -18,9 +18,9 @@ from pyutmodel.PyutStereotype import PyutStereotype
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 from pyutplugins.plugininterfaces.IOPluginInterface import IPluginAdapter
 
-from pyutplugins.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
+from pyutplugins.plugintypes.ExportDirectoryResponse import ExportDirectoryResponse
 
-from pyutplugins.coretypes.PluginDataTypes import PluginName
+from pyutplugins.plugintypes.PluginDataTypes import PluginName
 
 from pyutplugins.ExternalTypes import OglObjects
 

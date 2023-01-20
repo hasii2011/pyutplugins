@@ -22,17 +22,17 @@ from pyutplugins.ExternalTypes import OglClasses
 from pyutplugins.ExternalTypes import OglLinks
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
-from pyutplugins.coretypes.InputFormat import InputFormat
-from pyutplugins.coretypes.OutputFormat import OutputFormat
-from pyutplugins.coretypes.ExportDirectoryResponse import ExportDirectoryResponse
-from pyutplugins.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
-from pyutplugins.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
-from pyutplugins.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
+from pyutplugins.plugintypes.InputFormat import InputFormat
+from pyutplugins.plugintypes.OutputFormat import OutputFormat
+from pyutplugins.plugintypes.ExportDirectoryResponse import ExportDirectoryResponse
+from pyutplugins.plugintypes.ImportDirectoryResponse import ImportDirectoryResponse
+from pyutplugins.plugintypes.MultipleFileRequestResponse import MultipleFileRequestResponse
+from pyutplugins.plugintypes.SingleFileRequestResponse import SingleFileRequestResponse
 
-from pyutplugins.coretypes.PluginDataTypes import PluginDescription
-from pyutplugins.coretypes.PluginDataTypes import PluginExtension
-from pyutplugins.coretypes.PluginDataTypes import FormatName
-from pyutplugins.coretypes.PluginDataTypes import PluginName
+from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
+from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
+from pyutplugins.plugintypes.PluginDataTypes import FormatName
+from pyutplugins.plugintypes.PluginDataTypes import PluginName
 
 UNSPECIFIED_NAME:        FormatName        = FormatName('Unspecified Plugin Name')
 UNSPECIFIED_EXTENSION:   PluginExtension   = PluginExtension('*')

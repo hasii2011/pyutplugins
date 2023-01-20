@@ -7,7 +7,7 @@ from logging import getLogger
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
-from pyutplugins.coretypes.PluginDataTypes import PluginName
+from pyutplugins.plugintypes.PluginDataTypes import PluginName
 
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 

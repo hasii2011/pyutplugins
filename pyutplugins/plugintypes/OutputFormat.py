@@ -1,9 +1,9 @@
 
-from pyutplugins.coretypes.PluginDataTypes import PluginDescription
-from pyutplugins.coretypes.PluginDataTypes import PluginExtension
-from pyutplugins.coretypes.PluginDataTypes import FormatName
+from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
+from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
+from pyutplugins.plugintypes.PluginDataTypes import FormatName
 
-from pyutplugins.coretypes.BaseFormat import BaseFormat
+from pyutplugins.plugintypes.BaseFormat import BaseFormat
 
 
 class OutputFormat(BaseFormat):

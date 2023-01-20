@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from dataclasses import field
 
 #
-#  Both of these hold the class coretypes for the Plugins
+#  Both of these hold the class plugintypes for the Plugins
 #
 PluginList  = NewType('PluginList',  List[type])
 PluginIDMap = NewType('PluginIDMap', Dict[int, type])

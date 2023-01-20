@@ -12,7 +12,7 @@ from pyutplugins.ExternalTypes import OglObjects
 from pyutplugins.plugininterfaces.IOPluginInterface import IPluginAdapter
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 
-from pyutplugins.coretypes.PluginDataTypes import PluginName
+from pyutplugins.plugintypes.PluginDataTypes import PluginName
 
 
 class ToolTransforms(ToolPluginInterface):

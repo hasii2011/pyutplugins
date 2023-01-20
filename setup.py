@@ -25,7 +25,7 @@ setup(
         'pyutplugins.common':          ['py.typed'],
         'pyutplugins.common.ui':       ['py.typed'],
         'pyutplugins.plugininterfaces': ['py.typed'],
-        'pyutplugins.coretypes':      ['py.typed'],
+        'pyutplugins.plugintypes':      ['py.typed'],
         'pyutplugins.exceptions':     ['py.typed'],
         'pyutplugins.ioplugins':                      ['py.typed'],
         'pyutplugins.ioplugins.dtd':                  ['py.typed'],
@@ -42,7 +42,7 @@ setup(
     packages=[
         'pyutplugins', 'pyutplugins.common', 'pyutplugins.common.ui',
         'pyutplugins.plugininterfaces',
-        'pyutplugins.coretypes',
+        'pyutplugins.plugintypes',
         'pyutplugins.exceptions',
         'pyutplugins.ioplugins',
         'pyutplugins.ioplugins.dtd',

@@ -54,7 +54,7 @@ class TestJavaWriter(TestBase):
 
     def testComplexClass(self):
         """
-        Test multiple classes with parameters and return coretypes
+        Test multiple classes with parameters and return plugintypes
         """
         generatedFileNames: List[str] = ['Account.java', 'ATM.java', 'Bank.java', 'CheckingAccount.java', 'Customer.java', 'SavingsAccount.java']
 

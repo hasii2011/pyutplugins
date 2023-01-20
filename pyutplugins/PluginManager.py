@@ -21,11 +21,11 @@ from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
-from pyutplugins.coretypes.PluginDataTypes import ToolsPluginMap
-from pyutplugins.coretypes.PluginDataTypes import InputPluginMap
-from pyutplugins.coretypes.PluginDataTypes import OutputPluginMap
-from pyutplugins.coretypes.PluginDataTypes import PluginList
-from pyutplugins.coretypes.PluginDataTypes import PluginIDMap
+from pyutplugins.plugintypes.PluginDataTypes import ToolsPluginMap
+from pyutplugins.plugintypes.PluginDataTypes import InputPluginMap
+from pyutplugins.plugintypes.PluginDataTypes import OutputPluginMap
+from pyutplugins.plugintypes.PluginDataTypes import PluginList
+from pyutplugins.plugintypes.PluginDataTypes import PluginIDMap
 
 from pyutplugins.ioplugins.IODTD import IODTD
 from pyutplugins.ioplugins.IOGML import IOGML

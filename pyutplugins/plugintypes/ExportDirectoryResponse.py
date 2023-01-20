@@ -1,7 +1,7 @@
 
 from dataclasses import dataclass
 
-from pyutplugins.coretypes.ImportDirectoryResponse import ImportDirectoryResponse
+from pyutplugins.plugintypes.ImportDirectoryResponse import ImportDirectoryResponse
 
 
 @dataclass

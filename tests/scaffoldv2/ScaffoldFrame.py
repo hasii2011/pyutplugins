@@ -39,10 +39,10 @@ from oglio.Types import OglProject
 
 from pyutplugins.PluginManager import PluginManager
 
-from pyutplugins.coretypes.PluginDataTypes import InputPluginMap
-from pyutplugins.coretypes.PluginDataTypes import OutputPluginMap
-from pyutplugins.coretypes.PluginDataTypes import PluginIDMap
-from pyutplugins.coretypes.PluginDataTypes import PluginMapType
+from pyutplugins.plugintypes.PluginDataTypes import InputPluginMap
+from pyutplugins.plugintypes.PluginDataTypes import OutputPluginMap
+from pyutplugins.plugintypes.PluginDataTypes import PluginIDMap
+from pyutplugins.plugintypes.PluginDataTypes import PluginMapType
 
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface

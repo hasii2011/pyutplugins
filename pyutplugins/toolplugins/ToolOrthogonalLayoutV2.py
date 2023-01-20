@@ -25,7 +25,7 @@ from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 
 from pyutplugins.ExternalTypes import OglObjects
 
-from pyutplugins.coretypes.PluginDataTypes import PluginName
+from pyutplugins.plugintypes.PluginDataTypes import PluginName
 
 from pyutplugins.toolplugins.orthogonal.DlgLayoutSize import DlgLayoutSize
 from pyutplugins.toolplugins.orthogonal.OrthogonalAdapter import LayoutAreaSize

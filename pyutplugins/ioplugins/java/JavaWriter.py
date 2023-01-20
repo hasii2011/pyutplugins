@@ -106,7 +106,7 @@ class JavaWriter:
 
     def _separateLinks(self, allLinks, interfaces, links):
         """
-        Separate the different coretypes of links into lists.
+        Separate the different plugintypes of links into lists.
 
         Args:
             allLinks:   list of links of the class

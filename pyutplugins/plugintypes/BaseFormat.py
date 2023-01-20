@@ -1,7 +1,7 @@
 
-from pyutplugins.coretypes.PluginDataTypes import PluginDescription
-from pyutplugins.coretypes.PluginDataTypes import PluginExtension
-from pyutplugins.coretypes.PluginDataTypes import FormatName
+from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
+from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
+from pyutplugins.plugintypes.PluginDataTypes import FormatName
 
 from pyutplugins.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
 from pyutplugins.exceptions.InvalidPluginNameException import InvalidPluginNameException

@@ -4,7 +4,7 @@ from typing import List
 from dataclasses import dataclass
 from dataclasses import field
 
-from pyutplugins.coretypes.BaseRequestResponse import BaseRequestResponse
+from pyutplugins.plugintypes.BaseRequestResponse import BaseRequestResponse
 
 
 @dataclass
