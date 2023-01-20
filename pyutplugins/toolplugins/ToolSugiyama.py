@@ -9,7 +9,7 @@ from pyutplugins.IPluginAdapter import IPluginAdapter
 
 from pyutplugins.coretypes.PluginDataTypes import PluginName
 
-from pyutplugins.coreinterfaces.ToolPluginInterface import ToolPluginInterface
+from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 
 from pyutplugins.CoreTypes import OglObjects
 

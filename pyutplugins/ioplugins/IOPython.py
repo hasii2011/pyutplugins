@@ -25,7 +25,7 @@ from wx import ProgressDialog
 from wx import Yield as wxYield
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
-from pyutplugins.coreinterfaces.IOPluginInterface import IOPluginInterface
+from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
 from pyutplugins.CoreTypes import OglClasses
 from pyutplugins.CoreTypes import OglLinks

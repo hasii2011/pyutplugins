@@ -8,7 +8,7 @@ from ogl.OglLink import OglLink
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
-from pyutplugins.coreinterfaces.ToolPluginInterface import ToolPluginInterface
+from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 
 from pyutplugins.coretypes.PluginDataTypes import PluginName
 

@@ -7,7 +7,7 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from pyutplugins.coreinterfaces.BasePluginInterface import BasePluginInterface
+from pyutplugins.plugininterfaces.BasePluginInterface import BasePluginInterface
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 

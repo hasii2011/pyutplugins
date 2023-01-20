@@ -15,9 +15,9 @@ from wx import EndBusyCursor
 
 from wx import Yield as wxYield
 
-from pyutplugins.coreinterfaces.Singleton import Singleton
-from pyutplugins.coreinterfaces.ToolPluginInterface import ToolPluginInterface
-from pyutplugins.coreinterfaces.IOPluginInterface import IOPluginInterface
+from pyutplugins.plugininterfaces.Singleton import Singleton
+from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
+from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 

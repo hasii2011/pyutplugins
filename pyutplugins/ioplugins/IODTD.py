@@ -16,7 +16,7 @@ from pyutplugins.CoreTypes import OglLinks
 from pyutplugins.CoreTypes import OglObjects
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
-from pyutplugins.coreinterfaces.IOPluginInterface import IOPluginInterface
+from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
 from pyutplugins.ioplugins.dtd.DTDParser import DTDParser
 

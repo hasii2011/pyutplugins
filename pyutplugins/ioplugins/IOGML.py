@@ -18,7 +18,7 @@ from pyutplugins.ioplugins.gml.GMLExporter import GMLExporter
 from pyutplugins.CoreTypes import OglObjects
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
-from pyutplugins.coreinterfaces.IOPluginInterface import IOPluginInterface
+from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
 FORMAT_NAME:        FormatName = FormatName('GML')
 PLUGIN_EXTENSION:   PluginExtension = PluginExtension('gml')

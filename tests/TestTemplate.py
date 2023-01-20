@@ -12,7 +12,7 @@ from tests.TestBase import TestBase
 # noinspection SpellCheckingInspection
 """
 import the class you want to test here
-from coreinterfaces.CoreTypes import BaseFormat
+from plugininterfaces.CoreTypes import BaseFormat
 """
 
 

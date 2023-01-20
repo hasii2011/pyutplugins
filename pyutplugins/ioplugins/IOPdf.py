@@ -7,7 +7,7 @@ from logging import getLogger
 from wx import Yield as wxYield
 
 
-from pyutplugins.coreinterfaces.IOPluginInterface import IOPluginInterface
+from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 from pyutplugins.IPluginAdapter import ScreenMetrics
 from pyutplugins.IPluginAdapter import IPluginAdapter
 

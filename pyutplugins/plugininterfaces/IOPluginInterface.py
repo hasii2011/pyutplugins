@@ -4,7 +4,7 @@ from typing import cast
 from abc import ABC
 from abc import abstractmethod
 
-from pyutplugins.coreinterfaces.BasePluginInterface import BasePluginInterface
+from pyutplugins.plugininterfaces.BasePluginInterface import BasePluginInterface
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
 from pyutplugins.CoreTypes import FrameInformation
