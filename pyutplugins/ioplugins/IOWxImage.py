@@ -4,6 +4,7 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from wx import MessageBox
 # noinspection PyProtectedMember
 from wx._core import BitmapType
 
@@ -115,4 +116,6 @@ class IOWxImage(IOPluginInterface):
         filename: str   = f'{self._outputFileName}.{extension}'
         status:   bool  = img.SaveFile(filename, imageType)
         if status is False:
-            self.logger.error(f'Error on image write to {filename}')
+            msg: str = f'Error on image write to {filename}'
+            self.logger.error(msg)
+            MessageBox(message=msg, caption='Error', style=OK)

@@ -16,6 +16,7 @@ from wx.lib.sized_controls import SizedFrame
 from wx.lib.sized_controls import SizedPanel
 from wx.lib.sized_controls import SizedStaticBox
 
+from ioplugins.wximage.DlgWxImageOptions import DlgWxImageOptions
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 from tests.TestBase import TestBase
 
@@ -94,7 +95,9 @@ class TestDialogs(App):
 
         match dlgNamesEnum:
             case DialogNamesEnum.DLG_WXIMAGE_OPTIONS:
-                pass
+                with DlgWxImageOptions(parent=self._frame) as dlg:
+                    if dlg.ShowModal() == OK:
+                        self.logger.info(f'{dlg.outputFileName} {dlg.imageFormat=}')
             case DialogNamesEnum.DLG_LAYOUT_SIZE:
                 with DlgLayoutSize(parent=self._frame) as dlg:
                     msg: str = f'layout size: '

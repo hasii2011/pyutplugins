@@ -1,85 +1,59 @@
 
+from typing import cast
 from typing import List
 
 from logging import Logger
 from logging import getLogger
 
-from wx import ALIGN_RIGHT
-from wx import ALL
-from wx import CANCEL
 from wx import EVT_BUTTON
 from wx import EVT_CHOICE
 from wx import EVT_CLOSE
 from wx import EVT_MOTION
-
-from wx import EXPAND
 from wx import FD_CHANGE_DIR
 from wx import FD_OVERWRITE_PROMPT
 from wx import FD_SAVE
-from wx import HORIZONTAL
-from wx import ID_ANY
 from wx import ID_CANCEL
 from wx import ID_OK
-from wx import OK
 from wx import TE_READONLY
-from wx import VERTICAL
 
 from wx import Button
 from wx import Choice
 from wx import CommandEvent
 from wx import FileDialog
-from wx import BoxSizer
-from wx import Sizer
-
-from wx import StaticBox
-from wx import StaticBoxSizer
 from wx import TextCtrl
-
 from wx import MouseEvent
 
 from wx import Yield as wxYield
-from wx import NewIdRef
 
-from pyutplugins.common.ui.BaseEditDialog import BaseDlgEdit
+from wx.lib.sized_controls import SizedPanel
+from wx.lib.sized_controls import SizedStaticBox
+
+from pyutplugins.common.ui.BaseEditDialog import BaseEditDialog
+
 from pyutplugins.ioplugins.wximage.WxImageFormat import WxImageFormat
+
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
 
-class DlgWxImageOptions(BaseDlgEdit):
-
-    HORIZONTAL_GAP: int = 5
-
-    MIN_UML_SHAPE_GAP: int = 0
-    MAX_UML_SHAPE_GAP: int = 100
+class DlgWxImageOptions(BaseEditDialog):
 
     def __init__(self, parent):
 
         super().__init__(parent, title='Native Image Generation Options')
 
-        self.logger:          Logger        = getLogger(__name__)
+        self.logger: Logger = getLogger(__name__)
 
-        self.__selectedFileId:      int = NewIdRef()
-        self.__imageWidthId:        int = NewIdRef()
-        self.__imageHeightId:       int = NewIdRef()
-        self.__horizontalGapId:     int = NewIdRef()
-        self.__verticalGapId:       int = NewIdRef()
-        self.__fileSelectBtn:       int = NewIdRef()
-        self.__imageFormatChoiceId: int = NewIdRef()
+        self._fileSelectBtn:     Button   = cast(Button, None)
+        self._selectedFile:      TextCtrl = cast(TextCtrl, None)
+        self._imageFormatChoice: Choice   = cast(Choice, None)
 
         self._outputFileName: str           = PluginPreferences().wxImageFileName
         self._imageFormat:    WxImageFormat = WxImageFormat.PNG
 
-        fs:   StaticBoxSizer = self.__layoutFileSelection()
-        imgF: StaticBoxSizer = self.__layoutImageFormatChoice()
+        self._layoutFileSelection(parent=self.GetContentsPane())
+        self._layoutImageFormatChoice(parent=self.GetContentsPane())
 
-        hs:   Sizer      = self._createDialogButtonsContainer(buttons=OK | CANCEL)
-
-        mainSizer: BoxSizer = BoxSizer(orient=VERTICAL)
-        mainSizer.Add(fs,   0, ALL | EXPAND, 5)
-        mainSizer.Add(imgF, 0, ALL, 5)
-        mainSizer.Add(hs,   0, ALIGN_RIGHT)
-
-        self.SetSizerAndFit(mainSizer)
+        self._layoutStandardOkCancelButtonSizer()
 
         self._bindEventHandlers()
 
@@ -104,11 +78,10 @@ class DlgWxImageOptions(BaseDlgEdit):
 
     def _bindEventHandlers(self):
 
-        self.Bind(EVT_BUTTON, self._onFileSelectClick,     id=self.__fileSelectBtn)
-
-        self.Bind(EVT_CHOICE, self._onImageFormatChoice, id=self.__imageFormatChoiceId)
-
-        self._selectedFile.Bind(EVT_MOTION, self._fileSelectionMotion, id=self.__selectedFileId)
+        self.Bind(EVT_BUTTON, self._onFileSelectClick,   self._fileSelectBtn)
+        self.Bind(EVT_CHOICE, self._onImageFormatChoice, self._imageFormatChoice)
+        #
+        self._selectedFile.Bind(EVT_MOTION, self._fileSelectionMotion, self._selectedFile)
 
     def _fileSelectionMotion(self, event: MouseEvent):
 
@@ -152,32 +125,26 @@ class DlgWxImageOptions(BaseDlgEdit):
 
         self._imageFormat = newFormat
 
-    def __layoutFileSelection(self) -> StaticBoxSizer:
+    def _layoutFileSelection(self, parent: SizedPanel):
 
-        box:                StaticBox      = StaticBox(self, ID_ANY, label="Output Filename")
-        fileSelectionSizer: StaticBoxSizer = StaticBoxSizer(box, HORIZONTAL)
+        box: SizedStaticBox = SizedStaticBox(parent, -1, "Output Filename")
+        box.SetSizerProps(expand=True, proportion=1)
 
         currentFile: str = self._outputFileName
 
-        fileSelectBtn:      Button   = Button(self, label="&Select",  id=self.__fileSelectBtn)
-        self._selectedFile: TextCtrl = TextCtrl(self, value=currentFile, id=self.__selectedFileId, style=TE_READONLY)
+        sizedPanel: SizedPanel = SizedPanel(box)
+        sizedPanel.SetSizerType('horizontal')
+
+        self._fileSelectBtn = Button(sizedPanel, label="&Select",)
+        self._selectedFile  = TextCtrl(sizedPanel, value=currentFile, style=TE_READONLY)
 
         self._selectedFile.SetToolTip(currentFile)
 
-        fileSelectionSizer.Add(fileSelectBtn,       proportion=1, flag=ALL, border=5)
-        fileSelectionSizer.Add(self._selectedFile,  proportion=2, flag=ALL | EXPAND, border=5)
-
-        return fileSelectionSizer
-
-    def __layoutImageFormatChoice(self) -> StaticBoxSizer:
-        # noinspection PyTypeChecker
+    def _layoutImageFormatChoice(self, parent: SizedPanel):
 
         imageChoices: List[str] = [WxImageFormat.PNG.value, WxImageFormat.JPG.value, WxImageFormat.BMP.value, WxImageFormat.TIFF.value]
-        self._imageFormatChoice = Choice(self, self.__imageFormatChoiceId, choices=imageChoices)
 
-        box:            StaticBox = StaticBox(self, ID_ANY, "Image Format")
-        szrImageFormat: StaticBoxSizer = StaticBoxSizer(box, HORIZONTAL)
+        box: SizedStaticBox = SizedStaticBox(parent, -1, "Image Format")
+        box.SetSizerProps(expand=True, proportion=1)
 
-        szrImageFormat.Add(self._imageFormatChoice, 0, ALL)
-
-        return szrImageFormat
+        self._imageFormatChoice = Choice(box, choices=imageChoices)
