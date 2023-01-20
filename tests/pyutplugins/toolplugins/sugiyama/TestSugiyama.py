@@ -8,7 +8,7 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.toolplugins.sugiyama.RealSugiyamaNode import RealSugiyamaNode
 from pyutplugins.toolplugins.sugiyama.Sugiyama import HierarchicalGraphNodes

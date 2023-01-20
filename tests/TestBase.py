@@ -18,8 +18,8 @@ from wx import ID_ANY
 
 from unittest import TestCase
 
-from pyutplugins.CoreTypes import OglClasses
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglClasses
+from pyutplugins.ExternalTypes import OglObjects
 
 
 JSON_LOGGING_CONFIG_FILENAME: str = "testLoggingConfig.json"

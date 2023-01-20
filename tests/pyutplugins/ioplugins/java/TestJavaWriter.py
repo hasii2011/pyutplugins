@@ -12,8 +12,8 @@ from pkg_resources import resource_filename
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from pyutplugins.CoreTypes import OglClasses
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglClasses
+from pyutplugins.ExternalTypes import OglObjects
 
 from tests.TestBase import TestBase
 

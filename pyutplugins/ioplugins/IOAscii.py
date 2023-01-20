@@ -15,7 +15,7 @@ from pyutplugins.coretypes.PluginDataTypes import PluginDescription
 from pyutplugins.coretypes.PluginDataTypes import PluginExtension
 from pyutplugins.coretypes.PluginDataTypes import PluginName
 
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglObjects
 
 
 FORMAT_NAME:        FormatName       = FormatName('Ascii')

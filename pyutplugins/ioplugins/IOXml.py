@@ -32,19 +32,19 @@ from pyutplugins.coretypes.PluginDataTypes import PluginExtension
 from pyutplugins.coretypes.PluginDataTypes import PluginName
 from pyutplugins.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
-from pyutplugins.CoreTypes import OglClasses
-from pyutplugins.CoreTypes import OglLinks
-from pyutplugins.CoreTypes import OglSDInstances
-from pyutplugins.CoreTypes import OglSDMessages
-from pyutplugins.CoreTypes import OglTexts
-from pyutplugins.CoreTypes import OglActors
-from pyutplugins.CoreTypes import OglNotes
-from pyutplugins.CoreTypes import OglObjects
-from pyutplugins.CoreTypes import OglUseCases
-from pyutplugins.CoreTypes import PluginDocument
-from pyutplugins.CoreTypes import PluginDocumentType
-from pyutplugins.CoreTypes import PluginDocumentTitle
-from pyutplugins.CoreTypes import PluginProject
+from pyutplugins.ExternalTypes import OglClasses
+from pyutplugins.ExternalTypes import OglLinks
+from pyutplugins.ExternalTypes import OglSDInstances
+from pyutplugins.ExternalTypes import OglSDMessages
+from pyutplugins.ExternalTypes import OglTexts
+from pyutplugins.ExternalTypes import OglActors
+from pyutplugins.ExternalTypes import OglNotes
+from pyutplugins.ExternalTypes import OglObjects
+from pyutplugins.ExternalTypes import OglUseCases
+from pyutplugins.ExternalTypes import PluginDocument
+from pyutplugins.ExternalTypes import PluginDocumentType
+from pyutplugins.ExternalTypes import PluginDocumentTitle
+from pyutplugins.ExternalTypes import PluginProject
 
 FORMAT_NAME:        FormatName        = FormatName("XML")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('xml')

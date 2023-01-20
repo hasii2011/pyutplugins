@@ -20,8 +20,8 @@ from pyutplugins.coretypes.PluginDataTypes import PluginDescription
 from pyutplugins.coretypes.PluginDataTypes import PluginExtension
 from pyutplugins.coretypes.PluginDataTypes import PluginName
 
-from pyutplugins.CoreTypes import FrameInformation
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import FrameInformation
+from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface

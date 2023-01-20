@@ -11,9 +11,9 @@ from wx import Window
 
 from oglio.Types import OglProject
 
-from pyutplugins.CoreTypes import CurrentProjectCallback
-from pyutplugins.CoreTypes import PluginProject
-from pyutplugins.CoreTypes import SelectedOglObjectsCallback
+from pyutplugins.ExternalTypes import CurrentProjectCallback
+from pyutplugins.ExternalTypes import PluginProject
+from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.eventengine.Events import AddShapeEvent

@@ -11,7 +11,7 @@ from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 from pyutplugins.IPluginAdapter import ScreenMetrics
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.coretypes.InputFormat import InputFormat
 from pyutplugins.coretypes.OutputFormat import OutputFormat

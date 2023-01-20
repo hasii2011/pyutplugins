@@ -21,7 +21,7 @@ from miniogl.AnchorPoint import AnchorPoint
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.ioplugins.gml.GMLExporter import GMLExporter
 

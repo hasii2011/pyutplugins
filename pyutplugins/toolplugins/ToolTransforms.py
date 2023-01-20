@@ -6,8 +6,8 @@ from logging import getLogger
 
 from ogl.OglObject import OglObject
 
-from pyutplugins.CoreTypes import FrameInformation
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import FrameInformation
+from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.plugininterfaces.IOPluginInterface import IPluginAdapter
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface

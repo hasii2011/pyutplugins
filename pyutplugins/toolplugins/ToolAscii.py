@@ -22,7 +22,7 @@ from pyutplugins.coretypes.ExportDirectoryResponse import ExportDirectoryRespons
 
 from pyutplugins.coretypes.PluginDataTypes import PluginName
 
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglObjects
 
 
 class ToolAscii(ToolPluginInterface):

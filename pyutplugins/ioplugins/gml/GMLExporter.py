@@ -17,7 +17,7 @@ from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglNote import OglNote
 
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.ioplugins.gml.UnsupportedOperation import UnsupportedOperation
 

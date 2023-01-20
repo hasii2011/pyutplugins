@@ -18,8 +18,8 @@ from wx import FileSelector
 from wx import MessageDialog
 from wx import Yield as wxYield
 
-from pyutplugins.CoreTypes import OglClasses
-from pyutplugins.CoreTypes import OglLinks
+from pyutplugins.ExternalTypes import OglClasses
+from pyutplugins.ExternalTypes import OglLinks
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
 from pyutplugins.coretypes.InputFormat import InputFormat

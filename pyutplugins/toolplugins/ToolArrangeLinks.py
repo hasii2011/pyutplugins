@@ -12,7 +12,7 @@ from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 
 from pyutplugins.coretypes.PluginDataTypes import PluginName
 
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglObjects
 
 
 class ToolArrangeLinks(ToolPluginInterface):

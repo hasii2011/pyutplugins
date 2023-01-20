@@ -27,7 +27,7 @@ from orthogonal.topologyShapeMetric.OrthogonalException import OrthogonalExcepti
 from orthogonal.topologyShapeMetric.Orthogonalization import Orthogonalization
 from orthogonal.topologyShapeMetric.Planarization import Planarization
 
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.ioplugins.gml.GMLExporter import GMLExporter
 from pyutplugins.preferences.PluginPreferences import PluginPreferences

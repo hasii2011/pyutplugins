@@ -15,7 +15,7 @@ from pyutplugins.coretypes.SingleFileRequestResponse import SingleFileRequestRes
 
 from pyutplugins.ioplugins.gml.GMLExporter import GMLExporter
 
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface

@@ -27,9 +27,9 @@ from wx import Yield as wxYield
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
-from pyutplugins.CoreTypes import OglClasses
-from pyutplugins.CoreTypes import OglLinks
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglClasses
+from pyutplugins.ExternalTypes import OglLinks
+from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.coretypes.PluginDataTypes import PluginExtension
 from pyutplugins.coretypes.PluginDataTypes import PluginName

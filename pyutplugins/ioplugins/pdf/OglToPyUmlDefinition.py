@@ -41,7 +41,7 @@ from miniogl.ControlPoint import ControlPoint
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.ioplugins.pdf.ImageFormat import ImageFormat
 from pyutplugins.ioplugins.pdf.ImageOptions import ImageOptions

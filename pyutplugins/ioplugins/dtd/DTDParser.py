@@ -25,8 +25,8 @@ from pyutplugins.common.LinkMakerMixin import LinkMakerMixin
 from pyutplugins.common.PluginTypes import ClassPair
 from pyutplugins.common.PluginTypes import ClassTree
 
-from pyutplugins.CoreTypes import OglClasses
-from pyutplugins.CoreTypes import OglLinks
+from pyutplugins.ExternalTypes import OglClasses
+from pyutplugins.ExternalTypes import OglLinks
 
 from pyutplugins.ioplugins.dtd.DTDAttribute import DTDAttribute
 from pyutplugins.ioplugins.dtd.DTDElementTypes import DTDElementTypes

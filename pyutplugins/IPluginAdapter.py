@@ -4,12 +4,12 @@ from abc import abstractmethod
 
 from dataclasses import dataclass
 
-from pyutplugins.CoreTypes import CurrentProjectCallback
-from pyutplugins.CoreTypes import OglObjectType
-from pyutplugins.CoreTypes import FrameInformationCallback
-from pyutplugins.CoreTypes import FrameSizeCallback
-from pyutplugins.CoreTypes import PluginProject
-from pyutplugins.CoreTypes import SelectedOglObjectsCallback
+from pyutplugins.ExternalTypes import CurrentProjectCallback
+from pyutplugins.ExternalTypes import OglObjectType
+from pyutplugins.ExternalTypes import FrameInformationCallback
+from pyutplugins.ExternalTypes import FrameSizeCallback
+from pyutplugins.ExternalTypes import PluginProject
+from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
 
 @dataclass

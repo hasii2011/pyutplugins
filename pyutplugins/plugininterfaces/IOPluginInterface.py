@@ -7,8 +7,8 @@ from abc import abstractmethod
 from pyutplugins.plugininterfaces.BasePluginInterface import BasePluginInterface
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
-from pyutplugins.CoreTypes import FrameInformation
-from pyutplugins.CoreTypes import OglObjects
+from pyutplugins.ExternalTypes import FrameInformation
+from pyutplugins.ExternalTypes import OglObjects
 
 
 class IOPluginInterface(BasePluginInterface, ABC):
