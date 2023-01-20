@@ -234,7 +234,7 @@ class ScaffoldUI:
         shapes = self._currentFrame.diagram.GetShapes()
         for shape in shapes:
             shape.SetSelected(selected)
-            self._currentFrame.GetSelectedShapes()
+            # self._currentFrame.GetSelectedShapes()
 
         self._currentFrame.SetSelectedShapes(shapes)
         self._currentFrame.Refresh()

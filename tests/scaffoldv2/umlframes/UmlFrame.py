@@ -26,6 +26,7 @@ from tests.scaffoldv2.umlframes.UmlFrameShapeHandler import UmlFrameShapeHandler
 UmlObject  = Union[OglClass, OglLink, OglNote, OglText, OglSDMessage, OglSDInstance, OglActor, OglUseCase, OglInterface2]
 UmlObjects = NewType('UmlObjects', List[UmlObject])
 
+
 class UmlFrame(UmlFrameShapeHandler):
 
     def __init__(self, parent: Window):

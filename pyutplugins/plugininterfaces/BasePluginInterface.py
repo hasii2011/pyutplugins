@@ -18,6 +18,8 @@ from wx import FileSelector
 from wx import MessageDialog
 from wx import Yield as wxYield
 
+from pyutplugins.preferences.PluginPreferences import PluginPreferences
+
 from pyutplugins.ExternalTypes import OglClasses
 from pyutplugins.ExternalTypes import OglLinks
 from pyutplugins.IPluginAdapter import IPluginAdapter
@@ -58,7 +60,9 @@ class BasePluginInterface:
             pluginAdapter:   A class that implements ICommunicator
 
         """
-        self._pluginAdapter: IPluginAdapter = pluginAdapter
+        self._pluginAdapter:     IPluginAdapter      = pluginAdapter
+        self._pluginPreferences: PluginPreferences = PluginPreferences()
+
         #
         # To be set by implementor constructor and read by property
         self._name:         PluginName = PluginName('Implementor must provide the plugin name')

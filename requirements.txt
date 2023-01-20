@@ -1,5 +1,5 @@
 wheel==0.38.4
-setuptools==66.1.0
+setuptools==66.1.1
 twine==4.0.2
 build==0.10.0
 html-testRunner~=1.2.1
@@ -24,6 +24,6 @@ untanglepyut==0.6.5
 oglio==0.5.40
 
 # Pin networkx to match orthgonal
-networkx==2.8.5
-orthogonal==1.1.7
+networkx==3.0
+orthogonal==1.1.8
 pyumldiagrams==2.30.8

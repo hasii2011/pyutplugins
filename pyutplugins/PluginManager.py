@@ -15,6 +15,8 @@ from wx import EndBusyCursor
 
 from wx import Yield as wxYield
 
+from pyutplugins.preferences.PluginPreferences import PluginPreferences
+
 from pyutplugins.plugininterfaces.Singleton import Singleton
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
@@ -34,13 +36,14 @@ from pyutplugins.ioplugins.IOPdf import IOPdf
 from pyutplugins.ioplugins.IOPython import IOPython
 from pyutplugins.ioplugins.IOWxImage import IOWxImage
 from pyutplugins.ioplugins.IOXml import IOXml
-from pyutplugins.preferences.PluginPreferences import PluginPreferences
+from pyutplugins.ioplugins.IOMermaid import IOMermaid
 
 from pyutplugins.toolplugins.ToolArrangeLinks import ToolArrangeLinks
 from pyutplugins.toolplugins.ToolAscii import ToolAscii
 from pyutplugins.toolplugins.ToolOrthogonalLayoutV2 import ToolOrthogonalLayoutV2
 from pyutplugins.toolplugins.ToolSugiyama import ToolSugiyama
 from pyutplugins.toolplugins.ToolTransforms import ToolTransforms
+
 
 TOOL_PLUGIN_NAME_PREFIX: str = 'Tool'
 IO_PLUGIN_NAME_PREFIX:   str = 'IO'
@@ -64,7 +67,7 @@ class PluginManager(Singleton):
     By convention prefix the plugin I/O module with the characters 'IO'
 
     """
-    IO_PLUGINS:   PluginList = PluginList([IODTD, IOGML, IOJava, IOPdf, IOPython, IOWxImage, IOXml])
+    IO_PLUGINS:   PluginList = PluginList([IOMermaid, IODTD, IOGML, IOJava, IOPdf, IOPython, IOWxImage, IOXml])
     TOOL_PLUGINS: PluginList = PluginList([ToolArrangeLinks, ToolAscii, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms])
 
     # noinspection PyAttributeOutsideInit

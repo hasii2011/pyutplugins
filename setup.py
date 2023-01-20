@@ -56,8 +56,8 @@ setup(
     install_requires=[
                       'antlr4-python3-runtime==4.11.1',
                       'pyumldiagrams==2.30.8',
-                      'networkx==2.8.5',
-                      'orthogonal==1.1.7',
+                      'networkx==3.0.0',
+                      'orthogonal==1.1.8',
                       'wxPython~=4.2.0',
                       'pyutmodel==1.3.3',
                       'ogl==0.60.25',
