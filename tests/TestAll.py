@@ -27,6 +27,7 @@ class TestAll:
     """
     NOT_TESTS: List[str] = ['TestAll', 'TestBase',
                             'TestTemplate',
+                            'TestDialogs',
                             'pyutplugins/coreinterfaces/TestPluginInterface',
                             'pyutplugins/coreinterfaces/TestSamplePluginInterface']
 

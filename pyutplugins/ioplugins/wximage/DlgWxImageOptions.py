@@ -40,7 +40,7 @@ from wx import MouseEvent
 from wx import Yield as wxYield
 from wx import NewIdRef
 
-from pyutplugins.common.ui.BaseDlgEdit import BaseDlgEdit
+from pyutplugins.common.ui.BaseEditDialog import BaseDlgEdit
 from pyutplugins.ioplugins.wximage.WxImageFormat import WxImageFormat
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
@@ -83,8 +83,8 @@ class DlgWxImageOptions(BaseDlgEdit):
 
         self._bindEventHandlers()
 
-        self.Bind(EVT_BUTTON, self._OnCmdOk, id=ID_OK)
-        self.Bind(EVT_CLOSE,  self._OnClose, id=ID_CANCEL)
+        self.Bind(EVT_BUTTON, self._onOk, id=ID_OK)
+        self.Bind(EVT_CLOSE, self._onClose, id=ID_CANCEL)
 
     @property
     def imageFormat(self) -> WxImageFormat:
