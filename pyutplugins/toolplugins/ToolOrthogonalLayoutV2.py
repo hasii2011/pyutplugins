@@ -19,7 +19,8 @@ from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglNote import OglNote
 
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import IPluginAdapter
+
 from pyutplugins.coreinterfaces.ToolPluginInterface import ToolPluginInterface
 
 from pyutplugins.CoreTypes import OglObjects

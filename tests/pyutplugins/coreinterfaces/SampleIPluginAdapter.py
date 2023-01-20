@@ -8,8 +8,8 @@ from wx import Frame
 
 from miniogl.DiagramFrame import DiagramFrame
 
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
-from pyutplugins.coreinterfaces.IPluginAdapter import ScreenMetrics
+from pyutplugins.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import ScreenMetrics
 
 from pyutplugins.CoreTypes import CurrentProjectCallback
 from pyutplugins.CoreTypes import FrameInformationCallback

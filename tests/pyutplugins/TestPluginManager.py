@@ -11,12 +11,13 @@ from wx import Window
 
 from pyutplugins.PluginManager import PluginManager
 
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import IPluginAdapter
 
-from tests.TestBase import TestBase
 from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
+
+from tests.TestBase import TestBase
 
 
 class TestPluginManager(TestBase):

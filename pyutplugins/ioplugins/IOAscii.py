@@ -5,7 +5,7 @@ from logging import Logger
 from logging import getLogger
 
 from pyutplugins.coreinterfaces.IOPluginInterface import IOPluginInterface
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import IPluginAdapter
 
 from pyutplugins.coretypes.InputFormat import InputFormat
 from pyutplugins.coretypes.OutputFormat import OutputFormat

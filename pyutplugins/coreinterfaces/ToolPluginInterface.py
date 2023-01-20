@@ -4,7 +4,7 @@ from abc import abstractmethod
 
 from pyutplugins.coreinterfaces.BasePluginInterface import BasePluginInterface
 
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import IPluginAdapter
 
 
 class ToolPluginInterface(BasePluginInterface, ABC):

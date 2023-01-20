@@ -15,10 +15,11 @@ from wx import EndBusyCursor
 
 from wx import Yield as wxYield
 
+from pyutplugins.coreinterfaces.Singleton import Singleton
 from pyutplugins.coreinterfaces.ToolPluginInterface import ToolPluginInterface
 from pyutplugins.coreinterfaces.IOPluginInterface import IOPluginInterface
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
-from pyutplugins.coreinterfaces.Singleton import Singleton
+
+from pyutplugins.IPluginAdapter import IPluginAdapter
 
 from pyutplugins.coretypes.PluginDataTypes import ToolsPluginMap
 from pyutplugins.coretypes.PluginDataTypes import InputPluginMap

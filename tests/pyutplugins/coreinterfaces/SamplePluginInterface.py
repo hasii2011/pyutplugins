@@ -3,7 +3,8 @@ from logging import Logger
 from logging import getLogger
 
 from pyutplugins.coreinterfaces.BasePluginInterface import BasePluginInterface
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+
+from pyutplugins.IPluginAdapter import IPluginAdapter
 
 from pyutplugins.coretypes.PluginDataTypes import PluginName
 from pyutplugins.coretypes.PluginDataTypes import PluginExtension

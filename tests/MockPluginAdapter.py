@@ -12,8 +12,8 @@ from pyutplugins.CoreTypes import OglObjectType
 from pyutplugins.CoreTypes import PluginProject
 from pyutplugins.CoreTypes import SelectedOglObjectsCallback
 
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
-from pyutplugins.coreinterfaces.IPluginAdapter import ScreenMetrics
+from pyutplugins.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import ScreenMetrics
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 

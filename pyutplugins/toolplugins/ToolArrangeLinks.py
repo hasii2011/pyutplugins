@@ -6,7 +6,8 @@ from logging import getLogger
 
 from ogl.OglLink import OglLink
 
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import IPluginAdapter
+
 from pyutplugins.coreinterfaces.ToolPluginInterface import ToolPluginInterface
 
 from pyutplugins.coretypes.PluginDataTypes import PluginName

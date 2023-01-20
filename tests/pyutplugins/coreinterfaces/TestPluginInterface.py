@@ -8,7 +8,8 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from pyutplugins.coreinterfaces.BasePluginInterface import BasePluginInterface
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+
+from pyutplugins.IPluginAdapter import IPluginAdapter
 
 from tests.TestBase import TestBase
 

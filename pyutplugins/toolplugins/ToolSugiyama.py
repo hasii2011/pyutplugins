@@ -5,8 +5,10 @@ from typing import Union
 from logging import Logger
 from logging import getLogger
 
+from pyutplugins.IPluginAdapter import IPluginAdapter
+
 from pyutplugins.coretypes.PluginDataTypes import PluginName
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+
 from pyutplugins.coreinterfaces.ToolPluginInterface import ToolPluginInterface
 
 from pyutplugins.CoreTypes import OglObjects

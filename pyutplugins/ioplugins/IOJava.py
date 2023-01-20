@@ -11,7 +11,7 @@ from wx import BeginBusyCursor
 from wx import EndBusyCursor as wxEndBusyCursor
 from wx import Yield as wxYield
 
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.coreinterfaces.IOPluginInterface import IOPluginInterface
 
 from pyutplugins.CoreTypes import OglObjects

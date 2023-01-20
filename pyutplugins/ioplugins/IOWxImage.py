@@ -23,7 +23,7 @@ from pyutplugins.coretypes.PluginDataTypes import PluginName
 from pyutplugins.CoreTypes import FrameInformation
 from pyutplugins.CoreTypes import OglObjects
 
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.coreinterfaces.IOPluginInterface import IOPluginInterface
 
 from pyutplugins.coretypes.InputFormat import InputFormat

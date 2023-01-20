@@ -5,7 +5,7 @@ from abc import ABC
 from abc import abstractmethod
 
 from pyutplugins.coreinterfaces.BasePluginInterface import BasePluginInterface
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import IPluginAdapter
 
 from pyutplugins.CoreTypes import FrameInformation
 from pyutplugins.CoreTypes import OglObjects

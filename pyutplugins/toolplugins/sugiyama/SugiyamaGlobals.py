@@ -11,7 +11,7 @@ from wx import MessageBox
 
 from wx import Yield as wxYield
 
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import IPluginAdapter
 
 from pyutplugins.toolplugins.sugiyama.SugiyamaNode import SugiyamaNode
 

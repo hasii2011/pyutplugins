@@ -21,7 +21,7 @@ from oglio.Types import OglDocument
 from oglio.Types import OglDocuments
 from oglio.Types import OglDocumentTitle
 
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.coreinterfaces.IOPluginInterface import IOPluginInterface
 
 from pyutplugins.coretypes.InputFormat import InputFormat

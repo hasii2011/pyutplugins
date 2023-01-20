@@ -20,8 +20,7 @@ from wx import Yield as wxYield
 
 from pyutplugins.CoreTypes import OglClasses
 from pyutplugins.CoreTypes import OglLinks
-
-from pyutplugins.coreinterfaces.IPluginAdapter import IPluginAdapter
+from pyutplugins.IPluginAdapter import IPluginAdapter
 
 from pyutplugins.coretypes.InputFormat import InputFormat
 from pyutplugins.coretypes.OutputFormat import OutputFormat
