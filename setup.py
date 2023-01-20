@@ -11,7 +11,7 @@ LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
     name="pyutplugins",
-    version="0.6.6",
+    version="0.6.7",
     author='Humberto A. Sanchez II',
     author_email='humberto.a.sanchez.ii@gmail.com',
     maintainer='Humberto A. Sanchez II',
@@ -53,7 +53,7 @@ setup(
         'pyutplugins.ioplugins.wximage',
         'pyutplugins.toolplugins', 'pyutplugins.toolplugins.orthogonal', 'pyutplugins.toolplugins.sugiyama',
     ],
-    install_requires=['click~=8.1.3',
+    install_requires=[
                       'antlr4-python3-runtime==4.11.1',
                       'pyumldiagrams==2.30.8',
                       'networkx==2.8.5',

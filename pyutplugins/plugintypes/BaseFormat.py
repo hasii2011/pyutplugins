@@ -14,13 +14,15 @@ class BaseFormat:
     """
     Provides the basic capabilities;  Should not be directly instantiated;
     TODO:  Figure out how to prevent that
+    https://stackoverflow.com/questions/7989042/preventing-a-class-from-direct-instantiation-in-python#7990308
+    If we do the above; have to figure out how to tests the base functionality in TestBaseFormat
     """
     def __init__(self, formatName: FormatName, extension: PluginExtension, description: PluginDescription):
 
         if self.__containsSpecialCharacters(formatName):  # TODO Must be a better way
             raise InvalidPluginNameException(f'{formatName}')
 
-        if DOT in extension:             # TODO when internet back up do not this method
+        if DOT in extension:
             raise InvalidPluginExtensionException(f'{extension}')
 
         self._name:        FormatName        = formatName
