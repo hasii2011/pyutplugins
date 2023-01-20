@@ -20,9 +20,9 @@ from pyutplugins.coretypes.ImportDirectoryResponse import ImportDirectoryRespons
 from pyutplugins.coretypes.MultipleFileRequestResponse import MultipleFileRequestResponse
 from pyutplugins.coretypes.SingleFileRequestResponse import SingleFileRequestResponse
 
-from tests.pyutplugins.coreinterfaces.SamplePluginInterface import SamplePluginInterface
+from tests.pyutplugins.plugininterfaces.SamplePluginInterface import SamplePluginInterface
 
-from tests.pyutplugins.coreinterfaces.SampleIPluginAdapter import SampleIPluginAdapter
+from tests.pyutplugins.plugininterfaces.SampleIPluginAdapter import SampleIPluginAdapter
 
 from tests.TestBase import TestBase
 
