@@ -40,6 +40,8 @@ class TestBase(TestCase):
 
     RESOURCES_TEST_JAVA_BASE_FILES_PACKAGE_NAME: str = f'{RESOURCES_TEST_DATA_PACKAGE_NAME}.javabasefiles'
 
+    RESOURCES_TEST_MERMAID_PACKAGE_NAME: str = f'{RESOURCES_TEST_DATA_PACKAGE_NAME}.mermaid'
+
     def setUp(self):
         """
         Test classes that need to instantiate a wxPython App should super().setUp()

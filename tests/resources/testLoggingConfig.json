@@ -40,27 +40,17 @@
             "level": "INFO",
             "propagate": "False"
         },
-        "core": {
+        "pyutplugins": {
             "level":     "WARNING",
             "propagate": "False"
         },
-        "core.PluginManager": {
+        "pyutplugins.PluginManager": {
             "level":     "DEBUG",
             "propagate": "False"
         },
         "tests": {
-            "level": "WARNING",
-            "propagate": "False"
-        },
-        "miniogl.LineShape": {
-            "level":     "WARNING",
-            "propagate": "False"
-        },
-        "ogl.OglAssociation": {
-            "level":     "WARNING",
-            "handlers": ["consoleHandlerFunctionNames"],
+            "level": "INFO",
             "propagate": "False"
         }
-
     }
 }

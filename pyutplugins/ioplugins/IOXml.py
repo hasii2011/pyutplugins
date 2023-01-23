@@ -154,50 +154,6 @@ class IOXml(IOPluginInterface):
 
         self._pluginAdapter.requestCurrentProject(callback=self._currentProjectCallback)
 
-        # oglProject: OglProject = OglProject()
-        # oglProject.version  = self._pluginAdapter.pyutVersion
-        # oglProject.codePath = ''
-        #
-        # oglDocument: OglDocument = OglDocument()
-        # oglDocument.scrollPositionX = 0
-        # oglDocument.scrollPositionY = 0
-        # oglDocument.pixelsPerUnitX = self._pluginAdapter.screenMetrics.dpiX
-        # oglDocument.pixelsPerUnitY = self._pluginAdapter.screenMetrics.dpiY
-        # oglDocument.documentTitle  = OglDocumentTitle(self._frameInformation.diagramTitle)
-        # oglDocument.documentType   = self._frameInformation.diagramType
-        # for oglObject in oglObjects:
-        #     match oglObject:
-        #         case OglClass() as oglObject:
-        #             oglDocument.oglClasses.append(oglObject)
-        #         case OglInterface2() as oglObject:
-        #             # TODO Fix this in oglio
-        #             oglDocument.oglLinks.append(oglObject)  # type: ignore
-        #         case OglLink() as oglObject:
-        #             oglDocument.oglLinks.append(oglObject)
-        #         case OglNote() as oglObject:
-        #             oglDocument.oglNotes.append(oglObject)
-        #         case OglText() as oglObject:
-        #             oglDocument.oglTexts.append(oglObject)
-        #         case OglUseCase() as oglObject:
-        #             oglDocument.oglUseCases.append(oglObject)
-        #         case OglActor() as oglObject:
-        #             oglDocument.oglActors.append(oglObject)
-        #         case OglSDMessage() as oglObject:
-        #             oglSDMessage: OglSDMessage         = cast(OglSDMessage, oglObject)
-        #             modelId:      int                  = oglSDMessage.pyutObject.id
-        #             oglDocument.oglSDMessages[modelId] = oglSDMessage
-        #         case OglSDInstance() as oglObject:
-        #             oglSDInstance: OglSDInstance        = cast(OglSDInstance, oglObject)
-        #             modelId                             = oglSDInstance.pyutObject.id
-        #             oglDocument.oglSDInstances[modelId] = oglSDInstance
-        #         case _:
-        #             self.logger.warning(f'Unsaved {oglObject=}')
-        # oglProject.oglDocuments[oglDocument.documentTitle] = oglDocument
-        #
-        # writer:     Writer = Writer()
-        #
-        # writer.writeXmlFile(oglProject=oglProject, fqFileName=self._fileToExport)
-
     def _currentProjectCallback(self, pluginProject: PluginProject):
 
         import oglio

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PyutProject version="10" CodePath="">
+	<PyutDocument type="CLASS_DIAGRAM" title="SimpleDiagram" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="313" height="116" x="175" y="150">
+			<Class id="1" name="SimpleClass" stereotype="type" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="publicMethod" visibility="PUBLIC">
+					<Return type="str"/>
+					<SourceCode/>
+				</Method>
+				<Method name="privateMethod" visibility="PRIVATE">
+					<Return type="float"/>
+					<SourceCode/>
+				</Method>
+				<Method name="protectedMethod" visibility="PROTECTED">
+					<Return type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="methodNoReturnType" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="methodWithParameters" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="parameter1" type="" defaultValue=""/>
+					<Param name="parameter2" type="" defaultValue=""/>
+					<SourceCode/>
+				</Method>
+			</Class>
+		</GraphicClass>
+	</PyutDocument>
+</PyutProject>
