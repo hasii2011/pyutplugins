@@ -1,5 +1,9 @@
-from pathlib import Path
+
 from typing import cast
+
+from os import system as osSystem
+
+from pathlib import Path
 
 from logging import Logger
 from logging import getLogger
@@ -11,6 +15,7 @@ from untanglepyut.UnTangler import DocumentTitle
 from untanglepyut.UnTangler import UnTangler
 
 from pyutplugins.ExternalTypes import OglObjects
+
 from pyutplugins.ioplugins.mermaid.MermaidWriter import MermaidWriter
 
 from unittest import TestSuite
@@ -39,7 +44,8 @@ class TestMermaidWriter(TestBase):
         pass
 
     def testSimpleClass(self):
-        mermaidWriter: MermaidWriter = MermaidWriter(Path('MermaidTest.md'))
+        baseFileName: str = 'MermaidSimple.md'
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'SimpleClass.xml')
         untangler:  UnTangler = UnTangler()
@@ -54,6 +60,10 @@ class TestMermaidWriter(TestBase):
         # noinspection PyTypeChecker
         mermaidWriter.translate(oglObjects=oglObjects)
 
+        status: int = self._runDiff(baseFileName=baseFileName)
+
+        self.assertEqual(0, status, 'Simple Mermaid generation failed')
+
     def testClassWithMethods(self):
         """Another test"""
 
@@ -66,6 +76,14 @@ class TestMermaidWriter(TestBase):
         oglObjects.extend(cast(OglObjects, document.oglTexts))
 
         return oglObjects
+
+    def _runDiff(self, baseFileName: str) -> int:
+
+        goldenFileName:      str = resource_filename(TestBase.RESOURCES_TEST_GOLDEN_MERMAID_PACKAGE_NAME, baseFileName)
+
+        status: int = osSystem(f'{TestBase.EXTERNAL_DIFF} {baseFileName} {goldenFileName}')
+
+        return status
 
 
 def suite() -> TestSuite:

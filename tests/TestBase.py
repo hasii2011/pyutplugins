@@ -40,7 +40,10 @@ class TestBase(TestCase):
 
     RESOURCES_TEST_JAVA_BASE_FILES_PACKAGE_NAME: str = f'{RESOURCES_TEST_DATA_PACKAGE_NAME}.javabasefiles'
 
-    RESOURCES_TEST_MERMAID_PACKAGE_NAME: str = f'{RESOURCES_TEST_DATA_PACKAGE_NAME}.mermaid'
+    RESOURCES_TEST_MERMAID_PACKAGE_NAME:        str = f'{RESOURCES_TEST_DATA_PACKAGE_NAME}.mermaid'
+    RESOURCES_TEST_GOLDEN_MERMAID_PACKAGE_NAME: str = f'{RESOURCES_TEST_DATA_PACKAGE_NAME}.mermaidgolden'
+
+    EXTERNAL_DIFF: str = '/usr/bin/diff -u --color=always '
 
     def setUp(self):
         """
