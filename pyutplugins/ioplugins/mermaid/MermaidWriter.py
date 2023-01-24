@@ -10,13 +10,15 @@ from datetime import datetime
 
 from pathlib import Path
 
+from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutClass import PyutClass
-
-from ogl.OglClass import OglClass
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutParameter import PyutParameter
-from pyutmodel.PyutType import PyutType
+from pyutmodel.PyutStereotype import PyutStereotype
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
+
+from ogl.OglLink import OglLink
+from ogl.OglClass import OglClass
 
 from pyutplugins.ExternalTypes import OglObjects
 
@@ -49,28 +51,56 @@ class MermaidWriter:
 
         mermaidString: str = f'```mermaid{eol}'
         mermaidString = f'{mermaidString}classDiagram{eol}'
+
+        # linksStanza: str = self._generateLinksStanza(oglObjects=oglObjects)
+        # mermaidString = f'{mermaidString}{linksStanza}'
+        generatedString: str = ''
         for oglObject in oglObjects:
-
             match oglObject:
-
                 case OglClass():
                     oglClass:  OglClass  = cast(OglClass, oglObject)
-                    pyutClass: PyutClass = oglClass.pyutObject
-
-                    methods:    List[PyutMethod] = pyutClass.methods
-                    methodsStr: str = self._generateMethods(methods)
-                    mermaidString = (
-                        f'{mermaidString}{indent1}class {pyutClass.name} {{ {eol}'
-                        f'{indent2}<<{pyutClass.stereotype.value}>>{eol}'
-                        f'{methodsStr}'
-                        f'}}{eol}'
-                    )
+                    generatedString = self._generateClassStanza(oglClass)
+                case OglLink():
+                    pass
                 case _:
                     self.logger.warning(f'Unknown Ogl element: {oglObject}')
 
-            mermaidString = f'{mermaidString}```{eol}'
-            with self._fqFileName.open(mode='a') as fd:
-                fd.write(f'{mermaidString}{eol}')
+            mermaidString += f'{generatedString}```{eol}'
+
+        with self._fqFileName.open(mode='a') as fd:
+            fd.write(f'{mermaidString}{eol}')
+
+    def _generateClassStanza(self, oglObject: OglClass) -> str:
+        """
+
+        Args:
+            oglObject:  A Pyut Class Definition
+
+        Returns:  A Mermaid class definition
+        """
+        oglClass:  OglClass  = cast(OglClass, oglObject)
+        pyutClass: PyutClass = oglClass.pyutObject
+
+        methods:    List[PyutMethod] = pyutClass.methods
+        methodsStr: str              = self._generateMethods(methods)
+
+        if pyutClass.stereotype == PyutStereotype.NO_STEREOTYPE:
+            stereotypeValue: str = ''
+        else:
+            stereotypeValue = pyutClass.stereotype.value
+
+        generatedString: str = (
+            f'{indent1}class {pyutClass.name} {{ {eol}'
+            f'{indent2}<<{stereotypeValue}>>{eol}'
+            f'{methodsStr}'
+            f'}}{eol}'
+        )
+        return generatedString
+
+    def _generateLinksStanza(self, oglObjects: OglObjects) -> str:
+        linksStanza: str = f'{indent1}%% Links follow{eol}'
+
+        return linksStanza
 
     def _generateMethods(self, methods: List[PyutMethod]) -> str:
 

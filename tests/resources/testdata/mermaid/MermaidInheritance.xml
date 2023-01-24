@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PyutProject version="10" CodePath="">
+	<PyutDocument type="CLASS_DIAGRAM" title="Inheritance" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="239" height="81" x="25" y="50">
+			<Class id="1" name="Animal" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="isAnimal" visibility="PUBLIC">
+					<Return type="bool"/>
+					<SourceCode/>
+				</Method>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="238" height="79" x="250" y="300">
+			<Class id="2" name="Duck" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="swim" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="quack" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+			</Class>
+		</GraphicClass>
+		<GraphicLink srcX="370" srcY="300" dstX="263" dstY="103" spline="False">
+			<ControlPoint x="370" y="102"/>
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="2" destId="1"/>
+		</GraphicLink>
+	</PyutDocument>
+</PyutProject>

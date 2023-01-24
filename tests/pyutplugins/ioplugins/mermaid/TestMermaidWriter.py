@@ -56,16 +56,28 @@ class TestMermaidWriter(TestBase):
 
         oglObjects: OglObjects = self._toPluginOglObjects(document=document)
         self.logger.info(f'{oglObjects[0]=}')
-
-        # noinspection PyTypeChecker
         mermaidWriter.translate(oglObjects=oglObjects)
 
         status: int = self._runDiff(baseFileName=baseFileName)
 
         self.assertEqual(0, status, 'Simple Mermaid generation failed')
 
-    def testClassWithMethods(self):
-        """Another test"""
+    def testSimpleLinks(self):
+
+        baseFileName: str = 'MermaidInheritance.md'
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+
+        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidInheritance.xml')
+        untangler:  UnTangler = UnTangler()
+
+        untangler.untangleFile(fqFileName=fqFileName)
+
+        document: Document = untangler.documents[DocumentTitle('Inheritance')]
+
+        oglObjects: OglObjects = self._toPluginOglObjects(document=document)
+        self.logger.info(f'{oglObjects[0]=}')
+
+        mermaidWriter.translate(oglObjects=oglObjects)
 
     def _toPluginOglObjects(self, document: Document) -> OglObjects:
 
