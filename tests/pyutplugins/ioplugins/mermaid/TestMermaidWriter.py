@@ -59,10 +59,9 @@ class TestMermaidWriter(TestBase):
         mermaidWriter.translate(oglObjects=oglObjects)
 
         status: int = self._runDiff(baseFileName=baseFileName)
-
         self.assertEqual(0, status, 'Simple Mermaid generation failed')
 
-    def testSimpleLinks(self):
+    def testSimpleInheritance(self):
 
         baseFileName: str = 'MermaidInheritance.md'
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
@@ -78,6 +77,9 @@ class TestMermaidWriter(TestBase):
         self.logger.info(f'{oglObjects[0]=}')
 
         mermaidWriter.translate(oglObjects=oglObjects)
+
+        status: int = self._runDiff(baseFileName=baseFileName)
+        self.assertEqual(0, status, 'Simple Inheritance failed')
 
     def _toPluginOglObjects(self, document: Document) -> OglObjects:
 

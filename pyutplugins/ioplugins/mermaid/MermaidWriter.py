@@ -10,6 +10,7 @@ from datetime import datetime
 
 from pathlib import Path
 
+from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutMethod import PyutMethod
@@ -19,6 +20,7 @@ from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
 from ogl.OglLink import OglLink
 from ogl.OglClass import OglClass
+from ogl.OglInterface2 import OglInterface2
 
 from pyutplugins.ExternalTypes import OglObjects
 
@@ -28,6 +30,8 @@ indent2: str = f'{indent1}    '
 indent3: str = f'{indent2}    '
 indent4: str = f'{indent3}    '
 indent5: str = f'{indent4}    '
+
+INHERITANCE_ARROW: str = '<|--'     # Points to parent class
 
 
 class MermaidWriter:
@@ -52,8 +56,9 @@ class MermaidWriter:
         mermaidString: str = f'```mermaid{eol}'
         mermaidString = f'{mermaidString}classDiagram{eol}'
 
-        # linksStanza: str = self._generateLinksStanza(oglObjects=oglObjects)
-        # mermaidString = f'{mermaidString}{linksStanza}'
+        linksStanza: str = self._generateLinksStanza(oglObjects=oglObjects)
+
+        mermaidString = f'{mermaidString}{linksStanza}'
         generatedString: str = ''
         for oglObject in oglObjects:
             match oglObject:
@@ -65,10 +70,11 @@ class MermaidWriter:
                 case _:
                     self.logger.warning(f'Unknown Ogl element: {oglObject}')
 
-            mermaidString += f'{generatedString}```{eol}'
+            mermaidString += f'{generatedString}{eol}'
 
+        mermaidString += f'```{eol}'
         with self._fqFileName.open(mode='a') as fd:
-            fd.write(f'{mermaidString}{eol}')
+            fd.write(f'{mermaidString}')
 
     def _generateClassStanza(self, oglObject: OglClass) -> str:
         """
@@ -85,20 +91,45 @@ class MermaidWriter:
         methodsStr: str              = self._generateMethods(methods)
 
         if pyutClass.stereotype == PyutStereotype.NO_STEREOTYPE:
-            stereotypeValue: str = ''
+            stereotypeRefrain: str = ''
         else:
-            stereotypeValue = pyutClass.stereotype.value
+            stereotypeRefrain = f'{indent2}<<pyutClass.stereotype.value>>{eol}'
 
         generatedString: str = (
             f'{indent1}class {pyutClass.name} {{ {eol}'
-            f'{indent2}<<{stereotypeValue}>>{eol}'
+            f'{stereotypeRefrain}'
             f'{methodsStr}'
             f'}}{eol}'
         )
         return generatedString
 
     def _generateLinksStanza(self, oglObjects: OglObjects) -> str:
+        """
+        Make a pass through creating links
+        Args:
+            oglObjects:
+
+        Returns:
+
+        """
         linksStanza: str = f'{indent1}%% Links follow{eol}'
+
+        for oglObject in oglObjects:
+            linkRefrain: str = ''
+            if isinstance(oglObject, OglLink):
+                oglLink:  OglLink  = cast(OglLink, oglObject)
+                pyutLink: PyutLink = oglLink.pyutObject
+
+                subClassName:  str = pyutLink.getSource().name
+                baseClassName: str = pyutLink.getDestination().name
+                self.logger.info(f'{subClassName=} {pyutLink.linkType=} {baseClassName=}')
+
+                linkRefrain = (
+                    f'{indent1}{baseClassName}{INHERITANCE_ARROW}{subClassName}{eol}'
+                )
+            elif isinstance(oglObject, OglInterface2):
+                pass
+            linksStanza += linkRefrain
 
         return linksStanza
 

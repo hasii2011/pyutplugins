@@ -43,7 +43,7 @@ class TestBase(TestCase):
     RESOURCES_TEST_MERMAID_PACKAGE_NAME:        str = f'{RESOURCES_TEST_DATA_PACKAGE_NAME}.mermaid'
     RESOURCES_TEST_GOLDEN_MERMAID_PACKAGE_NAME: str = f'{RESOURCES_TEST_DATA_PACKAGE_NAME}.mermaidgolden'
 
-    EXTERNAL_DIFF: str = '/usr/bin/diff -u --color=always '
+    EXTERNAL_DIFF: str = '/usr/bin/diff --normal --color=always '
 
     def setUp(self):
         """
