@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PyutProject version="10" CodePath="">
+	<PyutDocument type="CLASS_DIAGRAM" title="Class Diagram" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="240" height="100" x="75" y="50">
+			<Class id="1" name="Person" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="240" height="100" x="500" y="200">
+			<Class id="2" name="Heart" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="240" height="100" x="75" y="300">
+			<Class id="3" name="Hand" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicLink srcX="314" srcY="94" dstX="624" dstY="200" spline="False">
+			<LabelCenter x="200" y="275"/>
+			<LabelSrc x="200" y="275"/>
+			<LabelDst x="200" y="275"/>
+			<ControlPoint x="623" y="95"/>
+			<Link name="heart" type="COMPOSITION" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="2"/>
+		</GraphicLink>
+		<GraphicLink srcX="195" srcY="150" dstX="195" dstY="300" spline="False">
+			<LabelCenter x="200" y="275"/>
+			<LabelSrc x="200" y="275"/>
+			<LabelDst x="200" y="275"/>
+			<Link name="hands" type="COMPOSITION" cardSrc="2" cardDestination="" bidir="False" sourceId="1" destId="3"/>
+		</GraphicLink>
+	</PyutDocument>
+</PyutProject>

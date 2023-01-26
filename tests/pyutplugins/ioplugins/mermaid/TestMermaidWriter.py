@@ -61,6 +61,8 @@ class TestMermaidWriter(TestBase):
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Mermaid generation failed')
 
+        self._cleanup(baseFileName)
+
     def testSimpleInheritance(self):
 
         baseFileName: str = 'MermaidInheritance.md'
@@ -81,6 +83,8 @@ class TestMermaidWriter(TestBase):
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Inheritance failed')
 
+        self._cleanup(baseFileName)
+
     def testSimpleAggregation(self):
         baseFileName: str = 'MermaidAggregation.md'
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
@@ -99,8 +103,22 @@ class TestMermaidWriter(TestBase):
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Aggregation failed')
 
-    # def testSixtyFive(self):
-    #     print(f'I am test 65')
+        self._cleanup(baseFileName)
+
+    def testSimpleComposition(self):
+        baseFileName: str = 'MermaidComposition.md'
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+
+        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidComposition.xml')
+        untangler:  UnTangler = UnTangler()
+
+        untangler.untangleFile(fqFileName=fqFileName)
+
+        document: Document = untangler.documents[DocumentTitle('Aggregation')]
+        oglObjects: OglObjects = self._toPluginOglObjects(document=document)
+        self.logger.info(f'{oglObjects[0]=}')
+
+
 
     def _toPluginOglObjects(self, document: Document) -> OglObjects:
 
@@ -119,6 +137,11 @@ class TestMermaidWriter(TestBase):
         status: int = osSystem(f'{TestBase.EXTERNAL_DIFF} {baseFileName} {goldenFileName}')
 
         return status
+
+    def _cleanup(self, baseFileName: str):
+        path: Path = Path(baseFileName)
+
+        path.unlink()
 
 
 def suite() -> TestSuite:
