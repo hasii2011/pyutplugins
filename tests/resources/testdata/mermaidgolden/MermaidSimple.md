@@ -1,5 +1,6 @@
 ```mermaid
 classDiagram
+    %% Links follow
     class SimpleClass { 
         <<type>>
         +str publicMethod()
@@ -7,6 +8,5 @@ classDiagram
         #int protectedMethod()
         + methodNoReturnType()
         + methodWithParameters(parameter1, parameter2)
-}
+    }
 ```
-

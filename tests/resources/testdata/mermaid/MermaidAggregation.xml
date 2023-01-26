@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PyutProject version="10" CodePath="">
+	<PyutDocument type="CLASS_DIAGRAM" title="Aggregation" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="240" height="100" x="100" y="50">
+			<Class id="1" name="Author" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="amIEgostical" visibility="PUBLIC">
+					<Return type="bool"/>
+					<SourceCode/>
+				</Method>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="240" height="100" x="475" y="275">
+			<Class id="2" name="Book" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="bogusExpert" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="unImportant" type="bool" defaultValue="True"/>
+					<SourceCode/>
+				</Method>
+			</Class>
+		</GraphicClass>
+		<GraphicLink srcX="202" srcY="149" dstX="475" dstY="325" spline="False">
+			<LabelCenter x="461" y="311"/>
+			<LabelSrc x="461" y="311"/>
+			<LabelDst x="461" y="311"/>
+			<ControlPoint x="203" y="324"/>
+			<Link name="fakedAuthor" type="AGGREGATION" cardSrc="1.*" cardDestination="0.*" bidir="False" sourceId="1" destId="2"/>
+		</GraphicLink>
+	</PyutDocument>
+</PyutProject>

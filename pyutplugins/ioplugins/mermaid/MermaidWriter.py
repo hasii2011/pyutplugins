@@ -1,3 +1,4 @@
+
 from typing import List
 from typing import cast
 
@@ -21,6 +22,8 @@ from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 from ogl.OglLink import OglLink
 from ogl.OglClass import OglClass
 from ogl.OglInterface2 import OglInterface2
+from ogl.OglAggregation import OglAggregation
+from ogl.OglInheritance import OglInheritance
 
 from pyutplugins.ExternalTypes import OglObjects
 
@@ -59,18 +62,17 @@ class MermaidWriter:
         linksStanza: str = self._generateLinksStanza(oglObjects=oglObjects)
 
         mermaidString = f'{mermaidString}{linksStanza}'
-        generatedString: str = ''
+
         for oglObject in oglObjects:
             match oglObject:
                 case OglClass():
                     oglClass:  OglClass  = cast(OglClass, oglObject)
-                    generatedString = self._generateClassStanza(oglClass)
+                    generatedString: str = self._generateClassStanza(oglClass)
+                    mermaidString += f'{generatedString}'
                 case OglLink():
                     pass
                 case _:
                     self.logger.warning(f'Unknown Ogl element: {oglObject}')
-
-            mermaidString += f'{generatedString}{eol}'
 
         mermaidString += f'```{eol}'
         with self._fqFileName.open(mode='a') as fd:
@@ -93,13 +95,13 @@ class MermaidWriter:
         if pyutClass.stereotype == PyutStereotype.NO_STEREOTYPE:
             stereotypeRefrain: str = ''
         else:
-            stereotypeRefrain = f'{indent2}<<pyutClass.stereotype.value>>{eol}'
+            stereotypeRefrain = f'{indent2}<<{pyutClass.stereotype.value}>>{eol}'
 
         generatedString: str = (
             f'{indent1}class {pyutClass.name} {{ {eol}'
             f'{stereotypeRefrain}'
             f'{methodsStr}'
-            f'}}{eol}'
+            f'{indent1}}}{eol}'
         )
         return generatedString
 
@@ -116,19 +118,32 @@ class MermaidWriter:
 
         for oglObject in oglObjects:
             linkRefrain: str = ''
-            if isinstance(oglObject, OglLink):
-                oglLink:  OglLink  = cast(OglLink, oglObject)
-                pyutLink: PyutLink = oglLink.pyutObject
+            match oglObject:
+                case OglInheritance():
+                    oglLink:  OglLink  = cast(OglLink, oglObject)
+                    pyutLink: PyutLink = oglLink.pyutObject
 
-                subClassName:  str = pyutLink.getSource().name
-                baseClassName: str = pyutLink.getDestination().name
-                self.logger.info(f'{subClassName=} {pyutLink.linkType=} {baseClassName=}')
+                    subClassName:  str = pyutLink.getSource().name
+                    baseClassName: str = pyutLink.getDestination().name
+                    self.logger.info(f'{subClassName=} {pyutLink.linkType=} {baseClassName=}')
 
-                linkRefrain = (
-                    f'{indent1}{baseClassName}{INHERITANCE_ARROW}{subClassName}{eol}'
-                )
-            elif isinstance(oglObject, OglInterface2):
-                pass
+                    linkRefrain = (
+                        f'{indent1}{baseClassName}{INHERITANCE_ARROW}{subClassName}{eol}'
+                    )
+                case OglAggregation():
+                    oglAggregation: OglAggregation = cast(OglAggregation, oglObject)
+                    pyutLink = oglAggregation.pyutObject
+                    aggregatorName: str = pyutLink.getSource().name
+                    aggregatedName: str = pyutLink.getDestination().name
+
+                    self.logger.info(f'{oglAggregation} {aggregatorName=} {aggregatedName=}')
+                    linkRefrain = (
+                        f'{indent1}{aggregatorName} o-- {aggregatedName}{eol}'
+                    )
+                case OglInterface2():
+                    pass
+                case _:
+                    self.logger.warning(f'Unknown link type: {oglObject}')
             linksStanza += linkRefrain
 
         return linksStanza

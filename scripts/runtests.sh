@@ -34,6 +34,5 @@ status=$?
 
 
 echo "Exit with status: ${status}"
-# exit "${status}"
-exit 0  # work around for wxPython error
+exit "${status}"
 

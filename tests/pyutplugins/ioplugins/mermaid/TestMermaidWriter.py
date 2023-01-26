@@ -81,6 +81,27 @@ class TestMermaidWriter(TestBase):
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Inheritance failed')
 
+    def testSimpleAggregation(self):
+        baseFileName: str = 'MermaidAggregation.md'
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+
+        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidAggregation.xml')
+        untangler:  UnTangler = UnTangler()
+
+        untangler.untangleFile(fqFileName=fqFileName)
+
+        document: Document = untangler.documents[DocumentTitle('Aggregation')]
+        oglObjects: OglObjects = self._toPluginOglObjects(document=document)
+        self.logger.info(f'{oglObjects[0]=}')
+
+        mermaidWriter.translate(oglObjects=oglObjects)
+
+        status: int = self._runDiff(baseFileName=baseFileName)
+        self.assertEqual(0, status, 'Simple Aggregation failed')
+
+    # def testSixtyFive(self):
+    #     print(f'I am test 65')
+
     def _toPluginOglObjects(self, document: Document) -> OglObjects:
 
         oglObjects: OglObjects = OglObjects([])

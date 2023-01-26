@@ -41,7 +41,7 @@
             "propagate": "False"
         },
         "pyutplugins": {
-            "level":     "INFO",
+            "level":     "WARNING",
             "propagate": "False"
         },
         "pyutplugins.PluginManager": {
@@ -49,7 +49,7 @@
             "propagate": "False"
         },
         "tests": {
-            "level": "INFO",
+            "level": "WARNING",
             "propagate": "False"
         }
     }

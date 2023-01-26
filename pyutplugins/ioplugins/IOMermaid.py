@@ -1,18 +1,21 @@
-from logging import Logger
-from logging import getLogger
+
 from typing import cast
 
-from ExternalTypes import OglObjects
-from IPluginAdapter import IPluginAdapter
+from logging import Logger
+from logging import getLogger
 
-from plugininterfaces.IOPluginInterface import IOPluginInterface
-from plugintypes.ExportDirectoryResponse import ExportDirectoryResponse
-from plugintypes.InputFormat import InputFormat
-from plugintypes.OutputFormat import OutputFormat
-from plugintypes.PluginDataTypes import FormatName
-from plugintypes.PluginDataTypes import PluginDescription
-from plugintypes.PluginDataTypes import PluginExtension
-from plugintypes.PluginDataTypes import PluginName
+from pyutplugins.ExternalTypes import OglObjects
+from pyutplugins.IPluginAdapter import IPluginAdapter
+
+from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
+
+from pyutplugins.plugintypes.ExportDirectoryResponse import ExportDirectoryResponse
+from pyutplugins.plugintypes.InputFormat import InputFormat
+from pyutplugins.plugintypes.OutputFormat import OutputFormat
+from pyutplugins.plugintypes.PluginDataTypes import FormatName
+from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
+from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
+from pyutplugins.plugintypes.PluginDataTypes import PluginName
 
 
 FORMAT_NAME:        FormatName = FormatName('Mermaid')
