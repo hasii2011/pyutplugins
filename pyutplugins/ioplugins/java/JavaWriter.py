@@ -16,7 +16,8 @@ from os import sep as osSep
 from ogl.OglClass import OglClass
 
 from pyutmodel.PyutLink import PyutLink
-from pyutmodel.ModelTypes import PyutLinks
+from pyutmodel.PyutLink import PyutLinks
+
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutMethod import PyutMethod
