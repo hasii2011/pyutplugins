@@ -34,5 +34,5 @@ status=$?
 
 
 echo "Exit with status: ${status}"
-exit "${status}"
+# exit "${status}"
 
