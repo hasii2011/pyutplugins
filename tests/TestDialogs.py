@@ -4,6 +4,8 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from enum import Enum
+
 from wx import App
 from wx import CB_READONLY
 from wx import ComboBox
@@ -19,13 +21,9 @@ from wx.lib.sized_controls import SizedStaticBox
 
 from pyutplugins.ioplugins.wximage.DlgWxImageOptions import DlgWxImageOptions
 from pyutplugins.toolplugins.orthogonal.DlgLayoutSize import DlgLayoutSize
-
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
 from tests.TestBase import TestBase
-
-
-from enum import Enum
 
 
 class DialogNamesEnum(Enum):

@@ -4,8 +4,8 @@ __pycache__/
 /html/
 build/
 dist/
-pyutplugincore.egg-info/
+/pyutplugins.egg-info/
 /pyenv-3.10.6/
-/pyenv-3.10.0/
+/.mypy_cache/
 .envrc
 .python-version
