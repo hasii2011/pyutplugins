@@ -6,6 +6,8 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from enum import Enum
+
 from os import linesep as eol
 
 from datetime import datetime
@@ -26,6 +28,7 @@ from ogl.OglInterface2 import OglInterface2
 from ogl.OglAggregation import OglAggregation
 from ogl.OglInheritance import OglInheritance
 from ogl.OglComposition import OglComposition
+from ogl.OglAssociation import OglAssociation
 
 from pyutplugins.ExternalTypes import OglObjects
 
@@ -36,9 +39,11 @@ indent3: str = f'{indent2}    '
 indent4: str = f'{indent3}    '
 indent5: str = f'{indent4}    '
 
-INHERITANCE_ARROW: str = '<|--'     # Points to parent class
-AGGREGATION_LINK:  str = 'o--'      #
-COMPOSITION_LINK:  str = '*--'      #
+
+class MermaidArrow(Enum):
+    INHERITANCE_ARROW = '<|--'     # Points to parent class
+    AGGREGATION_LINK  = 'o--'      #
+    COMPOSITION_LINK  = '*--'      #
 
 
 class MermaidWriter:
@@ -124,40 +129,13 @@ class MermaidWriter:
             linkRefrain: str = ''
             match oglObject:
                 case OglInheritance():
-                    oglLink:  OglLink  = cast(OglLink, oglObject)
-                    pyutLink: PyutLink = oglLink.pyutObject
-
-                    subClassName:  str = pyutLink.getSource().name
-                    baseClassName: str = pyutLink.getDestination().name
-                    self.logger.info(f'{subClassName=} {pyutLink.linkType=} {baseClassName=}')
-
-                    linkRefrain = (
-                        f'{indent1}{baseClassName}{INHERITANCE_ARROW}{subClassName}{eol}'
-                    )
+                    linkRefrain = self._getInheritanceLinkRefrain(oglLink=oglObject)
                 case OglAggregation():
                     oglAggregation: OglAggregation = cast(OglAggregation, oglObject)
-                    pyutLink:       PyutLink       = oglAggregation.pyutObject
-                    aggregatorName: str = pyutLink.getSource().name
-                    aggregatedName: str = pyutLink.getDestination().name
-
-                    self.logger.info(f'{oglAggregation} {aggregatorName=} {aggregatedName=}')
-
-                    aggregatorCardinality, aggregatedCardinality = self._getCardinalityStrings(pyutLink)
-                    linkRefrain = (
-                        f'{indent1}{aggregatorName} {aggregatorCardinality} {AGGREGATION_LINK} {aggregatedCardinality} {aggregatedName}{eol}'
-                    )
+                    linkRefrain = self._getAssociationLinkRefrain(oglAssociation=oglAggregation, arrowType=MermaidArrow.AGGREGATION_LINK)
                 case OglComposition():
                     oglComposition: OglComposition = cast(OglComposition, oglObject)
-                    pyutLink:       PyutLink       = oglComposition.pyutObject
-                    composerName:   str            = pyutLink.getSource().name
-                    composedName:   str            = pyutLink.getDestination().name
-                    self.logger.info(f'{oglComposition} {composerName=} {composedName=}')
-
-                    composerCardinality, composedCardinality = self._getCardinalityStrings(pyutLink)
-                    linkRefrain = (
-                        f'{indent1}{composerName} {composerCardinality} {COMPOSITION_LINK} {composedCardinality} {composedName}{eol}'
-                    )
-
+                    linkRefrain = self._getAssociationLinkRefrain(oglAssociation=oglComposition, arrowType=MermaidArrow.COMPOSITION_LINK)
                 case OglInterface2():
                     pass
                 case _:
@@ -165,6 +143,45 @@ class MermaidWriter:
             linksStanza += linkRefrain
 
         return linksStanza
+
+    def _getAssociationLinkRefrain(self, oglAssociation: OglAssociation, arrowType: MermaidArrow) -> str:
+        """
+        For Composition and Aggregation the diamond is on the source side
+        Args:
+            oglAssociation:
+            arrowType:
+
+        Returns:
+        """
+        pyutLink: PyutLink = oglAssociation.pyutObject
+        sourceName:      str = pyutLink.getSource().name
+        destinationName: str = pyutLink.getDestination().name
+        self.logger.info(f'{oglAssociation} {sourceName=} {destinationName=}')
+
+        sourceCardinality, destinationCardinality = self._getCardinalityStrings(pyutLink)
+        linkRefrain = (
+            f'{indent1}{sourceName} {sourceCardinality} {arrowType.value} {destinationCardinality} {destinationName}{eol}'
+        )
+        return linkRefrain
+
+    def _getInheritanceLinkRefrain(self, oglLink: OglLink) -> str:
+        """
+        Args:
+            oglLink:  The inheritance link
+
+        Returns:  Mermaid string for inheritance
+        """
+        pyutLink: PyutLink = oglLink.pyutObject
+
+        subClassName:  str = pyutLink.getSource().name
+        baseClassName: str = pyutLink.getDestination().name
+        self.logger.info(f'{subClassName=} {pyutLink.linkType=} {baseClassName=}')
+
+        linkRefrain = (
+            f'{indent1}{baseClassName}{MermaidArrow.INHERITANCE_ARROW.value}{subClassName}{eol}'
+        )
+
+        return linkRefrain
 
     def _getCardinalityStrings(self, pyutLink) -> Tuple[str, str]:
         """
@@ -178,7 +195,8 @@ class MermaidWriter:
         if pyutLink.sourceCardinality == '':
             sourceCardinality: str = ''
         else:
-            sourceCardinality: str = f'"{pyutLink.sourceCardinality}"'
+            sourceCardinality = f'"{pyutLink.sourceCardinality}"'
+            
         if pyutLink.destinationCardinality == '':
             destinationCardinality: str = ''
         else:

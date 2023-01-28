@@ -2,6 +2,7 @@
 from typing import cast
 
 from os import system as osSystem
+from os import environ
 
 from pathlib import Path
 
@@ -40,6 +41,16 @@ class TestMermaidWriter(TestBase):
 
         self.logger: Logger = TestMermaidWriter.clsLogger
 
+        try:
+            keep = environ["KEEP"]
+            if keep.lower().strip() == 'true':
+                self._keep = True
+            else:
+                self._keep = False
+        except KeyError:
+            self.logger.info(f'No need to keep data files')
+            self._keep = False
+
     def tearDown(self):
         pass
 
@@ -61,7 +72,8 @@ class TestMermaidWriter(TestBase):
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Mermaid generation failed')
 
-        self._cleanup(baseFileName)
+        if self._keep is False:
+            self._cleanup(baseFileName)
 
     def testSimpleInheritance(self):
 
@@ -83,7 +95,8 @@ class TestMermaidWriter(TestBase):
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Inheritance failed')
 
-        self._cleanup(baseFileName)
+        if self._keep is False:
+            self._cleanup(baseFileName)
 
     def testSimpleAggregation(self):
         baseFileName: str = 'MermaidAggregation.md'
@@ -103,7 +116,8 @@ class TestMermaidWriter(TestBase):
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Aggregation failed')
 
-        self._cleanup(baseFileName)
+        if self._keep is False:
+            self._cleanup(baseFileName)
 
     def testSimpleComposition(self):
         baseFileName: str = 'MermaidComposition.md'
@@ -122,8 +136,8 @@ class TestMermaidWriter(TestBase):
 
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Aggregation failed')
-        #
-        # self._cleanup(baseFileName)
+        if self._keep is False:
+            self._cleanup(baseFileName)
 
     def _toPluginOglObjects(self, document: Document) -> OglObjects:
 
