@@ -114,11 +114,16 @@ class TestMermaidWriter(TestBase):
 
         untangler.untangleFile(fqFileName=fqFileName)
 
-        document: Document = untangler.documents[DocumentTitle('Aggregation')]
+        document: Document = untangler.documents[DocumentTitle('Composition')]
         oglObjects: OglObjects = self._toPluginOglObjects(document=document)
         self.logger.info(f'{oglObjects[0]=}')
 
+        mermaidWriter.translate(oglObjects=oglObjects)
 
+        status: int = self._runDiff(baseFileName=baseFileName)
+        self.assertEqual(0, status, 'Simple Aggregation failed')
+        #
+        # self._cleanup(baseFileName)
 
     def _toPluginOglObjects(self, document: Document) -> OglObjects:
 

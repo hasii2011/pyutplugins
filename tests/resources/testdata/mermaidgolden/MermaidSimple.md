@@ -1,5 +1,6 @@
 ```mermaid
 classDiagram
+    direction RL
     %% Links follow
     class SimpleClass { 
         <<type>>

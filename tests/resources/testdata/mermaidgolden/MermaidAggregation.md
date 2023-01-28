@@ -1,7 +1,8 @@
 ```mermaid
 classDiagram
+    direction RL
     %% Links follow
-    Author o-- Book
+    Author "1.*" o-- "0.*" Book
     class Author { 
         +bool amIEgostical()
     }

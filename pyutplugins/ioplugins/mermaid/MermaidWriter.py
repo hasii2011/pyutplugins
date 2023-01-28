@@ -1,5 +1,6 @@
 
 from typing import List
+from typing import Tuple
 from typing import cast
 
 from logging import Logger
@@ -24,6 +25,7 @@ from ogl.OglClass import OglClass
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglAggregation import OglAggregation
 from ogl.OglInheritance import OglInheritance
+from ogl.OglComposition import OglComposition
 
 from pyutplugins.ExternalTypes import OglObjects
 
@@ -35,6 +37,8 @@ indent4: str = f'{indent3}    '
 indent5: str = f'{indent4}    '
 
 INHERITANCE_ARROW: str = '<|--'     # Points to parent class
+AGGREGATION_LINK:  str = 'o--'      #
+COMPOSITION_LINK:  str = '*--'      #
 
 
 class MermaidWriter:
@@ -57,7 +61,7 @@ class MermaidWriter:
     def translate(self, oglObjects: OglObjects):
 
         mermaidString: str = f'```mermaid{eol}'
-        mermaidString = f'{mermaidString}classDiagram{eol}'
+        mermaidString = f'{mermaidString}classDiagram{eol}{indent1}direction RL{eol}'   # TODO: direction should be configurable
 
         linksStanza: str = self._generateLinksStanza(oglObjects=oglObjects)
 
@@ -132,21 +136,55 @@ class MermaidWriter:
                     )
                 case OglAggregation():
                     oglAggregation: OglAggregation = cast(OglAggregation, oglObject)
-                    pyutLink = oglAggregation.pyutObject
+                    pyutLink:       PyutLink       = oglAggregation.pyutObject
                     aggregatorName: str = pyutLink.getSource().name
                     aggregatedName: str = pyutLink.getDestination().name
 
                     self.logger.info(f'{oglAggregation} {aggregatorName=} {aggregatedName=}')
+
+                    aggregatorCardinality, aggregatedCardinality = self._getCardinalityStrings(pyutLink)
                     linkRefrain = (
-                        f'{indent1}{aggregatorName} o-- {aggregatedName}{eol}'
+                        f'{indent1}{aggregatorName} {aggregatorCardinality} {AGGREGATION_LINK} {aggregatedCardinality} {aggregatedName}{eol}'
                     )
+                case OglComposition():
+                    oglComposition: OglComposition = cast(OglComposition, oglObject)
+                    pyutLink:       PyutLink       = oglComposition.pyutObject
+                    composerName:   str            = pyutLink.getSource().name
+                    composedName:   str            = pyutLink.getDestination().name
+                    self.logger.info(f'{oglComposition} {composerName=} {composedName=}')
+
+                    composerCardinality, composedCardinality = self._getCardinalityStrings(pyutLink)
+                    linkRefrain = (
+                        f'{indent1}{composerName} {composerCardinality} {COMPOSITION_LINK} {composedCardinality} {composedName}{eol}'
+                    )
+
                 case OglInterface2():
                     pass
                 case _:
-                    self.logger.warning(f'Unknown link type: {oglObject}')
+                    pass        # Ignore non links
             linksStanza += linkRefrain
 
         return linksStanza
+
+    def _getCardinalityStrings(self, pyutLink) -> Tuple[str, str]:
+        """
+
+        Args:
+            pyutLink:
+
+        Returns: A tuple of source, destination cardinality strings
+
+        """
+        if pyutLink.sourceCardinality == '':
+            sourceCardinality: str = ''
+        else:
+            sourceCardinality: str = f'"{pyutLink.sourceCardinality}"'
+        if pyutLink.destinationCardinality == '':
+            destinationCardinality: str = ''
+        else:
+            destinationCardinality = f'"{pyutLink.destinationCardinality}"'
+
+        return sourceCardinality, destinationCardinality
 
     def _generateMethods(self, methods: List[PyutMethod]) -> str:
 
