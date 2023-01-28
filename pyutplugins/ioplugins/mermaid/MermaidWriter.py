@@ -147,6 +147,19 @@ class MermaidWriter:
     def _getAssociationLinkRefrain(self, oglAssociation: OglAssociation, arrowType: MermaidArrow) -> str:
         """
         For Composition and Aggregation the diamond is on the source side
+        Produces refrains of the form:
+
+        For composition:
+        Person "1" *-- "1" Heart
+
+        Where Person is the 'composer' and Heart is the 'composed'
+
+        For aggregation
+
+        Author "1.*" o-- "0.*" Book
+
+        Where Author aggregates Books
+
         Args:
             oglAssociation:
             arrowType:
@@ -160,12 +173,18 @@ class MermaidWriter:
 
         sourceCardinality, destinationCardinality = self._getCardinalityStrings(pyutLink)
         linkRefrain = (
-            f'{indent1}{sourceName} {sourceCardinality} {arrowType.value} {destinationCardinality} {destinationName}{eol}'
+            f'{indent1}{sourceName} {sourceCardinality} {arrowType.value} {destinationCardinality} {destinationName} : {pyutLink.name}{eol}'
         )
         return linkRefrain
 
     def _getInheritanceLinkRefrain(self, oglLink: OglLink) -> str:
         """
+        Produces strings of the form:
+
+        Animal<|--Duck
+
+        Where Animal is the parent class and Duck is the subclass
+
         Args:
             oglLink:  The inheritance link
 

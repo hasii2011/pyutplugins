@@ -46,13 +46,13 @@ class TestMermaidWriter(TestBase):
         TestBase.setUpLogging()
         TestMermaidWriter.clsLogger = getLogger(__name__)
 
-        try:
+        if 'KEEP' in environ:
             keep: str = environ["KEEP"]
             if keep.lower().strip() == 'true':
-                cls.keep: bool = True
+                cls.keep = True
             else:
                 cls.keep = False
-        except KeyError:
+        else:
             cls.clsLogger.info(f'No need to keep data files')
             cls.keep = False
 
@@ -167,7 +167,8 @@ class TestMermaidWriter(TestBase):
     def cleanup(cls, baseFileName: str):
         path: Path = Path(baseFileName)
 
-        path.unlink()
+        if path.exists() is True:
+            path.unlink()
 
 
 def suite() -> TestSuite:

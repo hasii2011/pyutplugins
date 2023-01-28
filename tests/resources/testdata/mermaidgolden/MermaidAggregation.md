@@ -2,7 +2,7 @@
 classDiagram
     direction RL
     %% Links follow
-    Author "1.*" o-- "0.*" Book
+    Author "1.*" o-- "0.*" Book : fakeAuthor
     class Author { 
         +bool amIEgostical()
     }

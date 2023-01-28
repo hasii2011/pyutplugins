@@ -23,7 +23,7 @@
 			<LabelSrc x="461" y="311"/>
 			<LabelDst x="461" y="311"/>
 			<ControlPoint x="203" y="324"/>
-			<Link name="fakedAuthor" type="AGGREGATION" cardSrc="1.*" cardDestination="0.*" bidir="False" sourceId="1" destId="2"/>
+			<Link name="fakeAuthor" type="AGGREGATION" cardSrc="1.*" cardDestination="0.*" bidir="False" sourceId="1" destId="2"/>
 		</GraphicLink>
 	</PyutDocument>
 </PyutProject>

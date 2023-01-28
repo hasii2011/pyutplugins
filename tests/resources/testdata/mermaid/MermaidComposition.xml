@@ -2,25 +2,25 @@
 <PyutProject version="10" CodePath="">
 	<PyutDocument type="CLASS_DIAGRAM" title="Composition" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
 		<GraphicClass width="240" height="100" x="75" y="50">
-			<Class id="1" name="Person" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+			<Class id="3" name="Person" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
 		</GraphicClass>
 		<GraphicClass width="240" height="100" x="250" y="325">
-			<Class id="2" name="Heart" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+			<Class id="4" name="Heart" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
 		</GraphicClass>
 		<GraphicClass width="240" height="100" x="550" y="100">
-			<Class id="3" name="Hands" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+			<Class id="5" name="Hands" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
 		</GraphicClass>
 		<GraphicLink srcX="195" srcY="149" dstX="370" dstY="325" spline="False">
 			<LabelCenter x="531" y="145"/>
 			<LabelSrc x="531" y="145"/>
 			<LabelDst x="531" y="145"/>
-			<Link name="has" type="COMPOSITION" cardSrc="1" cardDestination="1" bidir="False" sourceId="1" destId="2"/>
+			<Link name="has" type="COMPOSITION" cardSrc="1" cardDestination="1" bidir="False" sourceId="3" destId="4"/>
 		</GraphicLink>
 		<GraphicLink srcX="314" srcY="100" dstX="550" dstY="150" spline="False">
 			<LabelCenter x="531" y="145"/>
 			<LabelSrc x="531" y="145"/>
 			<LabelDst x="531" y="145"/>
-			<Link name="hasii" type="COMPOSITION" cardSrc="1" cardDestination="2" bidir="False" sourceId="1" destId="3"/>
+			<Link name="has" type="COMPOSITION" cardSrc="1" cardDestination="2" bidir="False" sourceId="3" destId="5"/>
 		</GraphicLink>
 	</PyutDocument>
 </PyutProject>
