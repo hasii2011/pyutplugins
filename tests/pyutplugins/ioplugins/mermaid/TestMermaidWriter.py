@@ -1,4 +1,5 @@
 
+from typing import List
 from typing import cast
 
 from os import system as osSystem
@@ -25,15 +26,41 @@ from unittest import main as unitTestMain
 from tests.TestBase import TestBase
 
 
+COMPOSITION_MD:         str = 'MermaidComposition.md'
+MERMAID_AGGREGATION_MD: str = 'MermaidAggregation.md'
+MERMAID_INHERITANCE_MD: str = 'MermaidInheritance.md'
+MERMAID_SIMPLE_MD:      str = 'MermaidSimple.md'
+
+# File names to delete at end of tests
+GENERATED_FILE_NAMES: List[str] = [COMPOSITION_MD, MERMAID_AGGREGATION_MD, MERMAID_INHERITANCE_MD, MERMAID_SIMPLE_MD]
+
+
 class TestMermaidWriter(TestBase):
     """
     """
     clsLogger: Logger = cast(Logger, None)
+    keep:      bool   = False
 
     @classmethod
     def setUpClass(cls):
         TestBase.setUpLogging()
         TestMermaidWriter.clsLogger = getLogger(__name__)
+
+        try:
+            keep: str = environ["KEEP"]
+            if keep.lower().strip() == 'true':
+                cls.keep: bool = True
+            else:
+                cls.keep = False
+        except KeyError:
+            cls.clsLogger.info(f'No need to keep data files')
+            cls.keep = False
+
+    @classmethod
+    def tearDownClass(cls):
+        if cls.keep is False:
+            for fileName in GENERATED_FILE_NAMES:
+                cls.cleanup(fileName)
 
     def setUp(self):
         # I need a wx.App
@@ -41,21 +68,11 @@ class TestMermaidWriter(TestBase):
 
         self.logger: Logger = TestMermaidWriter.clsLogger
 
-        try:
-            keep = environ["KEEP"]
-            if keep.lower().strip() == 'true':
-                self._keep = True
-            else:
-                self._keep = False
-        except KeyError:
-            self.logger.info(f'No need to keep data files')
-            self._keep = False
-
     def tearDown(self):
         pass
 
     def testSimpleClass(self):
-        baseFileName: str = 'MermaidSimple.md'
+        baseFileName: str = MERMAID_SIMPLE_MD
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'SimpleClass.xml')
@@ -72,12 +89,9 @@ class TestMermaidWriter(TestBase):
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Mermaid generation failed')
 
-        if self._keep is False:
-            self._cleanup(baseFileName)
-
     def testSimpleInheritance(self):
 
-        baseFileName: str = 'MermaidInheritance.md'
+        baseFileName: str = MERMAID_INHERITANCE_MD
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidInheritance.xml')
@@ -95,11 +109,8 @@ class TestMermaidWriter(TestBase):
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Inheritance failed')
 
-        if self._keep is False:
-            self._cleanup(baseFileName)
-
     def testSimpleAggregation(self):
-        baseFileName: str = 'MermaidAggregation.md'
+        baseFileName: str = MERMAID_AGGREGATION_MD
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidAggregation.xml')
@@ -116,11 +127,8 @@ class TestMermaidWriter(TestBase):
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Aggregation failed')
 
-        if self._keep is False:
-            self._cleanup(baseFileName)
-
     def testSimpleComposition(self):
-        baseFileName: str = 'MermaidComposition.md'
+        baseFileName: str = COMPOSITION_MD
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidComposition.xml')
@@ -136,8 +144,6 @@ class TestMermaidWriter(TestBase):
 
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Aggregation failed')
-        if self._keep is False:
-            self._cleanup(baseFileName)
 
     def _toPluginOglObjects(self, document: Document) -> OglObjects:
 
@@ -157,7 +163,8 @@ class TestMermaidWriter(TestBase):
 
         return status
 
-    def _cleanup(self, baseFileName: str):
+    @classmethod
+    def cleanup(cls, baseFileName: str):
         path: Path = Path(baseFileName)
 
         path.unlink()

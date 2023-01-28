@@ -196,7 +196,7 @@ class MermaidWriter:
             sourceCardinality: str = ''
         else:
             sourceCardinality = f'"{pyutLink.sourceCardinality}"'
-            
+
         if pyutLink.destinationCardinality == '':
             destinationCardinality: str = ''
         else:
