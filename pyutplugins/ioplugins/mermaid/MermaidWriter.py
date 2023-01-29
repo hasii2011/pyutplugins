@@ -29,6 +29,7 @@ from ogl.OglAggregation import OglAggregation
 from ogl.OglInheritance import OglInheritance
 from ogl.OglComposition import OglComposition
 from ogl.OglAssociation import OglAssociation
+from ogl.OglInterface import OglInterface
 
 from pyutplugins.ExternalTypes import OglObjects
 
@@ -41,9 +42,10 @@ indent5: str = f'{indent4}    '
 
 
 class MermaidArrow(Enum):
-    INHERITANCE_ARROW = '<|--'     # Points to parent class
-    AGGREGATION_LINK  = 'o--'      #
-    COMPOSITION_LINK  = '*--'      #
+    INHERITANCE_ARROW = '<|--'  # Points to parent class
+    AGGREGATION_LINK  = 'o--'   #
+    COMPOSITION_LINK  = '*--'   #
+    INTERFACE_LINK    = '..|>'      #
 
 
 class MermaidWriter:
@@ -136,6 +138,9 @@ class MermaidWriter:
                 case OglComposition():
                     oglComposition: OglComposition = cast(OglComposition, oglObject)
                     linkRefrain = self._getAssociationLinkRefrain(oglAssociation=oglComposition, arrowType=MermaidArrow.COMPOSITION_LINK)
+                case OglInterface():
+                    oglInterface: OglInterface = cast(OglInterface, oglObject)
+                    linkRefrain = self._getRealizationLinkRefrain(oglInterface)
                 case OglInterface2():
                     pass
                 case _:
@@ -196,8 +201,18 @@ class MermaidWriter:
         baseClassName: str = pyutLink.getDestination().name
         self.logger.info(f'{subClassName=} {pyutLink.linkType=} {baseClassName=}')
 
-        linkRefrain = (
+        linkRefrain: str  = (
             f'{indent1}{baseClassName}{MermaidArrow.INHERITANCE_ARROW.value}{subClassName}{eol}'
+        )
+
+        return linkRefrain
+
+    def _getRealizationLinkRefrain(self, oglInterface: OglInterface) -> str:
+        pyutLink: PyutLink = oglInterface.pyutObject
+        interfaceName:   str = pyutLink.getSource().name
+        implementorName: str = pyutLink.getDestination().name
+        linkRefrain: str = (
+            f'{indent1}{interfaceName} {MermaidArrow.INTERFACE_LINK.value} {implementorName}{eol}'
         )
 
         return linkRefrain

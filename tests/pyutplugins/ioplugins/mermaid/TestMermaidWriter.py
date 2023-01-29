@@ -25,14 +25,15 @@ from unittest import main as unitTestMain
 
 from tests.TestBase import TestBase
 
-
-COMPOSITION_MD:         str = 'MermaidComposition.md'
-MERMAID_AGGREGATION_MD: str = 'MermaidAggregation.md'
-MERMAID_INHERITANCE_MD: str = 'MermaidInheritance.md'
-MERMAID_SIMPLE_MD:      str = 'MermaidSimple.md'
+# The base file names
+REALIZATION: str = 'MermaidRealization.md'
+COMPOSITION: str = 'MermaidComposition.md'
+AGGREGATION: str = 'MermaidAggregation.md'
+INHERITANCE: str = 'MermaidInheritance.md'
+SIMPLE_MD:   str = 'MermaidSimple.md'
 
 # File names to delete at end of tests
-GENERATED_FILE_NAMES: List[str] = [COMPOSITION_MD, MERMAID_AGGREGATION_MD, MERMAID_INHERITANCE_MD, MERMAID_SIMPLE_MD]
+GENERATED_FILE_NAMES: List[str] = [REALIZATION, COMPOSITION, AGGREGATION, INHERITANCE, SIMPLE_MD]
 
 
 class TestMermaidWriter(TestBase):
@@ -72,7 +73,7 @@ class TestMermaidWriter(TestBase):
         pass
 
     def testSimpleClass(self):
-        baseFileName: str = MERMAID_SIMPLE_MD
+        baseFileName: str = SIMPLE_MD
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'SimpleClass.xml')
@@ -91,7 +92,7 @@ class TestMermaidWriter(TestBase):
 
     def testSimpleInheritance(self):
 
-        baseFileName: str = MERMAID_INHERITANCE_MD
+        baseFileName: str = INHERITANCE
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidInheritance.xml')
@@ -110,7 +111,7 @@ class TestMermaidWriter(TestBase):
         self.assertEqual(0, status, 'Simple Inheritance failed')
 
     def testSimpleAggregation(self):
-        baseFileName: str = MERMAID_AGGREGATION_MD
+        baseFileName: str = AGGREGATION
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidAggregation.xml')
@@ -128,7 +129,7 @@ class TestMermaidWriter(TestBase):
         self.assertEqual(0, status, 'Simple Aggregation failed')
 
     def testSimpleComposition(self):
-        baseFileName: str = COMPOSITION_MD
+        baseFileName: str = COMPOSITION
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidComposition.xml')
@@ -144,6 +145,24 @@ class TestMermaidWriter(TestBase):
 
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Aggregation failed')
+
+    def testSimpleRealization(self):
+        baseFileName: str = REALIZATION
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+
+        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidRealization.xml')
+        untangler:  UnTangler = UnTangler()
+
+        untangler.untangleFile(fqFileName=fqFileName)
+
+        document: Document = untangler.documents[DocumentTitle('Realization')]
+        oglObjects: OglObjects = self._toPluginOglObjects(document=document)
+        self.logger.info(f'{oglObjects[0]=}')
+
+        mermaidWriter.translate(oglObjects=oglObjects)
+
+        status: int = self._runDiff(baseFileName=baseFileName)
+        self.assertEqual(0, status, 'Simple Realization failed')
 
     def _toPluginOglObjects(self, document: Document) -> OglObjects:
 

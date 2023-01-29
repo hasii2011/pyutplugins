@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PyutProject version="10" CodePath="">
+	<PyutDocument type="CLASS_DIAGRAM" title="Realization" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="167" height="80" x="425" y="75">
+			<Class id="6" name="IResizable" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="setSize" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="getMinimumSize" visibility="PUBLIC">
+					<Return type="int"/>
+					<SourceCode/>
+				</Method>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="240" height="100" x="400" y="250">
+			<Class id="7" name="DiagramElement" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicLink srcX="520" srcY="250" dstX="521" dstY="154" spline="False">
+			<Link name="Interface-19" type="INTERFACE" cardSrc="" cardDestination="" bidir="False" sourceId="7" destId="6"/>
+		</GraphicLink>
+	</PyutDocument>
+</PyutProject>
