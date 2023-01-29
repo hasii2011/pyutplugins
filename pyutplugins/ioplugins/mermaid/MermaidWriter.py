@@ -45,7 +45,8 @@ class MermaidArrow(Enum):
     INHERITANCE_ARROW = '<|--'  # Points to parent class
     AGGREGATION_LINK  = 'o--'   #
     COMPOSITION_LINK  = '*--'   #
-    INTERFACE_LINK    = '..|>'      #
+    INTERFACE_LINK    = '..|>'  #
+    ASSOCIATION_LINK  = '--'
 
 
 class MermaidWriter:
@@ -141,6 +142,9 @@ class MermaidWriter:
                 case OglInterface():
                     oglInterface: OglInterface = cast(OglInterface, oglObject)
                     linkRefrain = self._getRealizationLinkRefrain(oglInterface)
+                case OglAssociation():      # Most general needs to be last
+                    oglAssociation: OglAssociation = cast(OglAssociation, oglObject)
+                    linkRefrain = self._getAssociationLinkRefrain(oglAssociation=oglAssociation, arrowType=MermaidArrow.ASSOCIATION_LINK)
                 case OglInterface2():
                     pass
                 case _:

@@ -26,11 +26,12 @@ from unittest import main as unitTestMain
 from tests.TestBase import TestBase
 
 # The base file names
-REALIZATION: str = 'MermaidRealization'
-COMPOSITION: str = 'MermaidComposition'
-AGGREGATION: str = 'MermaidAggregation'
-INHERITANCE: str = 'MermaidInheritance'
-SIMPLE:      str = 'MermaidSimpleClass'
+REALIZATION:       str = 'MermaidRealization'
+COMPOSITION:       str = 'MermaidComposition'
+AGGREGATION:       str = 'MermaidAggregation'
+INHERITANCE:       str = 'MermaidInheritance'
+SIMPLE:            str = 'MermaidSimpleClass'
+BASIC_ASSOCIATION: str = 'MermaidBasicAssociation'
 
 SUFFIX_MARKDOWN: str = '.md'
 SUFFIX_XML:      str = '.xml'
@@ -40,6 +41,7 @@ GENERATED_FILE_NAMES: List[str] = [f'{REALIZATION}{SUFFIX_MARKDOWN}',
                                    f'{AGGREGATION}{SUFFIX_MARKDOWN}',
                                    f'{INHERITANCE}{SUFFIX_MARKDOWN}',
                                    f'{SIMPLE}{SUFFIX_MARKDOWN}',
+                                   f'{BASIC_ASSOCIATION}{SUFFIX_MARKDOWN}'
                                    ]
 
 
@@ -84,15 +86,8 @@ class TestMermaidWriter(TestBase):
         baseFileName: str = f'{SIMPLE}{SUFFIX_MARKDOWN}'
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
-        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, f'{SIMPLE}{SUFFIX_XML}')
-        untangler:  UnTangler = UnTangler()
+        oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{SIMPLE}{SUFFIX_XML}', documentTitle='SimpleDiagram')
 
-        untangler.untangleFile(fqFileName=fqFileName)
-
-        document: Document = untangler.documents[DocumentTitle('SimpleDiagram')]
-
-        oglObjects: OglObjects = self._toPluginOglObjects(document=document)
-        self.logger.info(f'{oglObjects[0]=}')
         mermaidWriter.translate(oglObjects=oglObjects)
 
         status: int = self._runDiff(baseFileName=baseFileName)
@@ -103,15 +98,7 @@ class TestMermaidWriter(TestBase):
         baseFileName: str = f'{INHERITANCE}{SUFFIX_MARKDOWN}'
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
-        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidInheritance.xml')
-        untangler:  UnTangler = UnTangler()
-
-        untangler.untangleFile(fqFileName=fqFileName)
-
-        document: Document = untangler.documents[DocumentTitle('Inheritance')]
-
-        oglObjects: OglObjects = self._toPluginOglObjects(document=document)
-        self.logger.info(f'{oglObjects[0]=}')
+        oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{INHERITANCE}{SUFFIX_XML}', documentTitle='Inheritance')
 
         mermaidWriter.translate(oglObjects=oglObjects)
 
@@ -122,14 +109,7 @@ class TestMermaidWriter(TestBase):
         baseFileName: str = f'{AGGREGATION}{SUFFIX_MARKDOWN}'
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
-        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidAggregation.xml')
-        untangler:  UnTangler = UnTangler()
-
-        untangler.untangleFile(fqFileName=fqFileName)
-
-        document: Document = untangler.documents[DocumentTitle('Aggregation')]
-        oglObjects: OglObjects = self._toPluginOglObjects(document=document)
-        self.logger.info(f'{oglObjects[0]=}')
+        oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{AGGREGATION}{SUFFIX_XML}', documentTitle='Aggregation')
 
         mermaidWriter.translate(oglObjects=oglObjects)
 
@@ -140,15 +120,7 @@ class TestMermaidWriter(TestBase):
         baseFileName: str = f'{COMPOSITION}{SUFFIX_MARKDOWN}'
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
-        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidComposition.xml')
-        untangler:  UnTangler = UnTangler()
-
-        untangler.untangleFile(fqFileName=fqFileName)
-
-        document: Document = untangler.documents[DocumentTitle('Composition')]
-        oglObjects: OglObjects = self._toPluginOglObjects(document=document)
-        self.logger.info(f'{oglObjects[0]=}')
-
+        oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{COMPOSITION}{SUFFIX_XML}', documentTitle='Composition')
         mermaidWriter.translate(oglObjects=oglObjects)
 
         status: int = self._runDiff(baseFileName=baseFileName)
@@ -158,19 +130,34 @@ class TestMermaidWriter(TestBase):
         baseFileName: str = f'{REALIZATION}{SUFFIX_MARKDOWN}'
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
-        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidRealization.xml')
-        untangler:  UnTangler = UnTangler()
-
-        untangler.untangleFile(fqFileName=fqFileName)
-
-        document: Document = untangler.documents[DocumentTitle('Realization')]
-        oglObjects: OglObjects = self._toPluginOglObjects(document=document)
-        self.logger.info(f'{oglObjects[0]=}')
-
+        oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{REALIZATION}{SUFFIX_XML}', documentTitle='Realization')
         mermaidWriter.translate(oglObjects=oglObjects)
 
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Realization failed')
+
+    def testBasicAssociation(self):
+        baseFileName: str = f'{BASIC_ASSOCIATION}{SUFFIX_MARKDOWN}'
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+
+        oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{BASIC_ASSOCIATION}{SUFFIX_XML}', documentTitle='Association')
+        mermaidWriter.translate(oglObjects=oglObjects)
+
+        status: int = self._runDiff(baseFileName=baseFileName)
+        self.assertEqual(0, status, 'Simple Association failed')
+
+    def _getTestObjects(self, baseXmlFileName: str, documentTitle: str) -> OglObjects:
+
+        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, baseXmlFileName)
+        untangler:  UnTangler = UnTangler()
+
+        untangler.untangleFile(fqFileName=fqFileName)
+
+        document:   Document   = untangler.documents[DocumentTitle(documentTitle)]
+        oglObjects: OglObjects = self._toPluginOglObjects(document=document)
+        self.logger.info(f'{oglObjects=}')
+
+        return oglObjects
 
     def _toPluginOglObjects(self, document: Document) -> OglObjects:
 
