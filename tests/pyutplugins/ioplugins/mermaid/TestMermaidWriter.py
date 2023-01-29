@@ -26,14 +26,21 @@ from unittest import main as unitTestMain
 from tests.TestBase import TestBase
 
 # The base file names
-REALIZATION: str = 'MermaidRealization.md'
-COMPOSITION: str = 'MermaidComposition.md'
-AGGREGATION: str = 'MermaidAggregation.md'
-INHERITANCE: str = 'MermaidInheritance.md'
-SIMPLE_MD:   str = 'MermaidSimple.md'
+REALIZATION: str = 'MermaidRealization'
+COMPOSITION: str = 'MermaidComposition'
+AGGREGATION: str = 'MermaidAggregation'
+INHERITANCE: str = 'MermaidInheritance'
+SIMPLE:      str = 'MermaidSimpleClass'
 
+SUFFIX_MARKDOWN: str = '.md'
+SUFFIX_XML:      str = '.xml'
 # File names to delete at end of tests
-GENERATED_FILE_NAMES: List[str] = [REALIZATION, COMPOSITION, AGGREGATION, INHERITANCE, SIMPLE_MD]
+GENERATED_FILE_NAMES: List[str] = [f'{REALIZATION}{SUFFIX_MARKDOWN}',
+                                   f'{COMPOSITION}{SUFFIX_MARKDOWN}',
+                                   f'{AGGREGATION}{SUFFIX_MARKDOWN}',
+                                   f'{INHERITANCE}{SUFFIX_MARKDOWN}',
+                                   f'{SIMPLE}{SUFFIX_MARKDOWN}',
+                                   ]
 
 
 class TestMermaidWriter(TestBase):
@@ -59,6 +66,7 @@ class TestMermaidWriter(TestBase):
 
     @classmethod
     def tearDownClass(cls):
+        cls.clsLogger.info(f'tearDownClass {cls.keep=}')
         if cls.keep is False:
             for fileName in GENERATED_FILE_NAMES:
                 cls.cleanup(fileName)
@@ -73,10 +81,10 @@ class TestMermaidWriter(TestBase):
         pass
 
     def testSimpleClass(self):
-        baseFileName: str = SIMPLE_MD
+        baseFileName: str = f'{SIMPLE}{SUFFIX_MARKDOWN}'
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
-        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'SimpleClass.xml')
+        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, f'{SIMPLE}{SUFFIX_XML}')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)
@@ -92,7 +100,7 @@ class TestMermaidWriter(TestBase):
 
     def testSimpleInheritance(self):
 
-        baseFileName: str = INHERITANCE
+        baseFileName: str = f'{INHERITANCE}{SUFFIX_MARKDOWN}'
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidInheritance.xml')
@@ -111,7 +119,7 @@ class TestMermaidWriter(TestBase):
         self.assertEqual(0, status, 'Simple Inheritance failed')
 
     def testSimpleAggregation(self):
-        baseFileName: str = AGGREGATION
+        baseFileName: str = f'{AGGREGATION}{SUFFIX_MARKDOWN}'
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidAggregation.xml')
@@ -129,7 +137,7 @@ class TestMermaidWriter(TestBase):
         self.assertEqual(0, status, 'Simple Aggregation failed')
 
     def testSimpleComposition(self):
-        baseFileName: str = COMPOSITION
+        baseFileName: str = f'{COMPOSITION}{SUFFIX_MARKDOWN}'
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidComposition.xml')
@@ -147,7 +155,7 @@ class TestMermaidWriter(TestBase):
         self.assertEqual(0, status, 'Simple Aggregation failed')
 
     def testSimpleRealization(self):
-        baseFileName: str = REALIZATION
+        baseFileName: str = f'{REALIZATION}{SUFFIX_MARKDOWN}'
         mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, 'MermaidRealization.xml')
@@ -186,6 +194,7 @@ class TestMermaidWriter(TestBase):
     def cleanup(cls, baseFileName: str):
         path: Path = Path(baseFileName)
 
+        cls.clsLogger.info(f'{path} - exists: {path.exists()}')
         if path.exists() is True:
             path.unlink()
 
