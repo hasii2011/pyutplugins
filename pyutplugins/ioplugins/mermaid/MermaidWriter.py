@@ -84,7 +84,7 @@ class MermaidWriter:
                 case OglLink():
                     pass
                 case _:
-                    self.logger.warning(f'Unknown Ogl element: {oglObject}')
+                    self.logger.warning(f'Unsupported Ogl element: {oglObject}')
 
         mermaidString += f'```{eol}'
         with self._fqFileName.open(mode='a') as fd:
