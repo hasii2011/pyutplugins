@@ -135,8 +135,8 @@ class Sugiyama:
             elif isinstance(oglObject, OglLink):
 
                 # Get source and destination oglObject
-                srcOglClass = oglObject.getSourceShape()
-                dstOglClass = oglObject.getDestinationShape()
+                srcOglClass = oglObject.sourceShape
+                dstOglClass = oglObject.destinationShape
 
                 # If the classes have not a RealSugiyamaNode attributed yet
                 createSugiyamaNode(srcOglClass, dictOgl)

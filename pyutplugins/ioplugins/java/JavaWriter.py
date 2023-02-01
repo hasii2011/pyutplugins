@@ -71,10 +71,11 @@ class JavaWriter:
         javaFileFD: int = open(fqn, flags)
 
         # Extract the data from the class
-        fields     = pyutClass.fields
-        methods    = pyutClass.methods
-        parents    = pyutClass.getParents()
-        allLinks: PyutLinks   = pyutClass.getLinks()
+        fields  = pyutClass.fields
+        methods = pyutClass.methods
+        parents = pyutClass.parents
+
+        allLinks: PyutLinks   = pyutClass.links
 
         stereotype: PyutStereotype = pyutClass.stereotype
 
