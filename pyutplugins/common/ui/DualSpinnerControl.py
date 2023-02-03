@@ -20,10 +20,12 @@ from wx.lib.sized_controls import SizedStaticBox
 SPINNER_WIDTH:  int = 60
 SPINNER_HEIGHT: int = 35
 
+
 @dataclass
 class SpinnerValues:
     value0: int = 0
     value1: int = 0
+
 
 class DualSpinnerControl(SizedStaticBox):
     """

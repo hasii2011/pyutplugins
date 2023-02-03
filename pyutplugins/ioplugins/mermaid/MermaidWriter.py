@@ -32,6 +32,8 @@ from ogl.OglAssociation import OglAssociation
 from ogl.OglInterface import OglInterface
 
 from pyutplugins.ExternalTypes import OglObjects
+from pyutplugins.ioplugins.mermaid.MermaidDirection import MermaidDirection
+from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
 
 indent1: str = '    '
@@ -64,12 +66,15 @@ class MermaidWriter:
 
         self._fqFileName: Path = fqFileName
 
+        self._preferences: PluginPreferences = PluginPreferences()
+
         self._writeCredits(writeCredits=writeCredits)
 
     def translate(self, oglObjects: OglObjects):
 
-        mermaidString: str = f'```mermaid{eol}'
-        mermaidString = f'{mermaidString}classDiagram{eol}{indent1}direction RL{eol}'   # TODO: direction should be configurable
+        mermaidString: str              = f'```mermaid{eol}'
+        direction:     MermaidDirection = self._preferences.mermaidLayoutDirection
+        mermaidString = f'{mermaidString}classDiagram{eol}{indent1}{direction.diagramValue}{eol}'
 
         linksStanza: str = self._generateLinksStanza(oglObjects=oglObjects)
 

@@ -15,6 +15,8 @@ from pyutplugins.plugininterfaces.Singleton import Singleton
 
 from pyutplugins.toolplugins.orthogonal.LayoutAreaSize import LayoutAreaSize
 
+from pyutplugins.ioplugins.mermaid.MermaidDirection import MermaidDirection
+
 
 PLUGIN_PREFS_NAME_VALUES = Dict[str, str]
 
@@ -27,14 +29,18 @@ class PluginPreferences(Singleton):
     PYUT_PLUGINS_PREFERENCES_SECTION: str = 'PyutPlugins'
     DEBUG_SECTION:                    str = 'Debug'
 
-    ORTHOGONAL_LAYOUT_SIZE: str = 'orthogonal_layout_size'
-    WX_IMAGE_FILENAME:      str = 'wx_image_filename'
-    SUGIYAMA_STEP_BY_STEP:  str = 'sugiyama_step_by_step'
+    ORTHOGONAL_LAYOUT_SIZE:   str = 'orthogonal_layout_size'
+    WX_IMAGE_FILENAME:        str = 'wx_image_filename'
+    PDF_EXPORT_FILENAME:      str = 'pdf_export_filename'
+    SUGIYAMA_STEP_BY_STEP:    str = 'sugiyama_step_by_step'
+    MERMAID_LAYOUT_DIRECTION: str = 'mermaid_layout_direction'
 
     PLUGIN_PREFERENCES: PLUGIN_PREFS_NAME_VALUES = {
-        ORTHOGONAL_LAYOUT_SIZE: LayoutAreaSize(1000, 1000).__str__(),
-        WX_IMAGE_FILENAME:      'WxImageDump',
-        SUGIYAMA_STEP_BY_STEP:  'False',
+        ORTHOGONAL_LAYOUT_SIZE:   LayoutAreaSize(1000, 1000).__str__(),
+        WX_IMAGE_FILENAME:        'WxImageDump',
+        PDF_EXPORT_FILENAME:      'PyutExport.pdf',
+        SUGIYAMA_STEP_BY_STEP:    'False',
+        MERMAID_LAYOUT_DIRECTION: MermaidDirection.RightToLeft.value
     }
 
     DEBUG_TEMP_FILE_LOCATION: str = 'debug_temp_file_location'
@@ -74,6 +80,15 @@ class PluginPreferences(Singleton):
         self._saveConfig()
 
     @property
+    def pdfExportFileName(self) -> str:
+        return self._config.get(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, PluginPreferences.PDF_EXPORT_FILENAME)
+
+    @pdfExportFileName.setter
+    def pdfExportFileName(self, newValue: str):
+        self._config.set(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, PluginPreferences.PDF_EXPORT_FILENAME, newValue)
+        self._saveConfig()
+
+    @property
     def sugiyamaStepByStep(self) -> bool:
         ans: bool = self._config.getboolean(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, PluginPreferences.SUGIYAMA_STEP_BY_STEP)
         return ans
@@ -81,6 +96,17 @@ class PluginPreferences(Singleton):
     @sugiyamaStepByStep.setter
     def sugiyamaStepByStep(self, newValue: bool):
         self._config.set(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, PluginPreferences.SUGIYAMA_STEP_BY_STEP, str(newValue))
+        self._saveConfig()
+
+    @property
+    def mermaidLayoutDirection(self) -> MermaidDirection:
+        directionStr: str = self._config.get(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, PluginPreferences.MERMAID_LAYOUT_DIRECTION)
+        enumDirection: MermaidDirection = MermaidDirection.toEnum(directionStr)
+        return enumDirection
+
+    @mermaidLayoutDirection.setter
+    def mermaidLayoutDirection(self, direction: MermaidDirection):
+        self._config.set(PluginPreferences.PYUT_PLUGINS_PREFERENCES_SECTION, PluginPreferences.MERMAID_LAYOUT_DIRECTION, direction.value)
         self._saveConfig()
 
     @property

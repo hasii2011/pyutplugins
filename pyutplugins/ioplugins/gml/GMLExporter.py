@@ -175,8 +175,8 @@ class GMLExporter:
                 links = oglObject.links
                 self.logger.info(f'links: {links}')
                 for oglLink in links:
-                    srcOglId:  int = oglLink.getSourceShape().id
-                    destOglId: int = oglLink.getDestinationShape().id
+                    srcOglId:  int = oglLink.sourceShape.id
+                    destOglId: int = oglLink.destinationShape.id
                     linkIds:   str = f'{srcOglId}-{destOglId}'
                     if linkIds not in linkSet:
                         gml = self.__generateUniqueEdge(oglLink=oglLink, gml=gml)
@@ -186,8 +186,8 @@ class GMLExporter:
 
     def __generateUniqueEdge(self, oglLink: OglLink, gml: str) -> str:
 
-        srcOglId:  int = oglLink.getSourceShape().id
-        destOglId: int = oglLink.getDestinationShape().id
+        srcOglId:  int = oglLink.sourceShape.id
+        destOglId: int = oglLink.destinationShape.id
 
         gml = (
             f'{gml}'

@@ -24,12 +24,14 @@ from pyutplugins.toolplugins.orthogonal.DlgLayoutSize import DlgLayoutSize
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
 from tests.TestBase import TestBase
+from tests.scaffoldv2.ScaffoldPreferencesDialog import ScaffoldPreferencesDialog
 
 
 class DialogNamesEnum(Enum):
 
-    DLG_LAYOUT_SIZE     = 'DlgLayoutSize'
-    DLG_WXIMAGE_OPTIONS = 'DlgWxImageOptions'
+    DLG_LAYOUT_SIZE        = 'DlgLayoutSize'
+    DLG_WXIMAGE_OPTIONS    = 'DlgWxImageOptions'
+    DLG_PREFERENCES_DIALOG = 'DlgPreferencesDialog'
 
 
 class TestDialogs(App):
@@ -98,6 +100,12 @@ class TestDialogs(App):
                 with DlgWxImageOptions(parent=self._frame) as dlg:
                     if dlg.ShowModal() == OK:
                         self.logger.info(f'{dlg.outputFileName} {dlg.imageFormat=}')
+            case DialogNamesEnum.DLG_PREFERENCES_DIALOG:
+                with ScaffoldPreferencesDialog(parent=self._frame) as dlg:
+                    if dlg.ShowModal() == OK:
+                        self.logger.info(f'Ok')
+                    else:
+                        self.logger.info(f'Cancel')
             case DialogNamesEnum.DLG_LAYOUT_SIZE:
                 with DlgLayoutSize(parent=self._frame) as dlg:
                     msg: str = f'layout size: '
