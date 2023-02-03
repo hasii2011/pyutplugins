@@ -69,7 +69,7 @@ class IOPdf(IOPluginInterface):
         Returns:
             if False, the export is cancelled.
         """
-        self._exportResponse = self.askForFileToExport()
+        self._exportResponse = self.askForFileToExport(defaultFileName=self._pluginPreferences.pdfExportFileName)
 
         if self._exportResponse.cancelled is True:
             return False
