@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PyutProject version="10" CodePath="">
+	<PyutDocument type="CLASS_DIAGRAM" title="Fields" scrollPositionX="0" scrollPositionY="2" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="178" height="105" x="350" y="175">
+			<Class id="1" name="ClassWithFields" stereotype="type" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Field visibility="PRIVATE">
+					<Param name="privateField" type="str" defaultValue="''"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="publicField" type="int" defaultValue="42"/>
+				</Field>
+				<Field visibility="PROTECTED">
+					<Param name="protectedField" type="float" defaultValue="3.14159265"/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="fieldNoDefaultValue" type="bool"/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="fieldNoType" type="" defaultValue="0"/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="fieldNoTypeNoDefaultValue" type=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+	</PyutDocument>
+</PyutProject>

@@ -32,6 +32,7 @@ AGGREGATION:       str = 'MermaidAggregation'
 INHERITANCE:       str = 'MermaidInheritance'
 SIMPLE:            str = 'MermaidSimpleClass'
 BASIC_ASSOCIATION: str = 'MermaidBasicAssociation'
+FIELDS:            str = 'MermaidFields'
 
 SUFFIX_MARKDOWN: str = '.md'
 SUFFIX_XML:      str = '.xml'
@@ -41,7 +42,8 @@ GENERATED_FILE_NAMES: List[str] = [f'{REALIZATION}{SUFFIX_MARKDOWN}',
                                    f'{AGGREGATION}{SUFFIX_MARKDOWN}',
                                    f'{INHERITANCE}{SUFFIX_MARKDOWN}',
                                    f'{SIMPLE}{SUFFIX_MARKDOWN}',
-                                   f'{BASIC_ASSOCIATION}{SUFFIX_MARKDOWN}'
+                                   f'{BASIC_ASSOCIATION}{SUFFIX_MARKDOWN}',
+                                   f'{FIELDS}{SUFFIX_MARKDOWN}'
                                    ]
 
 
@@ -92,6 +94,17 @@ class TestMermaidWriter(TestBase):
 
         status: int = self._runDiff(baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Mermaid generation failed')
+
+    def testClassWithFields(self):
+        baseFileName: str = f'{FIELDS}{SUFFIX_MARKDOWN}'
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+
+        oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{FIELDS}{SUFFIX_XML}', documentTitle='Fields')
+
+        mermaidWriter.translate(oglObjects=oglObjects)
+
+        status: int = self._runDiff(baseFileName=baseFileName)
+        self.assertEqual(0, status, 'Mermaid field generation failed')
 
     def testSimpleInheritance(self):
 

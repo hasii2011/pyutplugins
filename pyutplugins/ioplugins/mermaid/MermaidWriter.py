@@ -14,6 +14,8 @@ from datetime import datetime
 
 from pathlib import Path
 
+from pyutmodel.PyutField import PyutField
+from pyutmodel.PyutField import PyutFields
 from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutClass import PyutClass
@@ -106,8 +108,10 @@ class MermaidWriter:
         oglClass:  OglClass  = cast(OglClass, oglObject)
         pyutClass: PyutClass = oglClass.pyutObject
 
-        methods:    List[PyutMethod] = pyutClass.methods
-        methodsStr: str              = self._generateMethods(methods)
+        fields:         PyutFields      = pyutClass.fields
+        fieldsRefrain:  str              = self._generateFieldsRefrain(fields)
+        methods:        List[PyutMethod] = pyutClass.methods
+        methodsStr:     str              = self._generateMethods(methods)
 
         if pyutClass.stereotype == PyutStereotype.NO_STEREOTYPE:
             stereotypeRefrain: str = ''
@@ -116,6 +120,7 @@ class MermaidWriter:
 
         generatedString: str = (
             f'{indent1}class {pyutClass.name} {{ {eol}'
+            f'{fieldsRefrain}'
             f'{stereotypeRefrain}'
             f'{methodsStr}'
             f'{indent1}}}{eol}'
@@ -246,6 +251,19 @@ class MermaidWriter:
             destinationCardinality = f'"{pyutLink.destinationCardinality}"'
 
         return sourceCardinality, destinationCardinality
+
+    def _generateFieldsRefrain(self, fields: PyutFields) -> str:
+        fieldsRefrain: str = ''
+        for field in fields:
+            pyutField: PyutField = cast(PyutField, field)
+            visibility: PyutVisibilityEnum = pyutField.visibility
+            retType:    PyutType = pyutField.type
+
+            fieldString: str = (
+                f'{indent2}{visibility.value}{retType.value} {pyutField.name}{eol}'
+            )
+            fieldsRefrain += fieldString
+        return fieldsRefrain
 
     def _generateMethods(self, methods: List[PyutMethod]) -> str:
 
