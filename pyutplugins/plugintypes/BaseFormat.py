@@ -1,4 +1,6 @@
 
+from abc import ABC
+
 from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
 from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
 from pyutplugins.plugintypes.PluginDataTypes import FormatName
@@ -10,7 +12,7 @@ DOT:                str = '.'
 SPECIAL_CHARACTERS: str = '!@#$%^&*_+-=[]{};:,.<>?/|\'\"'
 
 
-class BaseFormat:
+class BaseFormat(ABC):
     """
     Provides the basic capabilities;  Should not be directly instantiated;
     TODO:  Figure out how to prevent that
