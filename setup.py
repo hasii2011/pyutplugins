@@ -19,7 +19,7 @@ setup(
     description='Pyut Plugins',
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/hasii2011/pyutplugina",
+    url="https://github.com/hasii2011/pyutplugins",
     package_data={
         'pyutplugins':                       ['py.typed'],
         'pyutplugins.common':                ['py.typed'],
