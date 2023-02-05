@@ -93,6 +93,56 @@ class TestBase(TestCase):
 
         return fqFileName
 
+    @classmethod
+    def runDiff(cls, goldenPackageName: str, baseFileName: str) -> int:
+        """
+        Assumes the caller use our ._constructGeneratedName method to get
+        a fully qualified file name
+
+        Args:
+            goldenPackageName:  The package name where the gold file resides
+            baseFileName:  The base file name
+
+        Returns:  The results of the difference
+        """
+        goldenFileName:    str = resource_filename(goldenPackageName, baseFileName)
+        generatedFileName: str = cls.constructGeneratedName(baseFileName=baseFileName)
+
+        status: int = osSystem(f'{TestBase.EXTERNAL_DIFF} {goldenFileName} {generatedFileName}')
+
+        return status
+
+    @classmethod
+    def cleanupGenerated(cls, fileName: str):
+
+        generatedFileName: str = cls.constructGeneratedName(baseFileName=fileName)
+
+        path: Path = Path(generatedFileName)
+
+        cls.baseLogger.info(f'{path} - exists: {path.exists()}')
+        if path.exists() is True:
+            path.unlink()
+
+    @classmethod
+    def constructGeneratedName(cls, baseFileName: str) -> str:
+        """
+        Constructs a full path name for a file that will be used for a unit test.
+        Currently, just uses /tmp
+
+        Args:
+            baseFileName:
+
+        Returns:    Fully qualified file name
+
+        """
+
+        generatedFileName: str = f'{cls.getTemporaryDirectory()}{baseFileName}'
+        return generatedFileName
+
+    @classmethod
+    def getTemporaryDirectory(cls) -> str:
+        return f'{osSep}tmp{osSep}'
+
     def _xmlFileToOglClasses(self, filename: str, documentName: str) -> OglClasses:
         """
         The input file name must be in the test data package
@@ -141,54 +191,3 @@ class TestBase(TestCase):
         document: Document = untangler.documents[DocumentTitle(documentName)]
 
         return document
-
-    @classmethod
-    def _runDiff(cls, goldenPackageName: str, baseFileName: str) -> int:
-        """
-        Assumes the caller use our ._constructGeneratedName method to get
-        a fully qualified file name
-
-        Args:
-            goldenPackageName  The package name where the gold file resides
-            baseFileName:  The base file name
-
-        Returns:  The results of the difference
-        """
-
-        goldenFileName:    str = resource_filename(goldenPackageName, baseFileName)
-        generatedFileName: str = cls._constructGeneratedName(baseFileName=baseFileName)
-
-        status: int = osSystem(f'{TestBase.EXTERNAL_DIFF} {goldenFileName} {generatedFileName}')
-
-        return status
-
-    @classmethod
-    def _cleanupGenerated(cls, fileName: str):
-
-        generatedFileName: str = cls._constructGeneratedName(baseFileName=fileName)
-
-        path: Path = Path(generatedFileName)
-
-        cls.baseLogger.info(f'{path} - exists: {path.exists()}')
-        if path.exists() is True:
-            path.unlink()
-
-    @classmethod
-    def _constructGeneratedName(cls, baseFileName: str) -> str:
-        """
-        Constructs a full path name for a file that will be used for a unit test.
-        Currently, just uses /tmp
-
-        Args:
-            baseFileName:
-
-        Returns:    Fully qualified file name
-
-        """
-
-        generatedFileName: str = f'{cls._getTemporaryDirectory()}{baseFileName}'
-        return generatedFileName
-
-    @classmethod
-    def _getTemporaryDirectory(cls) -> str:
-        return f'{osSep}tmp{osSep}'

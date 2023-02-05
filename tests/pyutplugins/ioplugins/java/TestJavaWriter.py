@@ -29,7 +29,7 @@ class TestJavaWriter(TestBase):
         self.logger:      Logger     = TestJavaWriter.clsLogger
 
         super().setUp()
-        self._javaWriter: JavaWriter = JavaWriter(writeDirectory=f'{self._getTemporaryDirectory()}')
+        self._javaWriter: JavaWriter = JavaWriter(writeDirectory=f'{TestBase.getTemporaryDirectory()}')
 
     def tearDown(self):
         super().tearDown()
@@ -39,10 +39,10 @@ class TestJavaWriter(TestBase):
         oglClasses: OglClasses = self._xmlFileToOglClasses(filename='SingleClass.xml', documentName='SingleClass')
         self._javaWriter.write(oglObjects=cast(OglObjects, oglClasses))
 
-        status: int = self._runDiff(goldenPackageName=TestBase.GOLDEN_JAVA_PACKAGE_NAME, baseFileName='SingleClass.java')
+        status: int = TestBase.runDiff(goldenPackageName=TestBase.GOLDEN_JAVA_PACKAGE_NAME, baseFileName='SingleClass.java')
         self.assertEqual(0, status, 'Diff of single class failed;  Something changed')
 
-        self._cleanupGenerated('SingleClass.java')
+        TestBase.cleanupGenerated('SingleClass.java')
 
     def testComplexClass(self):
         """
@@ -54,11 +54,11 @@ class TestJavaWriter(TestBase):
         self._javaWriter.write(oglObjects=cast(OglObjects, oglClasses))
 
         for generatedFileName in generatedFileNames:
-            status: int = self._runDiff(goldenPackageName=TestBase.GOLDEN_JAVA_PACKAGE_NAME, baseFileName=generatedFileName)
+            status: int = TestBase.runDiff(goldenPackageName=TestBase.GOLDEN_JAVA_PACKAGE_NAME, baseFileName=generatedFileName)
             self.assertEqual(0, status, f'Diff of {generatedFileName} file failed;  Something changed')
 
         for generatedFileName in generatedFileNames:
-            self._cleanupGenerated(generatedFileName)
+            TestBase.cleanupGenerated(generatedFileName)
 
 
 def suite() -> TestSuite:
