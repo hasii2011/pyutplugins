@@ -11,7 +11,7 @@ LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
     name="pyutplugins",
-    version="0.8.15",
+    version="0.8.16",
     author='Humberto A. Sanchez II',
     author_email='humberto.a.sanchez.ii@gmail.com',
     maintainer='Humberto A. Sanchez II',
@@ -21,10 +21,11 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/hasii2011/pyutplugina",
     package_data={
-        'pyutplugins':                 ['py.typed'],
-        'pyutplugins.common':          ['py.typed'],
-        'pyutplugins.common.ui':       ['py.typed'],
-        'pyutplugins.exceptions':       ['py.typed'],
+        'pyutplugins':                       ['py.typed'],
+        'pyutplugins.common':                ['py.typed'],
+        'pyutplugins.common.ui':             ['py.typed'],
+        'pyutplugins.common.ui,preferences': ['py.typed'],
+        'pyutplugins.exceptions':                    ['py.typed'],
         'pyutplugins.ioplugins':                      ['py.typed'],
         'pyutplugins.ioplugins.dtd':                  ['py.typed'],
         'pyutplugins.ioplugins.gml':                  ['py.typed'],
@@ -42,7 +43,7 @@ setup(
         'pyutplugins.toolplugins.sugiyama':           ['py.typed'],
     },
     packages=[
-        'pyutplugins', 'pyutplugins.common', 'pyutplugins.common.ui',
+        'pyutplugins', 'pyutplugins.common', 'pyutplugins.common.ui', 'pyutplugins.common.ui,preferences'
         'pyutplugins.exceptions',
         'pyutplugins.ioplugins', 'pyutplugins.ioplugins.dtd', 'pyutplugins.ioplugins.gml',  'pyutplugins.ioplugins.java',
         'pyutplugins.ioplugins.mermaid', 'pyutplugins.ioplugins.pdf', 'pyutplugins.ioplugins.python', 'pyutplugins.ioplugins.python.pyantlrparser',
