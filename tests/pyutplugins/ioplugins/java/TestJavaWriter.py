@@ -4,11 +4,6 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from os import system as osSystem
-from os import sep as osSep
-
-from pkg_resources import resource_filename
-
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
@@ -23,9 +18,6 @@ from pyutplugins.ioplugins.java.JavaWriter import JavaWriter
 class TestJavaWriter(TestBase):
     """
     """
-    EXTERNAL_DIFF:         str = '/usr/bin/diff -w '
-    EXTERNAL_CLEAN_UP_TMP: str = 'rm '
-
     clsLogger: Logger = cast(Logger, None)
 
     @classmethod
@@ -37,20 +29,20 @@ class TestJavaWriter(TestBase):
         self.logger:      Logger     = TestJavaWriter.clsLogger
 
         super().setUp()
-        self._javaWriter: JavaWriter = JavaWriter(writeDirectory='/tmp')
+        self._javaWriter: JavaWriter = JavaWriter(writeDirectory=f'{self._getTemporaryDirectory()}')
 
     def tearDown(self):
         super().tearDown()
 
     def testOneClassWrite(self):
 
-        self._cleanupGenerated('SingleClass.java')
-
         oglClasses: OglClasses = self._xmlFileToOglClasses(filename='SingleClass.xml', documentName='SingleClass')
         self._javaWriter.write(oglObjects=cast(OglObjects, oglClasses))
 
-        status: int = self._runDiff('SingleClass.java')
+        status: int = self._runDiff(goldenPackageName=TestBase.GOLDEN_JAVA_PACKAGE_NAME, baseFileName='SingleClass.java')
         self.assertEqual(0, status, 'Diff of single class failed;  Something changed')
+
+        self._cleanupGenerated('SingleClass.java')
 
     def testComplexClass(self):
         """
@@ -58,35 +50,15 @@ class TestJavaWriter(TestBase):
         """
         generatedFileNames: List[str] = ['Account.java', 'ATM.java', 'Bank.java', 'CheckingAccount.java', 'Customer.java', 'SavingsAccount.java']
 
-        for generatedFileName in generatedFileNames:
-            self._cleanupGenerated(generatedFileName)
-
         oglClasses: OglClasses = self._xmlFileToOglClasses(filename='ATM-Model.xml', documentName='Class Diagram')
         self._javaWriter.write(oglObjects=cast(OglObjects, oglClasses))
 
         for generatedFileName in generatedFileNames:
-            status: int = self._runDiff(generatedFileName)
+            status: int = self._runDiff(goldenPackageName=TestBase.GOLDEN_JAVA_PACKAGE_NAME, baseFileName=generatedFileName)
             self.assertEqual(0, status, f'Diff of {generatedFileName} file failed;  Something changed')
 
-    def _cleanupGenerated(self, fileName: str):
-
-        generatedFileName: str = self._constructGeneratedName(fileName=fileName)
-
-        osSystem(f'{TestJavaWriter.EXTERNAL_CLEAN_UP_TMP} {generatedFileName}')
-
-    def _runDiff(self, fileName: str) -> int:
-
-        baseFileName:      str = resource_filename(TestBase.RESOURCES_TEST_JAVA_BASE_FILES_PACKAGE_NAME, fileName)
-        generatedFileName: str = self._constructGeneratedName(fileName=fileName)
-
-        status: int = osSystem(f'{TestJavaWriter.EXTERNAL_DIFF} {baseFileName} {generatedFileName}')
-
-        return status
-
-    def _constructGeneratedName(self, fileName: str) -> str:
-
-        generatedFileName: str = f'{osSep}tmp{osSep}{fileName}'
-        return generatedFileName
+        for generatedFileName in generatedFileNames:
+            self._cleanupGenerated(generatedFileName)
 
 
 def suite() -> TestSuite:

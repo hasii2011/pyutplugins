@@ -2,7 +2,6 @@
 from typing import List
 from typing import cast
 
-from os import system as osSystem
 from os import environ
 
 from pathlib import Path
@@ -70,10 +69,10 @@ class TestMermaidWriter(TestBase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.clsLogger.info(f'tearDownClass {cls.keep=}')
+        cls.clsLogger.warning(f'tearDownClass {cls.keep=}')
         if cls.keep is False:
             for fileName in GENERATED_FILE_NAMES:
-                cls.cleanup(fileName)
+                cls._cleanupGenerated(fileName=fileName)
 
     def setUp(self):
         # I need a wx.App
@@ -85,78 +84,86 @@ class TestMermaidWriter(TestBase):
         pass
 
     def testSimpleClass(self):
-        baseFileName: str = f'{SIMPLE}{SUFFIX_MARKDOWN}'
-        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+        baseFileName: str           = f'{SIMPLE}{SUFFIX_MARKDOWN}'
+        fqFileName:    str           = self._constructGeneratedName(baseFileName=baseFileName)
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(fqFileName), writeCredits=False)
 
         oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{SIMPLE}{SUFFIX_XML}', documentTitle='SimpleDiagram')
 
         mermaidWriter.translate(oglObjects=oglObjects)
 
-        status: int = self._runDiff(baseFileName=baseFileName)
+        status: int = self._runDiff(goldenPackageName=TestBase.GOLDEN_MERMAID_PACKAGE_NAME, baseFileName=baseFileName)
+
         self.assertEqual(0, status, 'Simple Mermaid generation failed')
 
     def testClassWithFields(self):
-        baseFileName: str = f'{FIELDS}{SUFFIX_MARKDOWN}'
-        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+        baseFileName:  str           = f'{FIELDS}{SUFFIX_MARKDOWN}'
+        fqFileName:    str           = self._constructGeneratedName(baseFileName=baseFileName)
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(fqFileName), writeCredits=False)
 
         oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{FIELDS}{SUFFIX_XML}', documentTitle='Fields')
 
         mermaidWriter.translate(oglObjects=oglObjects)
 
-        status: int = self._runDiff(baseFileName=baseFileName)
+        status: int = self._runDiff(goldenPackageName=TestBase.GOLDEN_MERMAID_PACKAGE_NAME, baseFileName=baseFileName)
         self.assertEqual(0, status, 'Mermaid field generation failed')
 
     def testSimpleInheritance(self):
 
-        baseFileName: str = f'{INHERITANCE}{SUFFIX_MARKDOWN}'
-        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+        baseFileName:  str           = f'{INHERITANCE}{SUFFIX_MARKDOWN}'
+        fqFileName:    str           = self._constructGeneratedName(baseFileName=baseFileName)
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(fqFileName), writeCredits=False)
 
         oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{INHERITANCE}{SUFFIX_XML}', documentTitle='Inheritance')
 
         mermaidWriter.translate(oglObjects=oglObjects)
 
-        status: int = self._runDiff(baseFileName=baseFileName)
+        status: int = self._runDiff(goldenPackageName=TestBase.GOLDEN_MERMAID_PACKAGE_NAME, baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Inheritance failed')
 
     def testSimpleAggregation(self):
-        baseFileName: str = f'{AGGREGATION}{SUFFIX_MARKDOWN}'
-        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+        baseFileName:  str           = f'{AGGREGATION}{SUFFIX_MARKDOWN}'
+        fqFileName:    str           = self._constructGeneratedName(baseFileName=baseFileName)
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(fqFileName), writeCredits=False)
 
         oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{AGGREGATION}{SUFFIX_XML}', documentTitle='Aggregation')
 
         mermaidWriter.translate(oglObjects=oglObjects)
 
-        status: int = self._runDiff(baseFileName=baseFileName)
+        status: int = self._runDiff(goldenPackageName=TestBase.GOLDEN_MERMAID_PACKAGE_NAME, baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Aggregation failed')
 
     def testSimpleComposition(self):
-        baseFileName: str = f'{COMPOSITION}{SUFFIX_MARKDOWN}'
-        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+        baseFileName:  str           = f'{COMPOSITION}{SUFFIX_MARKDOWN}'
+        fqFileName:    str           = self._constructGeneratedName(baseFileName=baseFileName)
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(fqFileName), writeCredits=False)
 
         oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{COMPOSITION}{SUFFIX_XML}', documentTitle='Composition')
         mermaidWriter.translate(oglObjects=oglObjects)
 
-        status: int = self._runDiff(baseFileName=baseFileName)
+        status: int = self._runDiff(goldenPackageName=TestBase.GOLDEN_MERMAID_PACKAGE_NAME, baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Aggregation failed')
 
     def testSimpleRealization(self):
-        baseFileName: str = f'{REALIZATION}{SUFFIX_MARKDOWN}'
-        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+        baseFileName:  str           = f'{REALIZATION}{SUFFIX_MARKDOWN}'
+        fqFileName:    str           = self._constructGeneratedName(baseFileName=baseFileName)
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(fqFileName), writeCredits=False)
 
         oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{REALIZATION}{SUFFIX_XML}', documentTitle='Realization')
         mermaidWriter.translate(oglObjects=oglObjects)
 
-        status: int = self._runDiff(baseFileName=baseFileName)
+        status: int = self._runDiff(goldenPackageName=TestBase.GOLDEN_MERMAID_PACKAGE_NAME, baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Realization failed')
 
     def testBasicAssociation(self):
-        baseFileName: str = f'{BASIC_ASSOCIATION}{SUFFIX_MARKDOWN}'
-        mermaidWriter: MermaidWriter = MermaidWriter(Path(baseFileName), writeCredits=False)
+        baseFileName:  str           = f'{BASIC_ASSOCIATION}{SUFFIX_MARKDOWN}'
+        fqFileName:    str           = self._constructGeneratedName(baseFileName=baseFileName)
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(fqFileName), writeCredits=False)
 
         oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{BASIC_ASSOCIATION}{SUFFIX_XML}', documentTitle='Association')
         mermaidWriter.translate(oglObjects=oglObjects)
 
-        status: int = self._runDiff(baseFileName=baseFileName)
+        status: int = self._runDiff(goldenPackageName=TestBase.GOLDEN_MERMAID_PACKAGE_NAME, baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Association failed')
 
     def _getTestObjects(self, baseXmlFileName: str, documentTitle: str) -> OglObjects:
@@ -181,22 +188,6 @@ class TestMermaidWriter(TestBase):
         oglObjects.extend(cast(OglObjects, document.oglTexts))
 
         return oglObjects
-
-    def _runDiff(self, baseFileName: str) -> int:
-
-        goldenFileName:      str = resource_filename(TestBase.RESOURCES_TEST_GOLDEN_MERMAID_PACKAGE_NAME, baseFileName)
-
-        status: int = osSystem(f'{TestBase.EXTERNAL_DIFF} {baseFileName} {goldenFileName}')
-
-        return status
-
-    @classmethod
-    def cleanup(cls, baseFileName: str):
-        path: Path = Path(baseFileName)
-
-        cls.clsLogger.info(f'{path} - exists: {path.exists()}')
-        if path.exists() is True:
-            path.unlink()
 
 
 def suite() -> TestSuite:
