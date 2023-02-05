@@ -1,15 +1,13 @@
 
-from logging import Logger
-from logging import getLogger
-
 from typing import List
 from typing import cast
+
+from logging import Logger
+from logging import getLogger
 
 from unittest import TestSuite
 from unittest import main as unitTestMain
 from unittest.mock import MagicMock
-
-from os import remove as osRemove
 
 from tests.MockGenerator import MockGenerator
 
@@ -49,7 +47,7 @@ class TestGMLExporter(TestBase):
         self._mockGenerator: MockGenerator = MockGenerator()
 
     def tearDown(self):
-        osRemove(TestGMLExporter.UNIT_TEST_FILENAME)
+        pass
 
     def testBasicCreation(self):
 
@@ -63,8 +61,17 @@ class TestGMLExporter(TestBase):
 
         self.assertIsNotNone(gml, 'Generate Something!!')
         self.logger.debug(f'Generated GML:\n{gml}')
-        self.exporter.write(TestGMLExporter.UNIT_TEST_FILENAME)
-        
+
+        fqFileName: str = TestBase.constructGeneratedName(baseFileName=TestGMLExporter.UNIT_TEST_FILENAME)
+
+        self.exporter.write(fqFileName)
+
+        status: int = TestBase.runDiff(goldenPackageName=TestBase.GOLDEN_GML_PACKAGE_NAME, baseFileName=TestGMLExporter.UNIT_TEST_FILENAME)
+
+        self.assertEqual(0, status, 'Simple GML generation failed')
+
+        TestBase.cleanupGenerated(TestGMLExporter.UNIT_TEST_FILENAME)
+
 
 def suite() -> TestSuite:
     """You need to change the name of the test class here also."""
