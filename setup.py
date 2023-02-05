@@ -43,7 +43,7 @@ setup(
         'pyutplugins.toolplugins.sugiyama':           ['py.typed'],
     },
     packages=[
-        'pyutplugins', 'pyutplugins.common', 'pyutplugins.common.ui', 'pyutplugins.common.ui,preferences'
+        'pyutplugins', 'pyutplugins.common', 'pyutplugins.common.ui', 'pyutplugins.common.ui.preferences',
         'pyutplugins.exceptions',
         'pyutplugins.ioplugins', 'pyutplugins.ioplugins.dtd', 'pyutplugins.ioplugins.gml',  'pyutplugins.ioplugins.java',
         'pyutplugins.ioplugins.mermaid', 'pyutplugins.ioplugins.pdf', 'pyutplugins.ioplugins.python', 'pyutplugins.ioplugins.python.pyantlrparser',
