@@ -44,12 +44,13 @@ class PluginPreferencesPage(SizedPanel):
         self._layoutSizeControls:     DimensionsControl = cast(DimensionsControl, None)
         self._stepSugiyama:           CheckBox          = cast(CheckBox, None)
         self._mermaidLayoutDirection: Choice            = cast(Choice, None)
-        self._createWindow(parent)
+
+        self._createWindow(self)
 
         self._setControlValues()
         parent.Bind(EVT_TEXT,     self._onNameChange,  id=self._pdfFileNameWxId)
         parent.Bind(EVT_TEXT,     self._onNameChange,  id=self._imageFileNameWxId)
-    
+
         parent.Bind(EVT_CHECKBOX, self._onSugiyamaValueChanged,   self._stepSugiyama)
         parent.Bind(EVT_CHOICE,   self._onLayoutDirectionChanged, self._mermaidLayoutDirection)
 
@@ -57,7 +58,7 @@ class PluginPreferencesPage(SizedPanel):
     def name(self) -> str:
         return 'Plugins'
 
-    def _createWindow(self, parent):
+    def _createWindow(self, parent: SizedPanel):
 
         self._stepSugiyama = CheckBox(parent, label='Step Sugiyama Layout')
 
@@ -66,10 +67,10 @@ class PluginPreferencesPage(SizedPanel):
         self._layoutSizeControls = DimensionsControl(sizedPanel=parent, displayText="Orthogonal Layout Width/Height",
                                                      minValue=100, maxValue=4096,
                                                      valueChangedCallback=self._layoutSizeChanged,
-                                                     setControlsSize=True)
+                                                     setControlsSize=False)
 
         # noinspection PyUnresolvedReferences
-        self._layoutSizeControls.SetSizerProps(proportion=1)
+        self._layoutSizeControls.SetSizerProps(proportion=2, expand=False)
 
         self._layoutNamePreferences(parent=parent)
 
@@ -78,14 +79,14 @@ class PluginPreferencesPage(SizedPanel):
         directions: List[str] = [s for s in MermaidDirection]
 
         ssb: SizedStaticBox = SizedStaticBox(parent, label='Mermaid Diagram Layout Direction')
-        ssb.SetSizerProps(proportion=1)
+        ssb.SetSizerProps(proportion=2, expand=False)
 
         self._mermaidLayoutDirection = Choice(ssb, choices=directions)
 
     def _layoutNamePreferences(self, parent: SizedPanel):
         sizedForm: SizedPanel = SizedPanel(parent)
         sizedForm.SetSizerType('form')
-
+        sizedForm.SetSizerProps(proportion=2)
         StaticText(sizedForm, ID_ANY, 'PDF Filename:')
         # TODO need plugin preference
         TextCtrl(sizedForm, id=self._pdfFileNameWxId, value=self._preferences.pdfExportFileName, size=(125, 25))
