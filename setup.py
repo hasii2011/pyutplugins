@@ -11,7 +11,7 @@ LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
     name="pyutplugins",
-    version="0.8.20",
+    version="0.8.21",
     author='Humberto A. Sanchez II',
     author_email='humberto.a.sanchez.ii@gmail.com',
     maintainer='Humberto A. Sanchez II',
@@ -62,6 +62,6 @@ setup(
                       'pyutmodel==1.4.0',
                       'ogl==0.70.0',
                       'untanglepyut==0.6.25',
-                      'oglio==0.5.60',
+                      'oglio==0.5.62',
                       ]
 )
