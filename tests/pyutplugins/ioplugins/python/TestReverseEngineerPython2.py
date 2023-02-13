@@ -168,7 +168,7 @@ class TestReverseEngineerPython2(TestBase):
 
         self.logger.debug(f'setter={setter.__str__()} getter={getter.__str__()}')
 
-        self.assertEqual('+fontSize(newSize: int): ', setter.getString(), 'Incorrect setter generated')
+        self.assertEqual('+fontSize(newSize: int)', setter.getString(), 'Incorrect setter generated')
         self.assertEqual('+fontSize(): int', getter.getString(), 'Incorrect getter generated')
 
     def testCreatePropertiesReadOnly(self):
@@ -238,7 +238,7 @@ class TestReverseEngineerPython2(TestBase):
         pyutParameter: PyutParameter = pyutParameters[0]
 
         self.assertEqual('param', pyutParameter.name, 'Name is incorrect')
-        self.assertIsNone(pyutParameter.defaultValue, 'There should be no default value')
+        self.assertEqual('', pyutParameter.defaultValue, 'Default value should be empty string')
         self.assertEqual(PyutType(''), pyutParameter.type, 'Should not have a type')
 
     def testGenerateParametersSimpleDefaultValue(self):
@@ -263,7 +263,7 @@ class TestReverseEngineerPython2(TestBase):
 
         self.assertEqual(expectedType, actualType, 'Type not set correctly')
 
-        self.assertIsNone(pyutParameter.defaultValue, 'There should be no default value')
+        self.assertEqual('', pyutParameter.defaultValue, 'There should be no default value')
 
     def _generateReadOnlyMethods(self):
         # Note the missing setter for fontSize
