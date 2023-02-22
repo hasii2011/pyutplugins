@@ -37,10 +37,11 @@ jobs:
             pip install networkx==3.0
             pip install orthogonal==1.1.8
             pip install pyumldiagrams==2.30.8
+            pip install hasiicommon~=0.0.7
             pip install pyutmodel==1.4.0
-            pip install ogl==0.70.10
-            pip install untanglepyut==0.6.30
-            pip install oglio==0.5.70
+            pip install ogl==0.70.20
+            pip install untanglepyut==0.6.40
+            pip install oglio==0.5.8o
       - run:
             name: run tests
             command: | 

@@ -15,9 +15,10 @@ from wx import EndBusyCursor
 
 from wx import Yield as wxYield
 
+from hasiicommon.Singleton import Singleton
+
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
-from pyutplugins.plugininterfaces.Singleton import Singleton
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 

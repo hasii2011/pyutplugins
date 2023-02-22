@@ -11,7 +11,7 @@ from os import getenv as osGetEnv
 
 from configparser import ConfigParser
 
-from pyutplugins.plugininterfaces.Singleton import Singleton
+from hasiicommon.Singleton import Singleton
 
 from pyutplugins.toolplugins.orthogonal.LayoutAreaSize import LayoutAreaSize
 
