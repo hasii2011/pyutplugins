@@ -38,9 +38,9 @@ jobs:
             pip install orthogonal==1.1.8
             pip install pyumldiagrams==2.30.8
             pip install pyutmodel==1.4.0
-            pip install ogl==0.70.0
-            pip install untanglepyut==0.6.25
-            pip install oglio==0.5.62
+            pip install ogl==0.70.10
+            pip install untanglepyut==0.6.30
+            pip install oglio==0.5.70
       - run:
             name: run tests
             command: | 
