@@ -1,9 +1,9 @@
 ```mermaid
 classDiagram
  
-    %% Note not supported until 9.3.0 Pycharm is on 9.1.3 and Typora is on 9.1.2
+    note "not supported until 9.3.0 Pycharm is on 9.1.3 and Typora is on 9.1.2"
     Animal <|-- Duck
-    %% note for Duck "can fly\n can swim\n can dive\n can help in debugging"
+    note for Duck "can fly\n can swim\n can dive\n can help in debugging"
     Animal <|-- Fish
     Animal <|-- Zebra
     class Animal {

@@ -4,7 +4,7 @@ classDiagram
     %% Links follow
     Author "1.*" o-- "0.*" Book : fakeAuthor
     class Author { 
-        +bool amIEgostical()
+        +bool amIEgotistical()
     }
     class Book { 
         + bogusExpert(unImportant)

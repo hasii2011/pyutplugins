@@ -67,7 +67,7 @@ class ALayoutLink:
             x:
             y:
         """
-        self._oglLink.GetSource().SetPosition(x, y)
+        self._oglLink.sourceAnchor.SetPosition(x, y)
 
     def getSrcAnchorPos(self):
         """
@@ -76,7 +76,7 @@ class ALayoutLink:
         Returns:    (int, int) : tuple with (x, y) coordinates
         """
 
-        return self._oglLink.GetSource().GetPosition()
+        return self._oglLink.sourceAnchor.GetPosition()
 
     def setDestAnchorPos(self, x: int, y: int):
         """
@@ -86,7 +86,7 @@ class ALayoutLink:
             x:
             y:
         """
-        self._oglLink.GetDestination().SetPosition(x, y)
+        self._oglLink.destinationAnchor.SetPosition(x, y)
 
     def getDestAnchorPos(self):
         """

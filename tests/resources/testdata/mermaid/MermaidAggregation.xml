@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <PyutProject version="10" CodePath="">
 	<PyutDocument type="CLASS_DIAGRAM" title="Aggregation" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
-		<GraphicClass width="240" height="100" x="100" y="50">
+		<GraphicClass width="120" height="45" x="100" y="50">
 			<Class id="1" name="Author" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
-				<Method name="amIEgostical" visibility="PUBLIC">
+				<Method name="amIEgotistical" visibility="PUBLIC">
 					<Return type="bool"/>
 					<SourceCode/>
 				</Method>
@@ -18,10 +18,10 @@
 				</Method>
 			</Class>
 		</GraphicClass>
-		<GraphicLink srcX="202" srcY="149" dstX="475" dstY="325" spline="False">
-			<LabelCenter x="461" y="311"/>
-			<LabelSrc x="461" y="311"/>
-			<LabelDst x="461" y="311"/>
+		<GraphicLink srcX="202" srcY="94" dstX="475" dstY="325" spline="False">
+			<LabelCenter x="463" y="309"/>
+			<LabelSrc x="463" y="309"/>
+			<LabelDst x="463" y="309"/>
 			<ControlPoint x="203" y="324"/>
 			<Link name="fakeAuthor" type="AGGREGATION" cardSrc="1.*" cardDestination="0.*" bidir="False" sourceId="1" destId="2"/>
 		</GraphicLink>
