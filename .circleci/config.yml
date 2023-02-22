@@ -41,7 +41,7 @@ jobs:
             pip install pyutmodel==1.4.0
             pip install ogl==0.70.20
             pip install untanglepyut==0.6.40
-            pip install oglio==0.5.8o
+            pip install oglio==0.5.80
       - run:
             name: run tests
             command: | 
