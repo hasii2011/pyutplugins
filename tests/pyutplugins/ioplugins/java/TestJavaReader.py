@@ -1,16 +1,8 @@
 
-from typing import cast
 from typing import List
-
-from logging import Logger
-from logging import getLogger
 
 from unittest import TestSuite
 from unittest import main as unitTestMain
-
-from pkg_resources import resource_filename
-
-from wx import App
 
 from pyutmodel.ModelTypes import Implementors
 from ogl.OglClass import OglClass
@@ -28,27 +20,14 @@ TEST_INTERFACE_NAME_2: str = 'ICreated'
 TEST_INTERFACE_NAME_3: str = 'Tenancy'
 
 
-class BogusApp(App):
-    def OnInit(self) -> bool:
-        return True
-
-
 class TestJavaReader(TestBase):
     """
     """
-    clsLogger: Logger = cast(Logger, None)
-
-    @classmethod
-    def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestJavaReader.clsLogger = getLogger(__name__)
-
     @classmethod
     def tearDownClass(cls):
         pass
 
     def setUp(self):
-        self.logger: Logger  = TestJavaReader.clsLogger
         super().setUp()
 
     def tearDown(self):
@@ -58,7 +37,7 @@ class TestJavaReader(TestBase):
 
         reverseJava: JavaReader = JavaReader()
 
-        basicClassPath: str = resource_filename(TestBase.RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME, 'Tenant.java')
+        basicClassPath: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME, 'Tenant.java')
 
         reverseJava.parseFile(basicClassPath)
 
@@ -131,7 +110,8 @@ class TestJavaReader(TestBase):
                                 ]
         javaReader: JavaReader = JavaReader()
         for fileName in fileNames:
-            testFileName: str = resource_filename(TestBase.RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME, fileName)
+            testFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME, fileName)
+
             javaReader.parseFile(testFileName)
 
         return javaReader

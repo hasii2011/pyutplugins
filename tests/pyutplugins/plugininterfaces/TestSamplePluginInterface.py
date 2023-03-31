@@ -29,7 +29,7 @@ from tests.TestBase import TestBase
 
 class TestSamplePluginInterface(App):
     """
-    Manual test program.   Developer run this application
+    Manual test program.   Developers run this application
     to test the various message dialogs
     """
 

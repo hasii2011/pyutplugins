@@ -1,16 +1,12 @@
 
-from typing import cast
 from typing import List
-
-from logging import Logger
-from logging import getLogger
 
 from os import linesep as osLineSep
 
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-
+from hasiihelper.UnitTestBase import UnitTestBase
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutField import PyutField
 from pyutmodel.PyutMethod import PyutMethod
@@ -18,23 +14,15 @@ from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
 from pyutplugins.ioplugins.python.PyutToPython import PyutToPython
 
-from tests.TestBase import TestBase
 
-
-class TestPyutToPython(TestBase):
-    clsLogger: Logger = cast(Logger, None)
-
-    @classmethod
-    def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestPyutToPython.clsLogger = getLogger(__name__)
+class TestPyutToPython(UnitTestBase):
 
     def setUp(self):
-        self.logger:       Logger       = TestPyutToPython.clsLogger
+        super().setUp()
         self.pyutToPython: PyutToPython = PyutToPython()
 
     def tearDown(self):
-        pass
+        super().tearDown()
 
     def testGetPublicFieldPythonCode(self):
 

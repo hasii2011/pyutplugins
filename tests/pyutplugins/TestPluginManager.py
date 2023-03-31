@@ -1,9 +1,6 @@
 
 from typing import cast
 
-from logging import Logger
-from logging import getLogger
-
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
@@ -25,24 +22,16 @@ class TestPluginManager(TestBase):
     Does not test any execution of the pyutplugins;  Only the interfaces needed by Pyut
     to set up menu times and test whether we actually dynamically loaded the pyutplugins
     """
-    clsLogger: Logger = cast(Logger, None)
-
-    @classmethod
-    def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestPluginManager.clsLogger = getLogger(__name__)
-
     def setUp(self):
-        self.logger:        Logger        = TestPluginManager.clsLogger
+        super().setUp()
 
-        eventEngine: IEventEngine = EventEngine(listeningWindow=cast(Window, None))       # don't use these in these tests
-
+        eventEngine:   IEventEngine   = EventEngine(listeningWindow=cast(Window, None))       # don't use these in these tests
         pluginAdapter: IPluginAdapter = PluginAdapterV2(eventEngine=eventEngine)
 
         self.pluginManager: PluginManager = PluginManager(pluginAdapter=pluginAdapter)
 
     def tearDown(self):
-        pass
+        super().tearDown()
 
     def testInstantiated(self):
         self.assertIsNotNone(self.pluginManager, 'Trivial instantiation should pass')

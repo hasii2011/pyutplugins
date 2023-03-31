@@ -6,11 +6,6 @@ from os import environ
 
 from pathlib import Path
 
-from logging import Logger
-from logging import getLogger
-
-from pkg_resources import resource_filename
-
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
 from untanglepyut.UnTangler import UnTangler
@@ -49,13 +44,11 @@ GENERATED_FILE_NAMES: List[str] = [f'{REALIZATION}{SUFFIX_MARKDOWN}',
 class TestMermaidWriter(TestBase):
     """
     """
-    clsLogger: Logger = cast(Logger, None)
     keep:      bool   = False
 
     @classmethod
     def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestMermaidWriter.clsLogger = getLogger(__name__)
+        TestBase.setUpClass()
 
         if 'KEEP' in environ:
             keep: str = environ["KEEP"]
@@ -69,19 +62,17 @@ class TestMermaidWriter(TestBase):
 
     @classmethod
     def tearDownClass(cls):
+        TestBase.tearDownClass()
         cls.clsLogger.warning(f'tearDownClass {cls.keep=}')
         if cls.keep is False:
             for fileName in GENERATED_FILE_NAMES:
                 cls.cleanupGenerated(fileName=fileName)
 
     def setUp(self):
-        # I need a wx.App
         super().setUp()
 
-        self.logger: Logger = TestMermaidWriter.clsLogger
-
     def tearDown(self):
-        pass
+        super().tearDown()
 
     def testSimpleClass(self):
         baseFileName: str           = f'{SIMPLE}{SUFFIX_MARKDOWN}'
@@ -168,7 +159,8 @@ class TestMermaidWriter(TestBase):
 
     def _getTestObjects(self, baseXmlFileName: str, documentTitle: str) -> OglObjects:
 
-        fqFileName: str = resource_filename(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, baseXmlFileName)
+        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, baseXmlFileName)
+
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)

@@ -8,14 +8,14 @@ import json
 from click import command
 from click import option
 from click import version_option
-from pkg_resources import resource_filename
 
 from wx import App
 
 
 __version__ = "2.0.0"
 
-from tests.TestBase import JSON_LOGGING_CONFIG_FILENAME
+from hasiihelper.UnitTestBase import JSON_LOGGING_CONFIG_FILENAME
+
 from tests.TestBase import TestBase
 from tests.scaffoldv2.ScaffoldFrame import ScaffoldFrame
 
@@ -57,7 +57,7 @@ class ScaffoldApp(App):
     @classmethod
     def findLoggingConfig(cls) -> str:
 
-        fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, JSON_LOGGING_CONFIG_FILENAME)
+        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, JSON_LOGGING_CONFIG_FILENAME)
 
         return fqFileName
 

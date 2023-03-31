@@ -2,9 +2,6 @@
 from typing import List
 from typing import cast
 
-from logging import Logger
-from logging import getLogger
-
 from unittest import TestSuite
 from unittest import main as unitTestMain
 from unittest.mock import MagicMock
@@ -34,20 +31,14 @@ class TestGMLExporter(TestBase):
     UNIT_TEST_FILENAME: str = 'UnitTest.gml'
     """
     """
-    clsLogger: Logger = cast(Logger, None)
-
-    @classmethod
-    def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestGMLExporter.clsLogger = getLogger(__name__)
-
     def setUp(self):
-        self.logger:   Logger      = TestGMLExporter.clsLogger
+        super().setUp()
+
         self.exporter: GMLExporter = GMLExporter()
         self._mockGenerator: MockGenerator = MockGenerator()
 
     def tearDown(self):
-        pass
+        super().tearDown()
 
     def testBasicCreation(self):
 
@@ -70,7 +61,7 @@ class TestGMLExporter(TestBase):
 
         self.assertEqual(0, status, 'Simple GML generation failed')
 
-        TestBase.cleanupGenerated(TestGMLExporter.UNIT_TEST_FILENAME)
+        self.cleanupGenerated(TestGMLExporter.UNIT_TEST_FILENAME)
 
 
 def suite() -> TestSuite:

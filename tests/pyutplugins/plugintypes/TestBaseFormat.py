@@ -1,11 +1,8 @@
 
-from typing import cast
-
-from logging import Logger
-from logging import getLogger
-
 from unittest import TestSuite
 from unittest import main as unitTestMain
+
+from hasiihelper.UnitTestBase import UnitTestBase
 
 from pyutplugins.plugintypes.PluginDataTypes import FormatName
 from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
@@ -16,24 +13,15 @@ from pyutplugins.plugintypes.BaseFormat import BaseFormat
 from pyutplugins.exceptions.InvalidPluginExtensionException import InvalidPluginExtensionException
 from pyutplugins.exceptions.InvalidPluginNameException import InvalidPluginNameException
 
-from tests.TestBase import TestBase
 
-
-class TestBaseFormat(TestBase):
+class TestBaseFormat(UnitTestBase):
     """
     """
-    clsLogger: Logger = cast(Logger, None)
-
-    @classmethod
-    def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestBaseFormat.clsLogger = getLogger(__name__)
-
     def setUp(self):
-        self.logger: Logger = TestBaseFormat.clsLogger
+        super().setUp()
 
     def tearDown(self):
-        pass
+        super().tearDown()
 
     def testBasicInstantiation(self):
         name:        FormatName        = FormatName('BasicPlugin')

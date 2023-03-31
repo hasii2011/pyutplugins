@@ -2,11 +2,6 @@
 from typing import cast
 from typing import List
 
-from logging import Logger
-from logging import getLogger
-
-from pkg_resources import resource_filename
-
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
@@ -32,18 +27,11 @@ class TestPyutPythonVisitor(TestBase):
     ]
     EXPECTED_DATA_CLASS_PROPERTY_COUNT: int = len(EXPECTED_DATA_CLASS_PROPERTIES)
 
-    clsLogger: Logger = cast(Logger, None)
-
-    @classmethod
-    def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestPyutPythonVisitor.clsLogger = getLogger(__name__)
-
     def setUp(self):
-        self.logger: Logger = TestPyutPythonVisitor.clsLogger
+        super().setUp()
 
     def tearDown(self):
-        pass
+        super().tearDown()
 
     def testOnlyInitHasParameters(self):
 
@@ -181,7 +169,7 @@ class TestPyutPythonVisitor(TestBase):
 
     def _setupVisitor(self, fileName: str) -> Python3Parser.File_inputContext:
 
-        fqFileName = resource_filename(TestBase.RESOURCES_TEST_CLASSES_PACKAGE_NAME, fileName)
+        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_CLASSES_PACKAGE_NAME, fileName)
 
         fileStream: FileStream = FileStream(fqFileName)
         lexer:      Python3Lexer = Python3Lexer(fileStream)

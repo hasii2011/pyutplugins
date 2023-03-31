@@ -1,48 +1,26 @@
 
-from logging import Logger
-from logging import getLogger
-import logging.config
-
 from os import system as osSystem
 from os import sep as osSep
 
 from pathlib import Path
 
-import json
+from hasiihelper.UnitTestBase import UnitTestBase
 
-from pkg_resources import resource_filename
-
-from miniogl.DiagramFrame import DiagramFrame
+from hasiicommon.ui.UnitTestBaseW import UnitTestBaseW
 
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
 from untanglepyut.UnTangler import UnTangler
 
-from wx import App
-from wx import Frame
-from wx import ID_ANY
-
-from unittest import TestCase
-
 from pyutplugins.ExternalTypes import OglClasses
 from pyutplugins.ExternalTypes import OglObjects
 
 
-JSON_LOGGING_CONFIG_FILENAME: str = "testLoggingConfig.json"
-TEST_DIRECTORY:               str = 'tests'
+class TestBase(UnitTestBaseW):
 
-
-class BogusApp(App):
-    def OnInit(self) -> bool:
-        return True
-
-
-class TestBase(TestCase):
-
-    RESOURCES_PACKAGE_NAME:                      str = 'tests.resources'
-    RESOURCES_TEST_CLASSES_PACKAGE_NAME:         str = f'{RESOURCES_PACKAGE_NAME}.testclasses'
-    RESOURCES_TEST_DATA_PACKAGE_NAME:            str = f'{RESOURCES_PACKAGE_NAME}.testdata'
-    RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME:    str = f'{RESOURCES_PACKAGE_NAME}.testclasses.ozzee'
+    RESOURCES_TEST_CLASSES_PACKAGE_NAME:         str = f'{UnitTestBase.RESOURCES_PACKAGE_NAME}.testclasses'
+    RESOURCES_TEST_DATA_PACKAGE_NAME:            str = f'{UnitTestBase.RESOURCES_PACKAGE_NAME}.testdata'
+    RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME:    str = f'{UnitTestBase.RESOURCES_PACKAGE_NAME}.testclasses.ozzee'
 
     RESOURCES_TEST_MERMAID_PACKAGE_NAME:        str = f'{RESOURCES_TEST_DATA_PACKAGE_NAME}.mermaid'
 
@@ -56,42 +34,11 @@ class TestBase(TestCase):
     EXTERNAL_DIFF:         str = '/usr/bin/diff --normal --color=always '
     EXTERNAL_CLEAN_UP: str = 'rm '
 
-    baseLogger: Logger = getLogger(__name__)
-
     def setUp(self):
-        """
-        Test classes that need to instantiate a wxPython App should super().setUp()
-        """
-        self._app:   BogusApp = BogusApp()
-        baseFrame:   Frame = Frame(None, ID_ANY, "", size=(10, 10))
-        # noinspection PyTypeChecker
-        umlFrame = DiagramFrame(baseFrame)
-        umlFrame.Show(True)
+        super().setUp()
 
     def tearDown(self):
-        self._app.OnExit()
-
-    """
-    A base unit test class to initialize some logging stuff we need
-    """
-    @classmethod
-    def setUpLogging(cls):
-        """"""
-        loggingConfigFilename: str = cls.findLoggingConfig()
-
-        with open(loggingConfigFilename, 'r') as loggingConfigurationFile:
-            configurationDictionary = json.load(loggingConfigurationFile)
-
-        logging.config.dictConfig(configurationDictionary)
-        logging.logProcesses = False
-        logging.logThreads = False
-
-    @classmethod
-    def findLoggingConfig(cls) -> str:
-
-        fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, JSON_LOGGING_CONFIG_FILENAME)
-
-        return fqFileName
+        super().tearDown()
 
     @classmethod
     def runDiff(cls, goldenPackageName: str, baseFileName: str) -> int:
@@ -105,7 +52,7 @@ class TestBase(TestCase):
 
         Returns:  The results of the difference
         """
-        goldenFileName:    str = resource_filename(goldenPackageName, baseFileName)
+        goldenFileName:    str = TestBase.getFullyQualifiedResourceFileName(goldenPackageName, baseFileName)
         generatedFileName: str = cls.constructGeneratedName(baseFileName=baseFileName)
 
         status: int = osSystem(f'{TestBase.EXTERNAL_DIFF} {goldenFileName} {generatedFileName}')
@@ -119,7 +66,7 @@ class TestBase(TestCase):
 
         path: Path = Path(generatedFileName)
 
-        cls.baseLogger.info(f'{path} - exists: {path.exists()}')
+        # cls.clsLogger.info(f'{path} - exists: {path.exists()}')    # does not work for TestJavaWriter
         if path.exists() is True:
             path.unlink()
 
@@ -184,7 +131,8 @@ class TestBase(TestCase):
         Returns:  The requested document;May return an XX exception if the document name does not match
 
         """
-        fqFileName: str       = resource_filename(TestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, filename)
+        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, filename)
+
         untangler:  UnTangler = UnTangler()
         untangler.untangleFile(fqFileName=fqFileName)
 

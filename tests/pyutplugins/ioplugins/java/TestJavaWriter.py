@@ -1,8 +1,6 @@
+
 from typing import List
 from typing import cast
-
-from logging import Logger
-from logging import getLogger
 
 from unittest import TestSuite
 from unittest import main as unitTestMain
@@ -18,16 +16,7 @@ from pyutplugins.ioplugins.java.JavaWriter import JavaWriter
 class TestJavaWriter(TestBase):
     """
     """
-    clsLogger: Logger = cast(Logger, None)
-
-    @classmethod
-    def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestJavaWriter.clsLogger = getLogger(__name__)
-
     def setUp(self):
-        self.logger:      Logger     = TestJavaWriter.clsLogger
-
         super().setUp()
         self._javaWriter: JavaWriter = JavaWriter(writeDirectory=f'{TestBase.getTemporaryDirectory()}')
 
@@ -58,7 +47,7 @@ class TestJavaWriter(TestBase):
             self.assertEqual(0, status, f'Diff of {generatedFileName} file failed;  Something changed')
 
         for generatedFileName in generatedFileNames:
-            TestBase.cleanupGenerated(generatedFileName)
+            self.cleanupGenerated(generatedFileName)
 
 
 def suite() -> TestSuite:

@@ -1,18 +1,11 @@
 
 from typing import List
-from typing import cast
-
-from logging import Logger
-from logging import getLogger
-
-from pkg_resources import resource_filename
 
 from unittest import main as unitTestMain
 from unittest import TestSuite
 
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutField import PyutField
-from wx import App
 
 from pyutplugins.common.ElementTreeData import ElementTreeData
 from pyutplugins.ioplugins.dtd.DTDParser import DTDParser
@@ -25,20 +18,11 @@ class TestDTDParser(TestBase):
     EXPECTED_CLASS_COUNT: int = 17
     EXPECTED_LINK_COUNT:  int = 14
 
-    clsLogger: Logger = cast(Logger, None)
-
-    @classmethod
-    def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestDTDParser.clsLogger = getLogger(__name__)
-
     def setUp(self):
-        self.logger: Logger = TestDTDParser.clsLogger
-        self.app:    App    = App()
-
+        super().setUp()
+        
     def tearDown(self):
-        self.app.OnExit()
-        del self.app
+        super().tearDown()
 
     def testBasicDTDProcessing(self):
 
@@ -91,7 +75,7 @@ class TestDTDParser(TestBase):
     def _readDTD(self) -> DTDParser:
 
         dtdParser:  DTDParser = DTDParser()
-        fqFileName: str       = resource_filename(TestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, 'AllElements.dtd')
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, 'AllElements.dtd')
 
         dtdParser.open(fqFileName)
 

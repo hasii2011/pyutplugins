@@ -1,17 +1,6 @@
 
-from typing import cast
 from typing import Dict
 from typing import List
-
-from logging import Logger
-from logging import getLogger
-
-from miniogl.DiagramFrame import DiagramFrame
-from pkg_resources import resource_filename
-
-from wx import App
-from wx import ID_ANY
-from wx.py.frame import Frame
 
 from unittest import TestSuite
 from unittest import main as unitTestMain
@@ -42,48 +31,25 @@ from pyutplugins.ioplugins.python.ReverseEngineerPython2 import ReverseEngineerP
 from tests.TestBase import TestBase
 
 
-class BogusApp(App):
-    def OnInit(self) -> bool:
-        return True
-
-
 class TestReverseEngineerPython2(TestBase):
     """
     """
     PROPERTY_NAMES: List[str] = ['fontSize', 'verticalGap']
 
-    clsLogger: Logger = cast(Logger, None)
-
-    @classmethod
-    def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestReverseEngineerPython2.clsLogger = getLogger(__name__)
-
     def setUp(self):
 
-        self.logger:          Logger                 = TestReverseEngineerPython2.clsLogger
+        super().setUp()
         self.reverseEngineer: ReverseEngineerPython2 = ReverseEngineerPython2()
 
-        self._app: BogusApp = BogusApp()
-
-        baseFrame: Frame = Frame(None, ID_ANY, "", size=(10, 10))
-        # noinspection PyTypeChecker
-        umlFrame = DiagramFrame(baseFrame)
-        umlFrame.Show(True)
-
-        self._umlFrame: DiagramFrame = umlFrame
-
     def tearDown(self):
-        self._app.OnExit()
-        del self._app
-        del self._umlFrame
+        super().tearDown()
 
     def testFullClassInput(self):
 
         from os import path as osPath
         from os.path import dirname
 
-        fqFileName = resource_filename(TestBase.RESOURCES_TEST_CLASSES_PACKAGE_NAME, 'SimpleClass.py')
+        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_CLASSES_PACKAGE_NAME, 'SimpleClass.py')
 
         fileName:      str = osPath.basename(fqFileName)
         directoryName: str = dirname(fqFileName)

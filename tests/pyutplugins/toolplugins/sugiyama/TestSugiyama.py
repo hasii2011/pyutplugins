@@ -1,9 +1,5 @@
 
 from typing import Dict
-from typing import cast
-
-from logging import Logger
-from logging import getLogger
 
 from unittest import TestSuite
 from unittest import main as unitTestMain
@@ -23,25 +19,16 @@ from tests.TestBase import TestBase
 class TestSugiyama(TestBase):
     """
     """
-    clsLogger: Logger = cast(Logger, None)
-
-    @classmethod
-    def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestSugiyama.clsLogger = getLogger(__name__)
-
     def setUp(self):
         super().setUp()
 
-        self.logger: Logger = TestSugiyama.clsLogger
-
-        mockMediator: MockPluginAdapter = MockPluginAdapter()
-        self._sugiyama: Sugiyama = Sugiyama(pluginAdapter=mockMediator)
+        mockPluginAdapter: MockPluginAdapter = MockPluginAdapter()
+        self._sugiyama: Sugiyama = Sugiyama(pluginAdapter=mockPluginAdapter)
 
         self._oglObjects: OglObjects = self._xmlFileToOglObjects(filename='SugiyamaTest.xml', documentName='Sugiyama')
 
     def tearDown(self):
-        pass
+        super().tearDown()
 
     def testCreateInterfaceOglALayout(self):
 
@@ -188,7 +175,6 @@ class TestSugiyama(TestBase):
 
 
 def suite() -> TestSuite:
-    """You need to change the name of the test class here also."""
     import unittest
 
     testSuite: TestSuite = TestSuite()

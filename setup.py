@@ -59,10 +59,11 @@ setup(
                       'networkx==3.0',
                       'orthogonal==1.1.8',
                       'wxPython~=4.2.0',
-                      'hasiicommon~=0.0.7',
-                      'pyutmodel==1.4.0',
-                      'ogl==0.70.20',
-                      'untanglepyut==0.6.40',
-                      'oglio==0.5.80',
+                      'hasiihelper~=0.1.0',
+                      'hasiicommon~=0.1.0',
+                      'pyutmodel==1.4.1',
+                      'ogl==0.70.22',
+                      'untanglepyut==0.6.41',
+                      'oglio==0.6.0',
                       ]
 )
