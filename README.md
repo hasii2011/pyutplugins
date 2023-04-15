@@ -15,9 +15,15 @@
 
 **TBD**
 
-------
+## Developer Notes
+This project uses [buildlackey](https://github.com/hasii2011/buildlackey) for day to day development builds
 
-Used to be called pyutplugincore
+___
+
+Written by <a href="mailto:email@humberto.a.sanchez.ii@gmail.com?subject=Hello Humberto">Humberto A. Sanchez II</a>  (C) 2023
+
+___
+
 
 ![Humberto's Modified Logo](https://raw.githubusercontent.com/wiki/hasii2011/gittodoistclone/images/SillyGitHub.png)
 
