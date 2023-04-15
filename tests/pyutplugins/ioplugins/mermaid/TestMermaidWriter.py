@@ -27,6 +27,7 @@ INHERITANCE:       str = 'MermaidInheritance'
 SIMPLE:            str = 'MermaidSimpleClass'
 BASIC_ASSOCIATION: str = 'MermaidBasicAssociation'
 FIELDS:            str = 'MermaidFields'
+NOTES:             str = 'MermaidNotes'
 
 SUFFIX_MARKDOWN: str = '.md'
 SUFFIX_XML:      str = '.xml'
@@ -148,6 +149,7 @@ class TestMermaidWriter(TestBase):
 
     def testBasicAssociation(self):
         baseFileName:  str           = f'{BASIC_ASSOCIATION}{SUFFIX_MARKDOWN}'
+
         fqFileName:    str           = TestBase.constructGeneratedName(baseFileName=baseFileName)
         mermaidWriter: MermaidWriter = MermaidWriter(Path(fqFileName), writeCredits=False)
 
@@ -156,6 +158,18 @@ class TestMermaidWriter(TestBase):
 
         status: int = TestBase.runDiff(goldenPackageName=TestBase.GOLDEN_MERMAID_PACKAGE_NAME, baseFileName=baseFileName)
         self.assertEqual(0, status, 'Simple Association failed')
+
+    def testNotes(self):
+        baseFileName:  str           = f'{NOTES}{SUFFIX_MARKDOWN}'
+
+        fqFileName:    str           = TestBase.constructGeneratedName(baseFileName=baseFileName)
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(fqFileName), writeCredits=False)
+
+        oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{NOTES}{SUFFIX_XML}', documentTitle='DiagramNotes')
+        mermaidWriter.translate(oglObjects=oglObjects)
+
+        status: int = TestBase.runDiff(goldenPackageName=TestBase.GOLDEN_MERMAID_PACKAGE_NAME, baseFileName=baseFileName)
+        self.assertEqual(0, status, 'Note Generation failed')
 
     def _getTestObjects(self, baseXmlFileName: str, documentTitle: str) -> OglObjects:
 

@@ -14,9 +14,12 @@ from datetime import datetime
 
 from pathlib import Path
 
+from ogl.OglNote import OglNote
 from pyutmodel.PyutField import PyutField
 from pyutmodel.PyutField import PyutFields
 from pyutmodel.PyutLink import PyutLink
+from pyutmodel.PyutLinkedObject import PyutLinkedObject
+from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutMethod import PyutMethod
@@ -25,6 +28,7 @@ from pyutmodel.PyutStereotype import PyutStereotype
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
 from ogl.OglLink import OglLink
+from ogl.OglNoteLink import OglNoteLink
 from ogl.OglClass import OglClass
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglAggregation import OglAggregation
@@ -88,6 +92,8 @@ class MermaidWriter:
                     oglClass:  OglClass  = cast(OglClass, oglObject)
                     generatedString: str = self._generateClassStanza(oglClass)
                     mermaidString += f'{generatedString}'
+                case OglNote():
+                    pass
                 case OglLink():
                     pass
                 case _:
@@ -152,49 +158,19 @@ class MermaidWriter:
                 case OglInterface():
                     oglInterface: OglInterface = cast(OglInterface, oglObject)
                     linkRefrain = self._getRealizationLinkRefrain(oglInterface)
+                case OglNoteLink():
+                    oglNoteLink: OglNoteLink = cast(OglNoteLink, oglObject)
+                    linkRefrain = self._getNoteLinkRefrain(oglNoteLink)
                 case OglAssociation():      # Most general needs to be last
                     oglAssociation: OglAssociation = cast(OglAssociation, oglObject)
                     linkRefrain = self._getAssociationLinkRefrain(oglAssociation=oglAssociation, arrowType=MermaidArrow.ASSOCIATION_LINK)
                 case OglInterface2():
-                    pass
+                    self.logger.warning(f'OglInterface2 (lollipops) not supported in Mermaid')
                 case _:
                     pass        # Ignore non links
             linksStanza += linkRefrain
 
         return linksStanza
-
-    def _getAssociationLinkRefrain(self, oglAssociation: OglAssociation, arrowType: MermaidArrow) -> str:
-        """
-        For Composition and Aggregation the diamond is on the source side
-        Produces refrains of the form:
-
-        For composition:
-        Person "1" *-- "1" Heart
-
-        Where Person is the 'composer' and Heart is the 'composed'
-
-        For aggregation
-
-        Author "1.*" o-- "0.*" Book
-
-        Where Author aggregates Books
-
-        Args:
-            oglAssociation:
-            arrowType:
-
-        Returns:
-        """
-        pyutLink: PyutLink = oglAssociation.pyutObject
-        sourceName:      str = pyutLink.getSource().name
-        destinationName: str = pyutLink.getDestination().name
-        self.logger.info(f'{oglAssociation} {sourceName=} {destinationName=}')
-
-        sourceCardinality, destinationCardinality = self._getCardinalityStrings(pyutLink)
-        linkRefrain = (
-            f'{indent1}{sourceName} {sourceCardinality} {arrowType.value} {destinationCardinality} {destinationName} : {pyutLink.name}{eol}'
-        )
-        return linkRefrain
 
     def _getInheritanceLinkRefrain(self, oglLink: OglLink) -> str:
         """
@@ -229,6 +205,55 @@ class MermaidWriter:
             f'{indent1}{interfaceName} {MermaidArrow.INTERFACE_LINK.value} {implementorName}{eol}'
         )
 
+        return linkRefrain
+
+    def _getAssociationLinkRefrain(self, oglAssociation: OglAssociation, arrowType: MermaidArrow) -> str:
+        """
+        For Composition and Aggregation the diamond is on the source side
+        Produces refrains of the form:
+
+        For composition:
+        Person "1" *-- "1" Heart
+
+        Where Person is the 'composer' and Heart is the 'composed'
+
+        For aggregation
+
+        Author "1.*" o-- "0.*" Book
+
+        Where Author aggregates Books
+
+        Args:
+            oglAssociation:
+            arrowType:
+
+        Returns:
+        """
+        pyutLink: PyutLink = oglAssociation.pyutObject
+        sourceName:      str = pyutLink.getSource().name
+        destinationName: str = pyutLink.getDestination().name
+        self.logger.info(f'{oglAssociation} {sourceName=} {destinationName=}')
+
+        sourceCardinality, destinationCardinality = self._getCardinalityStrings(pyutLink)
+        linkRefrain: str = (
+            f'{indent1}{sourceName} {sourceCardinality} {arrowType.value} {destinationCardinality} {destinationName} : {pyutLink.name}{eol}'
+        )
+        return linkRefrain
+
+    def _getNoteLinkRefrain(self, oglNoteLink: OglNoteLink) -> str:
+        """
+
+        Args:
+            oglNoteLink: The note link
+
+        Returns:  Mermaid string for a note link
+        """
+        pyutLink:  PyutLink          = oglNoteLink.pyutObject
+        destObject: PyutLinkedObject = pyutLink.getDestination()
+        pyutNote:   PyutNote         = pyutLink.getSource()
+        linkRefrain: str = (
+            f'{indent1}note for {destObject.name} "{pyutNote.content}"{eol}'
+        )
         return linkRefrain
 
     def _getCardinalityStrings(self, pyutLink) -> Tuple[str, str]:
