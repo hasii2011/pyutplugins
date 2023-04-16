@@ -14,12 +14,12 @@ from datetime import datetime
 
 from pathlib import Path
 
-from ogl.OglNote import OglNote
 from pyutmodel.PyutField import PyutField
 from pyutmodel.PyutField import PyutFields
 from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutLinkedObject import PyutLinkedObject
 from pyutmodel.PyutNote import PyutNote
+from pyutmodel.PyutText import PyutText
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutMethod import PyutMethod
@@ -27,6 +27,8 @@ from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutStereotype import PyutStereotype
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
+from ogl.OglNote import OglNote
+from ogl.OglText import OglText
 from ogl.OglLink import OglLink
 from ogl.OglNoteLink import OglNoteLink
 from ogl.OglClass import OglClass
@@ -94,6 +96,10 @@ class MermaidWriter:
                     mermaidString += f'{generatedString}'
                 case OglNote():
                     pass
+                case OglText():
+                    oglText: OglText = cast(OglText, oglObject)
+                    generatedString = self._mermaidStandaloneNoteStanza(oglText)
+                    mermaidString += f'{generatedString}'
                 case OglLink():
                     pass
                 case _:
@@ -102,6 +108,15 @@ class MermaidWriter:
         mermaidString += f'```{eol}'
         with self._fqFileName.open(mode='a') as fd:
             fd.write(f'{mermaidString}')
+
+    def _mermaidStandaloneNoteStanza(self, oglText: OglText) -> str:
+
+        pyutText: PyutText = oglText.pyutObject
+        generatedString: str = (
+            f'{indent1}note "{pyutText.content}"{eol}'
+        )
+
+        return generatedString
 
     def _generateClassStanza(self, oglObject: OglClass) -> str:
         """

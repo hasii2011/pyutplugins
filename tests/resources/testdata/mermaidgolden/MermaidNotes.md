@@ -14,4 +14,5 @@ classDiagram
         + swim()
         + quack()
     }
+    note "Standalone Text"
 ```
