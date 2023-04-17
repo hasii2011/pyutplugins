@@ -8,7 +8,7 @@ pkgversions==0.2.2
 mypy==1.2.0
 mypy-extensions==1.0.0
 types-Deprecated==1.2.9.2
-types-setuptools==67.6.0.7
+types-setuptools==67.6.0.8
 typing_extensions==4.5.0
 
 # For IOPython
@@ -23,7 +23,7 @@ hasiicommon~=0.2.2
 pyutmodel==1.4.3
 ogl==0.70.26
 untanglepyut==0.6.50
-oglio==0.7.0
+oglio==0.7.1
 
 buildlackey~=0.7.0
 

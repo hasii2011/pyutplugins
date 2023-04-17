@@ -64,6 +64,6 @@ setup(
                       'pyutmodel==1.4.3',
                       'ogl==0.70.26',
                       'untanglepyut==0.6.50',
-                      'oglio==0.7.0',
+                      'oglio==0.7.1',
                       ]
 )

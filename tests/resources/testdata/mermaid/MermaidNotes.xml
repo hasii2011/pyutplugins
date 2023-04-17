@@ -32,7 +32,7 @@
 			</Class>
 		</GraphicClass>
 		<GraphicNote width="137" height="101" x="100" y="100">
-			<Note id="3" content="Can Fly\\\\Can Swim\\\\Can Dive\\\\Can help in debugging" filename=""/>
+			<Note id="3" content="Can Fly&#xA;Can Swim&#xA;Can Dive&#xA;Can help in debugging" filename=""/>
 		</GraphicNote>
 		<GraphicText width="147" height="45" x="550" y="200" textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
 			<Text id="4" content="Standalone Text"/>
