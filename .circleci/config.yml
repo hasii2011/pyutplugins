@@ -41,8 +41,8 @@ jobs:
             pip install hasiicommon~=0.2.2
             pip install pyutmodel==1.4.3
             pip install ogl==0.70.26
-            pip install untanglepyut==0.6.41
-            pip install oglio==0.7.1
+            pip install untanglepyut==0.6.56
+            pip install oglio==0.7.2
             pip install buildlackey~=0.7.0
       - run:
             name: run tests
