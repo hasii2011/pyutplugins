@@ -1,10 +1,14 @@
 
+from typing import NewType
 from typing import cast
 from typing import Dict
 from typing import List
 
 from logging import Logger
 from logging import getLogger
+
+from dataclasses import dataclass
+from dataclasses import field
 
 from os import sep as osSep
 
@@ -50,6 +54,22 @@ PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('py')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Python code generation and reverse engineering')
 
 
+FilesToImport = NewType('FilesToImport', List[str])
+
+
+def createFilesToImportFactory() -> FilesToImport:
+    return FilesToImport([])
+
+
+@dataclass
+class ImportDirectory:
+    directoryName: str = ''
+    filesToImport:  FilesToImport = field(default_factory=createFilesToImportFactory)
+
+
+ImportDirectories = NewType('ImportDirectories', List[ImportDirectory])
+
+
 class IOPython(IOPluginInterface):
 
     def __init__(self, pluginAdapter: IPluginAdapter):
@@ -65,11 +85,9 @@ class IOPython(IOPluginInterface):
         self._inputFormat  = InputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
         self._outputFormat = OutputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 
-        self._exportDirectoryName: str         = ''
-        self._importDirectoryName: str         = ''
-        self._filesToImport:       List['str'] = []
-
-        self._readProgressDlg: ProgressDialog = cast(ProgressDialog, None)
+        self._exportDirectoryName: str               = ''
+        self._importDirectories:   ImportDirectories = ImportDirectories([])
+        self._readProgressDlg:     ProgressDialog    = cast(ProgressDialog, None)
 
     def setImportOptions(self) -> bool:
         """
@@ -81,8 +99,10 @@ class IOPython(IOPluginInterface):
         if response.cancelled is True:
             return False
         else:
-            self._importDirectoryName = response.directoryName
-            self._filesToImport   = response.fileList
+            importDirectory: ImportDirectory = ImportDirectory()
+            importDirectory.directoryName = response.directoryName
+            importDirectory.filesToImport = cast(FilesToImport, response.fileList)      # Cheat because I know the underlying type
+            self._importDirectories.append(importDirectory)
 
         return True
 
@@ -103,18 +123,21 @@ class IOPython(IOPluginInterface):
         wxYield()
         status: bool = True
         try:
-            reverseEngineer: ReverseEngineerPython2 = ReverseEngineerPython2()
+            self._readProgressDlg = ProgressDialog('Parsing Files', 'Starting', parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
+            oglClasses: OglClasses = OglClasses([])
+            oglLinks:   OglLinks   = OglLinks([])
+            for directory in self._importDirectories:
+                importDirectory: ImportDirectory = cast(ImportDirectory, directory)
+                fileCount:       int             = len(importDirectory.filesToImport)
+                self._readProgressDlg.SetRange(fileCount)
 
-            fileCount: int        = len(self._filesToImport)
-            self._readProgressDlg = ProgressDialog('Parsing Files', 'Starting',  parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
-            self._readProgressDlg.SetRange(fileCount)
+                reverseEngineer: ReverseEngineerPython2 = ReverseEngineerPython2()
+                reverseEngineer.reversePython(directoryName=importDirectory.directoryName, files=importDirectory.filesToImport, progressCallback=self._readProgressCallback)
+                oglClasses.extend(reverseEngineer.oglClasses)
+                oglLinks.extend(reverseEngineer.oglLinks)
 
-            reverseEngineer.reversePython(directoryName=self._importDirectoryName, files=self._filesToImport, progressCallback=self._readProgressCallback)
-            oglClasses: OglClasses = reverseEngineer.oglClasses
-            oglLinks:   OglLinks   = reverseEngineer.oglLinks()
-
-            self.logger.warning(f'Classes: {oglClasses}')
-            self.logger.warning(f'Links:   {oglLinks}')
+                self.logger.warning(f'Classes: {oglClasses}')
+                self.logger.warning(f'Links:   {oglLinks}')
 
             self._layoutUmlClasses(oglClasses=oglClasses)
             self._layoutLinks(oglLinks=oglLinks)

@@ -44,7 +44,7 @@ class PluginAdapterV2(IPluginAdapter):
         """
         Returns:  The current directory
         """
-        return ''
+        return '/Users/humberto.a.sanchez.ii/pyut-diagrams'
 
     def getFrameSize(self, callback: FrameSizeCallback):
         self._eventEngine.sendEvent(EventType.FrameSize, callback=callback)

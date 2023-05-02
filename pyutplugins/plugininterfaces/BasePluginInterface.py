@@ -60,7 +60,7 @@ class BasePluginInterface:
             pluginAdapter:   A class that implements ICommunicator
 
         """
-        self._pluginAdapter:     IPluginAdapter      = pluginAdapter
+        self._pluginAdapter:     IPluginAdapter    = pluginAdapter
         self._pluginPreferences: PluginPreferences = PluginPreferences()
 
         #

@@ -4,7 +4,6 @@ import logging.config
 
 import json
 
-
 from click import command
 from click import option
 from click import version_option
@@ -85,5 +84,4 @@ def commandHandler(input_file: str):
 
 
 if __name__ == "__main__":
-
     commandHandler()

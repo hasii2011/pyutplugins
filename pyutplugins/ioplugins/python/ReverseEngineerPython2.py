@@ -90,7 +90,7 @@ class ReverseEngineerPython2(LinkMakerMixin):
                 fqFileName: str = f'{directoryName}{osSep}{fileName}'
                 self.logger.info(f'Processing file: {fqFileName}')
 
-                progressCallback(currentFileCount, f'Processing: {fileName}')
+                progressCallback(currentFileCount, f'Processing: {directoryName}\n {fileName}')
 
                 fileStream: FileStream   = FileStream(fqFileName)
                 lexer:      Python3Lexer = Python3Lexer(fileStream)
@@ -124,6 +124,7 @@ class ReverseEngineerPython2(LinkMakerMixin):
 
         return self._oglClasses
 
+    @property
     def oglLinks(self) -> OglLinks:
         return self._oglLinks
 

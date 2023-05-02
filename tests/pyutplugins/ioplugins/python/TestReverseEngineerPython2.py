@@ -57,7 +57,7 @@ class TestReverseEngineerPython2(TestBase):
         self.reverseEngineer.reversePython(directoryName=directoryName, files=files, progressCallback=self._fakeProgressCallback)
 
         oglClasses: OglClasses = self.reverseEngineer.oglClasses
-        oglLinks:   OglLinks   = self.reverseEngineer.oglLinks()
+        oglLinks:   OglLinks   = self.reverseEngineer.oglLinks
 
         self.assertEqual(2, len(oglClasses), 'Should have gotten a simple class')
         self.assertEqual(1, len(oglLinks),   'There should be a single link')
