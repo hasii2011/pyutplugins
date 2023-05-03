@@ -130,7 +130,7 @@ class TestDialogs(App):
 
                 inputFormat = InputFormat(formatName=formatName, extension=pluginExtension, description=pluginDescription)
 
-                with DlgSelectMultiplePackages(parent=self._frame, startDirectory='/Users/humberto.a.sanchez.ii/pyut-diagrams', inputFormat=inputFormat) as dlg:
+                with DlgSelectMultiplePackages(startDirectory='/Users/humberto.a.sanchez.ii/pyut-diagrams', inputFormat=inputFormat) as dlg:
                     if dlg.ShowModal() == OK:
                         msg = f'Ok {dlg.packageCount=} {dlg.moduleCount=}'
                     else:

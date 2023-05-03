@@ -26,6 +26,7 @@ from wx import EVT_BUTTON
 
 from wx import Button
 from wx import CommandEvent
+from wx.grid import Grid
 
 from wx.lib.sized_controls import SizedDialog
 from wx.lib.sized_controls import SizedPanel
@@ -65,16 +66,33 @@ class DlgSelectMultiplePackages(SizedDialog):
         self._inputFormat:    InputFormat = inputFormat
         sizedPanel:           SizedPanel = self.GetContentsPane()
         sizedPanel.SetSizerType('vertical')
+        sizedPanel.SetSizerProps(expand=True, proportion=1)
 
-        self._btnMore:   Button = cast(Button, None)
-        self._btnCancel: Button = cast(Button, None)
-        self._btnOk:     Button  = cast(Button, None)
+        self._btnMore:    Button = cast(Button, None)
+        self._btnCancel:  Button = cast(Button, None)
+        self._btnOk:      Button = cast(Button, None)
+        self._simpleGrid: Grid   = cast(Grid, None)
 
+        self._layoutSimpleGrid(parent=sizedPanel)
         self._layoutCustomDialogButtonContainer(parent=sizedPanel)
 
         self._importPackages: ImportPackages = ImportPackages([])
-        self._packageCount:      int               = 0
-        self._moduleCount:         int               = 0
+        self._packageCount:   int            = 0
+        self._moduleCount:    int            = 0
+
+        self._currentGridRow: int = 0
+
+    def _layoutSimpleGrid(self, parent: SizedPanel):
+
+        simpleGrid: Grid = Grid(parent)
+        simpleGrid.CreateGrid(numRows=3, numCols=2)
+
+        simpleGrid.SetColLabelValue(0, 'Package Name')
+        simpleGrid.SetColLabelValue(1, 'Module Count')
+
+        simpleGrid.AutoSizeColumns()
+
+        self._simpleGrid = simpleGrid
 
     def _layoutCustomDialogButtonContainer(self, parent: SizedPanel, ):
         """
@@ -133,8 +151,14 @@ class DlgSelectMultiplePackages(SizedDialog):
                 importDirectory.moduleToImport = dlg.GetFilenames()
 
                 self._packageCount += 1
-                self._moduleCount    += len(importDirectory.moduleToImport)
+                currentModuleCount: int = len(importDirectory.moduleToImport)
+                self._moduleCount  += currentModuleCount
                 self._importPackages.append(importDirectory)
+                self._simpleGrid.SetCellValue(self._currentGridRow, 0, importDirectory.packageName)
+                self._simpleGrid.SetCellValue(self._currentGridRow, 1, str(currentModuleCount))
+
+                self._currentGridRow += 1
+                self._simpleGrid.AutoSizeColumns()
             else:
                 self._importPackages = ImportPackages([])
 
