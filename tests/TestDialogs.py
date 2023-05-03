@@ -19,14 +19,15 @@ from wx.lib.sized_controls import SizedFrame
 from wx.lib.sized_controls import SizedPanel
 from wx.lib.sized_controls import SizedStaticBox
 
-from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import DlgSelectMultiplePackages
-
 from pyutplugins.plugintypes.InputFormat import InputFormat
 from pyutplugins.plugintypes.PluginDataTypes import FormatName
 from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
 from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
 
 from pyutplugins.ioplugins.wximage.DlgWxImageOptions import DlgWxImageOptions
+
+from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import DlgSelectMultiplePackages
+
 from pyutplugins.toolplugins.orthogonal.DlgLayoutSize import DlgLayoutSize
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 

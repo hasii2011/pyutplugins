@@ -24,7 +24,6 @@ from wx import CANCEL
 
 from wx import EVT_BUTTON
 
-from wx import Window
 from wx import Button
 from wx import CommandEvent
 
