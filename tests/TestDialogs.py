@@ -19,6 +19,13 @@ from wx.lib.sized_controls import SizedFrame
 from wx.lib.sized_controls import SizedPanel
 from wx.lib.sized_controls import SizedStaticBox
 
+from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import DlgSelectMultiplePackages
+
+from pyutplugins.plugintypes.InputFormat import InputFormat
+from pyutplugins.plugintypes.PluginDataTypes import FormatName
+from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
+from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
+
 from pyutplugins.ioplugins.wximage.DlgWxImageOptions import DlgWxImageOptions
 from pyutplugins.toolplugins.orthogonal.DlgLayoutSize import DlgLayoutSize
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
@@ -29,9 +36,10 @@ from tests.scaffoldv2.ScaffoldPreferencesDialog import ScaffoldPreferencesDialog
 
 class DialogNamesEnum(Enum):
 
-    DLG_LAYOUT_SIZE        = 'DlgLayoutSize'
-    DLG_WXIMAGE_OPTIONS    = 'DlgWxImageOptions'
-    DLG_PREFERENCES_DIALOG = 'DlgPreferencesDialog'
+    DLG_LAYOUT_SIZE              = 'DlgLayoutSize'
+    DLG_WXIMAGE_OPTIONS          = 'DlgWxImageOptions'
+    DLG_PREFERENCES_DIALOG       = 'DlgPreferencesDialog'
+    DLG_SELECT_MULTIPLE_PACKAGES = 'DlgSelectMultiplePackages'
 
 
 class TestDialogs(App):
@@ -113,6 +121,19 @@ class TestDialogs(App):
                         msg = f'New {msg} ({dlg.layoutWidth},{dlg.layoutHeight})'
                     else:
                         msg = f'Old {msg} ({dlg.layoutWidth},{dlg.layoutHeight})'
+                    self.logger.info(f'{msg}')
+            case DialogNamesEnum.DLG_SELECT_MULTIPLE_PACKAGES:
+                formatName:        FormatName        = FormatName("Python File(s)")
+                pluginExtension:   PluginExtension   = PluginExtension('py')
+                pluginDescription: PluginDescription = PluginDescription('Python code generation and reverse engineering')
+
+                inputFormat = InputFormat(formatName=formatName, extension=pluginExtension, description=pluginDescription)
+
+                with DlgSelectMultiplePackages(parent=self._frame, startDirectory='/Users/humberto.a.sanchez.ii/pyut-diagrams', inputFormat=inputFormat) as dlg:
+                    if dlg.ShowModal() == OK:
+                        msg = f'Ok {dlg.packageCount=} {dlg.moduleCount=}'
+                    else:
+                        msg = f'Cancel'
                     self.logger.info(f'{msg}')
             case _:
                 self.logger.warning(f'Unhandled Dialog to test: {dlgNamesEnum}')

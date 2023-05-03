@@ -1,14 +1,10 @@
 
-from typing import NewType
 from typing import cast
 from typing import Dict
 from typing import List
 
 from logging import Logger
 from logging import getLogger
-
-from dataclasses import dataclass
-from dataclasses import field
 
 from os import sep as osSep
 
@@ -41,33 +37,21 @@ from pyutplugins.plugintypes.PluginDataTypes import FormatName
 from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
 
 from pyutplugins.plugintypes.ExportDirectoryResponse import ExportDirectoryResponse
-from pyutplugins.plugintypes.MultipleFileRequestResponse import MultipleFileRequestResponse
 from pyutplugins.plugintypes.InputFormat import InputFormat
 from pyutplugins.plugintypes.OutputFormat import OutputFormat
 
 from pyutplugins.ioplugins.python.PyutToPython import MethodsCodeType
 from pyutplugins.ioplugins.python.PyutToPython import PyutToPython
+
 from pyutplugins.ioplugins.python.ReverseEngineerPython2 import ReverseEngineerPython2
+from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import DlgSelectMultiplePackages
+from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import ImportPackages
+from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import Package
+
 
 FORMAT_NAME:        FormatName        = FormatName("Python File(s)")
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('py')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Python code generation and reverse engineering')
-
-
-FilesToImport = NewType('FilesToImport', List[str])
-
-
-def createFilesToImportFactory() -> FilesToImport:
-    return FilesToImport([])
-
-
-@dataclass
-class ImportDirectory:
-    directoryName: str = ''
-    filesToImport:  FilesToImport = field(default_factory=createFilesToImportFactory)
-
-
-ImportDirectories = NewType('ImportDirectories', List[ImportDirectory])
 
 
 class IOPython(IOPluginInterface):
@@ -85,9 +69,13 @@ class IOPython(IOPluginInterface):
         self._inputFormat  = InputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
         self._outputFormat = OutputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 
-        self._exportDirectoryName: str               = ''
-        self._importDirectories:   ImportDirectories = ImportDirectories([])
-        self._readProgressDlg:     ProgressDialog    = cast(ProgressDialog, None)
+        self._exportDirectoryName: str            = ''
+
+        self._importPackages: ImportPackages = ImportPackages([])
+        self._packageCount:   int = 0
+        self._moduleCount:    int = 0
+
+        self._readProgressDlg:     ProgressDialog = cast(ProgressDialog, None)
 
     def setImportOptions(self) -> bool:
         """
@@ -95,16 +83,16 @@ class IOPython(IOPluginInterface):
 
         Returns:  'True', we support import
         """
-        response: MultipleFileRequestResponse = self.askToImportMultipleFiles(startDirectory=None)
-        if response.cancelled is True:
-            return False
-        else:
-            importDirectory: ImportDirectory = ImportDirectory()
-            importDirectory.directoryName = response.directoryName
-            importDirectory.filesToImport = cast(FilesToImport, response.fileList)      # Cheat because I know the underlying type
-            self._importDirectories.append(importDirectory)
 
-        return True
+        with DlgSelectMultiplePackages(startDirectory='/Users/humberto.a.sanchez.ii/pyut-diagrams', inputFormat=self.inputFormat) as dlg:
+            if dlg.ShowModal() == OK:
+                self._packageCount   = dlg.packageCount
+                self._moduleCount    = dlg.moduleCount
+                self._importPackages = dlg.importPackages
+
+                return True
+            else:
+                return False
 
     def setExportOptions(self) -> bool:
         response: ExportDirectoryResponse = self.askForExportDirectoryName(preferredDefaultPath=None)
@@ -126,13 +114,12 @@ class IOPython(IOPluginInterface):
             self._readProgressDlg = ProgressDialog('Parsing Files', 'Starting', parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
             oglClasses: OglClasses = OglClasses([])
             oglLinks:   OglLinks   = OglLinks([])
-            for directory in self._importDirectories:
-                importDirectory: ImportDirectory = cast(ImportDirectory, directory)
-                fileCount:       int             = len(importDirectory.filesToImport)
-                self._readProgressDlg.SetRange(fileCount)
+            for directory in self._importPackages:
+                importPackage: Package = cast(Package, directory)
+                self._readProgressDlg.SetRange(self._moduleCount)
 
                 reverseEngineer: ReverseEngineerPython2 = ReverseEngineerPython2()
-                reverseEngineer.reversePython(directoryName=importDirectory.directoryName, files=importDirectory.filesToImport, progressCallback=self._readProgressCallback)
+                reverseEngineer.reversePython(directoryName=importPackage.packageName, files=importPackage.moduleToImport, progressCallback=self._readProgressCallback)
                 oglClasses.extend(reverseEngineer.oglClasses)
                 oglLinks.extend(reverseEngineer.oglLinks)
 
