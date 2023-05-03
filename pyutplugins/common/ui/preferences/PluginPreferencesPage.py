@@ -4,7 +4,6 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-
 from wx import EVT_CHECKBOX
 from wx import EVT_CHOICE
 from wx import EVT_TEXT
@@ -22,10 +21,14 @@ from wx import NewIdRef as wxNewIdRef
 from wx.lib.sized_controls import SizedPanel
 from wx.lib.sized_controls import SizedStaticBox
 
-from pyutplugins.common.ui.Dimensions import Dimensions
-from pyutplugins.common.ui.DimensionsControl import DimensionsControl
+from hasiihelper.Dimensions import Dimensions
+
+from hasiicommon.ui.widgets.DimensionsControl import DimensionsControl
+
 from pyutplugins.ioplugins.mermaid.MermaidDirection import MermaidDirection
+
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
+
 from pyutplugins.toolplugins.orthogonal.LayoutAreaSize import LayoutAreaSize
 
 
