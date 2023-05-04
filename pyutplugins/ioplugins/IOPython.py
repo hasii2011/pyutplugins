@@ -28,7 +28,6 @@ from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
 from pyutplugins.ExternalTypes import OglClasses
-from pyutplugins.ExternalTypes import OglLinks
 from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
@@ -44,6 +43,7 @@ from pyutplugins.ioplugins.python.PyutToPython import MethodsCodeType
 from pyutplugins.ioplugins.python.PyutToPython import PyutToPython
 
 from pyutplugins.ioplugins.python.ReverseEngineerPython2 import ReverseEngineerPython2
+from pyutplugins.ioplugins.python.ReverseEngineerPython2 import OglClassesDict
 from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import DlgSelectMultiplePackages
 from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import ImportPackages
 from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import Package
@@ -112,22 +112,21 @@ class IOPython(IOPluginInterface):
         status: bool = True
         try:
             self._readProgressDlg = ProgressDialog('Parsing Files', 'Starting', parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
-            oglClasses: OglClasses = OglClasses([])
-            oglLinks:   OglLinks   = OglLinks([])
+            oglClassesDict:  OglClassesDict         = OglClassesDict({})
+            reverseEngineer: ReverseEngineerPython2 = ReverseEngineerPython2()
+
+            self._readProgressDlg.SetRange(self._moduleCount)
+
             for directory in self._importPackages:
                 importPackage: Package = cast(Package, directory)
-                self._readProgressDlg.SetRange(self._moduleCount)
 
-                reverseEngineer: ReverseEngineerPython2 = ReverseEngineerPython2()
                 reverseEngineer.reversePython(directoryName=importPackage.packageName, files=importPackage.moduleToImport, progressCallback=self._readProgressCallback)
-                oglClasses.extend(reverseEngineer.oglClasses)
-                oglLinks.extend(reverseEngineer.oglLinks)
+                oglClassesDict.update(reverseEngineer.oglClasses)
+                self.logger.warning(f'Classes: {oglClassesDict}')
 
-                self.logger.warning(f'Classes: {oglClasses}')
-                self.logger.warning(f'Links:   {oglLinks}')
-
-            self._layoutUmlClasses(oglClasses=oglClasses)
-            self._layoutLinks(oglLinks=oglLinks)
+            reverseEngineer.generateInheritanceLinks(oglClassesDict)
+            self._layoutUmlClasses(oglClasses=OglClasses(list(oglClassesDict.values())))
+            self._layoutLinks(oglLinks=reverseEngineer.oglLinks)
         except (ValueError, Exception) as e:
             self._readProgressDlg.Destroy()
             MessageBox(f'{e}', 'Error', OK | ICON_ERROR)

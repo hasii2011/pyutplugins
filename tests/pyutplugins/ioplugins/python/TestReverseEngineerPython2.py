@@ -56,7 +56,8 @@ class TestReverseEngineerPython2(TestBase):
         files:         List[str] = ['GraphElement.py', fileName]
         self.reverseEngineer.reversePython(directoryName=directoryName, files=files, progressCallback=self._fakeProgressCallback)
 
-        oglClasses: OglClasses = self.reverseEngineer.oglClasses
+        oglClasses: OglClasses = OglClasses(list(self.reverseEngineer.oglClasses.values()))
+        self.reverseEngineer.generateInheritanceLinks(self.reverseEngineer.oglClasses)
         oglLinks:   OglLinks   = self.reverseEngineer.oglLinks
 
         self.assertEqual(2, len(oglClasses), 'Should have gotten a simple class')

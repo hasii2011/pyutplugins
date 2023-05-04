@@ -55,6 +55,14 @@ OglClassesDict = NewType('OglClassesDict', Dict[Union[PyutClassName, ParentName,
 
 
 class ReverseEngineerPython2(LinkMakerMixin):
+    """
+    How to use this code
+    After instance initialization call the .reversePython method with the necessary parameters.  That method populates a dictionary
+    of class names to OglClasses;  After it returns the caller captures the parsed Ogl classes vi the .oglClasses property.  Through
+    each call with a different package and module names the class is updating a dictionary of classes that are parents.
+    The dictionary is keyed by the name of the class that is a parent class.  The value is a list of class names that
+    are subclasses (aka children)
+    """
 
     PYTHON_ASSIGNMENT:     str = '='
     PYTHON_TYPE_DELIMITER: str = ':'
@@ -69,6 +77,7 @@ class ReverseEngineerPython2(LinkMakerMixin):
         self._oglClassesDict: OglClassesDict  = OglClassesDict({})
         self._oglClasses:     OglClasses      = cast(OglClasses, None)
         self._oglLinks:       OglLinks        = OglLinks([])
+        self._onGoingParents: Parents = Parents({})
 
         self.visitor: PyutPythonVisitor = cast(PyutPythonVisitor, None)
 
@@ -83,7 +92,11 @@ class ReverseEngineerPython2(LinkMakerMixin):
         """
         currentFileCount: int = 0
 
-        onGoingParents: Parents = Parents({})
+        self._pyutClasses    = PyutClasses({})
+        self._oglClassesDict = OglClassesDict({})
+        self._oglClasses     = cast(OglClasses, None)
+        self._oglLinks       = OglLinks([])
+
         for fileName in files:
 
             try:
@@ -105,28 +118,42 @@ class ReverseEngineerPython2(LinkMakerMixin):
                     raise PythonParseException(eMsg)
 
                 self.visitor = PyutPythonVisitor()
-                self.visitor.parents = onGoingParents
+                self.visitor.parents = self._onGoingParents
                 self.visitor.visit(tree)
                 self._generatePyutClasses()
 
-                onGoingParents = self.visitor.parents
+                self._onGoingParents = self.visitor.parents
                 currentFileCount += 1
             except (ValueError, Exception) as e:
                 self.logger.error(e)
                 raise PythonParseException(e)
         self._generateOglClasses()
-        self._generateInheritanceLinks()
+        # self._generateInheritanceLinks()
 
     @property
-    def oglClasses(self) -> OglClasses:
-        if self._oglClasses is None:
-            self._oglClasses = list(self._oglClassesDict.values())
-
-        return self._oglClasses
+    def oglClasses(self) -> OglClassesDict:
+        return self._oglClassesDict
 
     @property
     def oglLinks(self) -> OglLinks:
         return self._oglLinks
+
+    def generateInheritanceLinks(self, oglClassesDict: OglClassesDict):
+
+        parents: Parents = self._onGoingParents
+
+        for parentName in parents.keys():
+            children: Children = parents[parentName]
+            for childName in children:
+
+                try:
+                    parentOglClass: OglClass = oglClassesDict[parentName]
+                    childOglClass:  OglClass = oglClassesDict[childName]
+                    oglLink: OglLink = self.createLink(src=childOglClass, dst=parentOglClass, linkType=PyutLinkType.INHERITANCE)
+                    self._oglLinks.append(oglLink)
+                except KeyError as ke:        # Probably there is no parent we are tracking
+                    self.logger.warning(f'Apparently we are not tracking this parent:  {ke}')
+                    continue
 
     def _generateOglClasses(self):
 
@@ -262,23 +289,6 @@ class ReverseEngineerPython2(LinkMakerMixin):
             pyutClass.addField(pyutField)
 
         return pyutClass
-
-    def _generateInheritanceLinks(self):
-
-        parents: Parents = self.visitor.parents
-
-        for parentName in parents.keys():
-            children: Children = parents[parentName]
-            for childName in children:
-
-                try:
-                    parentOglClass: OglClass = self._oglClassesDict[parentName]
-                    childOglClass:  OglClass = self._oglClassesDict[childName]
-                    oglLink: OglLink = self.createLink(src=childOglClass, dst=parentOglClass, linkType=PyutLinkType.INHERITANCE)
-                    self._oglLinks.append(oglLink)
-                except KeyError as ke:        # Probably there is no parent we are tracking
-                    self.logger.warning(f'Apparently we are not tracking this parent:  {ke}')
-                    continue
 
     def _methodNames(self, className: ClassName) -> MethodNames:
 
