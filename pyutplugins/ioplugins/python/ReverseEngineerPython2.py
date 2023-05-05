@@ -57,11 +57,16 @@ OglClassesDict = NewType('OglClassesDict', Dict[Union[PyutClassName, ParentName,
 class ReverseEngineerPython2(LinkMakerMixin):
     """
     How to use this code
+
     After instance initialization call the .reversePython method with the necessary parameters.  That method populates a dictionary
     of class names to OglClasses;  After it returns the caller captures the parsed Ogl classes vi the .oglClasses property.  Through
     each call with a different package and module names the class is updating a dictionary of classes that are parents.
     The dictionary is keyed by the name of the class that is a parent class.  The value is a list of class names that
     are subclasses (aka children)
+
+    TODO:
+
+    This interaction is weird;  I think this class should keep track of all internal state
     """
 
     PYTHON_ASSIGNMENT:     str = '='
