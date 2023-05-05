@@ -54,11 +54,7 @@ class DlgWxImageOptions(BaseEditDialog):
         self._layoutImageFormatChoice(parent=self.GetContentsPane())
 
         self._layoutStandardOkCancelButtonSizer()
-
         self._bindEventHandlers()
-
-        self.Bind(EVT_BUTTON, self._onOk, id=ID_OK)
-        self.Bind(EVT_CLOSE, self._onClose, id=ID_CANCEL)
 
     @property
     def imageFormat(self) -> WxImageFormat:
@@ -82,6 +78,9 @@ class DlgWxImageOptions(BaseEditDialog):
         self.Bind(EVT_CHOICE, self._onImageFormatChoice, self._imageFormatChoice)
         #
         self._selectedFile.Bind(EVT_MOTION, self._fileSelectionMotion, self._selectedFile)
+        self.Bind(EVT_BUTTON, self._onOk, id=ID_OK)
+        self.Bind(EVT_CLOSE, self._onClose, id=ID_CANCEL)
+
 
     def _fileSelectionMotion(self, event: MouseEvent):
 

@@ -134,6 +134,8 @@ class IOPython(IOPluginInterface):
         else:
             self._readProgressDlg.Destroy()
             EndBusyCursor()
+            self._pluginAdapter.refreshFrame()
+            wxYield()
             self._pluginAdapter.indicatePluginModifiedProject()
         return status
 

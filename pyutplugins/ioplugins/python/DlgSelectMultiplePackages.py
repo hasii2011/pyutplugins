@@ -82,10 +82,12 @@ class DlgSelectMultiplePackages(SizedDialog):
 
         self._currentGridRow: int = 0
 
+        self._resizeDialog()
+
     def _layoutSimpleGrid(self, parent: SizedPanel):
 
         simpleGrid: Grid = Grid(parent)
-        simpleGrid.CreateGrid(numRows=3, numCols=2)
+        simpleGrid.CreateGrid(numRows=1, numCols=2)
 
         simpleGrid.SetColLabelValue(0, 'Package Name')
         simpleGrid.SetColLabelValue(1, 'Module Count')
@@ -157,8 +159,10 @@ class DlgSelectMultiplePackages(SizedDialog):
                 self._simpleGrid.SetCellValue(self._currentGridRow, 0, importDirectory.packageName)
                 self._simpleGrid.SetCellValue(self._currentGridRow, 1, str(currentModuleCount))
 
+                self._simpleGrid.AppendRows(1)
                 self._currentGridRow += 1
                 self._simpleGrid.AutoSizeColumns()
+                self._resizeDialog()
             else:
                 self._importPackages = ImportPackages([])
 
@@ -184,3 +188,11 @@ class DlgSelectMultiplePackages(SizedDialog):
             f'|*.{inputFormat.extension}'
         )
         return wildcard
+
+    def _resizeDialog(self):
+        """
+        A little trick to make sure that you can't resize the dialog to
+        less screen space than the controls need
+        """
+        self.Fit()
+        self.SetMinSize(self.GetSize())
