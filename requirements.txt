@@ -5,10 +5,10 @@ build==0.10.0
 html-testRunner~=1.2.1
 
 pkgversions==0.2.2
-mypy==1.2.0
+mypy==1.3.0
 mypy-extensions==1.0.0
 types-Deprecated==1.2.9.2
-types-setuptools==67.7.0.1
+types-setuptools==67.7.0.2
 typing_extensions==4.5.0
 
 # For IOPython
@@ -22,8 +22,8 @@ hasiihelper~=0.2.0
 hasiicommon~=0.2.2
 pyutmodel==1.4.3
 ogl==0.70.26
-untanglepyut==0.6.58
-oglio==0.7.3
+untanglepyut==0.6.60
+oglio==0.7.4
 
 buildlackey==0.8.1
 
