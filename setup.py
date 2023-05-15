@@ -1,6 +1,7 @@
 
 import pathlib
 from setuptools import setup
+from pyutplugins import __version__
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
@@ -11,7 +12,7 @@ LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
     name="pyutplugins",
-    version="0.8.80",
+    version=__version__,
     author='Humberto A. Sanchez II',
     author_email='humberto.a.sanchez.ii@gmail.com',
     maintainer='Humberto A. Sanchez II',
