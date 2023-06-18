@@ -17,13 +17,14 @@ class TestTemplate(TestBase):
 
     See existing tests for more information.
     """
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        
+
     def setUp(self):
         super().setUp()
-
+        
     def tearDown(self):
         super().tearDown()
 
@@ -40,8 +41,8 @@ def suite() -> TestSuite:
     import unittest
 
     testSuite: TestSuite = TestSuite()
-    # noinspection PyUnresolvedReferences
-    testSuite.addTest(unittest.makeSuite(TestTemplate))
+
+    testSuite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(testCaseClass=TestTemplate))
 
     return testSuite
 

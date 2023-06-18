@@ -36,13 +36,13 @@ jobs:
             pip install antlr4-python3-runtime==4.11.1
             pip install networkx==3.0
             pip install orthogonal==1.1.8
-            pip install pyumldiagrams==2.30.8
-            pip install hasiihelper~=0.2.0
-            pip install hasiicommon~=0.2.2
-            pip install pyutmodel==1.4.3
-            pip install ogl==0.70.40
-            pip install untanglepyut==0.6.62
-            pip install oglio==0.7.6
+            pip install pyumldiagrams==2.40.0
+            pip install hasiihelper~=0.2.1
+            pip install hasiicommon~=0.3.1
+            pip install pyutmodel==1.4.4
+            pip install ogl==0.70.52
+            pip install untanglepyut==0.7.0
+            pip install oglio==0.7.7
             pip install buildlackey~=0.8.1
       - run:
             name: run tests

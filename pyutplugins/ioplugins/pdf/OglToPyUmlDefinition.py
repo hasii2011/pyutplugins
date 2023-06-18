@@ -189,7 +189,7 @@ class OglToPyUmlDefinition:
 
     def _addMethods(self, classDefinition: ClassDefinition, pyutClass: PyutClass) -> ClassDefinition:
 
-        methods: Methods = []
+        methods: Methods = Methods([])
         for method in pyutClass.methods:
 
             pyutMethod: PyutMethod = cast(PyutMethod, method)

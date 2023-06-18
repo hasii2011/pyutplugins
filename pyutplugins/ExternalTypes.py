@@ -68,6 +68,15 @@ class FrameSize:
     height: int = -1
 
 
+def createFrameSizeFactory() -> FrameSize:
+    """
+    Factory method to create  the OglClasses data structure;
+
+    Returns:  A new data structure
+    """
+    return FrameSize()
+
+
 @dataclass
 class FrameInformation:
     """
@@ -77,7 +86,7 @@ class FrameInformation:
     selectedOglObjects: OglObjects = field(default_factory=createOglObjectsFactory)
     diagramTitle:       str         = ''
     diagramType:        str        = ''
-    frameSize:          FrameSize  = FrameSize()
+    frameSize:          FrameSize  = field(default_factory=createFrameSizeFactory)
     clientDC:           ClientDC   = cast(ClientDC, None)
 
 
