@@ -95,16 +95,18 @@ class IOXml(IOPluginInterface):
         Returns:
         """
         prettPrintAnswer: int = MessageBox("Do you want pretty xml ?", "Export option", style=YES_NO | CANCEL | CENTRE | ICON_QUESTION)
+
         if prettPrintAnswer is YES:
             self._prettyPrint = True
-            response: SingleFileRequestResponse = self.askForFileToExport()
-            if response.cancelled is True:
-                exportAnswer: bool = False
-            else:
-                self._fileToExport = response.fileName
-                exportAnswer = True
         else:
-            exportAnswer = False
+            self._prettyPrint = False
+
+        response: SingleFileRequestResponse = self.askForFileToExport()
+        if response.cancelled is True:
+            exportAnswer: bool = False
+        else:
+            self._fileToExport = response.fileName
+            exportAnswer = True
 
         return exportAnswer
 
@@ -190,4 +192,4 @@ class IOXml(IOPluginInterface):
 
         writer:     Writer = Writer()
 
-        writer.writeXmlFile(oglProject=oglProject, fqFileName=self._fileToExport)
+        writer.writeXmlFile(oglProject=oglProject, fqFileName=self._fileToExport, prettyXml=self._prettyPrint)

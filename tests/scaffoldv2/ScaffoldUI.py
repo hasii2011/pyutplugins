@@ -7,11 +7,6 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from ogl.OglActor import OglActor
-from ogl.OglNote import OglNote
-from ogl.OglText import OglText
-from ogl.OglUseCase import OglUseCase
-
 from wx import CLIP_CHILDREN
 from wx import EVT_TREE_SEL_CHANGED
 from wx import ICON_ERROR
@@ -37,8 +32,14 @@ from miniogl.Diagram import Diagram
 
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
+from ogl.OglAssociation import OglAssociation
+from ogl.OglAssociationLabel import OglAssociationLabel
 from ogl.OglObject import OglObject
 from ogl.OglInterface2 import OglInterface2
+from ogl.OglActor import OglActor
+from ogl.OglNote import OglNote
+from ogl.OglText import OglText
+from ogl.OglUseCase import OglUseCase
 
 from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage
@@ -433,6 +434,7 @@ class ScaffoldUI:
         pluginProject.projectName = pyutProject.projectName
         pluginProject.fileName    = pyutProject.projectName
         pluginProject.codePath    = pyutProject.codePath
+        pluginProject.version     = '10'                    # Hard Code version 10
 
         for document in pyutProject.documents:
             pyutDocument:   PyutDocument = cast(PyutDocument, document)
@@ -554,9 +556,9 @@ class ScaffoldUI:
 
     def _toPyutDiagramType(self, documentType: PluginDocumentType) -> PyutDiagramType:
 
-        if documentType == PyutDiagramType.CLASS_DIAGRAM:
+        if documentType == PluginDocumentType.CLASS_DIAGRAM:
             return PyutDiagramType.CLASS_DIAGRAM
-        elif documentType == PyutDiagramType.USECASE_DIAGRAM:
+        elif documentType == PluginDocumentType.USECASE_DIAGRAM:
             return PyutDiagramType.USECASE_DIAGRAM
         else:
             return PyutDiagramType.SEQUENCE_DIAGRAM
@@ -651,19 +653,8 @@ class ScaffoldUI:
 
     def _layoutLinks(self, umlFrame: UmlDiagramsFrame, oglLinks: OglLinks):
 
-        # umlDiagram = umlFrame.GetDiagram()
-
         for oglLink in oglLinks:
             self._layoutOglLink(umlFrame=umlFrame, link=oglLink)
-            # x, y = oglLink.GetPosition()
-            # umlFrame.addShape(oglLink, x=x, y=y)
-            #
-            # if isinstance(oglLink, OglInterface2) is False:
-            #     umlDiagram.AddShape(oglLink.sourceAnchor)
-            #     umlDiagram.AddShape(oglLink.destinationAnchor)
-            #     controlPoints = oglLink.GetControlPoints()
-            #     for controlPoint in controlPoints:
-            #         umlDiagram.AddShape(controlPoint)
 
     def _layoutOglLink(self, umlFrame: UmlDiagramsFrame, link: HybridLinks):
 
@@ -680,9 +671,34 @@ class ScaffoldUI:
 
             umlDiagram.AddShape(oglLink.sourceAnchor)
             umlDiagram.AddShape(oglLink.destinationAnchor)
+
+            if isinstance(link, OglAssociation) is True:
+                oglAssociation: OglAssociation = cast(OglAssociation, link)
+                self._layoutAssociationLabels(oglAssociation, umlFrame)
+
             controlPoints = oglLink.GetControlPoints()
             for controlPoint in controlPoints:
                 umlDiagram.AddShape(controlPoint)
+
+    def _layoutAssociationLabels(self, oglAssociation: OglAssociation, umlFrame: UmlDiagramsFrame):
+        """
+        Only called for OglAssociation's
+
+        TODO:
+        More bad mooky for the same reason as lollipop interfaces
+
+        Args:
+            oglAssociation:     The association
+            umlFrame:           The diagram frame to place them on
+        """
+        associationLabels: List[OglAssociationLabel] = [
+            oglAssociation.centerLabel,
+            oglAssociation.sourceCardinality,
+            oglAssociation.destinationCardinality
+        ]
+        for oglAssociationLabel in associationLabels:
+            if oglAssociationLabel is not None:
+                umlFrame.diagram.AddShape(shape=oglAssociationLabel, withModelUpdate=True)
 
     def _layoutOglSDInstance(self, diagram: Diagram, oglSDInstance: OglSDInstance):
         diagram.AddShape(oglSDInstance)

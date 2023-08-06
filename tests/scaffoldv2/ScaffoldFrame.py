@@ -14,6 +14,7 @@ from wx import ACCEL_CTRL
 from wx import FD_CHANGE_DIR
 from wx import FD_FILE_MUST_EXIST
 from wx import FD_OPEN
+from wx import FRAME_FLOAT_ON_PARENT
 from wx import ID_OK
 from wx import OK
 from wx import ICON_ERROR
@@ -68,7 +69,7 @@ class ScaffoldFrame(Frame):
 
     def __init__(self, parent=None, wxId=FRAME_ID, size=(WINDOW_WIDTH, WINDOW_HEIGHT), createEmptyProject: bool = True):
 
-        super().__init__(parent=parent, id=wxId,  size=size, style=DEFAULT_FRAME_STYLE, title='Test Scaffold for Plugins')
+        super().__init__(parent=parent, id=wxId,  size=size, style=DEFAULT_FRAME_STYLE | FRAME_FLOAT_ON_PARENT, title='Test Scaffold for Plugins')
 
         self.logger:           Logger        = getLogger(__name__)
         self._loadXmlFileWxId: int           = NewIdRef()
