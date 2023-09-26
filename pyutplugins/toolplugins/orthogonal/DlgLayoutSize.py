@@ -6,7 +6,7 @@ from logging import getLogger
 
 from wx.lib.sized_controls import SizedPanel
 
-from hasiicommon.ui.widgets.DimensionsControl import DimensionsControl
+from codeallyadvanced.ui.widgets.DimensionsControl import DimensionsControl
 
 from pyutplugins.common.ui.BaseEditDialog import BaseEditDialog
 

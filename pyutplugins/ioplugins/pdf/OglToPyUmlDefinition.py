@@ -207,7 +207,7 @@ class OglToPyUmlDefinition:
 
     def __addParameters(self, methodDefinition: MethodDefinition, pyutMethod: PyutMethod) -> MethodDefinition:
 
-        parameters: Parameters = []
+        parameters: Parameters = Parameters([])
         for parameter in pyutMethod.parameters:
 
             paramDef: ParameterDefinition = ParameterDefinition(name=parameter.name)

@@ -6,7 +6,8 @@ from os import linesep as osLineSep
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from hasiihelper.UnitTestBase import UnitTestBase
+from codeallybasic.UnitTestBase import UnitTestBase
+
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutField import PyutField
 from pyutmodel.PyutMethod import PyutMethod

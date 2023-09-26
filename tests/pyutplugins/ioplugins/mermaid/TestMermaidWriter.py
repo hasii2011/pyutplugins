@@ -9,6 +9,7 @@ from pathlib import Path
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
 from untanglepyut.UnTangler import UnTangler
+from untanglepyut.XmlVersion import XmlVersion
 
 from pyutplugins.ExternalTypes import OglObjects
 
@@ -175,7 +176,7 @@ class TestMermaidWriter(TestBase):
 
         fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, baseXmlFileName)
 
-        untangler:  UnTangler = UnTangler()
+        untangler:  UnTangler = UnTangler(xmlVersion=XmlVersion.V10)
 
         untangler.untangleFile(fqFileName=fqFileName)
 

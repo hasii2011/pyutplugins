@@ -58,7 +58,7 @@ setup(
                       'wxPython~=4.2.1',
                       'antlr4-python3-runtime==4.11.1',
                       'networkx==3.0',
-                      'pyumldiagrams==2.40.0',
+                      'pyumldiagrams==2.60.1',
                       'orthogonal==1.1.8',
                       ]
 )

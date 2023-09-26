@@ -21,9 +21,9 @@ from wx import NewIdRef as wxNewIdRef
 from wx.lib.sized_controls import SizedPanel
 from wx.lib.sized_controls import SizedStaticBox
 
-from hasiihelper.Dimensions import Dimensions
+from codeallybasic.Dimensions import Dimensions
 
-from hasiicommon.ui.widgets.DimensionsControl import DimensionsControl
+from codeallyadvanced.ui.widgets.DimensionsControl import DimensionsControl
 
 from pyutplugins.ioplugins.mermaid.MermaidDirection import MermaidDirection
 

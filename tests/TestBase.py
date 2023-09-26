@@ -4,9 +4,11 @@ from os import sep as osSep
 
 from pathlib import Path
 
-from hasiihelper.UnitTestBase import UnitTestBase
+from codeallybasic.UnitTestBase import UnitTestBase
 
-from hasiicommon.ui.UnitTestBaseW import UnitTestBaseW
+from codeallyadvanced.ui.UnitTestBaseW import UnitTestBaseW
+
+from untanglepyut.XmlVersion import XmlVersion
 
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
@@ -133,7 +135,7 @@ class TestBase(UnitTestBaseW):
         """
         fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, filename)
 
-        untangler:  UnTangler = UnTangler()
+        untangler:  UnTangler = UnTangler(xmlVersion=XmlVersion.V10)
         untangler.untangleFile(fqFileName=fqFileName)
 
         document: Document = untangler.documents[DocumentTitle(documentName)]
