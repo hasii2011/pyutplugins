@@ -23,12 +23,12 @@ codeallyadvanced==0.5.2
 
 pyutmodel==1.5.0
 ogl==0.90.3
-untanglepyut==1.2.11
-oglio==1.1.2
+untanglepyut==1.2.12
+oglio==1.1.4
 
 buildlackey==1.3.3
 
 # Pin networkx to match orthgonal
 networkx==3.0
 orthogonal==1.2.0
-pyumldiagrams==2.60.1
+pyumldiagrams==2.60.2
