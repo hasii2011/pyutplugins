@@ -263,9 +263,12 @@ class MermaidWriter:
 
         Returns:  Mermaid string for a note link
         """
-        pyutLink:  PyutLink          = oglNoteLink.pyutObject
+        pyutLink:   PyutLink         = oglNoteLink.pyutObject
         destObject: PyutLinkedObject = pyutLink.getDestination()
         pyutNote:   PyutNote         = pyutLink.getSource()
+
+        assert isinstance(pyutNote, PyutNote), 'Diagram error;  Source must be the note'
+
         linkRefrain: str = (
             f'{indent1}note for {destObject.name} "{pyutNote.content}"{eol}'
         )
