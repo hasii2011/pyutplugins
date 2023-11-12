@@ -27,7 +27,7 @@ class TestAll:
     """
     NOT_TESTS: List[str] = ['TestAll', 'TestBase',
                             'TestTemplate',
-                            'TestDialogs',
+                            'AppTestDialogs',
                             'pyutplugins/plugininterfaces/TestSamplePluginInterface']
 
     VERBOSITY_QUIET:   int = 0  # Print the total numbers of tests executed and the global result

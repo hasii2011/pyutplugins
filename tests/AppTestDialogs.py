@@ -43,7 +43,7 @@ class DialogNamesEnum(Enum):
     DLG_SELECT_MULTIPLE_PACKAGES = 'DlgSelectMultiplePackages'
 
 
-class TestDialogs(App):
+class AppTestDialogs(App):
 
     NOTHING_SELECTED: int = -1
 
@@ -92,7 +92,7 @@ class TestDialogs(App):
 
         self._cmbDlgName: ComboBox = ComboBox(box, choices=dialogChoices, style=CB_READONLY)
 
-        self._cmbDlgName.SetSelection(TestDialogs.NOTHING_SELECTED)
+        self._cmbDlgName.SetSelection(AppTestDialogs.NOTHING_SELECTED)
 
         parentFrame.Bind(EVT_COMBOBOX, self._onDlgNameSelectionChanged, self._cmbDlgName)
 
@@ -140,6 +140,6 @@ class TestDialogs(App):
                 self.logger.warning(f'Unhandled Dialog to test: {dlgNamesEnum}')
 
 
-testApp: TestDialogs = TestDialogs(redirect=False)
+testApp: AppTestDialogs = AppTestDialogs(redirect=False)
 
 testApp.MainLoop()

@@ -11,7 +11,7 @@ from time import strftime
 from pyumldiagrams.BaseDiagram import BaseDiagram
 from pyumldiagrams.Definitions import ClassDefinition
 from pyumldiagrams.Definitions import ClassDefinitions
-from pyumldiagrams.Definitions import DefinitionType
+from pyumldiagrams.Definitions import VisibilityType
 from pyumldiagrams.Definitions import DisplayMethodParameters
 from pyumldiagrams.Definitions import LinePositions
 from pyumldiagrams.Definitions import MethodDefinition
@@ -65,8 +65,8 @@ class OglToPyUmlDefinition:
         """
 
         self.logger:              Logger             = getLogger(__name__)
-        self._classDefinitions:   ClassDefinitions   = []
-        self._umlLineDefinitions: UmlLineDefinitions = []
+        self._classDefinitions:   ClassDefinitions   = ClassDefinitions([])
+        self._umlLineDefinitions: UmlLineDefinitions = UmlLineDefinitions([])
 
         today: str = strftime("%d %b %Y %H:%M:%S", localtime())
         headerText: str = f'Pyut Version {pyutVersion} Plugin Version {pluginVersion} - {today}'
@@ -85,7 +85,7 @@ class OglToPyUmlDefinition:
 
     def toClassDefinitions(self, oglObjects: OglObjects):
 
-        classDefinitions: ClassDefinitions = []
+        classDefinitions: ClassDefinitions = ClassDefinitions([])
 
         for oglObject in oglObjects:
 
@@ -117,7 +117,7 @@ class OglToPyUmlDefinition:
 
     def layoutLines(self, oglObjects: OglObjects):
 
-        umlLineDefinitions: UmlLineDefinitions = []
+        umlLineDefinitions: UmlLineDefinitions = UmlLineDefinitions([])
 
         for umlObject in oglObjects:
 
@@ -172,9 +172,9 @@ class OglToPyUmlDefinition:
 
         bends: List[ControlPoint] = oglLink.GetControlPoints()
         if bends is None or len(bends) == 0:
-            linePositions: LinePositions = [sourcePosition, destinationPosition]
+            linePositions: LinePositions = LinePositions([sourcePosition, destinationPosition])
         else:
-            linePositions = [sourcePosition]
+            linePositions = LinePositions([sourcePosition])
             for cp in bends:
                 bend: ControlPoint = cast(ControlPoint, cp)
                 self.logger.debug(f'{bend:}')
@@ -196,7 +196,7 @@ class OglToPyUmlDefinition:
 
             methodDef: MethodDefinition = MethodDefinition(name=pyutMethod.name)
 
-            methodDef.visibility = self.__toDefinitionType(pyutMethod.visibility)
+            methodDef.visibility = self.__toVisibilityType(pyutMethod.visibility)
             methodDef.returnType = pyutMethod.returnType.value
 
             self.__addParameters(methodDefinition=methodDef, pyutMethod=pyutMethod)
@@ -220,14 +220,14 @@ class OglToPyUmlDefinition:
         self.logger.debug(f'{methodDefinition.name=}  {parameters=}')
         return methodDefinition
 
-    def __toDefinitionType(self, visibility: PyutVisibilityEnum) -> DefinitionType:
+    def __toVisibilityType(self, visibility: PyutVisibilityEnum) -> VisibilityType:
 
         if visibility == PyutVisibilityEnum.PUBLIC:
-            return DefinitionType.Public
+            return VisibilityType.Public
         elif visibility == PyutVisibilityEnum.PRIVATE:
-            return DefinitionType.Private
+            return VisibilityType.Private
         elif visibility == PyutVisibilityEnum.PROTECTED:
-            return DefinitionType.Protected
+            return VisibilityType.Protected
         else:
             assert False, 'Unknown UML Visibility type.  Probably developer error'
 
