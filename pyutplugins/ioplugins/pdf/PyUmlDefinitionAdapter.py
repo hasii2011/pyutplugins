@@ -5,14 +5,34 @@ from typing import List
 from logging import Logger
 from logging import getLogger
 
+from os import linesep as osLineSep
+
+from pyutmodel.PyutClass import PyutClass
+from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
+from pyutmodel.PyutInterface import PyutInterface
+from pyutmodel.PyutLink import PyutLink
+from pyutmodel.PyutMethod import PyutMethod
+from pyutmodel.PyutNote import PyutNote
+from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
+from pyutmodel.PyutLinkType import PyutLinkType
+
+from miniogl.AnchorPoint import AnchorPoint
+from miniogl.ControlPoint import ControlPoint
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
+
+from ogl.OglClass import OglClass
+from ogl.OglLink import OglLink
 from ogl.OglInterface2 import OglInterface2
+from ogl.OglNote import OglNote
 
 from pyumldiagrams.Definitions import AttachmentSide
 from pyumldiagrams.Definitions import ClassDefinition
 from pyumldiagrams.Definitions import ClassDefinitions
+from pyumldiagrams.Definitions import Contents
+from pyumldiagrams.Definitions import NoteDefinition
 from pyumldiagrams.Definitions import UmlLollipopDefinition
 from pyumldiagrams.Definitions import UmlLollipopDefinitions
+from pyumldiagrams.Definitions import UmlNoteDefinitions
 from pyumldiagrams.Definitions import VisibilityType
 from pyumldiagrams.Definitions import DisplayMethodParameters
 from pyumldiagrams.Definitions import LinePositions
@@ -26,21 +46,6 @@ from pyumldiagrams.Definitions import UmlLineDefinition
 from pyumldiagrams.Definitions import UmlLineDefinitions
 from pyumldiagrams.Definitions import LineType
 
-
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
-from pyutmodel.PyutInterface import PyutInterface
-from pyutmodel.PyutLink import PyutLink
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
-from pyutmodel.PyutLinkType import PyutLinkType
-
-from miniogl.AnchorPoint import AnchorPoint
-from miniogl.ControlPoint import ControlPoint
-
-from ogl.OglClass import OglClass
-from ogl.OglLink import OglLink
-
 from pyutplugins.ExternalTypes import OglObjects
 
 
@@ -53,6 +58,9 @@ class PyUmlDefinitionAdapter:
 
     INHERITANCE_DESTINATION_POSITION_NUDGE_FACTOR: int = 1
 
+    # https://www.codetable.net/hex/a
+    END_OF_LINE_MARKER: str = '&#xA;'
+
     def __init__(self):
         """
 
@@ -62,6 +70,7 @@ class PyUmlDefinitionAdapter:
         self._umlClassDefinitions:    ClassDefinitions       = ClassDefinitions([])
         self._umlLineDefinitions:     UmlLineDefinitions     = UmlLineDefinitions([])
         self._umlLollipopDefinitions: UmlLollipopDefinitions = UmlLollipopDefinitions([])
+        self._umlNoteDefinitions:      UmlNoteDefinitions    = UmlNoteDefinitions([])
 
     @property
     def umlClassDefinitions(self) -> ClassDefinitions:
@@ -75,11 +84,51 @@ class PyUmlDefinitionAdapter:
     def umlLollipopDefinitions(self) -> UmlLollipopDefinitions:
         return self._umlLollipopDefinitions
 
+    @property
+    def umlNoteDefinitions(self) -> UmlNoteDefinitions:
+        return self._umlNoteDefinitions
+
     def toDefinitions(self, oglObjects: OglObjects):
 
         self._toClassDefinitions(oglObjects=oglObjects)
         self._toLineDefinitions(oglObjects=oglObjects)
         self._toLollipopDefinitions(oglObjects=oglObjects)
+        self._toNoteDefinitions(oglObjects=oglObjects)
+
+    def _toClassDefinitions(self, oglObjects: OglObjects):
+        """
+        We will create class definitions
+
+        Args:
+            oglObjects:  All objects
+        """
+        classDefinitions: ClassDefinitions = ClassDefinitions([])
+        for oglObject in oglObjects:
+
+            if not isinstance(oglObject, OglClass):
+                continue
+
+            umlObject: OglClass = cast(OglClass, oglObject)
+            pyutClass: PyutClass = cast(PyutClass, umlObject.pyutObject)
+
+            x, y = umlObject.GetPosition()
+            w, h = umlObject.GetSize()
+            position: Position = Position(x=x, y=y)
+            size: Size = Size(width=int(w), height=int(h))
+
+            classDefinition: ClassDefinition = ClassDefinition(name=pyutClass.name, position=position, size=size)
+
+            if pyutClass.displayParameters is PyutDisplayParameters.DISPLAY:
+                classDefinition.displayMethodParameters = DisplayMethodParameters.DISPLAY
+            else:
+                classDefinition.displayMethodParameters = DisplayMethodParameters.DO_NOT_DISPLAY
+
+            classDefinition = self.__addClassDiagramDisplayPreferences(pyutClass=pyutClass, classDefinition=classDefinition)
+
+            self._addMethods(classDefinition=classDefinition, pyutClass=pyutClass)
+
+            classDefinitions.append(classDefinition)
+        self._umlClassDefinitions = classDefinitions
 
     def _toLineDefinitions(self, oglObjects: OglObjects):
 
@@ -100,9 +149,7 @@ class PyUmlDefinitionAdapter:
 
             line:    UmlLineDefinition = UmlLineDefinition(lineType=lineType, linePositions=linePositions)
 
-            # self._diagram.drawUmlLine(lineDefinition=line)
             umlLineDefinitions.append(line)
-
         self._umlLineDefinitions = umlLineDefinitions
 
     def _toLollipopDefinitions(self, oglObjects: OglObjects):
@@ -110,9 +157,9 @@ class PyUmlDefinitionAdapter:
         lollipopDefinitions: UmlLollipopDefinitions = UmlLollipopDefinitions([])
         for oglObject in oglObjects:
 
-            oglInterface2: OglInterface2 = cast(OglInterface2, oglObject)
-            if not isinstance(oglInterface2, OglInterface2):
+            if not isinstance(oglObject, OglInterface2):
                 continue
+            oglInterface2:         OglInterface2         = cast(OglInterface2, oglObject)
             umlLollipopDefinition: UmlLollipopDefinition = UmlLollipopDefinition()
             pyutInterface: PyutInterface = oglInterface2.pyutInterface
 
@@ -129,40 +176,32 @@ class PyUmlDefinitionAdapter:
             lollipopDefinitions.append(umlLollipopDefinition)
         self._umlLollipopDefinitions = lollipopDefinitions
 
-    def _toClassDefinitions(self, oglObjects: OglObjects):
-        """
-        We will create class definitions
+    def _toNoteDefinitions(self, oglObjects: OglObjects):
 
-        Args:
-            oglObjects:  All objects
-        """
-        classDefinitions: ClassDefinitions = ClassDefinitions([])
+        noteDefinitions: UmlNoteDefinitions = UmlNoteDefinitions([])
         for oglObject in oglObjects:
 
-            umlObject: OglClass = cast(OglClass, oglObject)
-            if not isinstance(umlObject, OglClass):
+            if not isinstance(oglObject, OglNote):
                 continue
+            oglNote:  OglNote  = cast(OglNote, oglObject)
+            pyutNote: PyutNote = oglNote.pyutObject
 
-            pyutClass: PyutClass = cast(PyutClass, umlObject.pyutObject)
+            umlNoteDefinition: NoteDefinition = NoteDefinition(pyutNote.name)
 
-            x, y = umlObject.GetPosition()
-            w, h = umlObject.GetSize()
-            position: Position = Position(x=x, y=y)
-            size: Size = Size(width=int(w), height=int(h))
+            x, y = oglNote.GetPosition()
+            width, height = oglNote.GetSize()
 
-            classDefinition: ClassDefinition = ClassDefinition(name=pyutClass.name, position=position, size=size)
+            umlNoteDefinition.position = Position(x=x, y=y)
+            umlNoteDefinition.size     = Size(width=width, height=height)
 
-            if pyutClass.displayParameters is PyutDisplayParameters.DISPLAY:
-                classDefinition.displayMethodParameters = DisplayMethodParameters.DISPLAY
-            else:
-                classDefinition.displayMethodParameters = DisplayMethodParameters.DO_NOT_DISPLAY
+            rawContent:   str      = pyutNote.content
+            cleanContent: str      = rawContent.replace(PyUmlDefinitionAdapter.END_OF_LINE_MARKER, osLineSep)
+            lineList:     Contents = cast(Contents, cleanContent.split(osLineSep))  # I am coercive
 
-            classDefinition = self.__addClassDiagramDisplayPreferences(pyutClass=pyutClass, classDefinition=classDefinition)
+            umlNoteDefinition.content = Contents(lineList)
 
-            self._addMethods(classDefinition=classDefinition, pyutClass=pyutClass)
-            # self._diagram.drawClass(classDefinition=classDefinition)
-            classDefinitions.append(classDefinition)
-        self._umlClassDefinitions = classDefinitions
+            noteDefinitions.append(umlNoteDefinition)
+        self._umlNoteDefinitions = noteDefinitions
 
     def _toPyUmlLineType(self, umlLinkType) -> LineType:
 

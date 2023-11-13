@@ -12,6 +12,7 @@ from pyumldiagrams.Definitions import ClassDefinitions
 from pyumldiagrams.Definitions import DisplayMethodParameters
 from pyumldiagrams.Definitions import UmlLineDefinitions
 from pyumldiagrams.Definitions import UmlLollipopDefinitions
+from pyumldiagrams.Definitions import UmlNoteDefinitions
 from pyumldiagrams.image.ImageDiagram import ImageDiagram
 from pyumldiagrams.pdf.PdfDiagram import PdfDiagram
 from wx import Yield as wxYield
@@ -40,6 +41,8 @@ FORMAT_NAME:        FormatName        = FormatName('PDF')
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('pdf')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('A simple PDF for UML diagrams')
 
+PLUGIN_VERSION: str = '1.4'
+
 
 class IOPdf(IOPluginInterface):
     """
@@ -60,7 +63,7 @@ class IOPdf(IOPluginInterface):
 
         self._name    = PluginName('Output PDF')
         self._author  = "Humberto A. Sanchez II"
-        self._version = '1.3'
+        self._version = PLUGIN_VERSION
 
         self._exportResponse: SingleFileRequestResponse = cast(SingleFileRequestResponse, None)
 
@@ -133,6 +136,10 @@ class IOPdf(IOPluginInterface):
         lollipopDefinitions: UmlLollipopDefinitions = oglToPdf.umlLollipopDefinitions
         for lollipopDefinition in lollipopDefinitions:
             diagram.drawUmlLollipop(umlLollipopDefinition=lollipopDefinition)
+
+        umlNoteDefinitions: UmlNoteDefinitions = oglToPdf.umlNoteDefinitions
+        for umlNoteDefinition in umlNoteDefinitions:
+            diagram.drawNote(umlNoteDefinition)
 
         diagram.write()
 
