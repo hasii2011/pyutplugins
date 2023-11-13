@@ -104,6 +104,7 @@ class IOPdf(IOPluginInterface):
                                                               pluginVersion=pluginVersion
                                                               )
 
-        oglToPdf.toClassDefinitions(oglObjects=oglObjects)
-        oglToPdf.layoutLines(oglObjects=oglObjects)
+        oglToPdf.toDefinitions(oglObjects=oglObjects)
+        oglToPdf.toLineDefinitions(oglObjects=oglObjects)
+        oglToPdf.draw()
         oglToPdf.write()

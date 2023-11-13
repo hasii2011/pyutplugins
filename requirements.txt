@@ -31,4 +31,4 @@ buildlackey==1.5.0
 # Pin networkx to match orthgonal
 networkx==3.0
 orthogonal==1.2.0
-pyumldiagrams==3.0.0
+pyumldiagrams==3.0.1
