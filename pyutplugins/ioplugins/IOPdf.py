@@ -24,7 +24,7 @@ from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
 
 from pyutplugins.ioplugins.pdf.ImageFormat import ImageFormat
 from pyutplugins.ioplugins.pdf.ImageOptions import ImageOptions
-from pyutplugins.ioplugins.pdf.OglToPyUmlDefinition import OglToPyUmlDefinition
+from pyutplugins.ioplugins.pdf.PyUmlDefinitionAdapter import PyUmlDefinitionAdapter
 
 FORMAT_NAME:        FormatName = FormatName('PDF')
 PLUGIN_EXTENSION:   PluginExtension = PluginExtension('pdf')
@@ -98,11 +98,11 @@ class IOPdf(IOPluginInterface):
         screenMetrics: ScreenMetrics = self._pluginAdapter.screenMetrics
         dpi:           int           = screenMetrics.dpiX
 
-        oglToPdf: OglToPyUmlDefinition = OglToPyUmlDefinition(imageOptions=self._imageOptions,
-                                                              dpi=dpi,
-                                                              pyutVersion=pyutVersion,
-                                                              pluginVersion=pluginVersion
-                                                              )
+        oglToPdf: PyUmlDefinitionAdapter = PyUmlDefinitionAdapter(imageOptions=self._imageOptions,
+                                                                  dpi=dpi,
+                                                                  pyutVersion=pyutVersion,
+                                                                  pluginVersion=pluginVersion
+                                                                  )
 
         oglToPdf.toDefinitions(oglObjects=oglObjects)
         oglToPdf.toLineDefinitions(oglObjects=oglObjects)

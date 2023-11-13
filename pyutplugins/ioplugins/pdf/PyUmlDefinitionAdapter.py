@@ -54,7 +54,7 @@ from pyutplugins.ioplugins.pdf.ImageFormat import ImageFormat
 from pyutplugins.ioplugins.pdf.ImageOptions import ImageOptions
 
 
-class OglToPyUmlDefinition:
+class PyUmlDefinitionAdapter:
 
     INHERITANCE_DESTINATION_POSITION_NUDGE_FACTOR: int = 1
 
