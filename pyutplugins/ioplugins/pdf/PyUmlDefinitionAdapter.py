@@ -5,13 +5,9 @@ from typing import List
 from logging import Logger
 from logging import getLogger
 
-from time import localtime
-from time import strftime
-
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
 from ogl.OglInterface2 import OglInterface2
 
-from pyumldiagrams.BaseDiagram import BaseDiagram
 from pyumldiagrams.Definitions import AttachmentSide
 from pyumldiagrams.Definitions import ClassDefinition
 from pyumldiagrams.Definitions import ClassDefinitions
@@ -30,9 +26,6 @@ from pyumldiagrams.Definitions import UmlLineDefinition
 from pyumldiagrams.Definitions import UmlLineDefinitions
 from pyumldiagrams.Definitions import LineType
 
-from pyumldiagrams.image.ImageDiagram import ImageDiagram
-
-from pyumldiagrams.pdf.PdfDiagram import PdfDiagram
 
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
@@ -50,75 +43,45 @@ from ogl.OglLink import OglLink
 
 from pyutplugins.ExternalTypes import OglObjects
 
-from pyutplugins.ioplugins.pdf.ImageFormat import ImageFormat
-from pyutplugins.ioplugins.pdf.ImageOptions import ImageOptions
-
 
 class PyUmlDefinitionAdapter:
+    """
+    This class turns Ogl objects into PyUmlDiagram definitions.  This is
+    necessary so that we can call PyUmlDiagram to generated pdf or images
+    of Pyut diagrams
+    """
 
     INHERITANCE_DESTINATION_POSITION_NUDGE_FACTOR: int = 1
 
-    def __init__(self, imageOptions: ImageOptions, dpi: int = 0, pyutVersion: str = '', pluginVersion: str = ''):
+    def __init__(self):
         """
 
-        Args:
-            imageOptions: Lots of information on how to draw the diagram
-
-            dpi:  Dots per inch;  Only used in PDF generation;  Image generation is in pixels
-
-            pyutVersion:  Information for header
-
-            pluginVersion:  Information for header
         """
 
         self.logger:                  Logger                 = getLogger(__name__)
-        self._classDefinitions:       ClassDefinitions       = ClassDefinitions([])
+        self._umlClassDefinitions:    ClassDefinitions       = ClassDefinitions([])
         self._umlLineDefinitions:     UmlLineDefinitions     = UmlLineDefinitions([])
         self._umlLollipopDefinitions: UmlLollipopDefinitions = UmlLollipopDefinitions([])
 
-        today: str = strftime("%d %b %Y %H:%M:%S", localtime())
-        headerText: str = f'Pyut Version {pyutVersion} Plugin Version {pluginVersion} - {today}'
+    @property
+    def umlClassDefinitions(self) -> ClassDefinitions:
+        return self._umlClassDefinitions
 
-        fqFileName:  str         = imageOptions.outputFileName
-        imageFormat: ImageFormat = imageOptions.imageFormat
-        #
-        # TODO use plugin preferences
-        #
-        # imageLibShowParameters: DisplayMethodParameters = self.__toImageLibraryEnum(self._prefs.showParameters)
-        imageLibShowParameters: DisplayMethodParameters = self.__toImageLibraryEnum(True)
-        if imageFormat == ImageFormat.PDF:
-            self._diagram: BaseDiagram = PdfDiagram(fileName=fqFileName, dpi=dpi, headerText=headerText, docDisplayMethodParameters=imageLibShowParameters)
-        else:
-            self._diagram = ImageDiagram(fileName=fqFileName, headerText=headerText)   # TODO use image size from new method signature)
+    @property
+    def umlLineDefinitions(self) -> UmlLineDefinitions:
+        return self._umlLineDefinitions
+
+    @property
+    def umlLollipopDefinitions(self) -> UmlLollipopDefinitions:
+        return self._umlLollipopDefinitions
 
     def toDefinitions(self, oglObjects: OglObjects):
 
-        self._toClassDefinitions(oglObjects)
+        self._toClassDefinitions(oglObjects=oglObjects)
+        self._toLineDefinitions(oglObjects=oglObjects)
+        self._toLollipopDefinitions(oglObjects=oglObjects)
 
-        lollipopDefinitions: UmlLollipopDefinitions = UmlLollipopDefinitions([])
-        for oglObject in oglObjects:
-
-            oglInterface2: OglInterface2 = cast(OglInterface2, oglObject)
-            if not isinstance(oglInterface2, OglInterface2):
-                continue
-            umlLollipopDefinition: UmlLollipopDefinition = UmlLollipopDefinition()
-            pyutInterface:         PyutInterface         = oglInterface2.pyutInterface
-
-            name: str = pyutInterface.name
-
-            destinationAnchor: SelectAnchorPoint = oglInterface2.destinationAnchor
-            attachmentPoint = destinationAnchor.attachmentPoint
-            x, y = destinationAnchor.GetPosition()
-
-            umlLollipopDefinition.name           = name
-            umlLollipopDefinition.position       = Position(x=x, y=y)
-            umlLollipopDefinition.attachmentSide = AttachmentSide.toEnum(attachmentPoint.name)
-
-            lollipopDefinitions.append(umlLollipopDefinition)
-
-        self._umlLollipopDefinitions = lollipopDefinitions
-
-    def toLineDefinitions(self, oglObjects: OglObjects):
+    def _toLineDefinitions(self, oglObjects: OglObjects):
 
         umlLineDefinitions: UmlLineDefinitions = UmlLineDefinitions([])
 
@@ -142,22 +105,29 @@ class PyUmlDefinitionAdapter:
 
         self._umlLineDefinitions = umlLineDefinitions
 
-    def draw(self):
+    def _toLollipopDefinitions(self, oglObjects: OglObjects):
 
-        diagram: BaseDiagram = self._diagram
+        lollipopDefinitions: UmlLollipopDefinitions = UmlLollipopDefinitions([])
+        for oglObject in oglObjects:
 
-        for classDefinition in self._classDefinitions:
-            self._diagram.drawClass(classDefinition=classDefinition)
+            oglInterface2: OglInterface2 = cast(OglInterface2, oglObject)
+            if not isinstance(oglInterface2, OglInterface2):
+                continue
+            umlLollipopDefinition: UmlLollipopDefinition = UmlLollipopDefinition()
+            pyutInterface: PyutInterface = oglInterface2.pyutInterface
 
-        for lineDefinition in self._umlLineDefinitions:
-            self._diagram.drawUmlLine(lineDefinition=lineDefinition)
+            name: str = pyutInterface.name
 
-        lollipopDefinitions: UmlLollipopDefinitions = self._umlLollipopDefinitions
-        for lollipopDefinition in lollipopDefinitions:
-            diagram.drawUmlLollipop(umlLollipopDefinition=lollipopDefinition)
+            destinationAnchor: SelectAnchorPoint = oglInterface2.destinationAnchor
+            attachmentPoint = destinationAnchor.attachmentPoint
+            x, y = destinationAnchor.GetPosition()
 
-    def write(self):
-        self._diagram.write()
+            umlLollipopDefinition.name = name
+            umlLollipopDefinition.position = Position(x=x, y=y)
+            umlLollipopDefinition.attachmentSide = AttachmentSide.toEnum(attachmentPoint.name)
+
+            lollipopDefinitions.append(umlLollipopDefinition)
+        self._umlLollipopDefinitions = lollipopDefinitions
 
     def _toClassDefinitions(self, oglObjects: OglObjects):
         """
@@ -192,7 +162,7 @@ class PyUmlDefinitionAdapter:
             self._addMethods(classDefinition=classDefinition, pyutClass=pyutClass)
             # self._diagram.drawClass(classDefinition=classDefinition)
             classDefinitions.append(classDefinition)
-        self._classDefinitions = classDefinitions
+        self._umlClassDefinitions = classDefinitions
 
     def _toPyUmlLineType(self, umlLinkType) -> LineType:
 
@@ -289,10 +259,3 @@ class PyUmlDefinitionAdapter:
         classDefinition.displayFields     = pyutClass.showFields
 
         return classDefinition
-
-    def __toImageLibraryEnum(self, showParameters: bool) -> DisplayMethodParameters:
-
-        if showParameters is True:
-            return DisplayMethodParameters.DISPLAY
-        else:
-            return DisplayMethodParameters.DO_NOT_DISPLAY
