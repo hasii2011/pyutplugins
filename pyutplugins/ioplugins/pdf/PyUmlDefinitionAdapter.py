@@ -22,6 +22,7 @@ from miniogl.SelectAnchorPoint import SelectAnchorPoint
 
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
+from ogl.OglAssociation import OglAssociation
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglNote import OglNote
 
@@ -47,6 +48,9 @@ from pyumldiagrams.Definitions import UmlLineDefinitions
 from pyumldiagrams.Definitions import LineType
 
 from pyutplugins.ExternalTypes import OglObjects
+
+
+NamedAssociations: List[LineType] = [LineType.Association, LineType.Aggregation, LineType.Composition]
 
 
 class PyUmlDefinitionAdapter:
@@ -147,7 +151,22 @@ class PyUmlDefinitionAdapter:
             linePositions: LinePositions  = self._toPyUmlPositions(oglLink, umlLinkType)
             self.logger.debug(f'{lineType=} {linePositions=}')
 
-            line:    UmlLineDefinition = UmlLineDefinition(lineType=lineType, linePositions=linePositions)
+            line: UmlLineDefinition = UmlLineDefinition(lineType=lineType, linePositions=linePositions)
+
+            if lineType in NamedAssociations:
+                oglAssociation: OglAssociation = cast(OglAssociation, oglLink)
+
+                line.name = pyutLink.name
+                x, y = oglAssociation.centerLabel.GetRelativePosition()
+                line.namePosition = Position(x=x, y=y)
+
+                line.cardinalitySource = pyutLink.sourceCardinality
+                x, y = oglAssociation.sourceCardinality.GetRelativePosition()
+                line.sourceCardinalityPosition = Position(x=x, y=y)
+
+                line.cardinalityDestination = pyutLink.destinationCardinality
+                x, y = oglAssociation.destinationCardinality.GetRelativePosition()
+                line.destinationCardinalityPosition = Position(x=x, y=y)
 
             umlLineDefinitions.append(line)
         self._umlLineDefinitions = umlLineDefinitions
@@ -222,8 +241,8 @@ class PyUmlDefinitionAdapter:
             srcAnchor:  AnchorPoint = oglLink.sourceAnchor
             destAnchor: AnchorPoint = oglLink.destinationAnchor
         else:
-            srcAnchor  = oglLink.destinationAnchor
-            destAnchor = oglLink.sourceAnchor
+            srcAnchor  = oglLink.sourceAnchor
+            destAnchor = oglLink.destinationAnchor
 
         srcX,  srcY  = srcAnchor.GetPosition()
         destX, destY = destAnchor.GetPosition()
