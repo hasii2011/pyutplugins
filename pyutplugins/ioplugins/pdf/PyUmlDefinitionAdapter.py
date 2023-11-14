@@ -230,8 +230,14 @@ class PyUmlDefinitionAdapter:
             lineType = LineType.Composition
         elif umlLinkType == PyutLinkType.AGGREGATION:
             lineType = LineType.Aggregation
+        elif umlLinkType == PyutLinkType.NOTELINK:
+            lineType = LineType.NoteLink
+        elif umlLinkType == PyutLinkType.ASSOCIATION:
+            lineType = LineType.Association
+        elif umlLinkType == PyutLinkType.INTERFACE:
+            lineType = LineType.Interface
         else:
-            lineType = LineType.Association   # This won't happen yet
+            assert False, f'Unknown umlLinkType: {umlLinkType}'
 
         return lineType
 
