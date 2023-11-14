@@ -130,7 +130,7 @@ class Sugiyama:
 
             # Class or Note :
             if isinstance(oglObject, OglObject):
-                createSugiyamaNode(oglObject, dictOgl)      # type: ignore
+                createSugiyamaNode(oglObject, dictOgl)
             # Links
             elif isinstance(oglObject, OglLink):
 

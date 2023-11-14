@@ -36,7 +36,7 @@ Parameters = NewType('Parameters', Dict[MethodName, MultiParameterNames])
 MethodCode = NewType('MethodCode', Dict[MethodName, List[str]])
 Parents    = NewType('Parents', Dict[ParentName, Children])
 
-PropertyNames      = Dict[PropertyName, ClassName]
+PropertyNames      = NewType('PropertyNames', Dict[PropertyName, ClassName])
 PropertyParameters = Dict[PropertyName, ParameterNames]
 
 DataClassProperties = List[DataClassProperty]
@@ -66,7 +66,7 @@ class PyutPythonVisitor(Python3ParserVisitor):
         self.fields:       Fields     = []
         self._parents:     Parents    = Parents({})
 
-        self.propertyNames:    PropertyNames = {}
+        self.propertyNames:    PropertyNames = PropertyNames({})
         self.setterProperties: Parameters    = Parameters({})
         self.getterProperties: Parameters    = Parameters({})
 
@@ -268,7 +268,8 @@ class PyutPythonVisitor(Python3ParserVisitor):
         """
         ans: bool = False
 
-        if methodName in self.propertyNames:
+        propertyName: PropertyName = cast(PropertyName, methodName)     # coerce that sucker
+        if propertyName in self.propertyNames:
             ans = True
 
         return ans

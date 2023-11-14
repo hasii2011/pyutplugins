@@ -164,7 +164,7 @@ class ScaffoldFrame(Frame):
 
         for wxId in idMap:
 
-            clazz: type = idMap[wxId]   # type: ignore
+            clazz: type = idMap[wxId]
 
             pluginInstance: ToolPluginInterface = clazz(None)
             toolsMenu.Append(wxId, pluginInstance.menuTitle)
@@ -194,7 +194,7 @@ class ScaffoldFrame(Frame):
         subMenu: Menu = Menu()
 
         for wxId in pluginMap.pluginIdMap.keys():
-            clazz:          type = pluginMap.pluginIdMap[wxId]   # type: ignore
+            clazz:          type = pluginMap.pluginIdMap[wxId]
             pluginInstance: IOPluginInterface = clazz(None)
 
             if pluginMap.mapType == PluginMapType.INPUT_MAP:

@@ -164,7 +164,7 @@ class PluginManager(Singleton):
         pluginMap: PluginIDMap = self.toolPluginsMap.pluginIdMap
 
         # TODO: Fix this later for mypy
-        clazz: type = pluginMap[wxId]   # type: ignore
+        clazz: type = pluginMap[wxId]
         # Create a plugin instance
         pluginInstance: ToolPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
 
@@ -183,7 +183,7 @@ class PluginManager(Singleton):
             wxId:       The ID ref of the menu item
         """
         idMap:        PluginIDMap    = self.inputPluginsMap.pluginIdMap
-        clazz:        type              = idMap[wxId]     # type: ignore
+        clazz:        type              = idMap[wxId]
         plugInstance: IOPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
         self._doIOAction(methodToCall=plugInstance.executeImport)
 
@@ -193,7 +193,7 @@ class PluginManager(Singleton):
             wxId:       The ID ref of the menu item
         """
         idMap:        PluginIDMap  = self.outputPluginsMap.pluginIdMap
-        clazz:        type              = idMap[wxId]     # type: ignore
+        clazz:        type              = idMap[wxId]
         plugInstance: IOPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
         self._doIOAction(methodToCall=plugInstance.executeExport)
 
