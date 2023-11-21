@@ -54,7 +54,7 @@ setup(
         'pyutplugins.preferences',
         'pyutplugins.toolplugins', 'pyutplugins.toolplugins.orthogonal', 'pyutplugins.toolplugins.sugiyama',
     ],
-    install_requires=['pyutmodel==1.5.0', 'ogl==0.90.3', 'untanglepyut==1.3.1', 'oglio==1.2.1', 'codeallybasic~=0.5.2', 'codeallyadvanced~=0.5.2', 'pyumldiagrams==3.0.1',
+    install_requires=['pyutmodel==1.5.0', 'ogl==0.90.3', 'untanglepyut==1.3.1', 'oglio==1.2.1', 'codeallybasic~=0.5.2', 'codeallyadvanced~=0.5.2', 'pyumldiagrams==3.1.0',
                       'wxPython~=4.2.1',
                       'antlr4-python3-runtime==4.11.1',
                       'networkx==3.0',
