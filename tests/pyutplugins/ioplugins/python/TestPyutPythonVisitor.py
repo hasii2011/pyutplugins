@@ -108,6 +108,21 @@ class TestPyutPythonVisitor(TestBase):
         self.assertTrue(expectedParentName1 in visitor.parents, f'Missing parent: {expectedParentName1}')
         self.assertTrue(expectedParentName2 in visitor.parents, f'Missing parent: {expectedParentName2}')
 
+    def testGeneralMultipleInheritance(self):
+
+        tree:    Python3Parser.File_inputContext = self._setupVisitor('GeneralMultipleInheritance.py')
+        visitor: PyutPythonVisitor = PyutPythonVisitor()
+
+        visitor.visit(tree)
+
+        expectedParentName1: str = 'EventEngineMixin'
+        expectedParentName2: str = 'ShapeEventHandler'
+        expectedParentName3: str = 'RectangleShape'
+
+        self.assertTrue(expectedParentName1 in visitor.parents, f'Missing parent: {expectedParentName1}')
+        self.assertTrue(expectedParentName2 in visitor.parents, f'Missing parent: {expectedParentName2}')
+        self.assertTrue(expectedParentName3 in visitor.parents, f'Missing parent: {expectedParentName2}')
+
     def testInheritanceMultiParentMultiChildren(self):
         tree:    Python3Parser.File_inputContext = self._setupVisitor('DeepInheritance.py')
         visitor: PyutPythonVisitor = PyutPythonVisitor()
