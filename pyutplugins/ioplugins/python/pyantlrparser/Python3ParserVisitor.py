@@ -1,9 +1,9 @@
-# Generated from Python3Parser.g4 by ANTLR 4.11.1
+# Generated from Python3Parser.g4 by ANTLR 4.13.1
 from antlr4 import *
-if __name__ is not None and "." in __name__:
+if "." in __name__:
     from .Python3Parser import Python3Parser
 else:
-    from pyutplugins.ioplugins.python.pyantlrparser.Python3Parser import Python3Parser
+    from Python3Parser import Python3Parser
 
 # This class defines a complete generic visitor for a parse tree produced by Python3Parser.
 

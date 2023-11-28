@@ -1,4 +1,4 @@
-wheel==0.41.3
+wheel==0.42.0
 setuptools==69.0.2
 twine==4.0.2
 build==1.0.3
@@ -11,7 +11,7 @@ types-setuptools==68.2.0.2
 typing_extensions==4.8.0
 
 # For IOPython
-antlr4-python3-runtime==4.11.1
+antlr4-python3-runtime==4.13.1
 
 # For the Scaffold Test App
 click==8.1.7

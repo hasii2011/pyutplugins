@@ -56,6 +56,8 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Python code generatio
 
 class IOPython(IOPluginInterface):
 
+    PLUGIN_VERSION: str = '1.1'
+
     def __init__(self, pluginAdapter: IPluginAdapter):
 
         super().__init__(pluginAdapter)
@@ -65,7 +67,7 @@ class IOPython(IOPluginInterface):
         # from super class
         self._name    = PluginName('IOPython')
         self._author  = 'Humberto A. Sanchez II'
-        self._version = '1.0'
+        self._version = IOPython.PLUGIN_VERSION
         self._inputFormat  = InputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
         self._outputFormat = OutputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 

@@ -192,7 +192,43 @@ class PyutPythonVisitor(Python3ParserVisitor):
     def _createParentChildEntry(self, parentCtx: Python3Parser.ArglistContext, childName: Union[ClassName, ChildName]):
 
         parentName: ParentName = cast(ParentName, parentCtx.getText())
-        self.logger.debug(f'Class: {childName} is subclass of {parentName}')
+        self.logger.info(f'Class: {childName} is subclass of {parentName}')
+
+        multiParents = parentName.split(',')
+        if len(multiParents) > 1:
+            self._handleMultiParentChild(multiParents=multiParents, childName=childName)
+        else:
+            self._updateParentsDictionary(parentName=parentName, childName=childName)
+
+    def _handleMultiParentChild(self, multiParents: List[str], childName: Union[ClassName, ChildName]):
+        """
+
+        Args:
+            multiParents:
+            childName:
+
+        """
+        self.logger.info(f'handleMultiParentChild: {childName} -- {multiParents}')
+        for parent in multiParents:
+            # handle special case
+            if parent.startswith('metaclass'):
+                splitParent: List[str] = parent.split('=')
+                parentName: ParentName = ParentName(splitParent[1])
+                self._updateParentsDictionary(parentName=parentName, childName=childName)
+            else:
+                parentName = ParentName(parent)
+                self._updateParentsDictionary(parentName=parentName, childName=childName)
+
+    def _updateParentsDictionary(self, parentName: ParentName, childName: Union[ClassName, ChildName]):
+        """
+        Updates our parents dictionary.  If the parent does not have an
+        entry create one with the single child
+
+        Args:
+            parentName:     Prospective parent
+            childName:      Child class name
+
+        """
 
         if parentName in self._parents:
             children: Children = self._parents[parentName]

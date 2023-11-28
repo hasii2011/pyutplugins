@@ -96,6 +96,18 @@ class TestPyutPythonVisitor(TestBase):
 
         self.assertEqual(expectedChildName, actualChildName, 'Missing child')
 
+    def testMultipleInheritanceWithMetaClass(self):
+        tree:    Python3Parser.File_inputContext = self._setupVisitor('MultipleInheritanceWithMetaClass.py')
+        visitor: PyutPythonVisitor = PyutPythonVisitor()
+
+        visitor.visit(tree)
+
+        expectedParentName1: str = 'BaseWxCommand'
+        expectedParentName2: str = 'MyMetaBaseWxCommand'
+
+        self.assertTrue(expectedParentName1 in visitor.parents, f'Missing parent: {expectedParentName1}')
+        self.assertTrue(expectedParentName2 in visitor.parents, f'Missing parent: {expectedParentName2}')
+
     def testInheritanceMultiParentMultiChildren(self):
         tree:    Python3Parser.File_inputContext = self._setupVisitor('DeepInheritance.py')
         visitor: PyutPythonVisitor = PyutPythonVisitor()
