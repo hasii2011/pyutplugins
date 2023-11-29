@@ -38,9 +38,9 @@ from pyutplugins.ioplugins.IOPython import IOPython
 from pyutplugins.ioplugins.IOWxImage import IOWxImage
 from pyutplugins.ioplugins.IOXml import IOXml
 from pyutplugins.ioplugins.IOMermaid import IOMermaid
+from pyutplugins.ioplugins.IOAscii import IOAscii
 
 from pyutplugins.toolplugins.ToolArrangeLinks import ToolArrangeLinks
-from pyutplugins.toolplugins.ToolAscii import ToolAscii
 from pyutplugins.toolplugins.ToolOrthogonalLayoutV2 import ToolOrthogonalLayoutV2
 from pyutplugins.toolplugins.ToolSugiyama import ToolSugiyama
 from pyutplugins.toolplugins.ToolTransforms import ToolTransforms
@@ -68,8 +68,8 @@ class PluginManager(Singleton):
     By convention prefix the plugin I/O module with the characters 'IO'
 
     """
-    IO_PLUGINS:   PluginList = PluginList([IOMermaid, IODTD, IOGML, IOJava, IOPdf, IOPython, IOWxImage, IOXml])
-    TOOL_PLUGINS: PluginList = PluginList([ToolArrangeLinks, ToolAscii, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms])
+    IO_PLUGINS:   PluginList = PluginList([IOMermaid, IODTD, IOGML, IOJava, IOPdf, IOPython, IOWxImage, IOXml, IOAscii])
+    TOOL_PLUGINS: PluginList = PluginList([ToolArrangeLinks, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms])
 
     # noinspection PyAttributeOutsideInit
     def init(self,  *args, **kwargs):
