@@ -11,11 +11,12 @@ from logging import getLogger
 from xml.parsers.expat import ParserCreate
 from pyexpat import XMLParserType
 
-from pyutmodel.PyutType import PyutType
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutField import PyutField
-from pyutmodel.PyutLinkType import PyutLinkType
+from pyutmodelv2.PyutType import PyutType
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutField import PyutField
+
+from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
@@ -216,9 +217,9 @@ class DTDParser(LinkMakerMixin):
             attrValue: str            = typedAttr.attributeValue
 
             pyutField: PyutField = PyutField(name=attrName,
-                                             fieldType=PyutType(value=attrType),
+                                             type=PyutType(value=attrType),
                                              defaultValue=attrValue,
-                                             visibility=PyutVisibilityEnum.PUBLIC)
+                                             visibility=PyutVisibility.PUBLIC)
 
             self.logger.info(f'pyutField: {pyutField}')
             pyutClass: PyutClass = treeData.pyutClass

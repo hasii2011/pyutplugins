@@ -8,7 +8,7 @@ from logging import getLogger
 
 from os import sep as osSep
 
-from pyutmodel.PyutClass import PyutClass
+from pyutmodelv2.PyutClass import PyutClass
 
 from ogl.OglClass import OglClass
 

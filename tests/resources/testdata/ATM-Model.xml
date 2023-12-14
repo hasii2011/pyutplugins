@@ -20,7 +20,7 @@
 			</Class>
 		</GraphicClass>
 		<GraphicClass width="209" height="107" x="625" y="300">
-			<Class id="2" name="ATM" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Display">
+			<Class id="2" name="ATM" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="DisplayParameters">
 				<Method name="identifies" visibility="PUBLIC">
 					<Return type=""/>
 					<SourceCode/>
@@ -38,7 +38,7 @@
 			</Class>
 		</GraphicClass>
 		<GraphicClass width="245" height="107" x="107" y="250">
-			<Class id="3" name="Customer" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Display">
+			<Class id="3" name="Customer" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="DisplayParameters">
 				<Method name="verifyPassword" visibility="PUBLIC">
 					<Return type=""/>
 					<Param name="passwordToVerify" type="String" defaultValue=""/>
@@ -62,7 +62,7 @@
 			</Class>
 		</GraphicClass>
 		<GraphicClass width="166" height="90" x="375" y="425">
-			<Class id="4" name="Account" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Display">
+			<Class id="4" name="Account" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="DisplayParameters">
 				<Method name="deposit" visibility="PUBLIC">
 					<Return type=""/>
 					<Param name="amount" type="float" defaultValue=""/>

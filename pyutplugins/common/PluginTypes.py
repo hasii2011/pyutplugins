@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from ogl.OglClass import OglClass
 
-from pyutmodel.PyutClass import PyutClass
+from pyutmodelv2.PyutClass import PyutClass
 
 from pyutplugins.common.ElementTreeData import ElementTreeData
 

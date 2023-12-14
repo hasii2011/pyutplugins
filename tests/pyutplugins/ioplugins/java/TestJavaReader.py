@@ -4,7 +4,8 @@ from typing import List
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from pyutmodel.ModelTypes import Implementors
+from pyutmodelv2.PyutModelTypes import Implementors
+
 from ogl.OglClass import OglClass
 
 from pyutplugins.ioplugins.java.JavaReader import Extenders

@@ -8,13 +8,13 @@ from logging import getLogger
 
 from datetime import datetime
 
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutField import PyutField
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutParameter import PyutParameter
-from pyutmodel.PyutType import PyutType
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutField import PyutField
+from pyutmodelv2.PyutMethod import PyutMethod
+from pyutmodelv2.PyutParameter import PyutParameter
+from pyutmodelv2.PyutType import PyutType
 
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
+from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 MethodsCodeType = NewType('MethodsCodeType', Dict[str, List[str]])
 
@@ -70,7 +70,7 @@ class PyutToPython:
             The Python class start stanza
         """
         generatedCode:     str             = f'class {pyutClass.name}'
-        parentPyutClasses: List[PyutClass] = cast(List[PyutClass], pyutClass.getParents())
+        parentPyutClasses: List[PyutClass] = cast(List[PyutClass], pyutClass.parents)
 
         if len(parentPyutClasses) > 0:  # Add parents
             generatedCode = f'{generatedCode}('
@@ -208,7 +208,7 @@ class PyutToPython:
         fieldCode = f'{fieldCode}\n'
         return fieldCode
 
-    def generateVisibilityPrefix(self, visibility: PyutVisibilityEnum) -> str:
+    def generateVisibilityPrefix(self, visibility: PyutVisibility) -> str:
         """
         Return the python code for the given enumeration value
 
@@ -219,11 +219,11 @@ class PyutToPython:
             The Python code that by convention depicts `method` or `field` visibility
         """
         code: str = ''
-        if visibility == PyutVisibilityEnum.PUBLIC:
+        if visibility == PyutVisibility.PUBLIC:
             code = ''
-        elif visibility == PyutVisibilityEnum.PROTECTED:
+        elif visibility == PyutVisibility.PROTECTED:
             code = '_'
-        elif visibility == PyutVisibilityEnum.PRIVATE:
+        elif visibility == PyutVisibility.PRIVATE:
             code = '__'
         else:
             self.logger.error(f"PyutToPython: Field code not supported : {visibility}")
@@ -248,7 +248,7 @@ class PyutToPython:
         """
         currentCode: str = "def "
         if self.__isDunderMethod(pyutMethod.name) is False:
-            currentCode = f'{currentCode}{self.generateVisibilityPrefix(pyutMethod.getVisibility())}'
+            currentCode = f'{currentCode}{self.generateVisibilityPrefix(pyutMethod.visibility)}'
         currentCode = f'{currentCode}{pyutMethod.name}(self'
 
         return currentCode
@@ -318,7 +318,7 @@ class PyutToPython:
         Is smart enough to know if the parameters list is so long it must be indented
 
         Args:
-            currentCode:    Generated 'so far` code
+            currentCode:    Generated `so far` code
             paramCode:      Generated code for current parameter
 
         Returns:

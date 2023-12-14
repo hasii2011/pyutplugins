@@ -10,18 +10,19 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutField import PyutField
+from pyutmodelv2.PyutMethod import PyutMethod
+from pyutmodelv2.PyutParameter import PyutParameter
+from pyutmodelv2.PyutType import PyutType
+
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
+from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
+
 from ogl.OglInterface import OglInterface
 from ogl.OglLink import OglLink
 from ogl.OglClass import OglClass
 from ogl.OglInterface2 import OglInterface2
-
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutField import PyutField
-from pyutmodel.PyutLinkType import PyutLinkType
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutParameter import PyutParameter
-from pyutmodel.PyutType import PyutType
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
 from pyutplugins.common.LinkMakerMixin import LinkMakerMixin
 
@@ -580,18 +581,19 @@ class JavaReader(LinkMakerMixin):
 
         # TODO fix this crazy code to use constructor and catch exception on bad input
         # Get visibility
-        visibility: PyutVisibilityEnum = PyutVisibilityEnum.PUBLIC
+        visibility: PyutVisibility = PyutVisibility.PUBLIC
         if "private" in modifiers:
-            visibility = PyutVisibilityEnum.PRIVATE
+            visibility = PyutVisibility.PRIVATE
         elif "protected" in modifiers:
-            visibility = PyutVisibilityEnum.PROTECTED
+            visibility = PyutVisibility.PROTECTED
         elif "public" in modifiers:
-            visibility = PyutVisibilityEnum.PUBLIC
+            visibility = PyutVisibility.PUBLIC
 
         # Add all
         for (name, value) in names_values:
-            pyutType: PyutType = PyutType(fieldType)
-            classFields.append(PyutField(name, pyutType, value, visibility))
+            pyutType:  PyutType  = PyutType(fieldType)
+            pyutField: PyutField = PyutField(name=name, type=pyutType, defaultValue=value, visibility=visibility)
+            classFields.append(pyutField)
 
     def __addClassMethod(self, className, modifiers, returnType, name, lstFields):
         """
@@ -623,22 +625,22 @@ class JavaReader(LinkMakerMixin):
 
         # TODO fix this crazy code to use constructor and catch exception on bad input
         # Get visibility
-        visibility: PyutVisibilityEnum = PyutVisibilityEnum.PUBLIC
+        visibility: PyutVisibility = PyutVisibility.PUBLIC
         if "private" in modifiers:
-            visibility = PyutVisibilityEnum.PRIVATE
+            visibility = PyutVisibility.PRIVATE
         elif "protected" in modifiers:
-            visibility = PyutVisibilityEnum.PROTECTED
+            visibility = PyutVisibility.PROTECTED
         elif "public" in modifiers:
-            visibility = PyutVisibilityEnum.PUBLIC
+            visibility = PyutVisibility.PUBLIC
 
         # Add method
         methods = pc.methods
 
         if returnType == '\n' or returnType == '' or returnType == 'void' or returnType is None:
-            pm = PyutMethod(name, visibility)
+            pm = PyutMethod(name=name, visibility=visibility)
         else:
             retType: PyutType = PyutType(returnType)
-            pm = PyutMethod(name, visibility, retType)
+            pm = PyutMethod(name=name, visibility=visibility, returnType=retType)
 
         for (paramType, name, defaultValue) in lstFields:
             param = PyutParameter(name, paramType, defaultValue)
@@ -695,7 +697,7 @@ class JavaReader(LinkMakerMixin):
     def __mySplit(self, lstIn):
         """
         Do more splitting on a list of String.
-        Split elements like [")};"]     into    ¨[")", "}", ";"]
+        Split elements like [")};"]     into    [")", "}", ";"]
 
         or
 

@@ -13,16 +13,16 @@ from os import write
 
 from os import sep as osSep
 
+from pyutmodelv2.PyutLink import PyutLink
+from pyutmodelv2.PyutLink import PyutLinks
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutMethod import PyutMethod
+from pyutmodelv2.PyutParameter import PyutParameter
+
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
+from pyutmodelv2.enumerations.PyutStereotype import PyutStereotype
+
 from ogl.OglClass import OglClass
-
-from pyutmodel.PyutLink import PyutLink
-from pyutmodel.PyutLink import PyutLinks
-
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutLinkType import PyutLinkType
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutParameter import PyutParameter
-from pyutmodel.PyutStereotype import PyutStereotype
 
 from pyutplugins.ExternalTypes import OglClasses
 from pyutplugins.ExternalTypes import OglObjects
@@ -229,12 +229,12 @@ class JavaWriter:
             write(file, " implements ".encode())
 
             # Write the first interface
-            interfaceName: str = interfaces[0].getDestination().name
+            interfaceName: str = interfaces[0].destination.name
             write(file, interfaceName.encode())
 
             # For all next interfaces, write the name separated by a ','
             for interface in interfaces[1:]:
-                write(file, f', {interface.getDestination().name}'.encode())
+                write(file, f', {interface.destination.name}'.encode())
 
     def _writeLinks(self, file, links):
         """
@@ -249,7 +249,7 @@ class JavaWriter:
         for link in links:
             link = cast(PyutLink, link)
             # Get Class linked (type of variable)
-            destinationLinkName = link.getDestination().name
+            destinationLinkName = link.destination.name
             # Get name of aggregation
             name = link.name
             # Array or single variable
@@ -311,7 +311,7 @@ class JavaWriter:
             method:     method object
         """
         name:       str = method.name
-        visibility: str = self.__visibility[str(method.getVisibility())]
+        visibility: str = self.__visibility[str(method.visibility)]
         returnType: str = str(method.returnType)
         if returnType == "":
             returnType = "void"

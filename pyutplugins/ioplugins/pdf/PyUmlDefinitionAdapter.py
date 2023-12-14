@@ -7,14 +7,16 @@ from logging import getLogger
 
 from os import linesep as osLineSep
 
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
-from pyutmodel.PyutInterface import PyutInterface
-from pyutmodel.PyutLink import PyutLink
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutNote import PyutNote
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
-from pyutmodel.PyutLinkType import PyutLinkType
+from pyutmodelv2.PyutClass import PyutClass
+
+from pyutmodelv2.PyutInterface import PyutInterface
+from pyutmodelv2.PyutLink import PyutLink
+from pyutmodelv2.PyutMethod import PyutMethod
+from pyutmodelv2.PyutNote import PyutNote
+
+from pyutmodelv2.enumerations.PyutDisplayParameters import PyutDisplayParameters
+from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from miniogl.AnchorPoint import AnchorPoint
 from miniogl.ControlPoint import ControlPoint
@@ -122,7 +124,7 @@ class PyUmlDefinitionAdapter:
 
             classDefinition: ClassDefinition = ClassDefinition(name=pyutClass.name, position=position, size=size)
 
-            if pyutClass.displayParameters is PyutDisplayParameters.DISPLAY:
+            if pyutClass.displayParameters is PyutDisplayParameters.WITH_PARAMETERS:
                 classDefinition.displayMethodParameters = DisplayMethodParameters.DISPLAY
             else:
                 classDefinition.displayMethodParameters = DisplayMethodParameters.DO_NOT_DISPLAY
@@ -306,13 +308,13 @@ class PyUmlDefinitionAdapter:
         self.logger.debug(f'{methodDefinition.name=}  {parameters=}')
         return methodDefinition
 
-    def __toVisibilityType(self, visibility: PyutVisibilityEnum) -> VisibilityType:
+    def __toVisibilityType(self, visibility: PyutVisibility) -> VisibilityType:
 
-        if visibility == PyutVisibilityEnum.PUBLIC:
+        if visibility == PyutVisibility.PUBLIC:
             return VisibilityType.Public
-        elif visibility == PyutVisibilityEnum.PRIVATE:
+        elif visibility == PyutVisibility.PRIVATE:
             return VisibilityType.Private
-        elif visibility == PyutVisibilityEnum.PROTECTED:
+        elif visibility == PyutVisibility.PROTECTED:
             return VisibilityType.Protected
         else:
             assert False, 'Unknown UML Visibility type.  Probably developer error'

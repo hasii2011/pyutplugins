@@ -15,18 +15,19 @@ from os import sep as osSep
 from antlr4 import CommonTokenStream
 from antlr4 import FileStream
 
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutField import PyutField
+from pyutmodelv2.PyutMethod import PyutMethod
+from pyutmodelv2.PyutMethod import PyutParameters
+from pyutmodelv2.PyutMethod import SourceCode
+from pyutmodelv2.PyutParameter import PyutParameter
+from pyutmodelv2.PyutType import PyutType
+
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
+from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
+
 from ogl.OglLink import OglLink
 from ogl.OglClass import OglClass
-
-from pyutmodel.PyutLinkType import PyutLinkType
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutField import PyutField
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutMethod import PyutParameters
-from pyutmodel.PyutMethod import SourceCode
-from pyutmodel.PyutParameter import PyutParameter
-from pyutmodel.PyutType import PyutType
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
 from pyutplugins.common.LinkMakerMixin import LinkMakerMixin
 from pyutplugins.ExternalTypes import OglClasses
@@ -181,11 +182,11 @@ class ReverseEngineerPython2(LinkMakerMixin):
             for methodName in self._methodNames(className):
                 pyutMethod: PyutMethod = PyutMethod(name=methodName)
                 if methodName[0:2] == "__":
-                    pyutMethod.setVisibility(PyutVisibilityEnum.PRIVATE)
+                    pyutMethod.visibility = PyutVisibility.PRIVATE
                 elif methodName[0] == "_":
-                    pyutMethod.setVisibility(PyutVisibilityEnum.PROTECTED)
+                    pyutMethod.visibility = PyutVisibility.PROTECTED
                 else:
-                    pyutMethod.setVisibility(PyutVisibilityEnum.PUBLIC)
+                    pyutMethod.visibility = PyutVisibility.PUBLIC
                 pyutMethod = self._addParameters(pyutMethod)
                 pyutMethod.sourceCode = SourceCode(self.visitor.methodCode[methodName])
 
@@ -224,11 +225,11 @@ class ReverseEngineerPython2(LinkMakerMixin):
 
     def _createProperties(self, propName: str, setterParams: List[str]) -> Tuple[PyutMethod, PyutMethod]:
 
-        getter: PyutMethod = PyutMethod(name=propName, visibility=PyutVisibilityEnum.PUBLIC)
+        getter: PyutMethod = PyutMethod(name=propName, visibility=PyutVisibility.PUBLIC)
         if len(setterParams) == 0:
             setter: PyutMethod = cast(PyutMethod, None)
         else:
-            setter = PyutMethod(name=propName, visibility=PyutVisibilityEnum.PUBLIC)
+            setter = PyutMethod(name=propName, visibility=PyutVisibility.PUBLIC)
 
         if setter is not None:
             nameType: str = setterParams[0]
@@ -236,7 +237,7 @@ class ReverseEngineerPython2(LinkMakerMixin):
 
             if len(potentialNameType) == 2:
 
-                param: PyutParameter = PyutParameter(name=potentialNameType[0], parameterType=PyutType(value=potentialNameType[1]))
+                param: PyutParameter = PyutParameter(name=potentialNameType[0], type=PyutType(value=potentialNameType[1]))
                 setter.addParameter(param)
                 getter.returnType = PyutType(value=potentialNameType[1])
             else:
@@ -355,7 +356,7 @@ class ReverseEngineerPython2(LinkMakerMixin):
         paramValue:     str = paramTypeValue[1]
 
         pyutType: PyutType = PyutType(paramType)
-        return PyutParameter(name=paramName, parameterType=pyutType, defaultValue=paramValue)
+        return PyutParameter(name=paramName, type=pyutType, defaultValue=paramValue)
 
     def _simpleDefaultValue(self, simpleDefaultValueParam: str) -> PyutParameter:
 
@@ -372,7 +373,7 @@ class ReverseEngineerPython2(LinkMakerMixin):
         paramName:        str = pyutParamAndType[0]
         paramType:        str = pyutParamAndType[1]
 
-        pyutParam: PyutParameter = PyutParameter(name=paramName, parameterType=PyutType(value=paramType))
+        pyutParam: PyutParameter = PyutParameter(name=paramName, type=PyutType(value=paramType))
         return pyutParam
 
     def __simpleParseFieldToPyut(self, fieldData: str) -> PyutField:
@@ -405,7 +406,7 @@ class ReverseEngineerPython2(LinkMakerMixin):
         fieldAndType: List[str] = noCommentFieldData.split(ReverseEngineerPython2.PYTHON_TYPE_DELIMITER)
         fieldName:    str       = fieldAndType[0]
 
-        vis: PyutVisibilityEnum = self.__determineFieldVisibility(fieldName)
+        vis: PyutVisibility = self.__determineFieldVisibility(fieldName)
 
         fieldName = self.__appropriatelyCleanupName(vis=vis, fieldName=fieldName)
 
@@ -433,26 +434,26 @@ class ReverseEngineerPython2(LinkMakerMixin):
         #
         if len(fieldAndType) > 1:
             pyutField.type       = PyutType(value=fieldAndType[1])
-        pyutField.visibility = PyutVisibilityEnum.PUBLIC
+        pyutField.visibility = PyutVisibility.PUBLIC
 
         return pyutField
 
-    def __determineFieldVisibility(self, name: str) -> PyutVisibilityEnum:
+    def __determineFieldVisibility(self, name: str) -> PyutVisibility:
 
-        vis: PyutVisibilityEnum = PyutVisibilityEnum.PUBLIC
+        vis: PyutVisibility = PyutVisibility.PUBLIC
         if len(name) > 1:
             if name[-2:] != "__":
                 if name[0:2] == "__":
-                    vis = PyutVisibilityEnum.PRIVATE
+                    vis = PyutVisibility.PRIVATE
                 elif name[0] == "_":
-                    vis = PyutVisibilityEnum.PROTECTED
+                    vis = PyutVisibility.PROTECTED
         return vis
 
-    def __appropriatelyCleanupName(self, vis: PyutVisibilityEnum, fieldName: str) -> str:
+    def __appropriatelyCleanupName(self, vis: PyutVisibility, fieldName: str) -> str:
 
-        if vis == PyutVisibilityEnum.PUBLIC:
+        if vis == PyutVisibility.PUBLIC:
             return fieldName
-        elif vis == PyutVisibilityEnum.PRIVATE:
+        elif vis == PyutVisibility.PRIVATE:
             fieldName = fieldName[2:]
             return fieldName
         else:

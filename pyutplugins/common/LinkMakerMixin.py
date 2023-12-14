@@ -9,9 +9,10 @@ from ogl.OglInterface import OglInterface
 from ogl.OglLink import OglLink
 from ogl.OglLinkFactory import OglLinkFactory
 
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutLink import PyutLink
-from pyutmodel.PyutLinkType import PyutLinkType
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutLink import PyutLink
+
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 
 class LinkMakerMixin:

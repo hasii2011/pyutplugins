@@ -4,7 +4,8 @@ from typing import List
 from logging import Logger
 from logging import getLogger
 
-from pyutmodel.PyutClass import PyutClass
+from pyutmodelv2.PyutClass import PyutClass
+
 from ogl.OglClass import OglClass
 
 

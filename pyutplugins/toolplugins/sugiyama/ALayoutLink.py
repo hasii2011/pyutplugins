@@ -1,5 +1,5 @@
 
-from pyutmodel.PyutLinkType import PyutLinkType
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 
 class ALayoutLink:

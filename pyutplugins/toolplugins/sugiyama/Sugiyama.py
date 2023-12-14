@@ -14,7 +14,7 @@ from ogl.OglInterface import OglInterface
 from ogl.OglLink import OglLink
 from ogl.OglObject import OglObject
 
-from pyutmodel.PyutLinkType import PyutLinkType
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 

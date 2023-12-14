@@ -10,7 +10,7 @@ from miniogl.AnchorPoint import AnchorPoint
 from miniogl.LinePoint import LinePoint
 from miniogl.LineShape import ControlPoints
 
-from pyutmodel.PyutObject import PyutObject
+from pyutmodelv2.PyutObject import PyutObject
 
 from ogl.OglObject import OglObject
 from ogl.OglClass import OglClass

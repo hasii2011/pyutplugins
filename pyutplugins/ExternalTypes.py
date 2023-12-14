@@ -15,7 +15,7 @@ from enum import Enum
 
 from wx import ClientDC
 
-from pyutmodel.PyutLink import PyutLink
+from pyutmodelv2.PyutLink import PyutLink
 
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink

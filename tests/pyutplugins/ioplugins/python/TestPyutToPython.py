@@ -8,10 +8,11 @@ from unittest import main as unitTestMain
 
 from codeallybasic.UnitTestBase import UnitTestBase
 
-from pyutmodel.PyutType import PyutType
-from pyutmodel.PyutField import PyutField
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
+from pyutmodelv2.PyutType import PyutType
+from pyutmodelv2.PyutField import PyutField
+from pyutmodelv2.PyutMethod import PyutMethod
+
+from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from pyutplugins.ioplugins.python.PyutToPython import PyutToPython
 
@@ -28,7 +29,7 @@ class TestPyutToPython(UnitTestBase):
     def testGetPublicFieldPythonCode(self):
 
         pyutType: PyutType = PyutType(value='')
-        s: str = self.pyutToPython.generateFieldPythonCode(PyutField("publicField", pyutType, '', PyutVisibilityEnum.PUBLIC))
+        s: str = self.pyutToPython.generateFieldPythonCode(PyutField("publicField", type=pyutType, defaultValue='', visibility=PyutVisibility.PUBLIC))
 
         unExpectedValue: int = -1
         actualValue:     int = s.find('self.publicField')
@@ -38,7 +39,7 @@ class TestPyutToPython(UnitTestBase):
 
         pyutType: PyutType = PyutType(value='')
 
-        s: str = self.pyutToPython.generateFieldPythonCode(PyutField("privateField", pyutType, '', PyutVisibilityEnum.PRIVATE))
+        s: str = self.pyutToPython.generateFieldPythonCode(PyutField("privateField", type=pyutType, defaultValue='', visibility=PyutVisibility.PRIVATE))
 
         unExpectedValue: int = -1
         actualValue:     int = s.find('self.__privateField')
@@ -48,7 +49,7 @@ class TestPyutToPython(UnitTestBase):
 
         pyutType: PyutType = PyutType(value='')
 
-        s: str = self.pyutToPython.generateFieldPythonCode(PyutField("protectedField", pyutType, '', PyutVisibilityEnum.PROTECTED))
+        s: str = self.pyutToPython.generateFieldPythonCode(PyutField("protectedField", type=pyutType, defaultValue='', visibility=PyutVisibility.PROTECTED))
 
         unExpectedValue: int = -1
         actualValue:     int = s.find('self._protectedField')
@@ -64,7 +65,7 @@ class TestPyutToPython(UnitTestBase):
     def testGetOneMethodCodePublic(self):
 
         pyutType: PyutType = PyutType(value='str')
-        publicMethod: PyutMethod = PyutMethod(name='publicMethod', visibility=PyutVisibilityEnum.PUBLIC, returnType=pyutType)
+        publicMethod: PyutMethod = PyutMethod(name='publicMethod', visibility=PyutVisibility.PUBLIC, returnType=pyutType)
 
         defCode: List[str] = self.pyutToPython.generateASingleMethodsCode(publicMethod, writePass=False)
         self.logger.info(f'Generated definition: {defCode}')
@@ -76,7 +77,7 @@ class TestPyutToPython(UnitTestBase):
     def testGetOneMethodCodePrivate(self):
 
         pyutType: PyutType = PyutType(value='str')
-        publicMethod: PyutMethod = PyutMethod(name='privateMethod', visibility=PyutVisibilityEnum.PRIVATE, returnType=pyutType)
+        publicMethod: PyutMethod = PyutMethod(name='privateMethod', visibility=PyutVisibility.PRIVATE, returnType=pyutType)
 
         defCode: List[str] = self.pyutToPython.generateASingleMethodsCode(publicMethod, writePass=False)
         self.logger.info(f'Generated definition: {defCode}')
@@ -88,7 +89,7 @@ class TestPyutToPython(UnitTestBase):
     def testGetOneMethodCodeProtected(self):
 
         pyutType: PyutType = PyutType(value='str')
-        publicMethod: PyutMethod = PyutMethod(name='protectedMethod', visibility=PyutVisibilityEnum.PROTECTED, returnType=pyutType)
+        publicMethod: PyutMethod = PyutMethod(name='protectedMethod', visibility=PyutVisibility.PROTECTED, returnType=pyutType)
 
         defCode: List[str] = self.pyutToPython.generateASingleMethodsCode(publicMethod, writePass=False)
         self.logger.info(f'Generated definition: {defCode}')
@@ -103,7 +104,7 @@ class TestPyutToPython(UnitTestBase):
                 return hash(self.id)
         """
         # pyutType: PyutType = PyutType(value='str')
-        dunderMethod: PyutMethod = PyutMethod(name='__hash__', visibility=PyutVisibilityEnum.PUBLIC)
+        dunderMethod: PyutMethod = PyutMethod(name='__hash__', visibility=PyutVisibility.PUBLIC)
         defCode: List[str] = self.pyutToPython.generateASingleMethodsCode(dunderMethod, writePass=False)
         self.logger.info(f'Generated definition: {defCode}')
         expectedDeclaration: str = f'def __hash__(self):{osLineSep}'

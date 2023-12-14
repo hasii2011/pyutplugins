@@ -4,8 +4,8 @@ from typing import List
 from unittest import main as unitTestMain
 from unittest import TestSuite
 
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutField import PyutField
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutField import PyutField
 
 from pyutplugins.common.ElementTreeData import ElementTreeData
 from pyutplugins.ioplugins.dtd.DTDParser import DTDParser
@@ -20,7 +20,7 @@ class TestDTDParser(TestBase):
 
     def setUp(self):
         super().setUp()
-        
+
     def tearDown(self):
         super().tearDown()
 

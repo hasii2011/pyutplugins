@@ -12,10 +12,11 @@ from miniogl.AnchorPoint import AnchorPoint
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutLink import PyutLink
-from pyutmodel.PyutLinkType import PyutLinkType
-from pyutmodel.PyutStereotype import PyutStereotype
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutLink import PyutLink
+
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
+from pyutmodelv2.enumerations.PyutStereotype import PyutStereotype
 
 
 class MockGenerator:
@@ -93,7 +94,7 @@ class MockGenerator:
         """
         mockPyutClass: MagicMock = MagicMock(spec=PyutClass)
         className: str = f'{MockGenerator.MOCK_CLASS_NAME_PREFIX}{classNumber}'
-        mockPyutClass.getName.return_value = className
+        # mockPyutClass.getName.return_value = className
 
         type(mockPyutClass).name = PropertyMock(return_value=className)
         type(mockPyutClass).stereotype = PyutStereotype.TYPE
@@ -141,7 +142,8 @@ class MockGenerator:
         dst.getLinks.return_value = [oglLink]
 
         mockPyutClass = src.getPyutObject()
-        mockPyutClass.getLinks.return_value = [pyutLink]
+        # mockPyutClass.getLinks.return_value = [pyutLink]
+        type(mockPyutClass).links = PropertyMock(return_value=[pyutLink])
 
         return oglLink
 

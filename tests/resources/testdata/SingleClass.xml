@@ -2,7 +2,7 @@
 <PyutProject version="10" CodePath="">
 	<PyutDocument type="CLASS_DIAGRAM" title="SingleClass" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
 		<GraphicClass width="217" height="57" x="425" y="150">
-			<Class id="1" name="SingleClass" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Display">
+			<Class id="1" name="SingleClass" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="DisplayParameters">
 				<Method name="singleMethod" visibility="PUBLIC">
 					<Return type=""/>
 					<Param name="singleParameter" type="int" defaultValue="42"/>

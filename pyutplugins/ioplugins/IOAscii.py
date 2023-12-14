@@ -10,8 +10,9 @@ from os import sep as osSep
 from logging import Logger
 from logging import getLogger
 
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutStereotype import PyutStereotype
+from pyutmodelv2.PyutClass import PyutClass
+
+from pyutmodelv2.enumerations.PyutStereotype import PyutStereotype
 
 from ogl.OglClass import OglClass
 

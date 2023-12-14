@@ -14,18 +14,20 @@ from datetime import datetime
 
 from pathlib import Path
 
-from pyutmodel.PyutField import PyutField
-from pyutmodel.PyutField import PyutFields
-from pyutmodel.PyutLink import PyutLink
-from pyutmodel.PyutLinkedObject import PyutLinkedObject
-from pyutmodel.PyutNote import PyutNote
-from pyutmodel.PyutText import PyutText
-from pyutmodel.PyutType import PyutType
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutParameter import PyutParameter
-from pyutmodel.PyutStereotype import PyutStereotype
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
+from pyutmodelv2.PyutField import PyutField
+from pyutmodelv2.PyutField import PyutFields
+from pyutmodelv2.PyutLink import LinkDestination
+from pyutmodelv2.PyutLink import LinkSource
+from pyutmodelv2.PyutLink import PyutLink
+from pyutmodelv2.PyutNote import PyutNote
+from pyutmodelv2.PyutText import PyutText
+from pyutmodelv2.PyutType import PyutType
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutMethod import PyutMethod
+from pyutmodelv2.PyutParameter import PyutParameter
+
+from pyutmodelv2.enumerations.PyutStereotype import PyutStereotype
+from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from ogl.OglNote import OglNote
 from ogl.OglText import OglText
@@ -202,8 +204,8 @@ class MermaidWriter:
         """
         pyutLink: PyutLink = oglLink.pyutObject
 
-        subClassName:  str = pyutLink.getSource().name
-        baseClassName: str = pyutLink.getDestination().name
+        subClassName:  str = pyutLink.source.name
+        baseClassName: str = pyutLink.destination.name
         self.logger.info(f'{subClassName=} {pyutLink.linkType=} {baseClassName=}')
 
         linkRefrain: str  = (
@@ -214,8 +216,8 @@ class MermaidWriter:
 
     def _getRealizationLinkRefrain(self, oglInterface: OglInterface) -> str:
         pyutLink: PyutLink = oglInterface.pyutObject
-        interfaceName:   str = pyutLink.getSource().name
-        implementorName: str = pyutLink.getDestination().name
+        interfaceName:   str = pyutLink.source.name
+        implementorName: str = pyutLink.destination.name
         linkRefrain: str = (
             f'{indent1}{interfaceName} {MermaidArrow.INTERFACE_LINK.value} {implementorName}{eol}'
         )
@@ -245,8 +247,8 @@ class MermaidWriter:
         Returns:
         """
         pyutLink: PyutLink = oglAssociation.pyutObject
-        sourceName:      str = pyutLink.getSource().name
-        destinationName: str = pyutLink.getDestination().name
+        sourceName:      str = pyutLink.source.name
+        destinationName: str = pyutLink.destination.name
         self.logger.info(f'{oglAssociation} {sourceName=} {destinationName=}')
 
         sourceCardinality, destinationCardinality = self._getCardinalityStrings(pyutLink)
@@ -263,9 +265,9 @@ class MermaidWriter:
 
         Returns:  Mermaid string for a note link
         """
-        pyutLink:   PyutLink         = oglNoteLink.pyutObject
-        destObject: PyutLinkedObject = pyutLink.getDestination()
-        pyutNote:   PyutNote         = pyutLink.getSource()
+        pyutLink:   PyutLink        = oglNoteLink.pyutObject
+        destObject: LinkDestination = pyutLink.destination
+        pyutNote:   LinkSource      = pyutLink.source
 
         assert isinstance(pyutNote, PyutNote), 'Diagram error;  Source must be the note'
 
@@ -299,7 +301,7 @@ class MermaidWriter:
         fieldsRefrain: str = ''
         for field in fields:
             pyutField: PyutField = cast(PyutField, field)
-            visibility: PyutVisibilityEnum = pyutField.visibility
+            visibility: PyutVisibility = pyutField.visibility
             retType:    PyutType = pyutField.type
 
             fieldString: str = (
@@ -313,8 +315,8 @@ class MermaidWriter:
         retString: str = f''
 
         for method in methods:
-            pyutMethod: PyutMethod = cast(PyutMethod, method)
-            visibility: PyutVisibilityEnum = pyutMethod.visibility
+            pyutMethod: PyutMethod     = cast(PyutMethod, method)
+            visibility: PyutVisibility = pyutMethod.visibility
             retType:    PyutType = pyutMethod.returnType
 
             parameterString: str = self._generateParameters(pyutMethod)
