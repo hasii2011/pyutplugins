@@ -243,7 +243,9 @@ class ReverseEngineerPython2(LinkMakerMixin):
             else:
                 param = PyutParameter(name=potentialNameType[0])
                 setter.addParameter(param)
+            setter.isProperty = True
 
+        getter.isProperty = True
         return setter, getter
 
     def _createDataClassPropertiesAsFields(self, pyutClass: PyutClass, dataClassProperties: DataClassProperties) -> PyutClass:

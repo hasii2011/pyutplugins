@@ -14,7 +14,6 @@ from pyutmodelv2.PyutMethod import PyutMethod
 from pyutmodelv2.PyutParameter import PyutParameter
 from pyutmodelv2.PyutType import PyutType
 
-from pyutmodelv2.enumerations.PyutDisplayParameters import PyutDisplayParameters
 from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from pyutplugins.ExternalTypes import OglClasses
@@ -135,21 +134,18 @@ class TestReverseEngineerPython2(TestBase):
 
         self.logger.debug(f'setter={setter.__str__()} getter={getter.__str__()}')
         #
-        # self.assertEqual('+fontSize(newSize: int)', setter.getString(), 'Incorrect setter generated')
-        # self.assertEqual('+fontSize(): int', getter.getString(), 'Incorrect getter generated')
+        self.assertEqual('+fontSize(newSize: int)', setter.methodWithParameters(), 'Incorrect setter generated')
+        self.assertEqual('+fontSize(): int', getter.methodWithParameters(), 'Incorrect getter generated')
 
     def testCreatePropertiesReadOnly(self):
 
-        print(f'Fix this unit tests -- testCreatePropertiesReadOnly')
+        propName:      str = 'fontSize'
+        setterParams: List[str] = []
 
-        # propName:      str = 'fontSize'o
-        # setterParams: List[str] = []
-        #
-        # setter, getter = self.reverseEngineer._createProperties(propName=propName, setterParams=setterParams)
-        # PyutMethod.setStringMode(DisplayMethodParameters.WITH_PARAMETERS)
+        setter, getter = self.reverseEngineer._createProperties(propName=propName, setterParams=setterParams)
 
-        # self.assertIsNone(setter)
-        # self.assertIsNotNone(getter)
+        self.assertIsNone(setter)
+        self.assertIsNotNone(getter)
 
     def testGeneratePropertiesAsMethodsNormalCorrectCount(self):
 
