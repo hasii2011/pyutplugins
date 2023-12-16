@@ -523,7 +523,7 @@ class JavaReader(LinkMakerMixin):
             return self._classes[className]
 
         # Create the class
-        pc: PyutClass = PyutClass(className)  # A new PyutClass
+        pc: PyutClass = PyutClass(name=className)  # A new PyutClass
         po: OglClass = OglClass(pc)  # A new OglClass
 
         self._classes[className] = po
