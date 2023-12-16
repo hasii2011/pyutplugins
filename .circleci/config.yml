@@ -33,7 +33,7 @@ jobs:
             pip install html-testRunner
             pip install attrdict3
             pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04  wxPython
-            pip install antlr4-python3-runtime==4.11.1
+            pip install antlr4-python3-runtime==4.13.1
             pip install networkx==3.0
             pip install orthogonal==1.2.0
             pip install pyumldiagrams==3.1.0
