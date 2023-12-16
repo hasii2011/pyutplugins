@@ -127,14 +127,13 @@ class TestReverseEngineerPython2(TestBase):
     def testCreatePropertiesNormal(self):
 
         # PyutMethod.displayParameters = DisplayMethodParameters.WITH_PARAMETERS
-        print(f'Fix this unit tests -- testCreatePropertiesNormal')
-        # propName:     str       = 'fontSize'
-        # setterParams: List[str] = ['newSize:int']
-        #
-        # setter, getter = self.reverseEngineer._createProperties(propName=propName, setterParams=setterParams)
+        propName:     str       = 'fontSize'
+        setterParams: List[str] = ['newSize:int']
+
+        setter, getter = self.reverseEngineer._createProperties(propName=propName, setterParams=setterParams)
         # PyutMethod.setStringMode(DisplayMethodParameters.WITH_PARAMETERS)
 
-        # self.logger.debug(f'setter={setter.__str__()} getter={getter.__str__()}')
+        self.logger.debug(f'setter={setter.__str__()} getter={getter.__str__()}')
         #
         # self.assertEqual('+fontSize(newSize: int)', setter.getString(), 'Incorrect setter generated')
         # self.assertEqual('+fontSize(): int', getter.getString(), 'Incorrect getter generated')

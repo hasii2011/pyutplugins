@@ -39,10 +39,10 @@ jobs:
             pip install pyumldiagrams==3.1.0
             pip install codeallybasic==0.5.2
             pip install codeallyadvanced==0.5.2
-            pip install pyutmodelv2==2.0.0a6
-            pip install ogl==2.0.0a6
-            pip install untanglepyut==2.0.0a6
-            pip install oglio==2.0.0a6
+            pip install pyutmodelv2==2.0.0a7
+            pip install ogl==2.0.0a7
+            pip install untanglepyut==2.0.0a7
+            pip install oglio==2.0.0a7
             pip install buildlackey~=1.6.2
       - run:
             name: run tests

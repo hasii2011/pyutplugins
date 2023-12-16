@@ -4,7 +4,7 @@ __pycache__/
 /html/
 build/
 dist/
-/pyutplugins.egg-info/
+/src/pyutplugins.egg-info/
 /pyenv-3.10.6/
 /pyenv-3.11.5/
 /.mypy_cache/
