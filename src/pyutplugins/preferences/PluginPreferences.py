@@ -1,16 +1,14 @@
 
 from typing import Dict
-from typing import Optional
 
 from logging import Logger
 from logging import getLogger
 
-from sys import platform as sysPlatform
-
-from os import getenv as osGetEnv
+from pathlib import Path
 
 from configparser import ConfigParser
 
+from codeallybasic.ConfigurationLocator import ConfigurationLocator
 from codeallybasic.Singleton import Singleton
 
 from pyutplugins.toolplugins.orthogonal.LayoutAreaSize import LayoutAreaSize
@@ -23,8 +21,8 @@ PLUGIN_PREFS_NAME_VALUES = Dict[str, str]
 
 class PluginPreferences(Singleton):
 
-    PREFERENCES_FILENAME:   str = 'pyutplugins.ini'
-    THE_GREAT_MAC_PLATFORM: str = 'darwin'
+    MODULE_NAME:            str = 'pyutplugins'
+    PREFERENCES_FILENAME:   str = f'{MODULE_NAME}.ini'
 
     PYUT_PLUGINS_PREFERENCES_SECTION: str = 'PyutPlugins'
     DEBUG_SECTION:                    str = 'Debug'
@@ -36,7 +34,7 @@ class PluginPreferences(Singleton):
     MERMAID_LAYOUT_DIRECTION: str = 'mermaid_layout_direction'
 
     PLUGIN_PREFERENCES: PLUGIN_PREFS_NAME_VALUES = {
-        ORTHOGONAL_LAYOUT_SIZE:   LayoutAreaSize(1000, 1000).__str__(),
+        ORTHOGONAL_LAYOUT_SIZE:   LayoutAreaSize(512, 512).__str__(),
         WX_IMAGE_FILENAME:        'WxImageDump',
         PDF_EXPORT_FILENAME:      'PyutExport.pdf',
         SUGIYAMA_STEP_BY_STEP:    'False',
@@ -55,7 +53,8 @@ class PluginPreferences(Singleton):
 
         self._config: ConfigParser = ConfigParser()
 
-        self._preferencesFileName: str = self._getPreferencesLocation()
+        cl:                        ConfigurationLocator = ConfigurationLocator()
+        self._preferencesFileName: Path                 = cl.applicationPath(f'{PluginPreferences.MODULE_NAME}') / PluginPreferences.PREFERENCES_FILENAME
 
         self._loadPreferences()
 
@@ -118,17 +117,6 @@ class PluginPreferences(Singleton):
     def debugTempFileLocation(self, newValue: bool):
         self._config.set(PluginPreferences.DEBUG_SECTION, PluginPreferences.DEBUG_TEMP_FILE_LOCATION, str(newValue))
         self._saveConfig()
-
-    def _getPreferencesLocation(self) -> str:
-
-        if sysPlatform == "linux2" or sysPlatform == "linux" or sysPlatform == PluginPreferences.THE_GREAT_MAC_PLATFORM:
-            homeDir:  Optional[str] = osGetEnv('HOME')
-            fullName: str           = f'{homeDir}/{PluginPreferences.PREFERENCES_FILENAME}'
-            preferencesFileName: str = fullName
-        else:
-            preferencesFileName = PluginPreferences.PREFERENCES_FILENAME
-
-        return preferencesFileName
 
     def _loadPreferences(self):
 
