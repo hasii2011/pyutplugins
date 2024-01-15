@@ -13,12 +13,12 @@ maintainers = [{name = 'Humberto A. Sanchez II', email = 'Humbert.A.Sanchez.II@g
 keywords    = ['pyut', 'python', 'plugin']
 
 dependencies = [
-                      'pyutmodelv2==2.0.0',
-                      'ogl==2.0.0',
-                      'untanglepyut==2.0.0',
-                      'oglio==2.0.0',
-                      'codeallybasic~=0.5.2',
-                      'codeallyadvanced~=0.5.2',
+                      'pyutmodelv2==2.1.0',
+                      'ogl==2.1.0',
+                      'untanglepyut==2.1.0',
+                      'oglio==2.1.0',
+                      'codeallybasic~=1.0.0',
+                      'codeallyadvanced~=1.0.0',
                       'pyumldiagrams==3.1.0',
                       'wxPython~=4.2.1',
                       'antlr4-python3-runtime==4.13.1',

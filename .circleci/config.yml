@@ -15,14 +15,14 @@ workflows:
 jobs:
   build:
     docker:
-      - image: cimg/python:3.10-browsers
+      - image: cimg/python:3.11-browsers
     executor: python/default
     steps:
       - checkout
       - run:
           name: Install library dependencies
           command: |
-            sudo apt update
+            sudo apt updatex
             sudo apt install libnotify-dev
             sudo apt install libgtk-3-dev
             sudo apt-get install -y  libsdl2-dev
@@ -37,13 +37,13 @@ jobs:
             pip install networkx==3.0
             pip install orthogonal==1.2.0
             pip install pyumldiagrams==3.1.0
-            pip install codeallybasic==0.5.2
-            pip install codeallyadvanced==0.5.2
-            pip install pyutmodelv2==2.0.0
-            pip install ogl==2.0.0
-            pip install untanglepyut==2.0.0
-            pip install oglio==2.0.0
-            pip install buildlackey~=1.6.2
+            pip install codeallybasic==1.0.0
+            pip install codeallyadvanced==1.0.0
+            pip install pyutmodelv2==2.1.0
+            pip install ogl==2.1.0
+            pip install untanglepyut==2.1.0
+            pip install oglio==2.1.0
+            pip install buildlackey~=1.6.3
       - run:
             name: run tests
             command: | 
