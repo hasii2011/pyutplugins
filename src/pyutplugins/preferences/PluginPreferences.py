@@ -9,7 +9,7 @@ from pathlib import Path
 from configparser import ConfigParser
 
 from codeallybasic.ConfigurationLocator import ConfigurationLocator
-from codeallybasic.Singleton import Singleton
+from codeallybasic.SingletonV2 import SingletonV2
 
 from pyutplugins.toolplugins.orthogonal.LayoutAreaSize import LayoutAreaSize
 
@@ -19,7 +19,7 @@ from pyutplugins.ioplugins.mermaid.MermaidDirection import MermaidDirection
 PLUGIN_PREFS_NAME_VALUES = Dict[str, str]
 
 
-class PluginPreferences(Singleton):
+class PluginPreferences(SingletonV2):
 
     MODULE_NAME:            str = 'pyutplugins'
     PREFERENCES_FILENAME:   str = f'{MODULE_NAME}.ini'
@@ -47,8 +47,7 @@ class PluginPreferences(Singleton):
         DEBUG_TEMP_FILE_LOCATION: 'False'
     }
 
-    # noinspection PyAttributeOutsideInit
-    def init(self, *args, **kwargs):
+    def __init__(self):
         self.logger: Logger = getLogger(__name__)
 
         self._config: ConfigParser = ConfigParser()
