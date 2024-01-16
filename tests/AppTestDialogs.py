@@ -31,7 +31,7 @@ from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import DlgSelectMult
 from pyutplugins.toolplugins.orthogonal.DlgLayoutSize import DlgLayoutSize
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 from tests.scaffoldv2.ScaffoldPreferencesDialog import ScaffoldPreferencesDialog
 
 

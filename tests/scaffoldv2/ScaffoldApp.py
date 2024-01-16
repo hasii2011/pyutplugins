@@ -15,7 +15,7 @@ __version__ = "2.0.0"
 
 from codeallybasic.UnitTestBase import JSON_LOGGING_CONFIG_FILENAME
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 from tests.scaffoldv2.ScaffoldFrame import ScaffoldFrame
 
 

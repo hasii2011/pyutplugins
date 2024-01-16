@@ -13,7 +13,7 @@ from pyutplugins.ioplugins.java.JavaReader import InterfaceMap
 from pyutplugins.ioplugins.java.JavaReader import JavaReader
 from pyutplugins.ioplugins.java.JavaReader import ReversedClasses
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 TEST_BASE_CLASS_NAME:  str = 'BaseModel'
 TEST_INTERFACE_NAME_1: str = 'IModified'

@@ -12,7 +12,7 @@ from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.ioplugins.gml.GMLExporter import GMLExporter
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 
 class TestGMLExporter(TestBase):

@@ -13,7 +13,7 @@ from pyutplugins.toolplugins.sugiyama.VirtualSugiyamaNode import VirtualSugiyama
 from pyutplugins.toolplugins.sugiyama.Sugiyama import Sugiyama
 
 from tests.MockPluginAdapter import MockPluginAdapter
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 
 class TestSugiyama(TestBase):

@@ -10,7 +10,7 @@ from pyutmodelv2.PyutField import PyutField
 from pyutplugins.common.ElementTreeData import ElementTreeData
 from pyutplugins.ioplugins.dtd.DTDParser import DTDParser
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 
 class TestDTDParser(TestBase):

@@ -28,7 +28,7 @@ from pyutplugins.ioplugins.python.PyutPythonVisitor import MultiParameterNames
 from pyutplugins.ioplugins.python.PyutPythonVisitor import PyutPythonVisitor
 from pyutplugins.ioplugins.python.ReverseEngineerPython2 import ReverseEngineerPython2
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 
 class TestReverseEngineerPython2(TestBase):

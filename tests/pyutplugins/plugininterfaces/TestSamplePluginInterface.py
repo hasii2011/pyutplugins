@@ -24,7 +24,7 @@ from tests.pyutplugins.plugininterfaces.SamplePluginInterface import SamplePlugi
 
 from tests.pyutplugins.plugininterfaces.SampleIPluginAdapter import SampleIPluginAdapter
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 
 class TestSamplePluginInterface(App):

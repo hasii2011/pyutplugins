@@ -8,7 +8,7 @@ from unittest import main as unitTestMain
 from pyutplugins.ExternalTypes import OglClasses
 from pyutplugins.ExternalTypes import OglObjects
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 from pyutplugins.ioplugins.java.JavaWriter import JavaWriter
 

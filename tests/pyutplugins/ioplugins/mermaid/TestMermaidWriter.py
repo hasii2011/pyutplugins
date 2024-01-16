@@ -18,7 +18,7 @@ from pyutplugins.ioplugins.mermaid.MermaidWriter import MermaidWriter
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 # The base file names
 REALIZATION:       str = 'MermaidRealization'

@@ -14,7 +14,7 @@ from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 
 class TestPluginManager(TestBase):
