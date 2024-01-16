@@ -36,7 +36,7 @@ jobs:
             pip install antlr4-python3-runtime==4.13.1
             pip install networkx==3.0
             pip install orthogonal==1.2.0
-            pip install pyumldiagrams==3.1.0
+            pip install pyumldiagrams==3.1.5
             pip install codeallybasic==1.0.0
             pip install codeallyadvanced==1.0.0
             pip install pyutmodelv2==2.1.0

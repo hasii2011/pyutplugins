@@ -19,7 +19,7 @@ dependencies = [
                       'oglio==2.1.0',
                       'codeallybasic~=1.0.0',
                       'codeallyadvanced~=1.0.0',
-                      'pyumldiagrams==3.1.0',
+                      'pyumldiagrams==3.1.5',
                       'wxPython~=4.2.1',
                       'antlr4-python3-runtime==4.13.1',
                       'networkx==3.0',
