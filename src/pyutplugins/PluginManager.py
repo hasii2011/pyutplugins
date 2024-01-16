@@ -15,7 +15,7 @@ from wx import EndBusyCursor
 
 from wx import Yield as wxYield
 
-from codeallybasic.Singleton import (Singleton)
+from codeallybasic.SingletonV2 import SingletonV2
 
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
@@ -50,14 +50,14 @@ TOOL_PLUGIN_NAME_PREFIX: str = 'Tool'
 IO_PLUGIN_NAME_PREFIX:   str = 'IO'
 
 
-class PluginManager(Singleton):
+class PluginManager(SingletonV2):
     """
     Is responsible for:
 
     * Identifying the plugin loader files
     * Creating tool and Input/Output Menu ID References
     * Providing the callbacks to invoke the appropriate methods on the
-    appropriate pyutplugins to invoke there functionality.
+    appropriate pyutplugins to invoke their functionality.
 
     Plugin Loader files have the following format:
 
@@ -71,8 +71,7 @@ class PluginManager(Singleton):
     IO_PLUGINS:   PluginList = PluginList([IOMermaid, IODTD, IOGML, IOJava, IOPdf, IOPython, IOWxImage, IOXml, IOAscii])
     TOOL_PLUGINS: PluginList = PluginList([ToolArrangeLinks, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms])
 
-    # noinspection PyAttributeOutsideInit
-    def init(self,  *args, **kwargs):
+    def __init__(self, **kwargs):
         """
         Expects a pluginAdapter parameter in kwargs
 
