@@ -9,7 +9,7 @@ from pathlib import Path
 from configparser import ConfigParser
 
 from codeallybasic.ConfigurationLocator import ConfigurationLocator
-from codeallybasic.SingletonV2 import SingletonV2
+from codeallybasic.SingletonV3 import SingletonV3
 
 from pyutplugins.toolplugins.orthogonal.LayoutAreaSize import LayoutAreaSize
 
@@ -19,7 +19,7 @@ from pyutplugins.ioplugins.mermaid.MermaidDirection import MermaidDirection
 PLUGIN_PREFS_NAME_VALUES = Dict[str, str]
 
 
-class PluginPreferences(SingletonV2):
+class PluginPreferences(metaclass=SingletonV3):
 
     MODULE_NAME:            str = 'pyutplugins'
     PREFERENCES_FILENAME:   str = f'{MODULE_NAME}.ini'

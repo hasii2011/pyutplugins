@@ -15,7 +15,7 @@ from wx import EndBusyCursor
 
 from wx import Yield as wxYield
 
-from codeallybasic.SingletonV2 import SingletonV2
+from codeallybasic.SingletonV3 import SingletonV3
 
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
@@ -50,7 +50,7 @@ TOOL_PLUGIN_NAME_PREFIX: str = 'Tool'
 IO_PLUGIN_NAME_PREFIX:   str = 'IO'
 
 
-class PluginManager(SingletonV2):
+class PluginManager(metaclass=SingletonV3):
     """
     Is responsible for:
 
