@@ -361,7 +361,7 @@ class PyutPythonVisitor(Python3ParserVisitor):
         parentCtx:              ParserRuleContext = startCtx
 
         while parentCtx is not None:
-            # self.logger.info(f'{parentCtx=}')
+            # self.logger.info(f'{argumentsCtx=}')
             if isinstance(parentCtx, Python3Parser.ClassdefContext):
                 potentialDataClassName = parentCtx.getChild(1).getText()
                 self.logger.info(f'{potentialDataClassName=}')

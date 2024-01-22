@@ -44,7 +44,7 @@
             "level":     "WARNING",
             "propagate": "False"
         },
-        "pyutplugins.PluginManager": {
+        "pyutplugins.ioplugins.python.PyutPythonPegVisitor": {
             "level":     "DEBUG",
             "propagate": "False"
         },

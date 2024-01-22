@@ -1,6 +1,9 @@
-from abc import abstractmethod
+
 from logging import Logger
 from logging import getLogger
+
+from abc import abstractmethod
+from abc import ABCMeta
 
 from wx import Command
 
@@ -31,9 +34,12 @@ class BaseWxCommand(Command):
         return ans
 
 
-class MyMetaBaseWxCommand(ABCMeta, type(BaseWxCommand)):        # type: ignore
+BaseWxCommandMeta = type(BaseWxCommand)
+
+
+class MyMetaBaseWxCommand(ABCMeta, BaseWxCommandMeta):
     """
-    I have know idea why this works:
+    I have no idea why this works:
     https://stackoverflow.com/questions/66591752/metaclass-conflict-when-trying-to-create-a-python-abstract-class-that-also-subcl
     """
     pass
