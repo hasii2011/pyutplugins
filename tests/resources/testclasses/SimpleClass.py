@@ -7,7 +7,7 @@ from tests.resources.testclasses.GraphElement import GraphElement
 class SimpleClass(GraphElement):
 
     def __init__(self):
-        
+
         super().__init__(name='Ozzee')
         self.logger: Logger = getLogger(__name__)
 

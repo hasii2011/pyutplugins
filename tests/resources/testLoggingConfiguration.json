@@ -45,7 +45,7 @@
             "propagate": "False"
         },
         "pyutplugins.ioplugins.python.PyutPythonPegVisitor": {
-            "level":     "DEBUG",
+            "level":     "INFO",
             "propagate": "False"
         },
         "tests": {

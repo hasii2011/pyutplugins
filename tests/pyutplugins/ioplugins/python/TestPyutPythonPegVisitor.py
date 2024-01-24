@@ -1,4 +1,4 @@
-
+from typing import List
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
@@ -8,14 +8,17 @@ from antlr4.error.ErrorListener import ConsoleErrorListener
 
 from codeallybasic.UnitTestBase import UnitTestBase
 
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import ClassName
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import MethodNames
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Methods
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutMethod import PyutMethods
+
+
 from pyutplugins.ioplugins.python.pythonpegparser.PythonLexer import PythonLexer
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser
 
 from pyutplugins.ioplugins.python.PyutPythonPegVisitor import ParentName
 from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutPythonPegVisitor
+from pyutplugins.ioplugins.python.PyutPythonPegVisitor import ClassName
+from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutClasses
 
 from tests.ProjectTestBase import TestBase
 
@@ -47,7 +50,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
         visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
 
         visitor.visit(tree)
-        self.assertEqual(2, len(visitor.classNames), 'Oops class names parsed, mismatch')
+        self.assertEqual(2, len(visitor.pyutClasses), 'Oops class names parsed, mismatch')
 
     def testMultiClassFileWithInheritance(self):
 
@@ -100,16 +103,45 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
         visitor.visit(tree)
 
-        methods: Methods = visitor.classMethods
+        className:   ClassName = ClassName('SimpleClass')
+        pyutClasses: PyutClasses = visitor.pyutClasses
 
-        self.assertIn('SimpleClass', methods, 'Missing class name')
-        methodNames: MethodNames = methods[ClassName('SimpleClass')]
+        classNames = pyutClasses.keys()
+        self.assertIn('SimpleClass', classNames, 'Missing class name')
 
-        self.assertEqual(7, len(methodNames), 'Mismatch in number of methods parsed')
+        pyutClass:   PyutClass   = pyutClasses[className]
+        pyutMethods: PyutMethods = pyutClass.methods
 
-        self.assertIn('__init__', methodNames, 'Missing constructor')
-        self.assertIn('methodWithParametersAndDefaultValues', methodNames, 'Missing big method')
+        self.assertEqual(7, len(pyutMethods), 'Mismatch in number of methods parsed')
 
+        methodNames: List[str] = []
+
+        for method in pyutMethods:
+            methodNames.append(method.name)
+
+        self.assertIn('simpleMethod', methodNames, 'Missing known method')
+        self.assertIn('methodWithParametersAndDefaultValues', methodNames, 'Missing known method')
+
+    # def testExtractMethodCode(self):
+    #     tree:    PythonParser.File_inputContext = self._setupVisitor('Vertex.py')
+    #     visitor: PyutPythonPegVisitor           = PyutPythonPegVisitor()
+    #
+    #     visitor.visit(tree)
+    #
+    #     parsedClasses: ParsedClasses = visitor.parsedClasses
+    #
+    #     className: ClassName = ClassName('Vertex')
+    #     self.assertIn('Vertex', parsedClasses, 'Yikes missed the entire class')
+    #
+    #     parsedClass: ParsedClass = parsedClasses[className]
+    #
+    #     self.assertEqual(3, len(parsedClass.methodNames), 'Mismatch on names')
+    #     self.assertEqual(3, len(parsedClass.methodCode),  'Mismatch on code')
+    #
+    #     codeLines: CodeLines = parsedClass.methodCode['surround_half_edges']
+    #
+    #     self.assertEqual(5, len(codeLines), 'Number of code lines mismatch')
+    #
     def _setupVisitor(self, fileName: str) -> PythonParser.File_inputContext:
 
         fqFileName: str = UnitTestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_CLASSES_PACKAGE_NAME, fileName)

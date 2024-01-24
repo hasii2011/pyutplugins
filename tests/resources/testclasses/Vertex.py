@@ -1,5 +1,3 @@
-# type: ignore
-
 from tests.resources.testclasses.GraphElement import GraphElement
 
 
