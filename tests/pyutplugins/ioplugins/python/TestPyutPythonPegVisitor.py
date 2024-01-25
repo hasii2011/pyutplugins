@@ -1,4 +1,7 @@
+
+from typing import Dict
 from typing import List
+
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
@@ -9,8 +12,9 @@ from antlr4.error.ErrorListener import ConsoleErrorListener
 from codeallybasic.UnitTestBase import UnitTestBase
 
 from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutMethod import PyutMethod
 from pyutmodelv2.PyutMethod import PyutMethods
-
+from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from pyutplugins.ioplugins.python.pythonpegparser.PythonLexer import PythonLexer
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser
@@ -112,7 +116,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
         pyutClass:   PyutClass   = pyutClasses[className]
         pyutMethods: PyutMethods = pyutClass.methods
 
-        self.assertEqual(7, len(pyutMethods), 'Mismatch in number of methods parsed')
+        self.assertEqual(9, len(pyutMethods), 'Mismatch in number of methods parsed')
 
         methodNames: List[str] = []
 
@@ -121,6 +125,14 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
         self.assertIn('simpleMethod', methodNames, 'Missing known method')
         self.assertIn('methodWithParametersAndDefaultValues', methodNames, 'Missing known method')
+
+        methodDict: Dict[str, PyutMethod] = {}
+        for method in pyutMethods:
+            methodDict[method.name] = method
+
+        protectedMethod: PyutMethod = methodDict['_protectedMethod']
+
+        self.assertEqual(PyutVisibility.PROTECTED, protectedMethod.visibility, 'Method visibility is incorrect')
 
     # def testExtractMethodCode(self):
     #     tree:    PythonParser.File_inputContext = self._setupVisitor('Vertex.py')

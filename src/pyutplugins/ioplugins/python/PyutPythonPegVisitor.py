@@ -16,6 +16,7 @@ from pyutmodelv2.PyutMethod import PyutMethod
 from pyutmodelv2.PyutMethod import PyutMethods
 from pyutmodelv2.PyutParameter import PyutParameter
 from pyutmodelv2.PyutType import PyutType
+from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser
 
@@ -47,6 +48,10 @@ NO_METHOD_CTX: PythonParser.AssignmentContext = cast(PythonParser.AssignmentCont
 
 PyutClasses = NewType('PyutClasses', Dict[ClassName, PyutClass])
 
+
+PARAMETER_SELF:      str = 'self'
+PROTECTED_INDICATOR: str = '_'
+PRIVATE_INDICATOR:   str = '__'
 
 @dataclass
 class ParameterNameAndType:
@@ -103,13 +108,25 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
             methodName: MethodName = self._extractMethodName(ctx=ctx.function_def_raw())
 
+            exprCtx: PythonParser.ExpressionContext = ctx.function_def_raw().expression()
+            if exprCtx is None:
+                returnTypeStr: str = ''
+            else:
+                returnTypeStr = exprCtx.getText()
+
+            pyutVisibility: PyutVisibility = PyutVisibility.PUBLIC
+            if methodName.startswith(PROTECTED_INDICATOR):
+                pyutVisibility = PyutVisibility.PROTECTED
+            elif methodName.startswith(PRIVATE_INDICATOR):
+                pyutVisibility = PyutVisibility.PRIVATE
+
             if not self._isProperty(methodName):
                 self.logger.debug(f'visitFunction_def: {methodName=}')
                 if className not in self._pyutClasses:
                     assert False, 'This should not happen'
                 else:
                     pyutClass:  PyutClass  = self._pyutClasses[className]
-                    pyutMethod: PyutMethod = PyutMethod(name=methodName)
+                    pyutMethod: PyutMethod = PyutMethod(name=methodName, returnType=PyutType(returnTypeStr), visibility=pyutVisibility)
                     pyutClass.methods.append(pyutMethod)
 
         return self.visitChildren(ctx)
@@ -172,13 +189,13 @@ class PyutPythonPegVisitor(PythonParserVisitor):
             pyutParameter: PyutParameter = PyutParameter(name=nameAndType.name, type=PyutType(nameAndType.typeName), defaultValue=expr)
             self._updateModelMethodParameter(className=className, methodName=methodName, pyutParameter=pyutParameter)
 
-    def _handleTypeAnnotated(self, className: ClassName, methodName: MethodName, noDefaultContexts: List[PythonParser.Param_no_defaultContext] ):
+    def _handleTypeAnnotated(self, className: ClassName, methodName: MethodName, noDefaultContexts: List[PythonParser.Param_no_defaultContext]):
 
         for noDefaultCtx in noDefaultContexts:
             paramCtx:    PythonParser.ParamContext = noDefaultCtx.param()
             nameAndType: ParameterNameAndType      = self._extractParameterNameAndType(paramCtx=paramCtx)
 
-            if nameAndType.name == 'self':
+            if nameAndType.name == PARAMETER_SELF:
                 continue
 
             pyutParameter: PyutParameter = PyutParameter(name=nameAndType.name, type=PyutType(nameAndType.typeName))
@@ -356,4 +373,3 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         pyutMethod: PyutMethod = self._findModelMethod(methodName=methodName, pyutClass=pyutClass)
 
         pyutMethod.addParameter(parameter=pyutParameter)
-

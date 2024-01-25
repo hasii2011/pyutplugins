@@ -28,3 +28,9 @@ class SimpleClass(GraphElement):
 
     def methodWithParametersAndDefaultValues(self, intParameter: int = 0, floatParameter: float = 42.0, stringParameter: str = ''):
         pass
+
+    def _protectedMethod(self):
+        pass
+
+    def __privateMethod(self):
+        pass
