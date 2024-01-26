@@ -48,10 +48,25 @@ NO_METHOD_CTX: PythonParser.AssignmentContext = cast(PythonParser.AssignmentCont
 
 PyutClasses = NewType('PyutClasses', Dict[ClassName, PyutClass])
 
+# noinspection SpellCheckingInspection
+MAGIC_DUNDER_METHODS:      List[str] = ['__init__', '__str__', '__repr__', '__new__', '__del__',
+                                        '__eq__', '__ne__', '__lt__', '__gt__', '__le__', '__ge__'
+                                        '__pos__', '__neg__', '__abs__', '__invert__', '__round__', '__floor__', '__floor__', '__trunc__',
+                                        '__add__', '__sub__', '__mul__', '__floordiv__', '__div__', '__truediv__', '__mod__', '__divmod__', '__pow__',
+                                        '__lshift__', '__rshift__', '__and__', '__or__', '__xor__',
+                                        '__hash__',
+                                        '__getattr__', '__setattr__', '__getattribute__', '__delattr__',
+                                        '__len__', '__setitem__', '__delitem__', '__contains__', '__missing__',
+                                        '__call__', '__enter__', '__exit__',
+                                        '__bool__'
+                                        ]
 
 PARAMETER_SELF:      str = 'self'
 PROTECTED_INDICATOR: str = '_'
 PRIVATE_INDICATOR:   str = '__'
+
+VERSION: str = '2.0'
+
 
 @dataclass
 class ParameterNameAndType:
@@ -115,10 +130,12 @@ class PyutPythonPegVisitor(PythonParserVisitor):
                 returnTypeStr = exprCtx.getText()
 
             pyutVisibility: PyutVisibility = PyutVisibility.PUBLIC
-            if methodName.startswith(PROTECTED_INDICATOR):
-                pyutVisibility = PyutVisibility.PROTECTED
+            if methodName in MAGIC_DUNDER_METHODS:
+                pass
             elif methodName.startswith(PRIVATE_INDICATOR):
                 pyutVisibility = PyutVisibility.PRIVATE
+            elif methodName.startswith(PROTECTED_INDICATOR):
+                pyutVisibility = PyutVisibility.PROTECTED
 
             if not self._isProperty(methodName):
                 self.logger.debug(f'visitFunction_def: {methodName=}')
@@ -373,3 +390,14 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         pyutMethod: PyutMethod = self._findModelMethod(methodName=methodName, pyutClass=pyutClass)
 
         pyutMethod.addParameter(parameter=pyutParameter)
+
+    def _generateMyCredits(self) -> str:
+        """
+
+        Returns:    Reversed Engineered by the one and only:
+                    Gato Malo - Humberto A. Sanchez II
+                    Generated: ${DAY} ${MONTH_NAME_FULL} ${YEAR}
+                    Version: ${VERSION}
+
+        """
+        return ''

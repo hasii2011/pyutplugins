@@ -1,6 +1,7 @@
 
 from typing import Dict
 from typing import List
+from typing import NewType
 
 from unittest import TestSuite
 from unittest import main as unitTestMain
@@ -26,6 +27,8 @@ from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutClasses
 
 from tests.ProjectTestBase import TestBase
 
+PyutMethodHashIndex = NewType('PyutMethodHashIndex', Dict[str, PyutMethod])
+
 
 class PythonErrorListener(ConsoleErrorListener):
     pass
@@ -50,7 +53,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
     def testRetrieveClassNames(self):
 
-        tree:    PythonParser.File_inputContext = self._setupVisitor('Book.py')
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('Book.py')
         visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
 
         visitor.visit(tree)
@@ -58,7 +61,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
     def testMultiClassFileWithInheritance(self):
 
-        tree:    PythonParser.File_inputContext = self._setupVisitor('Opie.py')
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('Opie.py')
         visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
 
         visitor.visit(tree)
@@ -74,7 +77,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
     def testMultipleInheritanceClass(self):
 
-        tree:    PythonParser.File_inputContext = self._setupVisitor('MultipleInheritance.py')
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('MultipleInheritance.py')
         visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
 
         visitor.visit(tree)
@@ -89,7 +92,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
     def testMultipleInheritanceWithMetaClass(self):
 
-        tree:    PythonParser.File_inputContext = self._setupVisitor('MultipleInheritanceWithMetaClass.py')
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('MultipleInheritanceWithMetaClass.py')
         visitor: PyutPythonPegVisitor           = PyutPythonPegVisitor()
 
         visitor.visit(tree)
@@ -100,23 +103,15 @@ class TestPyutPythonPegVisitor(UnitTestBase):
         self.assertTrue(expectedParentName1 in visitor.parents, f'Missing parent: {expectedParentName1}')
         self.assertTrue(expectedParentName2 in visitor.parents, f'Missing parent: {expectedParentName2}')
 
-    def testClassesWithMethods(self):
+    def testClassmMethods(self):
 
-        tree:    PythonParser.File_inputContext = self._setupVisitor('SimpleClass.py')
-        visitor: PyutPythonPegVisitor           = PyutPythonPegVisitor()
-
-        visitor.visit(tree)
+        visitor: PyutPythonPegVisitor = self._setupSimpleClassVisitor()
 
         className:   ClassName = ClassName('SimpleClass')
         pyutClasses: PyutClasses = visitor.pyutClasses
 
-        classNames = pyutClasses.keys()
-        self.assertIn('SimpleClass', classNames, 'Missing class name')
-
         pyutClass:   PyutClass   = pyutClasses[className]
         pyutMethods: PyutMethods = pyutClass.methods
-
-        self.assertEqual(9, len(pyutMethods), 'Mismatch in number of methods parsed')
 
         methodNames: List[str] = []
 
@@ -126,13 +121,59 @@ class TestPyutPythonPegVisitor(UnitTestBase):
         self.assertIn('simpleMethod', methodNames, 'Missing known method')
         self.assertIn('methodWithParametersAndDefaultValues', methodNames, 'Missing known method')
 
-        methodDict: Dict[str, PyutMethod] = {}
-        for method in pyutMethods:
-            methodDict[method.name] = method
+    def testClassParsed(self):
 
-        protectedMethod: PyutMethod = methodDict['_protectedMethod']
+        visitor: PyutPythonPegVisitor = self._setupSimpleClassVisitor()
 
-        self.assertEqual(PyutVisibility.PROTECTED, protectedMethod.visibility, 'Method visibility is incorrect')
+        className:   ClassName = ClassName('SimpleClass')
+        pyutClasses: PyutClasses = visitor.pyutClasses
+
+        classNames = pyutClasses.keys()
+        self.assertIn('SimpleClass', classNames, 'Missing class name')
+
+    def testCorrectMethodCount(self):
+
+        visitor: PyutPythonPegVisitor = self._setupSimpleClassVisitor()
+
+        className:   ClassName = ClassName('SimpleClass')
+        pyutClasses: PyutClasses = visitor.pyutClasses
+
+        pyutClass:   PyutClass   = pyutClasses[className]
+        pyutMethods: PyutMethods = pyutClass.methods
+
+        self.assertEqual(10, len(pyutMethods), 'Mismatch in number of methods parsed')
+
+    def testProtectedMethodVisibility(self):
+        self._runVisibilityTest('_protectedMethod', PyutVisibility.PROTECTED)
+
+    def testPrivateMethodVisibility(self):
+        self._runVisibilityTest('__privateMethod', PyutVisibility.PRIVATE)
+
+    def testDunderMethodVisibility(self):
+        self._runVisibilityTest('__str__', PyutVisibility.PUBLIC)
+
+    def _runVisibilityTest(self, methodName, visibility: PyutVisibility):
+
+        visitor: PyutPythonPegVisitor = self._setupSimpleClassVisitor()
+
+        className:   ClassName  = ClassName('SimpleClass')
+        pyutClasses: PyutClasses = visitor.pyutClasses
+
+        pyutClass:   PyutClass   = pyutClasses[className]
+
+        methodDict: PyutMethodHashIndex = self._buildMethodHashIndex(pyutMethods=pyutClass.methods)
+        testMethod: PyutMethod          = methodDict[methodName]
+
+        self.assertEqual(visibility, testMethod.visibility, 'Method visibility is incorrect')
+
+    def _setupSimpleClassVisitor(self) -> PyutPythonPegVisitor:
+
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('SimpleClass.py')
+        visitor: PyutPythonPegVisitor           = PyutPythonPegVisitor()
+
+        visitor.visit(tree)
+
+        return visitor
 
     # def testExtractMethodCode(self):
     #     tree:    PythonParser.File_inputContext = self._setupVisitor('Vertex.py')
@@ -154,7 +195,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
     #
     #     self.assertEqual(5, len(codeLines), 'Number of code lines mismatch')
     #
-    def _setupVisitor(self, fileName: str) -> PythonParser.File_inputContext:
+    def _setupPegBasedParser(self, fileName: str) -> PythonParser.File_inputContext:
 
         fqFileName: str = UnitTestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_CLASSES_PACKAGE_NAME, fileName)
 
@@ -173,6 +214,14 @@ class TestPyutPythonPegVisitor(UnitTestBase):
             self.assertTrue(False, f'File contains {parser.getNumberOfSyntaxErrors()} syntax errors')
 
         return tree
+
+    def _buildMethodHashIndex(self, pyutMethods: PyutMethods) -> PyutMethodHashIndex:
+
+        methodDict: PyutMethodHashIndex = PyutMethodHashIndex({})
+        for method in pyutMethods:
+            methodDict[method.name] = method
+
+        return methodDict
 
 
 def suite() -> TestSuite:

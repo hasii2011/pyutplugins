@@ -5,6 +5,10 @@ from tests.resources.testclasses.GraphElement import GraphElement
 
 
 class SimpleClass(GraphElement):
+    """
+    This class allows me to test visibility and parameter lists.  It also allows me to
+    test that this text appears as part of the class description.  ;-)
+    """
 
     def __init__(self):
 
@@ -34,3 +38,6 @@ class SimpleClass(GraphElement):
 
     def __privateMethod(self):
         pass
+
+    def __str__(self) -> str:
+        return 'I am a test class'
