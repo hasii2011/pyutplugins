@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+
 from typing import cast
 from typing import Dict
 from typing import List
@@ -8,6 +8,10 @@ from typing import Union
 from logging import Logger
 from logging import getLogger
 
+from os import linesep as osLineSep
+
+from dataclasses import dataclass
+
 from antlr4 import ParserRuleContext
 from antlr4.tree.Tree import TerminalNodeImpl
 
@@ -15,6 +19,7 @@ from pyutmodelv2.PyutClass import PyutClass
 from pyutmodelv2.PyutMethod import PyutMethod
 from pyutmodelv2.PyutMethod import PyutMethods
 from pyutmodelv2.PyutParameter import PyutParameter
+from pyutmodelv2.PyutField import PyutField
 from pyutmodelv2.PyutType import PyutType
 from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
@@ -41,6 +46,8 @@ CodeLine      = NewType('CodeLine',      str)
 CodeLines     = NewType('CodeLines',     List[CodeLine])
 MethodCode    = NewType('MethodCode',    Dict[MethodName,   CodeLines])
 
+PropertyMap   = NewType('PropertyMap', Dict[ClassName, PropertyNames])
+
 NO_CLASS_NAME: ClassName = ClassName('')
 
 NO_METHOD_CTX: PythonParser.AssignmentContext = cast(PythonParser.AssignmentContext, None)
@@ -64,6 +71,7 @@ MAGIC_DUNDER_METHODS:      List[str] = ['__init__', '__str__', '__repr__', '__ne
 PARAMETER_SELF:      str = 'self'
 PROTECTED_INDICATOR: str = '_'
 PRIVATE_INDICATOR:   str = '__'
+PROPERTY_DECORATOR:  str = 'property'
 
 VERSION: str = '2.0'
 
@@ -81,6 +89,8 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         self._parents:       Parents       = Parents({})
         self._pyutClasses:   PyutClasses   = PyutClasses({})
+
+        self._propertyMap: PropertyMap = PropertyMap({})
 
     @property
     def pyutClasses(self) -> PyutClasses:
@@ -107,7 +117,14 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         if argumentsCtx is not None:
             self._createParentChildEntry(argumentsCtx, className)
 
-        self._pyutClasses[className] = PyutClass(name=className)
+        pyutClass: PyutClass = PyutClass(name=className)
+        pyutClass.description = self._generateMyCredits()
+
+        self._pyutClasses[className] = pyutClass
+        #
+        # Make an entry for this guy's properties
+        #
+        self._propertyMap[className] = PropertyNames([])
 
         return self.visitChildren(ctx)
 
@@ -121,13 +138,8 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         className: ClassName = self._checkIfMethodBelongsToClass(ctx, PythonParser.Class_defContext)
         if className != NO_CLASS_NAME:
 
-            methodName: MethodName = self._extractMethodName(ctx=ctx.function_def_raw())
-
-            exprCtx: PythonParser.ExpressionContext = ctx.function_def_raw().expression()
-            if exprCtx is None:
-                returnTypeStr: str = ''
-            else:
-                returnTypeStr = exprCtx.getText()
+            methodName:    MethodName = self._extractMethodName(ctx=ctx.function_def_raw())
+            returnTypeStr: str        = self._extractReturnType(ctx=ctx)
 
             pyutVisibility: PyutVisibility = PyutVisibility.PUBLIC
             if methodName in MAGIC_DUNDER_METHODS:
@@ -137,7 +149,10 @@ class PyutPythonPegVisitor(PythonParserVisitor):
             elif methodName.startswith(PROTECTED_INDICATOR):
                 pyutVisibility = PyutVisibility.PROTECTED
 
-            if not self._isProperty(methodName):
+            if self._isProperty(ctx) is True:
+                self._makePropertyEntry(className=className, methodName=methodName)
+                self._makeAField(ctx=ctx)
+            else:
                 self.logger.debug(f'visitFunction_def: {methodName=}')
                 if className not in self._pyutClasses:
                     assert False, 'This should not happen'
@@ -167,26 +182,29 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         classCtx:  PythonParser.Class_defContext    = self._findClassContext(ctx)
         methodCtx: PythonParser.Function_defContext = self._findMethodContext(ctx)
 
-        className:  ClassName  = self._extractClassName(ctx=classCtx)
-        methodName: MethodName = self._extractMethodName(ctx=methodCtx.function_def_raw())
+        className:    ClassName    = self._extractClassName(ctx=classCtx)
+        propertyName: PropertyName = self._extractPropertyName(ctx=methodCtx.function_def_raw())
+        if self._isThisAParameterListForAProperty(className=className, propertyName=propertyName) is True:
+            pass
+        else:
+            methodName: MethodName = self._extractMethodName(ctx=methodCtx.function_def_raw())
+            self.logger.info(f'{className=} {methodName=}')
+            noDefaultContexts: List[PythonParser.Param_no_defaultContext]   = ctx.param_no_default()
+            defaultContexts:   List[PythonParser.Param_with_defaultContext] = ctx.param_with_default()
 
-        self.logger.info(f'{className=} {methodName=}')
-        noDefaultContexts: List[PythonParser.Param_no_defaultContext]   = ctx.param_no_default()
-        defaultContexts:   List[PythonParser.Param_with_defaultContext] = ctx.param_with_default()
+            ctx2 = ctx.slash_no_default()
+            ctx3 = ctx.slash_with_default()
 
-        ctx2 = ctx.slash_no_default()
-        ctx3 = ctx.slash_with_default()
-
-        if len(defaultContexts) != 0:
-            self._handleFullParameters(className=className, methodName=methodName, defaultContexts=defaultContexts)
-        elif len(noDefaultContexts) != 0:
-            self._handleTypeAnnotated(className=className, methodName=methodName, noDefaultContexts=noDefaultContexts)
-        elif ctx2 is not None:
-            self.logger.error(f'{ctx2.getText()}')
-            assert False, f'Unhandled {ctx2.getText()}'
-        elif ctx3 is not None:
-            self.logger.error(f'{ctx3.getText()}')
-            assert False, f'Unhandled {ctx3.getText()}'
+            if len(defaultContexts) != 0:
+                self._handleFullParameters(className=className, methodName=methodName, defaultContexts=defaultContexts)
+            elif len(noDefaultContexts) != 0:
+                self._handleTypeAnnotated(className=className, methodName=methodName, noDefaultContexts=noDefaultContexts)
+            elif ctx2 is not None:
+                self.logger.error(f'{ctx2.getText()}')
+                assert False, f'Unhandled {ctx2.getText()}'
+            elif ctx3 is not None:
+                self.logger.error(f'{ctx3.getText()}')
+                assert False, f'Unhandled {ctx3.getText()}'
 
         return self.visitChildren(ctx)
 
@@ -290,21 +308,27 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         return NO_CLASS_NAME
 
-    def _isProperty(self, methodName: MethodName) -> bool:
+    def _isProperty(self, ctx: PythonParser.Function_defContext) -> bool:
         """
         Used by the function definition visitor to determine if the current method name is marked as a property.
 
         Args:
-            methodName:  The method name to check
+            ctx:  The function's raw context
 
-        Returns: True if it is in our known list of property names.
+        Returns: If its annotated as a property.
         """
         ans: bool = False
 
-        # propertyName: PropertyName = PropertyName(methodName)
-        # if propertyName in self._propertyNames:
-        #     ans = True
-
+        decorators: PythonParser.DecoratorsContext = ctx.decorators()
+        if decorators is None:
+            pass
+        else:
+            namedExpressions: List[PythonParser.Named_expressionContext] = decorators.named_expression()
+            for ne in namedExpressions:
+                self.logger.info(f'{ne.getText()=}')
+                if ne.getText() == PROPERTY_DECORATOR:
+                    ans = True
+                    break
         return ans
 
     def _extractClassName(self, ctx: PythonParser.Class_defContext) -> ClassName:
@@ -315,20 +339,20 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         return className
 
+    def _extractPropertyName(self, ctx: PythonParser.Function_def_rawContext) -> PropertyName:
+
+        propertyName: PropertyName = PropertyName(self._extractFunctionNameRawString(ctx=ctx))
+        return propertyName
+
     def _extractMethodName(self, ctx: PythonParser.Function_def_rawContext) -> MethodName:
-        """
 
-        Args:
-            ctx:
-
-        Returns:
-
-        """
-
-        name:       TerminalNodeImpl = ctx.NAME()
-        methodName: MethodName       = MethodName(name.getText())
-
+        methodName: MethodName       = MethodName(self._extractFunctionNameRawString(ctx=ctx))
         return methodName
+
+    def _extractFunctionNameRawString(self, ctx: PythonParser.Function_def_rawContext) -> str:
+
+        name: TerminalNodeImpl = ctx.NAME()
+        return name.getText()
 
     def _extractParameterNameAndType(self, paramCtx: PythonParser.ParamContext) -> ParameterNameAndType:
 
@@ -391,6 +415,60 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         pyutMethod.addParameter(parameter=pyutParameter)
 
+    def _makeAField(self, ctx: PythonParser.Function_defContext):
+        """
+        Turns methods annotated as property into an UML field
+
+        Args:
+            ctx:
+        """
+
+        classCtx:  PythonParser.Class_defContext    = self._findClassContext(ctx)
+        methodCtx: PythonParser.Function_defContext = self._findMethodContext(ctx)
+
+        className:    ClassName    = self._extractClassName(ctx=classCtx)
+        propertyName: PropertyName = self._extractPropertyName(ctx=methodCtx.function_def_raw())
+        self.logger.info(f'{className} property name: {propertyName}')
+        #
+        # it is really a property name
+        #
+        typeStr: str = self._extractReturnType(ctx=ctx)
+
+        pyutField: PyutField = PyutField(name=propertyName, type=PyutType(typeStr), visibility=PyutVisibility.PUBLIC)
+        pyutClass: PyutClass = self._pyutClasses[className]
+        pyutClass.fields.append(pyutField)
+
+    def _makePropertyEntry(self, className: ClassName, methodName: MethodName):
+        """
+        Make an entry into the property map.  This ensures that we do not try to create
+        arguments for an annotated method when we visit the method parameters
+
+        Args:
+            methodName:  A property name which we turn into a field
+
+        """
+        self._propertyMap[className].append(cast(PropertyName, methodName))
+
+    def _isThisAParameterListForAProperty(self, className: ClassName, propertyName: PropertyName):
+        ans: bool = False
+
+        propertyNames: PropertyNames = self._propertyMap[className]
+        if propertyName in propertyNames:
+            ans = True
+
+        return ans
+
+    def _extractReturnType(self, ctx: PythonParser.Function_defContext) -> str:
+
+        exprCtx: PythonParser.ExpressionContext = ctx.function_def_raw().expression()
+
+        if exprCtx is None:
+            returnTypeStr: str = ''
+        else:
+            returnTypeStr = exprCtx.getText()
+
+        return returnTypeStr
+
     def _generateMyCredits(self) -> str:
         """
 
@@ -400,4 +478,16 @@ class PyutPythonPegVisitor(PythonParserVisitor):
                     Version: ${VERSION}
 
         """
-        return ''
+        from datetime import date
+
+        today: date = date.today()
+        formatDated: str = today.strftime('%d %B %Y')
+
+        hasiiCredits: str = (
+            f'Reversed Engineered by the one and only:{osLineSep}'
+            f'Gato Malo - Humberto A. Sanchez II{osLineSep}'
+            f'Generated: {formatDated}{osLineSep}'
+            f'Version: {VERSION}'
+        )
+
+        return hasiiCredits

@@ -19,6 +19,10 @@ class SimpleClass(GraphElement):
         pass
 
     def methodReturningInt(self) -> int:
+        """
+
+        Returns:  A hard code zero
+        """
         return 0
 
     def methodReturningFloat(self) -> float:

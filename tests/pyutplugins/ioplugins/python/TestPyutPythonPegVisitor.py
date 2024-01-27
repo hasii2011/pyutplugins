@@ -103,7 +103,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
         self.assertTrue(expectedParentName1 in visitor.parents, f'Missing parent: {expectedParentName1}')
         self.assertTrue(expectedParentName2 in visitor.parents, f'Missing parent: {expectedParentName2}')
 
-    def testClassmMethods(self):
+    def testClassMethods(self):
 
         visitor: PyutPythonPegVisitor = self._setupSimpleClassVisitor()
 
@@ -151,6 +151,18 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
     def testDunderMethodVisibility(self):
         self._runVisibilityTest('__str__', PyutVisibility.PUBLIC)
+
+    def testClassWithProperties(self):
+
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('ClassWithProperties.py')
+        visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
+
+        visitor.visit(tree)
+
+        className: ClassName = ClassName('ClassWithProperties')
+        pyutClass: PyutClass = visitor.pyutClasses[className]
+
+        self.assertEqual(2, len(pyutClass.fields), 'Not enough properties converted to fields')
 
     def _runVisibilityTest(self, methodName, visibility: PyutVisibility):
 

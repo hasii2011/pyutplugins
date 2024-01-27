@@ -9,7 +9,7 @@
             "format": "%(levelname)s: %(module)s: %(message)s"
         },
         "functionNames": {
-            "format": "%(asctime)s.%(msecs)03d %(levelname)s %(module)s.%(funcName)s() %(message)s",
+            "format": "%(asctime)s %(levelname)s %(module)s.%(funcName)s() %(message)s",
             "datefmt" : "%H:%M:%S"
         },
         "favoriteTime": {
@@ -33,7 +33,7 @@
     "loggers": {
         "root": {
             "level": "WARNING",
-            "handlers": ["consoleHandler"],
+            "handlers": ["consoleHandlerFunctionNames"],
             "propagate": "False"
         },
         "__main__": {
