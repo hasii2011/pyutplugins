@@ -10,6 +10,7 @@ from logging import Logger
 from logging import getLogger
 
 from os import sep as osSep
+from os import linesep as osLineSep
 
 from antlr4 import CommonTokenStream
 from antlr4 import FileStream
@@ -17,8 +18,10 @@ from antlr4 import FileStream
 from antlr4.error.ErrorListener import ErrorListener
 
 from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from ogl.OglClass import OglClass
+from ogl.OglLink import OglLink
 
 from pyutplugins.ExternalTypes import OglClasses
 from pyutplugins.ExternalTypes import OglLinks
@@ -28,6 +31,7 @@ from pyutplugins.common.LinkMakerMixin import LinkMakerMixin
 from pyutplugins.ioplugins.python.PythonParseException import PythonParseException
 
 from pyutplugins.ioplugins.python.PyutPythonPegVisitor import ChildName
+from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Children
 from pyutplugins.ioplugins.python.PyutPythonPegVisitor import ParentName
 from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Parents
 from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutClassName
@@ -50,7 +54,7 @@ class PythonErrorListener(ErrorListener):
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
 
         # print("line " + str(line) + ":" + str(column) + " " + msg, file=sys.stderr)
-        eMsg: str = f'{line=}: {column=} {msg}'
+        eMsg: str = f'{line=}{osLineSep}{column=}{osLineSep}{msg}'
         raise PythonParseException(eMsg)
 
 
@@ -115,7 +119,20 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
         return self._oglLinks
 
     def generateLinks(self, oglClassesDict: OglClassesDict):
-        pass
+        parents: Parents = self._onGoingParents
+
+        for parentName in parents.keys():
+            children: Children = parents[parentName]
+            for childName in children:
+
+                try:
+                    parentOglClass: OglClass = oglClassesDict[parentName]
+                    childOglClass:  OglClass = oglClassesDict[childName]
+                    oglLink: OglLink = self.createLink(src=childOglClass, dst=parentOglClass, linkType=PyutLinkType.INHERITANCE)
+                    self._oglLinks.append(oglLink)
+                except KeyError as ke:        # Probably there is no parent we are tracking
+                    self.logger.warning(f'Apparently we are not tracking this parent:  {ke}')
+                    continue
 
     def _generateOglClasses(self):
 

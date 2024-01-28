@@ -8,10 +8,6 @@ from logging import getLogger
 
 from os import sep as osSep
 
-from pyutmodelv2.PyutClass import PyutClass
-
-from ogl.OglClass import OglClass
-
 from wx import ICON_ERROR
 from wx import OK
 from wx import PD_APP_MODAL
@@ -24,7 +20,12 @@ from wx import ProgressDialog
 
 from wx import Yield as wxYield
 
+from pyutmodelv2.PyutClass import PyutClass
+
+from ogl.OglClass import OglClass
+
 from pyutplugins.IPluginAdapter import IPluginAdapter
+
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
 from pyutplugins.ExternalTypes import OglClasses
@@ -38,6 +39,8 @@ from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
 from pyutplugins.plugintypes.ExportDirectoryResponse import ExportDirectoryResponse
 from pyutplugins.plugintypes.InputFormat import InputFormat
 from pyutplugins.plugintypes.OutputFormat import OutputFormat
+
+from pyutplugins.ioplugins.python.PythonParseException import PythonParseException
 
 from pyutplugins.ioplugins.python.PyutToPython import MethodsCodeType
 from pyutplugins.ioplugins.python.PyutToPython import PyutToPython
@@ -130,16 +133,18 @@ class IOPython(IOPluginInterface):
             reverseEngineer.generateLinks(oglClassesDict)
             self._layoutUmlClasses(oglClasses=OglClasses(list(oglClassesDict.values())))
             self._layoutLinks(oglLinks=reverseEngineer.oglLinks)
-        except (ValueError, Exception) as e:
+        except (ValueError, Exception, PythonParseException) as e:
             self._readProgressDlg.Destroy()
             MessageBox(f'{e}', 'Error', OK | ICON_ERROR)
             status = False
         else:
             self._readProgressDlg.Destroy()
+            self._pluginAdapter.indicatePluginModifiedProject()
+        finally:
             EndBusyCursor()
             self._pluginAdapter.refreshFrame()
             wxYield()
-            self._pluginAdapter.indicatePluginModifiedProject()
+
         return status
 
     def write(self, oglObjects: OglObjects):
