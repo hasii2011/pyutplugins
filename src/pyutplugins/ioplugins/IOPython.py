@@ -42,8 +42,9 @@ from pyutplugins.plugintypes.OutputFormat import OutputFormat
 from pyutplugins.ioplugins.python.PyutToPython import MethodsCodeType
 from pyutplugins.ioplugins.python.PyutToPython import PyutToPython
 
-from pyutplugins.ioplugins.python.ReverseEngineerPython2 import ReverseEngineerPython2
-from pyutplugins.ioplugins.python.ReverseEngineerPython2 import OglClassesDict
+from pyutplugins.ioplugins.python.ReverseEngineerPythonV3 import ReverseEngineerPythonV3
+from pyutplugins.ioplugins.python.ReverseEngineerPythonV3 import OglClassesDict
+
 from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import DlgSelectMultiplePackages
 from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import ImportPackages
 from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import Package
@@ -56,7 +57,7 @@ PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Python code generatio
 
 class IOPython(IOPluginInterface):
 
-    PLUGIN_VERSION: str = '1.1'
+    PLUGIN_VERSION: str = '2.0'
 
     def __init__(self, pluginAdapter: IPluginAdapter):
 
@@ -114,8 +115,8 @@ class IOPython(IOPluginInterface):
         status: bool = True
         try:
             self._readProgressDlg = ProgressDialog('Parsing Files', 'Starting', parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
-            oglClassesDict:  OglClassesDict         = OglClassesDict({})
-            reverseEngineer: ReverseEngineerPython2 = ReverseEngineerPython2()
+            oglClassesDict:  OglClassesDict          = OglClassesDict({})
+            reverseEngineer: ReverseEngineerPythonV3 = ReverseEngineerPythonV3()
 
             self._readProgressDlg.SetRange(self._moduleCount)
 
@@ -126,7 +127,7 @@ class IOPython(IOPluginInterface):
                 oglClassesDict.update(reverseEngineer.oglClasses)
                 self.logger.warning(f'Classes: {oglClassesDict}')
 
-            reverseEngineer.generateInheritanceLinks(oglClassesDict)
+            reverseEngineer.generateLinks(oglClassesDict)
             self._layoutUmlClasses(oglClasses=OglClasses(list(oglClassesDict.values())))
             self._layoutLinks(oglLinks=reverseEngineer.oglLinks)
         except (ValueError, Exception) as e:

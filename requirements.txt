@@ -7,7 +7,7 @@ html-testRunner~=1.2.1
 mypy==1.8.0
 mypy-extensions==1.0.0
 types-Deprecated==1.2.9.20240106
-types-setuptools==69.0.0.20240115
+types-setuptools==69.0.0.20240125
 typing_extensions==4.9.0
 
 # For IOPython
@@ -22,7 +22,7 @@ codeallybasic==1.1.0
 codeallyadvanced==1.1.0
 
 pyutmodelv2==2.1.0
-ogl==2.1.5
+ogl==2.1.16
 untanglepyut==2.1.5
 oglio==2.1.5
 

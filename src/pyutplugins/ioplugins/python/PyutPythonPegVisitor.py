@@ -27,16 +27,16 @@ from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonPars
 
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParserVisitor import PythonParserVisitor
 
-ClassName    = NewType('ClassName',  str)
-MethodName   = NewType('MethodName', str)
-PropertyName = NewType('PropertyName', str)
-ParentName   = NewType('ParentName', str)
-ChildName    = NewType('ChildName',  str)
+PyutClassName = NewType('PyutClassName', str)
+MethodName    = NewType('MethodName', str)
+PropertyName  = NewType('PropertyName', str)
+ParentName    = NewType('ParentName', str)
+ChildName     = NewType('ChildName',  str)
 
-ClassNames    = NewType('ClassNames',    List[ClassName])
+ClassNames    = NewType('ClassNames', List[PyutClassName])
 MethodNames   = NewType('MethodNames',   List[MethodName])
 
-Children   = List[Union[ClassName, ChildName]]
+Children   = List[Union[PyutClassName, ChildName]]
 
 Parents       = NewType('Parents',       Dict[ParentName, Children])
 Methods       = NewType('Methods',       List[MethodNames])
@@ -46,14 +46,14 @@ CodeLine      = NewType('CodeLine',      str)
 CodeLines     = NewType('CodeLines',     List[CodeLine])
 MethodCode    = NewType('MethodCode',    Dict[MethodName,   CodeLines])
 
-PropertyMap   = NewType('PropertyMap', Dict[ClassName, PropertyNames])
+PropertyMap   = NewType('PropertyMap', Dict[PyutClassName, PropertyNames])
 
-NO_CLASS_NAME: ClassName = ClassName('')
+NO_CLASS_NAME: PyutClassName = PyutClassName('')
 
 NO_METHOD_CTX: PythonParser.AssignmentContext = cast(PythonParser.AssignmentContext, None)
 
 
-PyutClasses = NewType('PyutClasses', Dict[ClassName, PyutClass])
+PyutClasses = NewType('PyutClasses', Dict[PyutClassName, PyutClass])
 
 # noinspection SpellCheckingInspection
 MAGIC_DUNDER_METHODS:      List[str] = ['__init__', '__str__', '__repr__', '__new__', '__del__',
@@ -100,6 +100,10 @@ class PyutPythonPegVisitor(PythonParserVisitor):
     def parents(self) -> Parents:
         return self._parents
 
+    @parents.setter
+    def parents(self, newValue: Parents):
+        self._parents = newValue
+
     def visitClass_def(self, ctx: PythonParser.Class_defContext):
         """
         Visit a parse tree produced by PythonParser#class_def.
@@ -108,7 +112,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
             ctx:
 
         """
-        className: ClassName = self._extractClassName(ctx=ctx)
+        className: PyutClassName = self._extractClassName(ctx=ctx)
 
         # self._classNames.append(className)
         self.logger.debug(f'visitClassdef: Visited class: {className}')
@@ -135,7 +139,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         Args:
             ctx:
         """
-        className: ClassName = self._checkIfMethodBelongsToClass(ctx, PythonParser.Class_defContext)
+        className: PyutClassName = self._checkIfMethodBelongsToClass(ctx, PythonParser.Class_defContext)
         if className != NO_CLASS_NAME:
 
             methodName:    MethodName = self._extractMethodName(ctx=ctx.function_def_raw())
@@ -182,7 +186,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         classCtx:  PythonParser.Class_defContext    = self._findClassContext(ctx)
         methodCtx: PythonParser.Function_defContext = self._findMethodContext(ctx)
 
-        className:    ClassName    = self._extractClassName(ctx=classCtx)
+        className:    PyutClassName    = self._extractClassName(ctx=classCtx)
         propertyName: PropertyName = self._extractPropertyName(ctx=methodCtx.function_def_raw())
         if self._isThisAParameterListForAProperty(className=className, propertyName=propertyName) is True:
             pass
@@ -208,7 +212,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         return self.visitChildren(ctx)
 
-    def _handleFullParameters(self, className: ClassName, methodName: MethodName, defaultContexts: List[PythonParser.Param_with_defaultContext]):
+    def _handleFullParameters(self, className: PyutClassName, methodName: MethodName, defaultContexts: List[PythonParser.Param_with_defaultContext]):
         """
         Handles these type:
             fullScale(self, intParameter: int = 0, floatParameter: float = 42.0, stringParameter: str = ''):
@@ -224,7 +228,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
             pyutParameter: PyutParameter = PyutParameter(name=nameAndType.name, type=PyutType(nameAndType.typeName), defaultValue=expr)
             self._updateModelMethodParameter(className=className, methodName=methodName, pyutParameter=pyutParameter)
 
-    def _handleTypeAnnotated(self, className: ClassName, methodName: MethodName, noDefaultContexts: List[PythonParser.Param_no_defaultContext]):
+    def _handleTypeAnnotated(self, className: PyutClassName, methodName: MethodName, noDefaultContexts: List[PythonParser.Param_no_defaultContext]):
 
         for noDefaultCtx in noDefaultContexts:
             paramCtx:    PythonParser.ParamContext = noDefaultCtx.param()
@@ -249,7 +253,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         return argumentsCtx
 
-    def _createParentChildEntry(self, argumentsCtx: PythonParser.ArgumentsContext, childName: Union[ClassName, ChildName]):
+    def _createParentChildEntry(self, argumentsCtx: PythonParser.ArgumentsContext, childName: Union[PyutClassName, ChildName]):
 
         args:       PythonParser.ArgsContext = argumentsCtx.args()
         parentName: ParentName               = ParentName(args.getText())
@@ -261,7 +265,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         else:
             self._updateParentsDictionary(parentName=parentName, childName=childName)
 
-    def _handleMultiParentChild(self, multiParents: List[str], childName: Union[ClassName, ChildName]):
+    def _handleMultiParentChild(self, multiParents: List[str], childName: Union[PyutClassName, ChildName]):
         """
 
         Args:
@@ -280,7 +284,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
                 parentName = ParentName(parent)
                 self._updateParentsDictionary(parentName=parentName, childName=childName)
 
-    def _updateParentsDictionary(self, parentName: ParentName, childName: Union[ClassName, ChildName]):
+    def _updateParentsDictionary(self, parentName: ParentName, childName: Union[PyutClassName, ChildName]):
         """
         Update our dictionary of parents. If the parent dictionary
         does not have an entry, create one with the single child.
@@ -299,7 +303,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         self._parents[parentName] = children
 
-    def _checkIfMethodBelongsToClass(self, node: PythonParser.Function_defContext, classType) -> ClassName:
+    def _checkIfMethodBelongsToClass(self, node: PythonParser.Function_defContext, classType) -> PyutClassName:
 
         while node.parentCtx:
             if isinstance(node, classType):
@@ -331,11 +335,11 @@ class PyutPythonPegVisitor(PythonParserVisitor):
                     break
         return ans
 
-    def _extractClassName(self, ctx: PythonParser.Class_defContext) -> ClassName:
+    def _extractClassName(self, ctx: PythonParser.Class_defContext) -> PyutClassName:
 
         child:     PythonParser.Class_def_rawContext = ctx.class_def_raw()
         name:      TerminalNodeImpl                  = child.NAME()
-        className: ClassName                         = name.getText()
+        className: PyutClassName                         = name.getText()
 
         return className
 
@@ -406,7 +410,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         return foundMethod
 
-    def _updateModelMethodParameter(self, className: ClassName, methodName: MethodName, pyutParameter: PyutParameter):
+    def _updateModelMethodParameter(self, className: PyutClassName, methodName: MethodName, pyutParameter: PyutParameter):
 
         self.logger.info(f'{pyutParameter=}')
 
@@ -426,7 +430,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         classCtx:  PythonParser.Class_defContext    = self._findClassContext(ctx)
         methodCtx: PythonParser.Function_defContext = self._findMethodContext(ctx)
 
-        className:    ClassName    = self._extractClassName(ctx=classCtx)
+        className:    PyutClassName    = self._extractClassName(ctx=classCtx)
         propertyName: PropertyName = self._extractPropertyName(ctx=methodCtx.function_def_raw())
         self.logger.info(f'{className} property name: {propertyName}')
         #
@@ -438,7 +442,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         pyutClass: PyutClass = self._pyutClasses[className]
         pyutClass.fields.append(pyutField)
 
-    def _makePropertyEntry(self, className: ClassName, methodName: MethodName):
+    def _makePropertyEntry(self, className: PyutClassName, methodName: MethodName):
         """
         Make an entry into the property map.  This ensures that we do not try to create
         arguments for an annotated method when we visit the method parameters
@@ -449,7 +453,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         """
         self._propertyMap[className].append(cast(PropertyName, methodName))
 
-    def _isThisAParameterListForAProperty(self, className: ClassName, propertyName: PropertyName):
+    def _isThisAParameterListForAProperty(self, className: PyutClassName, propertyName: PropertyName):
         ans: bool = False
 
         propertyNames: PropertyNames = self._propertyMap[className]

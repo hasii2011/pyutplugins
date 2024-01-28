@@ -22,7 +22,7 @@ from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonPars
 
 from pyutplugins.ioplugins.python.PyutPythonPegVisitor import ParentName
 from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutPythonPegVisitor
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import ClassName
+from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutClassName
 from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutClasses
 
 from tests.ProjectTestBase import TestBase
@@ -107,7 +107,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
         visitor: PyutPythonPegVisitor = self._setupSimpleClassVisitor()
 
-        className:   ClassName = ClassName('SimpleClass')
+        className:   PyutClassName = PyutClassName('SimpleClass')
         pyutClasses: PyutClasses = visitor.pyutClasses
 
         pyutClass:   PyutClass   = pyutClasses[className]
@@ -125,7 +125,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
         visitor: PyutPythonPegVisitor = self._setupSimpleClassVisitor()
 
-        className:   ClassName = ClassName('SimpleClass')
+        className:   PyutClassName = PyutClassName('SimpleClass')
         pyutClasses: PyutClasses = visitor.pyutClasses
 
         classNames = pyutClasses.keys()
@@ -135,7 +135,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
         visitor: PyutPythonPegVisitor = self._setupSimpleClassVisitor()
 
-        className:   ClassName = ClassName('SimpleClass')
+        className:   PyutClassName = PyutClassName('SimpleClass')
         pyutClasses: PyutClasses = visitor.pyutClasses
 
         pyutClass:   PyutClass   = pyutClasses[className]
@@ -159,7 +159,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
         visitor.visit(tree)
 
-        className: ClassName = ClassName('ClassWithProperties')
+        className: PyutClassName = PyutClassName('ClassWithProperties')
         pyutClass: PyutClass = visitor.pyutClasses[className]
 
         self.assertEqual(2, len(pyutClass.fields), 'Not enough properties converted to fields')
@@ -168,7 +168,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
         visitor: PyutPythonPegVisitor = self._setupSimpleClassVisitor()
 
-        className:   ClassName  = ClassName('SimpleClass')
+        className:   PyutClassName  = PyutClassName('SimpleClass')
         pyutClasses: PyutClasses = visitor.pyutClasses
 
         pyutClass:   PyutClass   = pyutClasses[className]
@@ -195,7 +195,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
     #
     #     parsedClasses: ParsedClasses = visitor.parsedClasses
     #
-    #     className: ClassName = ClassName('Vertex')
+    #     className: PyutClassName = PyutClassName('Vertex')
     #     self.assertIn('Vertex', parsedClasses, 'Yikes missed the entire class')
     #
     #     parsedClass: ParsedClass = parsedClasses[className]
