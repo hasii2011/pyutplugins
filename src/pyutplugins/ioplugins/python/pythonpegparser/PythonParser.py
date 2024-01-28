@@ -4,9 +4,9 @@ from antlr4 import *
 from io import StringIO
 import sys
 if sys.version_info[1] > 5:
-	from typing import TextIO
+    from typing import TextIO
 else:
-	from typing.io import TextIO
+    from typing import TextIO
 
 if "." in __name__:
     from .PythonParserBase import PythonParserBase
@@ -923,41 +923,41 @@ class PythonParser ( PythonParserBase ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "<INVALID>", "'False'", "'await'", "'else'", 
-                     "'import'", "'pass'", "'None'", "'break'", "'except'", 
-                     "'in'", "'raise'", "'True'", "'class'", "'finally'", 
-                     "'is'", "'return'", "'and'", "'continue'", "'for'", 
-                     "'lambda'", "'try'", "'as'", "'def'", "'from'", "'nonlocal'", 
-                     "'while'", "'assert'", "'del'", "'global'", "'not'", 
-                     "'with'", "'async'", "'elif'", "'if'", "'or'", "'yield'", 
-                     "'('", "'['", "<INVALID>", "')'", "']'", "<INVALID>", 
-                     "'.'", "':'", "','", "';'", "'+'", "'-'", "'*'", "'/'", 
-                     "'|'", "'&'", "'<'", "'>'", "'='", "'%'", "'=='", "'!='", 
-                     "'<='", "'>='", "'~'", "'^'", "'<<'", "'>>'", "'**'", 
-                     "'+='", "'-='", "'*='", "'/='", "'%='", "'&='", "'|='", 
-                     "'^='", "'<<='", "'>>='", "'**='", "'//'", "'//='", 
+    literalNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>",
+                     "<INVALID>", "<INVALID>", "'False'", "'await'", "'else'",
+                     "'import'", "'pass'", "'None'", "'break'", "'except'",
+                     "'in'", "'raise'", "'True'", "'class'", "'finally'",
+                     "'is'", "'return'", "'and'", "'continue'", "'for'",
+                     "'lambda'", "'try'", "'as'", "'def'", "'from'", "'nonlocal'",
+                     "'while'", "'assert'", "'del'", "'global'", "'not'",
+                     "'with'", "'async'", "'elif'", "'if'", "'or'", "'yield'",
+                     "'('", "'['", "<INVALID>", "')'", "']'", "<INVALID>",
+                     "'.'", "':'", "','", "';'", "'+'", "'-'", "'*'", "'/'",
+                     "'|'", "'&'", "'<'", "'>'", "'='", "'%'", "'=='", "'!='",
+                     "'<='", "'>='", "'~'", "'^'", "'<<'", "'>>'", "'**'",
+                     "'+='", "'-='", "'*='", "'/='", "'%='", "'&='", "'|='",
+                     "'^='", "'<<='", "'>>='", "'**='", "'//'", "'//='",
                      "'@'", "'@='", "'->'", "'...'", "':='", "'!'" ]
 
-    symbolicNames = [ "<INVALID>", "INDENT", "DEDENT", "FSTRING_START", 
-                      "FSTRING_MIDDLE", "FSTRING_END", "FALSE", "AWAIT", 
-                      "ELSE", "IMPORT", "PASS", "NONE", "BREAK", "EXCEPT", 
-                      "IN", "RAISE", "TRUE", "CLASS", "FINALLY", "IS", "RETURN", 
-                      "AND", "CONTINUE", "FOR", "LAMBDA", "TRY", "AS", "DEF", 
-                      "FROM", "NONLOCAL", "WHILE", "ASSERT", "DEL", "GLOBAL", 
-                      "NOT", "WITH", "ASYNC", "ELIF", "IF", "OR", "YIELD", 
-                      "LPAR", "LSQB", "LBRACE", "RPAR", "RSQB", "RBRACE", 
-                      "DOT", "COLON", "COMMA", "SEMI", "PLUS", "MINUS", 
-                      "STAR", "SLASH", "VBAR", "AMPER", "LESS", "GREATER", 
-                      "EQUAL", "PERCENT", "EQEQUAL", "NOTEQUAL", "LESSEQUAL", 
-                      "GREATEREQUAL", "TILDE", "CIRCUMFLEX", "LEFTSHIFT", 
-                      "RIGHTSHIFT", "DOUBLESTAR", "PLUSEQUAL", "MINEQUAL", 
-                      "STAREQUAL", "SLASHEQUAL", "PERCENTEQUAL", "AMPEREQUAL", 
-                      "VBAREQUAL", "CIRCUMFLEXEQUAL", "LEFTSHIFTEQUAL", 
-                      "RIGHTSHIFTEQUAL", "DOUBLESTAREQUAL", "DOUBLESLASH", 
-                      "DOUBLESLASHEQUAL", "AT", "ATEQUAL", "RARROW", "ELLIPSIS", 
-                      "COLONEQUAL", "EXCLAMATION", "NAME", "NUMBER", "STRING", 
-                      "TYPE_COMMENT", "NEWLINE", "COMMENT", "WS", "EXPLICIT_LINE_JOINING", 
+    symbolicNames = [ "<INVALID>", "INDENT", "DEDENT", "FSTRING_START",
+                      "FSTRING_MIDDLE", "FSTRING_END", "FALSE", "AWAIT",
+                      "ELSE", "IMPORT", "PASS", "NONE", "BREAK", "EXCEPT",
+                      "IN", "RAISE", "TRUE", "CLASS", "FINALLY", "IS", "RETURN",
+                      "AND", "CONTINUE", "FOR", "LAMBDA", "TRY", "AS", "DEF",
+                      "FROM", "NONLOCAL", "WHILE", "ASSERT", "DEL", "GLOBAL",
+                      "NOT", "WITH", "ASYNC", "ELIF", "IF", "OR", "YIELD",
+                      "LPAR", "LSQB", "LBRACE", "RPAR", "RSQB", "RBRACE",
+                      "DOT", "COLON", "COMMA", "SEMI", "PLUS", "MINUS",
+                      "STAR", "SLASH", "VBAR", "AMPER", "LESS", "GREATER",
+                      "EQUAL", "PERCENT", "EQEQUAL", "NOTEQUAL", "LESSEQUAL",
+                      "GREATEREQUAL", "TILDE", "CIRCUMFLEX", "LEFTSHIFT",
+                      "RIGHTSHIFT", "DOUBLESTAR", "PLUSEQUAL", "MINEQUAL",
+                      "STAREQUAL", "SLASHEQUAL", "PERCENTEQUAL", "AMPEREQUAL",
+                      "VBAREQUAL", "CIRCUMFLEXEQUAL", "LEFTSHIFTEQUAL",
+                      "RIGHTSHIFTEQUAL", "DOUBLESTAREQUAL", "DOUBLESLASH",
+                      "DOUBLESLASHEQUAL", "AT", "ATEQUAL", "RARROW", "ELLIPSIS",
+                      "COLONEQUAL", "EXCLAMATION", "NAME", "NUMBER", "STRING",
+                      "TYPE_COMMENT", "NEWLINE", "COMMENT", "WS", "EXPLICIT_LINE_JOINING",
                       "ERROR_TOKEN" ]
 
     RULE_file_input = 0
@@ -1159,60 +1159,60 @@ class PythonParser ( PythonParserBase ):
     RULE_soft_kw_wildcard = 196
     RULE_soft_kw__not__wildcard = 197
 
-    ruleNames =  [ "file_input", "interactive", "eval", "func_type", "fstring_input", 
-                   "statements", "statement", "statement_newline", "simple_stmts", 
-                   "simple_stmt", "compound_stmt", "assignment", "annotated_rhs", 
-                   "augassign", "return_stmt", "raise_stmt", "global_stmt", 
-                   "nonlocal_stmt", "del_stmt", "yield_stmt", "assert_stmt", 
-                   "import_stmt", "import_name", "import_from", "import_from_targets", 
-                   "import_from_as_names", "import_from_as_name", "dotted_as_names", 
-                   "dotted_as_name", "dotted_name", "block", "decorators", 
-                   "class_def", "class_def_raw", "function_def", "function_def_raw", 
-                   "params", "parameters", "slash_no_default", "slash_with_default", 
-                   "star_etc", "kwds", "param_no_default", "param_no_default_star_annotation", 
-                   "param_with_default", "param_maybe_default", "param", 
-                   "param_star_annotation", "annotation", "star_annotation", 
-                   "default_assignment", "if_stmt", "elif_stmt", "else_block", 
-                   "while_stmt", "for_stmt", "with_stmt", "with_item", "try_stmt", 
-                   "except_block", "except_star_block", "finally_block", 
-                   "match_stmt", "subject_expr", "case_block", "guard", 
-                   "patterns", "pattern", "as_pattern", "or_pattern", "closed_pattern", 
-                   "literal_pattern", "literal_expr", "complex_number", 
-                   "signed_number", "signed_real_number", "real_number", 
-                   "imaginary_number", "capture_pattern", "pattern_capture_target", 
-                   "wildcard_pattern", "value_pattern", "attr", "name_or_attr", 
-                   "group_pattern", "sequence_pattern", "open_sequence_pattern", 
-                   "maybe_sequence_pattern", "maybe_star_pattern", "star_pattern", 
-                   "mapping_pattern", "items_pattern", "key_value_pattern", 
-                   "double_star_pattern", "class_pattern", "positional_patterns", 
-                   "keyword_patterns", "keyword_pattern", "type_alias", 
-                   "type_params", "type_param_seq", "type_param", "type_param_bound", 
-                   "expressions", "expression", "yield_expr", "star_expressions", 
-                   "star_expression", "star_named_expressions", "star_named_expression", 
-                   "assignment_expression", "named_expression", "disjunction", 
-                   "conjunction", "inversion", "comparison", "compare_op_bitwise_or_pair", 
-                   "eq_bitwise_or", "noteq_bitwise_or", "lte_bitwise_or", 
-                   "lt_bitwise_or", "gte_bitwise_or", "gt_bitwise_or", "notin_bitwise_or", 
-                   "in_bitwise_or", "isnot_bitwise_or", "is_bitwise_or", 
-                   "bitwise_or", "bitwise_xor", "bitwise_and", "shift_expr", 
-                   "sum", "term", "factor", "power", "await_primary", "primary", 
-                   "slices", "slice", "atom", "group", "lambdef", "lambda_params", 
-                   "lambda_parameters", "lambda_slash_no_default", "lambda_slash_with_default", 
-                   "lambda_star_etc", "lambda_kwds", "lambda_param_no_default", 
-                   "lambda_param_with_default", "lambda_param_maybe_default", 
-                   "lambda_param", "fstring_middle", "fstring_replacement_field", 
-                   "fstring_conversion", "fstring_full_format_spec", "fstring_format_spec", 
-                   "fstring", "string", "strings", "list", "tuple", "set", 
-                   "dict", "double_starred_kvpairs", "double_starred_kvpair", 
-                   "kvpair", "for_if_clauses", "for_if_clause", "listcomp", 
-                   "setcomp", "genexp", "dictcomp", "arguments", "args", 
-                   "kwargs", "starred_expression", "kwarg_or_starred", "kwarg_or_double_starred", 
-                   "star_targets", "star_targets_list_seq", "star_targets_tuple_seq", 
-                   "star_target", "target_with_star_atom", "star_atom", 
-                   "single_target", "single_subscript_attribute_target", 
-                   "t_primary", "del_targets", "del_target", "del_t_atom", 
-                   "type_expressions", "func_type_comment", "soft_kw_type", 
-                   "soft_kw_match", "soft_kw_case", "soft_kw_wildcard", 
+    ruleNames =  [ "file_input", "interactive", "eval", "func_type", "fstring_input",
+                   "statements", "statement", "statement_newline", "simple_stmts",
+                   "simple_stmt", "compound_stmt", "assignment", "annotated_rhs",
+                   "augassign", "return_stmt", "raise_stmt", "global_stmt",
+                   "nonlocal_stmt", "del_stmt", "yield_stmt", "assert_stmt",
+                   "import_stmt", "import_name", "import_from", "import_from_targets",
+                   "import_from_as_names", "import_from_as_name", "dotted_as_names",
+                   "dotted_as_name", "dotted_name", "block", "decorators",
+                   "class_def", "class_def_raw", "function_def", "function_def_raw",
+                   "params", "parameters", "slash_no_default", "slash_with_default",
+                   "star_etc", "kwds", "param_no_default", "param_no_default_star_annotation",
+                   "param_with_default", "param_maybe_default", "param",
+                   "param_star_annotation", "annotation", "star_annotation",
+                   "default_assignment", "if_stmt", "elif_stmt", "else_block",
+                   "while_stmt", "for_stmt", "with_stmt", "with_item", "try_stmt",
+                   "except_block", "except_star_block", "finally_block",
+                   "match_stmt", "subject_expr", "case_block", "guard",
+                   "patterns", "pattern", "as_pattern", "or_pattern", "closed_pattern",
+                   "literal_pattern", "literal_expr", "complex_number",
+                   "signed_number", "signed_real_number", "real_number",
+                   "imaginary_number", "capture_pattern", "pattern_capture_target",
+                   "wildcard_pattern", "value_pattern", "attr", "name_or_attr",
+                   "group_pattern", "sequence_pattern", "open_sequence_pattern",
+                   "maybe_sequence_pattern", "maybe_star_pattern", "star_pattern",
+                   "mapping_pattern", "items_pattern", "key_value_pattern",
+                   "double_star_pattern", "class_pattern", "positional_patterns",
+                   "keyword_patterns", "keyword_pattern", "type_alias",
+                   "type_params", "type_param_seq", "type_param", "type_param_bound",
+                   "expressions", "expression", "yield_expr", "star_expressions",
+                   "star_expression", "star_named_expressions", "star_named_expression",
+                   "assignment_expression", "named_expression", "disjunction",
+                   "conjunction", "inversion", "comparison", "compare_op_bitwise_or_pair",
+                   "eq_bitwise_or", "noteq_bitwise_or", "lte_bitwise_or",
+                   "lt_bitwise_or", "gte_bitwise_or", "gt_bitwise_or", "notin_bitwise_or",
+                   "in_bitwise_or", "isnot_bitwise_or", "is_bitwise_or",
+                   "bitwise_or", "bitwise_xor", "bitwise_and", "shift_expr",
+                   "sum", "term", "factor", "power", "await_primary", "primary",
+                   "slices", "slice", "atom", "group", "lambdef", "lambda_params",
+                   "lambda_parameters", "lambda_slash_no_default", "lambda_slash_with_default",
+                   "lambda_star_etc", "lambda_kwds", "lambda_param_no_default",
+                   "lambda_param_with_default", "lambda_param_maybe_default",
+                   "lambda_param", "fstring_middle", "fstring_replacement_field",
+                   "fstring_conversion", "fstring_full_format_spec", "fstring_format_spec",
+                   "fstring", "string", "strings", "list", "tuple", "set",
+                   "dict", "double_starred_kvpairs", "double_starred_kvpair",
+                   "kvpair", "for_if_clauses", "for_if_clause", "listcomp",
+                   "setcomp", "genexp", "dictcomp", "arguments", "args",
+                   "kwargs", "starred_expression", "kwarg_or_starred", "kwarg_or_double_starred",
+                   "star_targets", "star_targets_list_seq", "star_targets_tuple_seq",
+                   "star_target", "target_with_star_atom", "star_atom",
+                   "single_target", "single_subscript_attribute_target",
+                   "t_primary", "del_targets", "del_target", "del_t_atom",
+                   "type_expressions", "func_type_comment", "soft_kw_type",
+                   "soft_kw_match", "soft_kw_case", "soft_kw_wildcard",
                    "soft_kw__not__wildcard" ]
 
     EOF = Token.EOF
@@ -1637,7 +1637,7 @@ class PythonParser ( PythonParserBase ):
         self.enterRule(localctx, 10, self.RULE_statements)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 430 
+            self.state = 430
             self._errHandler.sync(self)
             _alt = 1
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -1647,7 +1647,7 @@ class PythonParser ( PythonParserBase ):
 
                 else:
                     raise NoViableAltException(self)
-                self.state = 432 
+                self.state = 432
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,4,self._ctx)
 
@@ -1846,7 +1846,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 447
                     self.match(PythonParser.SEMI)
                     self.state = 448
-                    self.simple_stmt() 
+                    self.simple_stmt()
                 self.state = 453
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,7,self._ctx)
@@ -2303,7 +2303,7 @@ class PythonParser ( PythonParserBase ):
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 508 
+                self.state = 508
                 self._errHandler.sync(self)
                 _alt = 1
                 while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -2315,7 +2315,7 @@ class PythonParser ( PythonParserBase ):
 
                     else:
                         raise NoViableAltException(self)
-                    self.state = 510 
+                    self.state = 510
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,14,self._ctx)
 
@@ -3099,7 +3099,7 @@ class PythonParser ( PythonParserBase ):
                 self.enterOuterAlt(localctx, 2)
                 self.state = 592
                 self.match(PythonParser.FROM)
-                self.state = 594 
+                self.state = 594
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
@@ -3110,7 +3110,7 @@ class PythonParser ( PythonParserBase ):
                     else:
                         self._errHandler.reportMatch(self)
                         self.consume()
-                    self.state = 596 
+                    self.state = 596
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==47 or _la==86):
@@ -3263,7 +3263,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 614
                     self.match(PythonParser.COMMA)
                     self.state = 615
-                    self.import_from_as_name() 
+                    self.import_from_as_name()
                 self.state = 620
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,32,self._ctx)
@@ -3509,7 +3509,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 643
                     self.match(PythonParser.DOT)
                     self.state = 644
-                    self.match(PythonParser.NAME) 
+                    self.match(PythonParser.NAME)
                 self.state = 649
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,36,self._ctx)
@@ -3640,7 +3640,7 @@ class PythonParser ( PythonParserBase ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 662 
+            self.state = 662
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
@@ -3650,7 +3650,7 @@ class PythonParser ( PythonParserBase ):
                 self.named_expression()
                 self.state = 660
                 self.match(PythonParser.NEWLINE)
-                self.state = 664 
+                self.state = 664
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not (_la==83):
@@ -4164,7 +4164,7 @@ class PythonParser ( PythonParserBase ):
                 while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                     if _alt==1:
                         self.state = 737
-                        self.param_no_default() 
+                        self.param_no_default()
                     self.state = 742
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,53,self._ctx)
@@ -4215,7 +4215,7 @@ class PythonParser ( PythonParserBase ):
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 763 
+                self.state = 763
                 self._errHandler.sync(self)
                 _alt = 1
                 while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -4225,7 +4225,7 @@ class PythonParser ( PythonParserBase ):
 
                     else:
                         raise NoViableAltException(self)
-                    self.state = 765 
+                    self.state = 765
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,58,self._ctx)
 
@@ -4251,13 +4251,13 @@ class PythonParser ( PythonParserBase ):
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 777 
+                self.state = 777
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
                     self.state = 776
                     self.param_with_default()
-                    self.state = 779 
+                    self.state = 779
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==89):
@@ -4328,13 +4328,13 @@ class PythonParser ( PythonParserBase ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 788 
+            self.state = 788
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
                 self.state = 787
                 self.param_no_default()
-                self.state = 790 
+                self.state = 790
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not (_la==89):
@@ -4411,18 +4411,18 @@ class PythonParser ( PythonParserBase ):
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt==1:
                     self.state = 796
-                    self.param_no_default() 
+                    self.param_no_default()
                 self.state = 801
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,66,self._ctx)
 
-            self.state = 803 
+            self.state = 803
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
                 self.state = 802
                 self.param_with_default()
-                self.state = 805 
+                self.state = 805
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not (_la==89):
@@ -4558,13 +4558,13 @@ class PythonParser ( PythonParserBase ):
                 self.match(PythonParser.STAR)
                 self.state = 834
                 self.match(PythonParser.COMMA)
-                self.state = 836 
+                self.state = 836
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
                     self.state = 835
                     self.param_maybe_default()
-                    self.state = 838 
+                    self.state = 838
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==89):
@@ -5618,7 +5618,7 @@ class PythonParser ( PythonParserBase ):
                         self.state = 949
                         self.match(PythonParser.COMMA)
                         self.state = 950
-                        self.with_item() 
+                        self.with_item()
                     self.state = 955
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,95,self._ctx)
@@ -5813,7 +5813,7 @@ class PythonParser ( PythonParserBase ):
                 self.match(PythonParser.COLON)
                 self.state = 990
                 self.block()
-                self.state = 992 
+                self.state = 992
                 self._errHandler.sync(self)
                 _alt = 1
                 while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -5823,7 +5823,7 @@ class PythonParser ( PythonParserBase ):
 
                     else:
                         raise NoViableAltException(self)
-                    self.state = 994 
+                    self.state = 994
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,101,self._ctx)
 
@@ -5853,7 +5853,7 @@ class PythonParser ( PythonParserBase ):
                 self.match(PythonParser.COLON)
                 self.state = 1004
                 self.block()
-                self.state = 1006 
+                self.state = 1006
                 self._errHandler.sync(self)
                 _alt = 1
                 while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -5863,7 +5863,7 @@ class PythonParser ( PythonParserBase ):
 
                     else:
                         raise NoViableAltException(self)
-                    self.state = 1008 
+                    self.state = 1008
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,104,self._ctx)
 
@@ -6164,7 +6164,7 @@ class PythonParser ( PythonParserBase ):
             self.match(PythonParser.NEWLINE)
             self.state = 1047
             self.match(PythonParser.INDENT)
-            self.state = 1049 
+            self.state = 1049
             self._errHandler.sync(self)
             _alt = 1
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -6174,7 +6174,7 @@ class PythonParser ( PythonParserBase ):
 
                 else:
                     raise NoViableAltException(self)
-                self.state = 1051 
+                self.state = 1051
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,111,self._ctx)
 
@@ -7352,7 +7352,7 @@ class PythonParser ( PythonParserBase ):
             self.enterOuterAlt(localctx, 1)
             self.state = 1146
             self.match(PythonParser.NAME)
-            self.state = 1149 
+            self.state = 1149
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
@@ -7360,7 +7360,7 @@ class PythonParser ( PythonParserBase ):
                 self.match(PythonParser.DOT)
                 self.state = 1148
                 self.match(PythonParser.NAME)
-                self.state = 1151 
+                self.state = 1151
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not (_la==47):
@@ -7681,7 +7681,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1183
                     self.match(PythonParser.COMMA)
                     self.state = 1184
-                    self.maybe_star_pattern() 
+                    self.maybe_star_pattern()
                 self.state = 1189
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,129,self._ctx)
@@ -7984,7 +7984,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1226
                     self.match(PythonParser.COMMA)
                     self.state = 1227
-                    self.key_value_pattern() 
+                    self.key_value_pattern()
                 self.state = 1232
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,137,self._ctx)
@@ -8261,7 +8261,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1261
                     self.match(PythonParser.COMMA)
                     self.state = 1262
-                    self.pattern() 
+                    self.pattern()
                 self.state = 1267
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,143,self._ctx)
@@ -8323,7 +8323,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1269
                     self.match(PythonParser.COMMA)
                     self.state = 1270
-                    self.keyword_pattern() 
+                    self.keyword_pattern()
                 self.state = 1275
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,144,self._ctx)
@@ -8555,7 +8555,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1293
                     self.match(PythonParser.COMMA)
                     self.state = 1294
-                    self.type_param() 
+                    self.type_param()
                 self.state = 1299
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,146,self._ctx)
@@ -8778,7 +8778,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1325
                     self.match(PythonParser.COMMA)
                     self.state = 1326
-                    self.expression() 
+                    self.expression()
                 self.state = 1331
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,152,self._ctx)
@@ -9007,7 +9007,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1355
                     self.match(PythonParser.COMMA)
                     self.state = 1356
-                    self.star_expression() 
+                    self.star_expression()
                 self.state = 1361
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,158,self._ctx)
@@ -9140,7 +9140,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1371
                     self.match(PythonParser.COMMA)
                     self.state = 1372
-                    self.star_named_expression() 
+                    self.star_named_expression()
                 self.state = 1377
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,161,self._ctx)
@@ -10230,7 +10230,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1470
                     self.match(PythonParser.VBAR)
                     self.state = 1471
-                    self.bitwise_xor(0) 
+                    self.bitwise_xor(0)
                 self.state = 1476
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,170,self._ctx)
@@ -10302,7 +10302,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1481
                     self.match(PythonParser.CIRCUMFLEX)
                     self.state = 1482
-                    self.bitwise_and(0) 
+                    self.bitwise_and(0)
                 self.state = 1487
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,171,self._ctx)
@@ -10374,7 +10374,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1492
                     self.match(PythonParser.AMPER)
                     self.state = 1493
-                    self.shift_expr(0) 
+                    self.shift_expr(0)
                 self.state = 1498
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,172,self._ctx)
@@ -10455,7 +10455,7 @@ class PythonParser ( PythonParserBase ):
                         self._errHandler.reportMatch(self)
                         self.consume()
                     self.state = 1504
-                    self.sum_(0) 
+                    self.sum_(0)
                 self.state = 1509
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,173,self._ctx)
@@ -10536,7 +10536,7 @@ class PythonParser ( PythonParserBase ):
                         self._errHandler.reportMatch(self)
                         self.consume()
                     self.state = 1515
-                    self.term(0) 
+                    self.term(0)
                 self.state = 1520
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,174,self._ctx)
@@ -10626,7 +10626,7 @@ class PythonParser ( PythonParserBase ):
                         self._errHandler.reportMatch(self)
                         self.consume()
                     self.state = 1526
-                    self.factor() 
+                    self.factor()
                 self.state = 1531
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,175,self._ctx)
@@ -10959,7 +10959,7 @@ class PythonParser ( PythonParserBase ):
                         self.match(PythonParser.RSQB)
                         pass
 
-             
+
                 self.state = 1573
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,181,self._ctx)
@@ -11063,7 +11063,7 @@ class PythonParser ( PythonParserBase ):
                             pass
                         else:
                             raise NoViableAltException(self)
-                 
+
                     self.state = 1588
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,184,self._ctx)
@@ -11618,7 +11618,7 @@ class PythonParser ( PythonParserBase ):
                 while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                     if _alt==1:
                         self.state = 1651
-                        self.lambda_param_no_default() 
+                        self.lambda_param_no_default()
                     self.state = 1656
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,198,self._ctx)
@@ -11669,7 +11669,7 @@ class PythonParser ( PythonParserBase ):
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 1677 
+                self.state = 1677
                 self._errHandler.sync(self)
                 _alt = 1
                 while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -11679,7 +11679,7 @@ class PythonParser ( PythonParserBase ):
 
                     else:
                         raise NoViableAltException(self)
-                    self.state = 1679 
+                    self.state = 1679
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,203,self._ctx)
 
@@ -11705,13 +11705,13 @@ class PythonParser ( PythonParserBase ):
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 1691 
+                self.state = 1691
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
                     self.state = 1690
                     self.lambda_param_with_default()
-                    self.state = 1693 
+                    self.state = 1693
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==89):
@@ -11782,13 +11782,13 @@ class PythonParser ( PythonParserBase ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 1702 
+            self.state = 1702
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
                 self.state = 1701
                 self.lambda_param_no_default()
-                self.state = 1704 
+                self.state = 1704
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not (_la==89):
@@ -11865,18 +11865,18 @@ class PythonParser ( PythonParserBase ):
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt==1:
                     self.state = 1710
-                    self.lambda_param_no_default() 
+                    self.lambda_param_no_default()
                 self.state = 1715
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,211,self._ctx)
 
-            self.state = 1717 
+            self.state = 1717
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
                 self.state = 1716
                 self.lambda_param_with_default()
-                self.state = 1719 
+                self.state = 1719
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not (_la==89):
@@ -11982,13 +11982,13 @@ class PythonParser ( PythonParserBase ):
                 self.match(PythonParser.STAR)
                 self.state = 1737
                 self.match(PythonParser.COMMA)
-                self.state = 1739 
+                self.state = 1739
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
                     self.state = 1738
                     self.lambda_param_maybe_default()
-                    self.state = 1741 
+                    self.state = 1741
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==89):
@@ -12733,7 +12733,7 @@ class PythonParser ( PythonParserBase ):
         self.enterRule(localctx, 318, self.RULE_strings)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 1817 
+            self.state = 1817
             self._errHandler.sync(self)
             _alt = 1
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -12755,7 +12755,7 @@ class PythonParser ( PythonParserBase ):
 
                 else:
                     raise NoViableAltException(self)
-                self.state = 1819 
+                self.state = 1819
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,232,self._ctx)
 
@@ -13055,7 +13055,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1848
                     self.match(PythonParser.COMMA)
                     self.state = 1849
-                    self.double_starred_kvpair() 
+                    self.double_starred_kvpair()
                 self.state = 1854
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,237,self._ctx)
@@ -13222,13 +13222,13 @@ class PythonParser ( PythonParserBase ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 1868 
+            self.state = 1868
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
                 self.state = 1867
                 self.for_if_clause()
-                self.state = 1870 
+                self.state = 1870
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not (_la==23 or _la==36):
@@ -13742,7 +13742,7 @@ class PythonParser ( PythonParserBase ):
                             pass
                         else:
                             raise NoViableAltException(self)
-                 
+
                     self.state = 1932
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,249,self._ctx)
@@ -13834,7 +13834,7 @@ class PythonParser ( PythonParserBase ):
                         self.state = 1941
                         self.match(PythonParser.COMMA)
                         self.state = 1942
-                        self.kwarg_or_starred() 
+                        self.kwarg_or_starred()
                     self.state = 1947
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,252,self._ctx)
@@ -13855,7 +13855,7 @@ class PythonParser ( PythonParserBase ):
                             self.state = 1950
                             self.match(PythonParser.COMMA)
                             self.state = 1951
-                            self.kwarg_or_double_starred() 
+                            self.kwarg_or_double_starred()
                         self.state = 1956
                         self._errHandler.sync(self)
                         _alt = self._interp.adaptivePredict(self._input,253,self._ctx)
@@ -13876,7 +13876,7 @@ class PythonParser ( PythonParserBase ):
                         self.state = 1960
                         self.match(PythonParser.COMMA)
                         self.state = 1961
-                        self.kwarg_or_double_starred() 
+                        self.kwarg_or_double_starred()
                     self.state = 1966
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,255,self._ctx)
@@ -14122,7 +14122,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 1986
                     self.match(PythonParser.COMMA)
                     self.state = 1987
-                    self.star_target() 
+                    self.star_target()
                 self.state = 1992
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,259,self._ctx)
@@ -14185,7 +14185,7 @@ class PythonParser ( PythonParserBase ):
             self.enterOuterAlt(localctx, 1)
             self.state = 1996
             self.star_target()
-            self.state = 1999 
+            self.state = 1999
             self._errHandler.sync(self)
             _alt = 1
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -14197,7 +14197,7 @@ class PythonParser ( PythonParserBase ):
 
                 else:
                     raise NoViableAltException(self)
-                self.state = 2001 
+                self.state = 2001
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,261,self._ctx)
 
@@ -14268,7 +14268,7 @@ class PythonParser ( PythonParserBase ):
                 pass
 
             elif la_ == 2:
-                self.state = 2010 
+                self.state = 2010
                 self._errHandler.sync(self)
                 _alt = 1
                 while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -14280,7 +14280,7 @@ class PythonParser ( PythonParserBase ):
 
                     else:
                         raise NoViableAltException(self)
-                    self.state = 2012 
+                    self.state = 2012
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,263,self._ctx)
 
@@ -14847,7 +14847,7 @@ class PythonParser ( PythonParserBase ):
                         self.match(PythonParser.RPAR)
                         pass
 
-             
+
                 self.state = 2092
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,276,self._ctx)
@@ -14910,7 +14910,7 @@ class PythonParser ( PythonParserBase ):
                     self.state = 2094
                     self.match(PythonParser.COMMA)
                     self.state = 2095
-                    self.del_target() 
+                    self.del_target()
                 self.state = 2100
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,277,self._ctx)
@@ -15193,7 +15193,7 @@ class PythonParser ( PythonParserBase ):
                         self.state = 2134
                         self.match(PythonParser.COMMA)
                         self.state = 2135
-                        self.expression() 
+                        self.expression()
                     self.state = 2140
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,284,self._ctx)
@@ -15574,72 +15574,72 @@ class PythonParser ( PythonParserBase ):
     def dotted_name_sempred(self, localctx:Dotted_nameContext, predIndex:int):
             if predIndex == 0:
                 return self.precpred(self._ctx, 2)
-         
+
 
     def bitwise_or_sempred(self, localctx:Bitwise_orContext, predIndex:int):
             if predIndex == 1:
                 return self.precpred(self._ctx, 2)
-         
+
 
     def bitwise_xor_sempred(self, localctx:Bitwise_xorContext, predIndex:int):
             if predIndex == 2:
                 return self.precpred(self._ctx, 2)
-         
+
 
     def bitwise_and_sempred(self, localctx:Bitwise_andContext, predIndex:int):
             if predIndex == 3:
                 return self.precpred(self._ctx, 2)
-         
+
 
     def shift_expr_sempred(self, localctx:Shift_exprContext, predIndex:int):
             if predIndex == 4:
                 return self.precpred(self._ctx, 2)
-         
+
 
     def sum_sempred(self, localctx:SumContext, predIndex:int):
             if predIndex == 5:
                 return self.precpred(self._ctx, 2)
-         
+
 
     def term_sempred(self, localctx:TermContext, predIndex:int):
             if predIndex == 6:
                 return self.precpred(self._ctx, 2)
-         
+
 
     def primary_sempred(self, localctx:PrimaryContext, predIndex:int):
             if predIndex == 7:
                 return self.precpred(self._ctx, 2)
-         
+
 
     def t_primary_sempred(self, localctx:T_primaryContext, predIndex:int):
             if predIndex == 8:
                 return self.precpred(self._ctx, 2)
-         
+
 
     def soft_kw_type_sempred(self, localctx:Soft_kw_typeContext, predIndex:int):
             if predIndex == 9:
                 return self.isEqualToCurrentTokenText("type")
-         
+
 
     def soft_kw_match_sempred(self, localctx:Soft_kw_matchContext, predIndex:int):
             if predIndex == 10:
                 return self.isEqualToCurrentTokenText("match")
-         
+
 
     def soft_kw_case_sempred(self, localctx:Soft_kw_caseContext, predIndex:int):
             if predIndex == 11:
                 return self.isEqualToCurrentTokenText("case")
-         
+
 
     def soft_kw_wildcard_sempred(self, localctx:Soft_kw_wildcardContext, predIndex:int):
             if predIndex == 12:
                 return self.isEqualToCurrentTokenText("_")
-         
+
 
     def soft_kw__not__wildcard_sempred(self, localctx:Soft_kw__not__wildcardContext, predIndex:int):
             if predIndex == 13:
                 return self.isnotEqualToCurrentTokenText("_")
-         
+
 
 
 

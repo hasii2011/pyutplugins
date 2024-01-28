@@ -89,7 +89,7 @@ class IOPython(IOPluginInterface):
 
         Returns:  'True', we support import
         """
-
+        # TODO: update startDirectory when this is done: https://github.com/hasii2011/pyutplugins/issues/106
         with DlgSelectMultiplePackages(startDirectory='/Users/humberto.a.sanchez.ii/pyut-diagrams', inputFormat=self.inputFormat) as dlg:
             if dlg.ShowModal() == OK:
                 self._packageCount   = dlg.packageCount

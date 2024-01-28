@@ -33,7 +33,7 @@
     "loggers": {
         "root": {
             "level": "WARNING",
-            "handlers": ["consoleHandlerFunctionNames"],
+            "handlers": ["consoleHandler"],
             "propagate": "False"
         },
         "__main__": {

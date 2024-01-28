@@ -53,11 +53,14 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
     def testRetrieveClassNames(self):
 
-        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('Book.py')
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('AssociationClasses.py')
         visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
 
         visitor.visit(tree)
-        self.assertEqual(2, len(visitor.pyutClasses), 'Oops class names parsed, mismatch')
+        #
+        # 3 regular and 2 synthetic classes
+        #
+        self.assertEqual(5, len(visitor.pyutClasses), 'Oops class names parsed, mismatch')
 
     def testMultiClassFileWithInheritance(self):
 
@@ -125,7 +128,6 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
         visitor: PyutPythonPegVisitor = self._setupSimpleClassVisitor()
 
-        className:   PyutClassName = PyutClassName('SimpleClass')
         pyutClasses: PyutClasses = visitor.pyutClasses
 
         classNames = pyutClasses.keys()
@@ -163,6 +165,19 @@ class TestPyutPythonPegVisitor(UnitTestBase):
         pyutClass: PyutClass = visitor.pyutClasses[className]
 
         self.assertEqual(2, len(pyutClass.fields), 'Not enough properties converted to fields')
+
+    def testSynthesizeType(self):
+
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('AssociationClasses.py')
+        visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
+
+        visitor.visit(tree)
+
+        pyutClasses: PyutClasses = visitor.pyutClasses
+
+        classNames = pyutClasses.keys()
+        self.assertIn('Pages',    classNames, 'Missing `Pages` class name')
+        self.assertIn('Chapters', classNames, 'Missing `Chapters` class name')
 
     def _runVisibilityTest(self, methodName, visibility: PyutVisibility):
 

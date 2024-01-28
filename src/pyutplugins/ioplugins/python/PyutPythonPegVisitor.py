@@ -21,6 +21,7 @@ from pyutmodelv2.PyutMethod import PyutMethods
 from pyutmodelv2.PyutParameter import PyutParameter
 from pyutmodelv2.PyutField import PyutField
 from pyutmodelv2.PyutType import PyutType
+from pyutmodelv2.enumerations.PyutStereotype import PyutStereotype
 from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser
@@ -49,6 +50,8 @@ MethodCode    = NewType('MethodCode',    Dict[MethodName,   CodeLines])
 PropertyMap   = NewType('PropertyMap', Dict[PyutClassName, PropertyNames])
 
 NO_CLASS_NAME: PyutClassName = PyutClassName('')
+
+NO_CLASS_DEF_CONTEXT: PythonParser.Class_defContext = cast(PythonParser.Class_defContext, None)
 
 NO_METHOD_CTX: PythonParser.AssignmentContext = cast(PythonParser.AssignmentContext, None)
 
@@ -139,11 +142,12 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         Args:
             ctx:
         """
-        className: PyutClassName = self._checkIfMethodBelongsToClass(ctx, PythonParser.Class_defContext)
-        if className != NO_CLASS_NAME:
+        classCtx: PythonParser.Class_defContext = self._extractClassDefContext(ctx)
+        if classCtx != NO_CLASS_DEF_CONTEXT:
 
-            methodName:    MethodName = self._extractMethodName(ctx=ctx.function_def_raw())
-            returnTypeStr: str        = self._extractReturnType(ctx=ctx)
+            className:     PyutClassName = self._extractClassName(ctx=classCtx)
+            methodName:    MethodName    = self._extractMethodName(ctx=ctx.function_def_raw())
+            returnTypeStr: str           = self._extractReturnType(ctx=ctx)
 
             pyutVisibility: PyutVisibility = PyutVisibility.PUBLIC
             if methodName in MAGIC_DUNDER_METHODS:
@@ -192,7 +196,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
             pass
         else:
             methodName: MethodName = self._extractMethodName(ctx=methodCtx.function_def_raw())
-            self.logger.info(f'{className=} {methodName=}')
+            self.logger.debug(f'{className=} {methodName=}')
             noDefaultContexts: List[PythonParser.Param_no_defaultContext]   = ctx.param_no_default()
             defaultContexts:   List[PythonParser.Param_with_defaultContext] = ctx.param_with_default()
 
@@ -209,6 +213,49 @@ class PyutPythonPegVisitor(PythonParserVisitor):
             elif ctx3 is not None:
                 self.logger.error(f'{ctx3.getText()}')
                 assert False, f'Unhandled {ctx3.getText()}'
+
+        return self.visitChildren(ctx)
+
+    def visitAssignment(self, ctx: PythonParser.AssignmentContext):
+        """
+        Visit a parse tree produced by PythonParser#assignment.
+
+        Args:
+            ctx:
+
+        """
+        exprCtx: PythonParser.ExpressionContext = ctx.expression()
+
+        if exprCtx is not None:
+            self.logger.debug(f'{ctx.getText()=} {exprCtx.getText()=}')
+
+        return self.visitChildren(ctx)
+
+    def visitPrimary(self, ctx: PythonParser.PrimaryContext):
+        """
+        Visit a parse tree produced by PythonParser#primary.
+        Args:
+            ctx:
+
+        """
+        primaryStr: str = ctx.getText()
+        if primaryStr.startswith('NewType'):
+            argumentsCtx: PythonParser.ArgumentsContext = ctx.arguments()
+            if argumentsCtx is not None:
+
+                argStr = ctx.children[2].getText()
+                typeValueList = argStr.split(',')
+                self.logger.debug(f'{typeValueList=}')
+
+                className = typeValueList[0].strip("'").strip('"')
+                self.logger.debug(f'{className}')
+
+                pyutClass: PyutClass = PyutClass(name=className)
+
+                pyutClass.description = self._generateMyCredits()
+                pyutClass.stereotype  = PyutStereotype.TYPE
+
+                self._pyutClasses[className] = pyutClass
 
         return self.visitChildren(ctx)
 
@@ -303,14 +350,32 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         self._parents[parentName] = children
 
-    def _checkIfMethodBelongsToClass(self, node: PythonParser.Function_defContext, classType) -> PyutClassName:
+    def _extractClassDefContext(self, ctx: PythonParser.Function_defContext) -> PythonParser.Class_defContext:
+        """
+        Args:
+            ctx:
 
-        while node.parentCtx:
-            if isinstance(node, classType):
-                return self._extractClassName(ctx=node)
-            node = node.parentCtx
+        Returns:  Either a class definition context or the sentinel value NO_CLASS_DEF_CONTEXT
+        """
+        currentCtx: ParserRuleContext = ctx
+        while currentCtx.parentCtx:
+            if isinstance(currentCtx, PythonParser.Class_defContext):
+                return currentCtx
+            currentCtx = currentCtx.parentCtx
 
-        return NO_CLASS_NAME
+        return NO_CLASS_DEF_CONTEXT
+
+    def _checkIfContextBelongsToClass(self, ctx: ParserRuleContext) -> bool:
+
+        ans: bool = False
+
+        currentCtx = ctx
+        while currentCtx.parentCtx:
+            if isinstance(currentCtx, PythonParser.Class_defContext):
+                ans = True
+            currentCtx = currentCtx.parentCtx
+
+        return ans
 
     def _isProperty(self, ctx: PythonParser.Function_defContext) -> bool:
         """
@@ -329,17 +394,24 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         else:
             namedExpressions: List[PythonParser.Named_expressionContext] = decorators.named_expression()
             for ne in namedExpressions:
-                self.logger.info(f'{ne.getText()=}')
+                self.logger.debug(f'{ne.getText()=}')
                 if ne.getText() == PROPERTY_DECORATOR:
                     ans = True
                     break
         return ans
 
     def _extractClassName(self, ctx: PythonParser.Class_defContext) -> PyutClassName:
+        """
+        Get a class name from a Class_defContext
+        Args:
+            ctx:
+
+        Returns:    A class name
+        """
 
         child:     PythonParser.Class_def_rawContext = ctx.class_def_raw()
         name:      TerminalNodeImpl                  = child.NAME()
-        className: PyutClassName                         = name.getText()
+        className: PyutClassName                     = name.getText()
 
         return className
 
@@ -412,7 +484,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
     def _updateModelMethodParameter(self, className: PyutClassName, methodName: MethodName, pyutParameter: PyutParameter):
 
-        self.logger.info(f'{pyutParameter=}')
+        self.logger.debug(f'{pyutParameter=}')
 
         pyutClass:  PyutClass  = self._pyutClasses[className]
         pyutMethod: PyutMethod = self._findModelMethod(methodName=methodName, pyutClass=pyutClass)
@@ -432,7 +504,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         className:    PyutClassName    = self._extractClassName(ctx=classCtx)
         propertyName: PropertyName = self._extractPropertyName(ctx=methodCtx.function_def_raw())
-        self.logger.info(f'{className} property name: {propertyName}')
+        self.logger.debug(f'{className} property name: {propertyName}')
         #
         # it is really a property name
         #
