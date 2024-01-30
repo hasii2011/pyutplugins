@@ -12,6 +12,8 @@ from os import linesep as osLineSep
 
 from dataclasses import dataclass
 
+from enum import Enum
+
 from antlr4 import ParserRuleContext
 from antlr4.tree.Tree import TerminalNodeImpl
 
@@ -26,7 +28,7 @@ from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser
 
-from pyutplugins.ioplugins.python.pythonpegparser.PythonParserVisitor import PythonParserVisitor
+from pyutplugins.ioplugins.python.pythonpegparser.PythonPegParserVisitor import PythonPegParserVisitor
 
 PyutClassName = NewType('PyutClassName', str)
 MethodName    = NewType('MethodName', str)
@@ -55,8 +57,41 @@ NO_CLASS_DEF_CONTEXT: PythonParser.Class_defContext = cast(PythonParser.Class_de
 
 NO_METHOD_CTX: PythonParser.AssignmentContext = cast(PythonParser.AssignmentContext, None)
 
+AssociateName = PyutClassName
 
-PyutClasses = NewType('PyutClasses', Dict[PyutClassName, PyutClass])
+
+class AssociationType(Enum):
+
+    ASSOCIATION = 'ASSOCIATION'
+    AGGREGATION = 'AGGREGATION'
+    COMPOSITION = 'COMPOSITION'
+    INHERITANCE = 'INHERITANCE'
+    INTERFACE   = 'INTERFACE'
+
+
+@dataclass
+class Associate:
+    associateName:   AssociateName   = AssociateName('')
+    associationType: AssociationType = AssociationType.ASSOCIATION
+
+
+Associates = NewType('Associates', List[Associate])
+
+#
+# e.g.
+#     @property
+#     def pages(self) -> Pages:
+#         return self._pages
+# In the above "Pages" is the AssociateName and goes in the List for the method containing PyutClassName
+#
+# e.g.
+#  self.pages: Pages = Pages({})
+#
+#  Pages is the AssociateName and the enclosing class for the __init__ method is the PyutClassName
+#
+#
+Associations = NewType('Associations', Dict[PyutClassName, Associates])
+PyutClasses  = NewType('PyutClasses',  Dict[PyutClassName, PyutClass])
 
 # noinspection SpellCheckingInspection
 MAGIC_DUNDER_METHODS:      List[str] = ['__init__', '__str__', '__repr__', '__new__', '__del__',
@@ -85,13 +120,14 @@ class ParameterNameAndType:
     typeName: str = ''
 
 
-class PyutPythonPegVisitor(PythonParserVisitor):
+class PyutPythonPegVisitor(PythonPegParserVisitor):
     def __init__(self):
 
         self.logger: Logger = getLogger(__name__)
 
-        self._parents:       Parents       = Parents({})
-        self._pyutClasses:   PyutClasses   = PyutClasses({})
+        self._parents:      Parents      = Parents({})
+        self._associations: Associations = Associations({})
+        self._pyutClasses:  PyutClasses  = PyutClasses({})
 
         self._propertyMap: PropertyMap = PropertyMap({})
 
@@ -106,6 +142,14 @@ class PyutPythonPegVisitor(PythonParserVisitor):
     @parents.setter
     def parents(self, newValue: Parents):
         self._parents = newValue
+
+    @property
+    def associations(self) -> Associations:
+        return self._associations
+
+    @associations.setter
+    def associations(self, newValue: Associations):
+        self._associations = newValue
 
     def visitClass_def(self, ctx: PythonParser.Class_defContext):
         """
@@ -159,7 +203,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
             if self._isProperty(ctx) is True:
                 self._makePropertyEntry(className=className, methodName=methodName)
-                self._makeAField(ctx=ctx)
+                self._handleField(ctx=ctx)
             else:
                 self.logger.debug(f'visitFunction_def: {methodName=}')
                 if className not in self._pyutClasses:
@@ -304,7 +348,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         args:       PythonParser.ArgsContext = argumentsCtx.args()
         parentName: ParentName               = ParentName(args.getText())
-        self.logger.info(f'Class: {childName} is subclass of {parentName}')
+        self.logger.debug(f'Class: {childName} is subclass of {parentName}')
 
         multiParents = parentName.split(',')
         if len(multiParents) > 1:
@@ -320,7 +364,7 @@ class PyutPythonPegVisitor(PythonParserVisitor):
             childName:
 
         """
-        self.logger.info(f'handleMultiParentChild: {childName} -- {multiParents}')
+        self.logger.debug(f'handleMultiParentChild: {childName} -- {multiParents}')
         for parent in multiParents:
             # handle the special case
             if parent.startswith('metaclass'):
@@ -415,20 +459,10 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         return className
 
-    def _extractPropertyName(self, ctx: PythonParser.Function_def_rawContext) -> PropertyName:
-
-        propertyName: PropertyName = PropertyName(self._extractFunctionNameRawString(ctx=ctx))
-        return propertyName
-
     def _extractMethodName(self, ctx: PythonParser.Function_def_rawContext) -> MethodName:
 
         methodName: MethodName       = MethodName(self._extractFunctionNameRawString(ctx=ctx))
         return methodName
-
-    def _extractFunctionNameRawString(self, ctx: PythonParser.Function_def_rawContext) -> str:
-
-        name: TerminalNodeImpl = ctx.NAME()
-        return name.getText()
 
     def _extractParameterNameAndType(self, paramCtx: PythonParser.ParamContext) -> ParameterNameAndType:
 
@@ -491,9 +525,10 @@ class PyutPythonPegVisitor(PythonParserVisitor):
 
         pyutMethod.addParameter(parameter=pyutParameter)
 
-    def _makeAField(self, ctx: PythonParser.Function_defContext):
+    def _handleField(self, ctx: PythonParser.Function_defContext):
         """
         Turns methods annotated as property into an UML field
+        Also check to see if it needs to make a entry into the association dictionary
 
         Args:
             ctx:
@@ -502,17 +537,61 @@ class PyutPythonPegVisitor(PythonParserVisitor):
         classCtx:  PythonParser.Class_defContext    = self._findClassContext(ctx)
         methodCtx: PythonParser.Function_defContext = self._findMethodContext(ctx)
 
-        className:    PyutClassName    = self._extractClassName(ctx=classCtx)
-        propertyName: PropertyName = self._extractPropertyName(ctx=methodCtx.function_def_raw())
+        className:    PyutClassName  = self._extractClassName(ctx=classCtx)
+        propertyName: PropertyName   = self._extractPropertyName(ctx=methodCtx.function_def_raw())
         self.logger.debug(f'{className} property name: {propertyName}')
         #
         # it is really a property name
         #
         typeStr: str = self._extractReturnType(ctx=ctx)
 
+        self._makeFieldForClass(className, propertyName, typeStr)
+
+        self._makeAssociationEntry(className, typeStr)
+
+    def _makeFieldForClass(self, className: PyutClassName, propertyName: PropertyName, typeStr: str):
+        """
+
+        Args:
+            className:
+            propertyName:
+            typeStr:
+
+        """
         pyutField: PyutField = PyutField(name=propertyName, type=PyutType(typeStr), visibility=PyutVisibility.PUBLIC)
         pyutClass: PyutClass = self._pyutClasses[className]
+
         pyutClass.fields.append(pyutField)
+
+    def _makeAssociationEntry(self, className, typeStr):
+        """
+        Now check to see if this type is one of our known classes;  If so, then create
+        an association entry
+
+        Args:
+            className:
+            typeStr:
+
+        """
+        if typeStr in self._pyutClasses:
+
+            associateName: AssociateName = AssociateName(typeStr)
+            associate: Associate = Associate(associateName=associateName, associationType=AssociationType.ASSOCIATION)
+
+            if className in self._associations:
+                self._associations[className].append(associate)
+            else:
+                self._associations[className] = Associates([associate])
+
+    def _extractPropertyName(self, ctx: PythonParser.Function_def_rawContext) -> PropertyName:
+
+        propertyName: PropertyName = PropertyName(self._extractFunctionNameRawString(ctx=ctx))
+        return propertyName
+
+    def _extractFunctionNameRawString(self, ctx: PythonParser.Function_def_rawContext) -> str:
+
+        name: TerminalNodeImpl = ctx.NAME()
+        return name.getText()
 
     def _makePropertyEntry(self, className: PyutClassName, methodName: MethodName):
         """

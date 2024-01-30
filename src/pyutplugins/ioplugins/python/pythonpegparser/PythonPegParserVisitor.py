@@ -7,7 +7,7 @@ else:
 
 # This class defines a complete generic visitor for a parse tree produced by PythonParser.
 
-class PythonParserVisitor(ParseTreeVisitor):
+class PythonPegParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by PythonParser#file_input.
     def visitFile_input(self, ctx:PythonParser.File_inputContext):

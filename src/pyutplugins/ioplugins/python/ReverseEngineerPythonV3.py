@@ -29,6 +29,9 @@ from pyutplugins.ExternalTypes import OglLinks
 from pyutplugins.common.LinkMakerMixin import LinkMakerMixin
 
 from pyutplugins.ioplugins.python.PythonParseException import PythonParseException
+from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Associates
+from pyutplugins.ioplugins.python.PyutPythonPegVisitor import AssociationType
+from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Associations
 
 from pyutplugins.ioplugins.python.PyutPythonPegVisitor import ChildName
 from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Children
@@ -70,7 +73,9 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
         self._oglClassesDict: OglClassesDict  = OglClassesDict({})
         self._oglClasses:     OglClasses      = OglClasses([])
         self._oglLinks:       OglLinks        = OglLinks([])
-        self._onGoingParents: Parents         = Parents({})
+
+        self._cumulativeParents:      Parents       = Parents({})
+        self._cumulativeAssociations: Associations  = Associations({})
 
     def reversePython(self,  directoryName: str, files: List[str], progressCallback: Callable):
         """
@@ -96,13 +101,14 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
 
                 visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
 
-                visitor.parents = self._onGoingParents
-
+                visitor.parents      = self._cumulativeParents
+                visitor.associations = self._cumulativeAssociations
                 visitor.visit(tree)
 
                 self._pyutClasses = PyutClasses(self._pyutClasses | visitor.pyutClasses)
 
-                self._onGoingParents = visitor.parents
+                self._cumulativeParents      = visitor.parents
+                self._cumulativeAssociations = visitor.associations
 
             except (ValueError, Exception) as e:
                 self.logger.error(e)
@@ -119,20 +125,43 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
         return self._oglLinks
 
     def generateLinks(self, oglClassesDict: OglClassesDict):
-        parents: Parents = self._onGoingParents
+
+        self._generateInheritanceLinks(oglClassesDict)
+        self._generateAssociationLinks(oglClassesDict)
+
+    def _generateInheritanceLinks(self, oglClassesDict: OglClassesDict):
+
+        parents: Parents = self._cumulativeParents
 
         for parentName in parents.keys():
             children: Children = parents[parentName]
+
             for childName in children:
 
                 try:
                     parentOglClass: OglClass = oglClassesDict[parentName]
                     childOglClass:  OglClass = oglClassesDict[childName]
-                    oglLink: OglLink = self.createLink(src=childOglClass, dst=parentOglClass, linkType=PyutLinkType.INHERITANCE)
+                    oglLink:        OglLink  = self.createLink(src=childOglClass, dst=parentOglClass, linkType=PyutLinkType.INHERITANCE)
+
                     self._oglLinks.append(oglLink)
-                except KeyError as ke:        # Probably there is no parent we are tracking
+                except KeyError as ke:  # Probably there is no parent we are tracking
                     self.logger.warning(f'Apparently we are not tracking this parent:  {ke}')
                     continue
+
+    def _generateAssociationLinks(self, oglClassesDict: OglClassesDict):
+
+        associations: Associations = self._cumulativeAssociations
+        for className in associations:
+            pyutClassName: PyutClassName = cast(PyutClassName, className)
+            associates: Associates = associations[pyutClassName]
+            for associate in associates:
+                sourceClass:      OglClass = oglClassesDict[pyutClassName]
+                destinationClass: OglClass = oglClassesDict[associate.associateName]
+
+                pyutLinkType: PyutLinkType = self._toPyutLinkType(associationType=associate.associationType)
+                oglLink: OglLink = self.createLink(src=sourceClass, dst=destinationClass, linkType=pyutLinkType)
+
+                self._oglLinks.append(oglLink)
 
     def _generateOglClasses(self):
 
@@ -145,6 +174,20 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
 
             except (ValueError, Exception) as e:
                 self.logger.error(f"Error while creating class {pyutClassName},  {e}")
+
+    def _toPyutLinkType(self, associationType: AssociationType) -> PyutLinkType:
+
+        match associationType:
+            case AssociationType.ASSOCIATION:
+                pyutLinkType: PyutLinkType = PyutLinkType.ASSOCIATION
+            case AssociationType.AGGREGATION:
+                pyutLinkType = PyutLinkType.AGGREGATION
+            case AssociationType.COMPOSITION:
+                pyutLinkType = PyutLinkType.COMPOSITION
+            case _:
+                assert False, f'Unknown association type: {associationType.name}'
+
+        return pyutLinkType
 
     def _setupPegBasedParser(self, fqFileName: str) -> PythonParser.File_inputContext:
         """

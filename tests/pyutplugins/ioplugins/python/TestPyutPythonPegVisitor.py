@@ -17,6 +17,7 @@ from pyutmodelv2.PyutMethod import PyutMethod
 from pyutmodelv2.PyutMethod import PyutMethods
 from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
+from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Associations
 from pyutplugins.ioplugins.python.pythonpegparser.PythonLexer import PythonLexer
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser
 
@@ -178,6 +179,17 @@ class TestPyutPythonPegVisitor(UnitTestBase):
         classNames = pyutClasses.keys()
         self.assertIn('Pages',    classNames, 'Missing `Pages` class name')
         self.assertIn('Chapters', classNames, 'Missing `Chapters` class name')
+
+    def testAssociationsGenerated(self):
+
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('AssociationClasses.py')
+        visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
+
+        visitor.visit(tree)
+
+        associations: Associations = visitor.associations
+
+        self.assertEqual(2, len(associations), 'Incorrect number of associations generated')
 
     def _runVisibilityTest(self, methodName, visibility: PyutVisibility):
 
