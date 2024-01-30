@@ -178,7 +178,7 @@ class TestPyutPythonVisitor(TestBase):
 
     def testDataClass(self):
 
-        tree:    Python3Parser.File_inputContext = self._setupVisitor('DataTestClass.py')
+        tree:    Python3Parser.File_inputContext = self._setupVisitor('SimpleDataClass.py')
         visitor: PyutPythonVisitor = PyutPythonVisitor()
 
         visitor.visit(tree)
