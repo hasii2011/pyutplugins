@@ -598,6 +598,7 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
         typeStr:   str = ctx.children[2].getText()
 
         self._makeFieldForClass(className=className, propertyName=fieldName, typeStr=typeStr, defaultValue='')
+        self._makeAssociationEntry(className=className, typeStr=typeStr)
 
     def _handleFullField(self, className: PyutClassName, ctx: PythonParser.AssignmentContext):
         """
@@ -612,6 +613,7 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
         fieldValue: str = ctx.children[4].getText()
 
         self._makeFieldForClass(className=className, propertyName=fieldName, typeStr=typeStr, defaultValue=fieldValue)
+        self._makeAssociationEntry(className=className, typeStr=typeStr)
 
     def _makeFieldForClass(self, className: PyutClassName, propertyName: Union[PropertyName, str], typeStr: str, defaultValue: str):
         """
