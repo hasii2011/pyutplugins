@@ -29,17 +29,18 @@ from pyutplugins.ExternalTypes import OglLinks
 from pyutplugins.common.LinkMakerMixin import LinkMakerMixin
 
 from pyutplugins.ioplugins.python.PythonParseException import PythonParseException
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Associates
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import AssociationType
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Associations
 
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import ChildName
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Children
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import ParentName
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Parents
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutClassName
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutClasses
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutPythonPegVisitor
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import Associates
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import AssociationType
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import Associations
+
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import ChildName
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import Children
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import ParentName
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import Parents
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutClassName
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutClasses
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutPythonPegVisitor
 
 from pyutplugins.ioplugins.python.pythonpegparser.PythonLexer import PythonLexer
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser

@@ -20,14 +20,14 @@ from pyutmodelv2.PyutMethod import PyutMethods
 from pyutmodelv2.PyutType import PyutType
 from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Associations
 from pyutplugins.ioplugins.python.pythonpegparser.PythonLexer import PythonLexer
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser
 
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import ParentName
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutPythonPegVisitor
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutClassName
-from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutClasses
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import Associations
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import ParentName
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutPythonPegVisitor
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutClassName
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutClasses
 
 from tests.ProjectTestBase import TestBase
 
