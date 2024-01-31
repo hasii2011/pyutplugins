@@ -110,6 +110,7 @@ PARAMETER_SELF:      str = 'self'
 PROTECTED_INDICATOR: str = '_'
 PRIVATE_INDICATOR:   str = '__'
 PROPERTY_DECORATOR:  str = 'property'
+DATACLASS_DECORATOR: str = 'dataclass'
 
 VERSION: str = '2.0'
 
@@ -266,12 +267,23 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
 
         Args:
             ctx:
-
         """
-        exprCtx: PythonParser.ExpressionContext = ctx.expression()
+        classDefContext: PythonParser.Class_defContext = self._findClassContext(ctx=ctx)
 
-        if exprCtx is not None:
-            self.logger.debug(f'{ctx.getText()=} {exprCtx.getText()=}')
+        if classDefContext is not None:
+
+            if self._isThisAnAssignmentForADataClass(ctx=classDefContext) is True and self._isThisAssignmentInsideAMethod(ctx=ctx) is False:
+
+                className: PyutClassName = self._extractClassName(ctx=classDefContext)
+                self.logger.debug(f'{className} is a data class')
+                if len(ctx.children) == 5:
+                    self._handleFullField(className, ctx)
+
+                elif len(ctx.children) == 3:
+                    if isinstance(ctx.children[0], TerminalNodeImpl):
+                        self._handleNoDefaultValueField(className, ctx)
+                    else:
+                        self._handleNoTypeSpecifiedField(className, ctx)
 
         return self.visitChildren(ctx)
 
@@ -479,12 +491,23 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
         return ParameterNameAndType(name=paramName, typeName=typeStr)
 
     def _findClassContext(self, ctx: ParserRuleContext) -> PythonParser.Class_defContext:
+        """
+        May report no context if the statement/methods/etc are outside the scope of a
+        Python class
+
+        Args:
+            ctx:  Any context starting point
+
+        Returns:  The enclosing class context;  May return None
+
+        """
         currentCtx: ParserRuleContext = ctx
 
         while isinstance(currentCtx, PythonParser.Class_defContext) is False:
             currentCtx = currentCtx.parentCtx
             if currentCtx is None:
-                assert False, 'Unsupported stand alone method'
+                self.logger.info(f'Construct outside of class scope')
+                break
 
         return cast(PythonParser.Class_defContext, currentCtx)
 
@@ -545,20 +568,61 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
         #
         typeStr: str = self._extractReturnType(ctx=ctx)
 
-        self._makeFieldForClass(className, propertyName, typeStr)
+        self._makeFieldForClass(className, propertyName, typeStr, defaultValue='')
 
         self._makeAssociationEntry(className, typeStr)
 
-    def _makeFieldForClass(self, className: PyutClassName, propertyName: PropertyName, typeStr: str):
+    def _handleNoTypeSpecifiedField(self, className: PyutClassName, ctx: PythonParser.AssignmentContext):
+        """
+        From inside a data class
+
+        Args:
+            className:
+            ctx:
+        """
+        fieldName:    str = ctx.children[0].getText()
+        defaultValue: str = ctx.children[2].getText()
+
+        self._makeFieldForClass(className=className, propertyName=fieldName, typeStr='', defaultValue=defaultValue)
+
+    def _handleNoDefaultValueField(self, className: PyutClassName, ctx: PythonParser.AssignmentContext):
+        """
+        From inside a data class
+        no default value
+
+        Args:
+            className:
+            ctx:
+        """
+        fieldName: str = ctx.children[0].getText()
+        typeStr:   str = ctx.children[2].getText()
+
+        self._makeFieldForClass(className=className, propertyName=fieldName, typeStr=typeStr, defaultValue='')
+
+    def _handleFullField(self, className: PyutClassName, ctx: PythonParser.AssignmentContext):
+        """
+        From within a data class
+        Full annotated and with default value
+        Args:
+            className:
+            ctx:
+        """
+        fieldName:  str = ctx.children[0].getText()
+        typeStr:    str = ctx.children[2].getText()
+        fieldValue: str = ctx.children[4].getText()
+
+        self._makeFieldForClass(className=className, propertyName=fieldName, typeStr=typeStr, defaultValue=fieldValue)
+
+    def _makeFieldForClass(self, className: PyutClassName, propertyName: Union[PropertyName, str], typeStr: str, defaultValue: str):
         """
 
         Args:
             className:
             propertyName:
             typeStr:
-
+            defaultValue:
         """
-        pyutField: PyutField = PyutField(name=propertyName, type=PyutType(typeStr), visibility=PyutVisibility.PUBLIC)
+        pyutField: PyutField = PyutField(name=propertyName, type=PyutType(typeStr), visibility=PyutVisibility.PUBLIC, defaultValue=defaultValue)
         pyutClass: PyutClass = self._pyutClasses[className]
 
         pyutClass.fields.append(pyutField)
@@ -609,6 +673,29 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
 
         propertyNames: PropertyNames = self._propertyMap[className]
         if propertyName in propertyNames:
+            ans = True
+
+        return ans
+
+    def _isThisAnAssignmentForADataClass(self, ctx: PythonParser.Class_defContext) -> bool:
+
+        ans: bool = False
+
+        decoratorsCtx: PythonParser.DecoratorsContext = ctx.decorators()
+        if decoratorsCtx is not None:
+            for decorator in decoratorsCtx.children:
+                if isinstance(decorator, PythonParser.Named_expressionContext) is True:
+                    # self.logger.info(f'{decorator.getText()=}')
+                    ans = True
+                    break
+        return ans
+
+    def _isThisAssignmentInsideAMethod(self, ctx: PythonParser.AssignmentContext) -> bool:
+
+        ans: bool = False
+
+        currentCtx: ParserRuleContext = self._findMethodContext(ctx=ctx)
+        if currentCtx is not None:
             ans = True
 
         return ans

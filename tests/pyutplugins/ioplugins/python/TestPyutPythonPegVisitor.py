@@ -13,8 +13,11 @@ from antlr4.error.ErrorListener import ConsoleErrorListener
 from codeallybasic.UnitTestBase import UnitTestBase
 
 from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutField import PyutField
+from pyutmodelv2.PyutField import PyutFields
 from pyutmodelv2.PyutMethod import PyutMethod
 from pyutmodelv2.PyutMethod import PyutMethods
+from pyutmodelv2.PyutType import PyutType
 from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from pyutplugins.ioplugins.python.PyutPythonPegVisitor import Associations
@@ -28,7 +31,10 @@ from pyutplugins.ioplugins.python.PyutPythonPegVisitor import PyutClasses
 
 from tests.ProjectTestBase import TestBase
 
+SIMPLE_DATA_CLASS_NAME: PyutClassName = PyutClassName('SimpleDataClass')
+
 PyutMethodHashIndex = NewType('PyutMethodHashIndex', Dict[str, PyutMethod])
+PyutFieldHashIndex  = NewType('PyutFieldHashIndex',  Dict[str, PyutField])
 
 
 class PythonErrorListener(ConsoleErrorListener):
@@ -190,6 +196,68 @@ class TestPyutPythonPegVisitor(UnitTestBase):
         associations: Associations = visitor.associations
 
         self.assertEqual(2, len(associations), 'Incorrect number of associations generated')
+
+    def testSimpleDataClass(self):
+
+        fields: PyutFields = self._getSimpleDataClassFields()
+
+        self.assertEqual(4, len(fields), 'Did not parse expected number of fields for this class')
+
+    def testFullField(self):
+
+        fields: PyutFields         = self._getSimpleDataClassFields()
+        index:  PyutFieldHashIndex = self._makeFieldIndex(pyutFields=fields)
+
+        fullField: PyutField = index['y']
+
+        self.assertIsNotNone(fullField, 'Where did it go?')
+        self.assertEqual(PyutType('float'), fullField.type, 'Incorrect type')
+        self.assertEqual('42.0', fullField.defaultValue, 'Incorrect default value')
+
+    def testNoTypeField(self):
+        fields: PyutFields         = self._getSimpleDataClassFields()
+        index:  PyutFieldHashIndex = self._makeFieldIndex(pyutFields=fields)
+
+        noAssignmentField: PyutField = index['w']
+
+        self.assertIsNotNone(noAssignmentField, 'Where did it go?')
+        self.assertEqual(PyutType(''), noAssignmentField.type, 'Incorrect type')
+        self.assertEqual('"A string"', noAssignmentField.defaultValue, 'Incorrect default value')
+
+    def testNoDefaultValueField(self):
+        fields: PyutFields         = self._getSimpleDataClassFields()
+        index:  PyutFieldHashIndex = self._makeFieldIndex(pyutFields=fields)
+
+        noAssignmentField: PyutField = index['z']
+
+        self.assertIsNotNone(noAssignmentField, 'Where did it go?')
+        self.assertEqual(PyutType('int'), noAssignmentField.type, 'Incorrect type')
+        self.assertEqual('', noAssignmentField.defaultValue, 'Should not have a value')
+
+    def _getSimpleDataClassFields(self) -> PyutFields:
+
+        visitor:     PyutPythonPegVisitor = self._setupSimpleDataClassVisitor()
+        pyutClasses: PyutClasses          = visitor.pyutClasses
+        pyutClass:   PyutClass            = pyutClasses[SIMPLE_DATA_CLASS_NAME]
+
+        return pyutClass.fields
+
+    def _makeFieldIndex(self, pyutFields: PyutFields) -> PyutFieldHashIndex:
+
+        fieldIndex: PyutFieldHashIndex = PyutFieldHashIndex({})
+        for field in pyutFields:
+            fieldIndex[field.name] = field
+
+        return fieldIndex
+
+    def _setupSimpleDataClassVisitor(self) -> PyutPythonPegVisitor:
+
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('SimpleDataClass.py')
+        visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
+
+        visitor.visit(tree)
+
+        return visitor
 
     def _runVisibilityTest(self, methodName, visibility: PyutVisibility):
 
