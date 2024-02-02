@@ -22,9 +22,9 @@ from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from pyutplugins.ioplugins.python.pythonpegparser.PythonLexer import PythonLexer
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegClassVisitor import PyutPythonPegClassVisitor
 
 from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import Associations
-from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import ParentName
 from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutPythonPegVisitor
 from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutClassName
 from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutClasses
@@ -58,61 +58,6 @@ class TestPyutPythonPegVisitor(UnitTestBase):
     def tearDown(self):
         super().tearDown()
 
-    def testRetrieveClassNames(self):
-
-        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('AssociationClasses.py')
-        visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
-
-        visitor.visit(tree)
-        #
-        # 3 regular and 2 synthetic classes
-        #
-        self.assertEqual(5, len(visitor.pyutClasses), 'Oops class names parsed, mismatch')
-
-    def testMultiClassFileWithInheritance(self):
-
-        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('Opie.py')
-        visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
-
-        visitor.visit(tree)
-
-        expectedParentName: str = 'Cat'
-        expectedChildName:  str = 'Opie'
-
-        self.assertTrue(expectedParentName in visitor.parents, 'Missing parent')
-
-        actualChildName: str = visitor.parents[ParentName(expectedParentName)][0]
-
-        self.assertEqual(expectedChildName, actualChildName, 'Missing child')
-
-    def testMultipleInheritanceClass(self):
-
-        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('MultipleInheritance.py')
-        visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
-
-        visitor.visit(tree)
-
-        self.logger.info(f'{visitor.parents=}')
-
-        expectedParentName1: str = 'Car'
-        expectedParentName2: str = 'Flyable'
-
-        self.assertTrue(expectedParentName1 in visitor.parents, f'Missing parent: {expectedParentName1}')
-        self.assertTrue(expectedParentName2 in visitor.parents, f'Missing parent: {expectedParentName2}')
-
-    def testMultipleInheritanceWithMetaClass(self):
-
-        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('MultipleInheritanceWithMetaClass.py')
-        visitor: PyutPythonPegVisitor           = PyutPythonPegVisitor()
-
-        visitor.visit(tree)
-
-        expectedParentName1: str = 'BaseWxCommand'
-        expectedParentName2: str = 'MyMetaBaseWxCommand'
-
-        self.assertTrue(expectedParentName1 in visitor.parents, f'Missing parent: {expectedParentName1}')
-        self.assertTrue(expectedParentName2 in visitor.parents, f'Missing parent: {expectedParentName2}')
-
     def testClassMethods(self):
 
         visitor: PyutPythonPegVisitor = self._setupSimpleClassVisitor()
@@ -130,15 +75,6 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
         self.assertIn('simpleMethod', methodNames, 'Missing known method')
         self.assertIn('methodWithParametersAndDefaultValues', methodNames, 'Missing known method')
-
-    def testClassParsed(self):
-
-        visitor: PyutPythonPegVisitor = self._setupSimpleClassVisitor()
-
-        pyutClasses: PyutClasses = visitor.pyutClasses
-
-        classNames = pyutClasses.keys()
-        self.assertIn('SimpleClass', classNames, 'Missing class name')
 
     def testCorrectMethodCount(self):
 
@@ -166,6 +102,7 @@ class TestPyutPythonPegVisitor(UnitTestBase):
         tree:    PythonParser.File_inputContext = self._setupPegBasedParser('ClassWithProperties.py')
         visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
 
+        visitor.pyutClasses = self._do1stPassPegBasedParser('ClassWithProperties.py')
         visitor.visit(tree)
 
         className: PyutClassName = PyutClassName('ClassWithProperties')
@@ -173,23 +110,12 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
         self.assertEqual(2, len(pyutClass.fields), 'Not enough properties converted to fields')
 
-    def testSynthesizeType(self):
-
-        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('AssociationClasses.py')
-        visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
-
-        visitor.visit(tree)
-
-        pyutClasses: PyutClasses = visitor.pyutClasses
-
-        classNames = pyutClasses.keys()
-        self.assertIn('Pages',    classNames, 'Missing `Pages` class name')
-        self.assertIn('Chapters', classNames, 'Missing `Chapters` class name')
-
     def testAssociationsGenerated(self):
 
         tree:    PythonParser.File_inputContext = self._setupPegBasedParser('AssociationClasses.py')
         visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
+
+        visitor.pyutClasses = self._do1stPassPegBasedParser('AssociationClasses.py')
 
         visitor.visit(tree)
 
@@ -255,6 +181,8 @@ class TestPyutPythonPegVisitor(UnitTestBase):
         tree:    PythonParser.File_inputContext = self._setupPegBasedParser('SimpleDataClass.py')
         visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
 
+        visitor.pyutClasses = self._do1stPassPegBasedParser('SimpleDataClass.py')
+
         visitor.visit(tree)
 
         return visitor
@@ -275,8 +203,12 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
     def _setupSimpleClassVisitor(self) -> PyutPythonPegVisitor:
 
+        pyutClasses: PyutClasses = self._do1stPassPegBasedParser('SimpleClass.py')
+
         tree:    PythonParser.File_inputContext = self._setupPegBasedParser('SimpleClass.py')
         visitor: PyutPythonPegVisitor           = PyutPythonPegVisitor()
+
+        visitor.pyutClasses = pyutClasses
 
         visitor.visit(tree)
 
@@ -321,6 +253,15 @@ class TestPyutPythonPegVisitor(UnitTestBase):
             self.assertTrue(False, f'File contains {parser.getNumberOfSyntaxErrors()} syntax errors')
 
         return tree
+
+    def _do1stPassPegBasedParser(self, fileName: str) -> PyutClasses:
+
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser(fileName=fileName)
+        visitor: PyutPythonPegClassVisitor      = PyutPythonPegClassVisitor()
+
+        visitor.visit(tree)
+
+        return visitor.pyutClasses
 
     def _buildMethodHashIndex(self, pyutMethods: PyutMethods) -> PyutMethodHashIndex:
 

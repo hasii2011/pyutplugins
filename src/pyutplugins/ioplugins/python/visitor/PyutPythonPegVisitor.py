@@ -8,11 +8,7 @@ from typing import Union
 from logging import Logger
 from logging import getLogger
 
-from os import linesep as osLineSep
-
 from dataclasses import dataclass
-
-from enum import Enum
 
 from antlr4 import ParserRuleContext
 from antlr4.tree.Tree import TerminalNodeImpl
@@ -23,75 +19,40 @@ from pyutmodelv2.PyutMethod import PyutMethods
 from pyutmodelv2.PyutParameter import PyutParameter
 from pyutmodelv2.PyutField import PyutField
 from pyutmodelv2.PyutType import PyutType
-from pyutmodelv2.enumerations.PyutStereotype import PyutStereotype
 from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser
+from pyutplugins.ioplugins.python.visitor.ParserTypes import Associate
+from pyutplugins.ioplugins.python.visitor.ParserTypes import AssociateName
+from pyutplugins.ioplugins.python.visitor.ParserTypes import Associates
+from pyutplugins.ioplugins.python.visitor.ParserTypes import AssociationType
+from pyutplugins.ioplugins.python.visitor.ParserTypes import Associations
 
-from pyutplugins.ioplugins.python.pythonpegparser.PythonPegParserVisitor import PythonPegParserVisitor
+from pyutplugins.ioplugins.python.visitor.ParserTypes import Parents
+from pyutplugins.ioplugins.python.visitor.ParserTypes import PropertyMap
+from pyutplugins.ioplugins.python.visitor.ParserTypes import PropertyName
+from pyutplugins.ioplugins.python.visitor.ParserTypes import PropertyNames
+from pyutplugins.ioplugins.python.visitor.ParserTypes import PyutClassName
+from pyutplugins.ioplugins.python.visitor.ParserTypes import PyutClasses
 
-PyutClassName = NewType('PyutClassName', str)
+from pyutplugins.ioplugins.python.visitor.PyutBaseVisitor import PyutBaseVisitor
+
 MethodName    = NewType('MethodName', str)
-PropertyName  = NewType('PropertyName', str)
-ParentName    = NewType('ParentName', str)
-ChildName     = NewType('ChildName',  str)
 
-ClassNames    = NewType('ClassNames', List[PyutClassName])
-MethodNames   = NewType('MethodNames',   List[MethodName])
+ClassNames    = NewType('ClassNames',  List[PyutClassName])
+MethodNames   = NewType('MethodNames', List[MethodName])
 
-Children   = List[Union[PyutClassName, ChildName]]
-
-Parents       = NewType('Parents',       Dict[ParentName, Children])
 Methods       = NewType('Methods',       List[MethodNames])
 
-PropertyNames = NewType('PropertyNames', List[PropertyName])
 CodeLine      = NewType('CodeLine',      str)
 CodeLines     = NewType('CodeLines',     List[CodeLine])
 MethodCode    = NewType('MethodCode',    Dict[MethodName,   CodeLines])
-
-PropertyMap   = NewType('PropertyMap', Dict[PyutClassName, PropertyNames])
 
 NO_CLASS_NAME: PyutClassName = PyutClassName('')
 
 NO_CLASS_DEF_CONTEXT: PythonParser.Class_defContext = cast(PythonParser.Class_defContext, None)
 
 NO_METHOD_CTX: PythonParser.AssignmentContext = cast(PythonParser.AssignmentContext, None)
-
-AssociateName = PyutClassName
-
-
-class AssociationType(Enum):
-
-    ASSOCIATION = 'ASSOCIATION'
-    AGGREGATION = 'AGGREGATION'
-    COMPOSITION = 'COMPOSITION'
-    INHERITANCE = 'INHERITANCE'
-    INTERFACE   = 'INTERFACE'
-
-
-@dataclass
-class Associate:
-    associateName:   AssociateName   = AssociateName('')
-    associationType: AssociationType = AssociationType.ASSOCIATION
-
-
-Associates = NewType('Associates', List[Associate])
-
-#
-# e.g.
-#     @property
-#     def pages(self) -> Pages:
-#         return self._pages
-# In the above "Pages" is the AssociateName and goes in the List for the method containing PyutClassName
-#
-# e.g.
-#  self.pages: Pages = Pages({})
-#
-#  Pages is the AssociateName and the enclosing class for the __init__ method is the PyutClassName
-#
-#
-Associations = NewType('Associations', Dict[PyutClassName, Associates])
-PyutClasses  = NewType('PyutClasses',  Dict[PyutClassName, PyutClass])
 
 # noinspection SpellCheckingInspection
 MAGIC_DUNDER_METHODS:      List[str] = ['__init__', '__str__', '__repr__', '__new__', '__del__',
@@ -112,8 +73,6 @@ PRIVATE_INDICATOR:   str = '__'
 PROPERTY_DECORATOR:  str = 'property'
 DATACLASS_DECORATOR: str = 'dataclass'
 
-VERSION: str = '2.0'
-
 
 @dataclass
 class ParameterNameAndType:
@@ -121,9 +80,10 @@ class ParameterNameAndType:
     typeName: str = ''
 
 
-class PyutPythonPegVisitor(PythonPegParserVisitor):
+class PyutPythonPegVisitor(PyutBaseVisitor):
     def __init__(self):
 
+        super().__init__()
         self.logger: Logger = getLogger(__name__)
 
         self._parents:      Parents      = Parents({})
@@ -132,9 +92,26 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
 
         self._propertyMap: PropertyMap = PropertyMap({})
 
+    def visit(self, tree: PythonParser.File_inputContext):
+
+        assert len(self._pyutClasses) != 0, 'Call must provide parsed classes from first pass'
+        super().visit(tree)
+
     @property
     def pyutClasses(self) -> PyutClasses:
+
         return self._pyutClasses
+
+    @pyutClasses.setter
+    def pyutClasses(self, pyutClasses: PyutClasses):
+
+        classNames = pyutClasses.keys()
+        #
+        # Create property map for each class
+        #
+        for className in classNames:
+            self._propertyMap[className] = PropertyNames([])
+        self._pyutClasses = pyutClasses
 
     @property
     def parents(self) -> Parents:
@@ -151,34 +128,6 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
     @associations.setter
     def associations(self, newValue: Associations):
         self._associations = newValue
-
-    def visitClass_def(self, ctx: PythonParser.Class_defContext):
-        """
-        Visit a parse tree produced by PythonParser#class_def.
-
-        Args:
-            ctx:
-
-        """
-        className: PyutClassName = self._extractClassName(ctx=ctx)
-
-        # self._classNames.append(className)
-        self.logger.debug(f'visitClassdef: Visited class: {className}')
-
-        argumentsCtx: PythonParser.ArgumentsContext = self._findArgListContext(ctx)
-        if argumentsCtx is not None:
-            self._createParentChildEntry(argumentsCtx, className)
-
-        pyutClass: PyutClass = PyutClass(name=className)
-        pyutClass.description = self._generateMyCredits()
-
-        self._pyutClasses[className] = pyutClass
-        #
-        # Make an entry for this guy's properties
-        #
-        self._propertyMap[className] = PropertyNames([])
-
-        return self.visitChildren(ctx)
 
     def visitFunction_def(self, ctx: PythonParser.Function_defContext):
         """
@@ -287,34 +236,6 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
 
         return self.visitChildren(ctx)
 
-    def visitPrimary(self, ctx: PythonParser.PrimaryContext):
-        """
-        Visit a parse tree produced by PythonParser#primary.
-        Args:
-            ctx:
-
-        """
-        primaryStr: str = ctx.getText()
-        if primaryStr.startswith('NewType'):
-            argumentsCtx: PythonParser.ArgumentsContext = ctx.arguments()
-            if argumentsCtx is not None:
-
-                argStr = ctx.children[2].getText()
-                typeValueList = argStr.split(',')
-                self.logger.debug(f'{typeValueList=}')
-
-                className = typeValueList[0].strip("'").strip('"')
-                self.logger.debug(f'{className}')
-
-                pyutClass: PyutClass = PyutClass(name=className)
-
-                pyutClass.description = self._generateMyCredits()
-                pyutClass.stereotype  = PyutStereotype.TYPE
-
-                self._pyutClasses[className] = pyutClass
-
-        return self.visitChildren(ctx)
-
     def _handleFullParameters(self, className: PyutClassName, methodName: MethodName, defaultContexts: List[PythonParser.Param_with_defaultContext]):
         """
         Handles these type:
@@ -343,68 +264,6 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
             pyutParameter: PyutParameter = PyutParameter(name=nameAndType.name, type=PyutType(nameAndType.typeName))
 
             self._updateModelMethodParameter(className=className, methodName=methodName, pyutParameter=pyutParameter)
-
-    def _findArgListContext(self, ctx: PythonParser.Class_defContext) -> PythonParser.ArgumentsContext:
-
-        argumentsCtx: PythonParser.ArgumentsContext = cast(PythonParser.ArgumentsContext, None)
-
-        classDefRawContext: PythonParser.Class_def_rawContext = ctx.class_def_raw()
-        for childCtx in classDefRawContext.children:
-            if isinstance(childCtx, PythonParser.ArgumentsContext):
-                argumentsCtx = childCtx
-                break
-
-        return argumentsCtx
-
-    def _createParentChildEntry(self, argumentsCtx: PythonParser.ArgumentsContext, childName: Union[PyutClassName, ChildName]):
-
-        args:       PythonParser.ArgsContext = argumentsCtx.args()
-        parentName: ParentName               = ParentName(args.getText())
-        self.logger.debug(f'Class: {childName} is subclass of {parentName}')
-
-        multiParents = parentName.split(',')
-        if len(multiParents) > 1:
-            self._handleMultiParentChild(multiParents=multiParents, childName=childName)
-        else:
-            self._updateParentsDictionary(parentName=parentName, childName=childName)
-
-    def _handleMultiParentChild(self, multiParents: List[str], childName: Union[PyutClassName, ChildName]):
-        """
-
-        Args:
-            multiParents:
-            childName:
-
-        """
-        self.logger.debug(f'handleMultiParentChild: {childName} -- {multiParents}')
-        for parent in multiParents:
-            # handle the special case
-            if parent.startswith('metaclass'):
-                splitParent: List[str] = parent.split('=')
-                parentName: ParentName = ParentName(splitParent[1])
-                self._updateParentsDictionary(parentName=parentName, childName=childName)
-            else:
-                parentName = ParentName(parent)
-                self._updateParentsDictionary(parentName=parentName, childName=childName)
-
-    def _updateParentsDictionary(self, parentName: ParentName, childName: Union[PyutClassName, ChildName]):
-        """
-        Update our dictionary of parents. If the parent dictionary
-        does not have an entry, create one with the single child.
-
-        Args:
-            parentName:     The prospective parent
-            childName:      Child class name
-
-        """
-
-        if parentName in self._parents:
-            children: Children = self._parents[parentName]
-            children.append(childName)
-        else:
-            children = [childName]
-
-        self._parents[parentName] = children
 
     def _extractClassDefContext(self, ctx: PythonParser.Function_defContext) -> PythonParser.Class_defContext:
         """
@@ -455,21 +314,6 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
                     ans = True
                     break
         return ans
-
-    def _extractClassName(self, ctx: PythonParser.Class_defContext) -> PyutClassName:
-        """
-        Get a class name from a Class_defContext
-        Args:
-            ctx:
-
-        Returns:    A class name
-        """
-
-        child:     PythonParser.Class_def_rawContext = ctx.class_def_raw()
-        name:      TerminalNodeImpl                  = child.NAME()
-        className: PyutClassName                     = name.getText()
-
-        return className
 
     def _extractMethodName(self, ctx: PythonParser.Function_def_rawContext) -> MethodName:
 
@@ -642,7 +486,7 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
         if typeStr in self._pyutClasses:
 
             associateName: AssociateName = AssociateName(typeStr)
-            associate: Associate = Associate(associateName=associateName, associationType=AssociationType.ASSOCIATION)
+            associate:     Associate     = Associate(associateName=associateName, associationType=AssociationType.ASSOCIATION)
 
             if className in self._associations:
                 self._associations[className].append(associate)
@@ -712,26 +556,3 @@ class PyutPythonPegVisitor(PythonPegParserVisitor):
             returnTypeStr = exprCtx.getText()
 
         return returnTypeStr
-
-    def _generateMyCredits(self) -> str:
-        """
-
-        Returns:    Reversed Engineered by the one and only:
-                    Gato Malo - Humberto A. Sanchez II
-                    Generated: ${DAY} ${MONTH_NAME_FULL} ${YEAR}
-                    Version: ${VERSION}
-
-        """
-        from datetime import date
-
-        today: date = date.today()
-        formatDated: str = today.strftime('%d %B %Y')
-
-        hasiiCredits: str = (
-            f'Reversed Engineered by the one and only:{osLineSep}'
-            f'Gato Malo - Humberto A. Sanchez II{osLineSep}'
-            f'Generated: {formatDated}{osLineSep}'
-            f'Version: {VERSION}'
-        )
-
-        return hasiiCredits

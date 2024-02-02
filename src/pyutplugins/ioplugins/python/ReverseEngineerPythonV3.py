@@ -30,16 +30,17 @@ from pyutplugins.common.LinkMakerMixin import LinkMakerMixin
 
 from pyutplugins.ioplugins.python.PythonParseException import PythonParseException
 
-from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import Associates
-from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import AssociationType
-from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import Associations
+from pyutplugins.ioplugins.python.visitor.ParserTypes import Associates
+from pyutplugins.ioplugins.python.visitor.ParserTypes import AssociationType
+from pyutplugins.ioplugins.python.visitor.ParserTypes import Associations
+from pyutplugins.ioplugins.python.visitor.ParserTypes import ChildName
+from pyutplugins.ioplugins.python.visitor.ParserTypes import Children
+from pyutplugins.ioplugins.python.visitor.ParserTypes import ParentName
+from pyutplugins.ioplugins.python.visitor.ParserTypes import Parents
+from pyutplugins.ioplugins.python.visitor.ParserTypes import PyutClassName
+from pyutplugins.ioplugins.python.visitor.ParserTypes import PyutClasses
 
-from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import ChildName
-from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import Children
-from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import ParentName
-from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import Parents
-from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutClassName
-from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutClasses
+
 from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutPythonPegVisitor
 
 from pyutplugins.ioplugins.python.pythonpegparser.PythonLexer import PythonLexer
@@ -153,8 +154,10 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
 
         associations: Associations = self._cumulativeAssociations
         for className in associations:
+
             pyutClassName: PyutClassName = cast(PyutClassName, className)
-            associates: Associates = associations[pyutClassName]
+            associates:    Associates    = associations[pyutClassName]
+
             for associate in associates:
                 sourceClass:      OglClass = oglClassesDict[pyutClassName]
                 destinationClass: OglClass = oglClassesDict[associate.associateName]
