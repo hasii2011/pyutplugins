@@ -63,50 +63,6 @@ class TestPyutPythonPegClassVisitor(UnitTestBase):
         #
         self.assertEqual(5, len(visitor.pyutClasses), 'Oops class names parsed, mismatch')
 
-    def testMultiClassFileWithInheritance(self):
-
-        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('Opie.py')
-        visitor: PyutPythonPegClassVisitor = PyutPythonPegClassVisitor()
-
-        visitor.visit(tree)
-
-        expectedParentName: str = 'Cat'
-        expectedChildName:  str = 'Opie'
-
-        self.assertTrue(expectedParentName in visitor.parents, 'Missing parent')
-
-        actualChildName: str = visitor.parents[ParentName(expectedParentName)][0]
-
-        self.assertEqual(expectedChildName, actualChildName, 'Missing child')
-
-    def testMultipleInheritanceClass(self):
-
-        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('MultipleInheritance.py')
-        visitor: PyutPythonPegClassVisitor = PyutPythonPegClassVisitor()
-
-        visitor.visit(tree)
-
-        self.logger.info(f'{visitor.parents=}')
-
-        expectedParentName1: str = 'Car'
-        expectedParentName2: str = 'Flyable'
-
-        self.assertTrue(expectedParentName1 in visitor.parents, f'Missing parent: {expectedParentName1}')
-        self.assertTrue(expectedParentName2 in visitor.parents, f'Missing parent: {expectedParentName2}')
-
-    def testMultipleInheritanceWithMetaClass(self):
-
-        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('MultipleInheritanceWithMetaClass.py')
-        visitor: PyutPythonPegClassVisitor      = PyutPythonPegClassVisitor()
-
-        visitor.visit(tree)
-
-        expectedParentName1: str = 'BaseWxCommand'
-        expectedParentName2: str = 'MyMetaBaseWxCommand'
-
-        self.assertTrue(expectedParentName1 in visitor.parents, f'Missing parent: {expectedParentName1}')
-        self.assertTrue(expectedParentName2 in visitor.parents, f'Missing parent: {expectedParentName2}')
-
     def testSynthesizeType(self):
 
         tree:    PythonParser.File_inputContext = self._setupPegBasedParser('AssociationClasses.py')

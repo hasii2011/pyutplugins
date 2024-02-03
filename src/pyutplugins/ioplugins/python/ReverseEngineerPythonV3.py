@@ -39,7 +39,7 @@ from pyutplugins.ioplugins.python.visitor.ParserTypes import ParentName
 from pyutplugins.ioplugins.python.visitor.ParserTypes import Parents
 from pyutplugins.ioplugins.python.visitor.ParserTypes import PyutClassName
 from pyutplugins.ioplugins.python.visitor.ParserTypes import PyutClasses
-
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegClassVisitor import PyutPythonPegClassVisitor
 
 from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutPythonPegVisitor
 
@@ -71,11 +71,11 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
 
         self.logger: Logger = getLogger(__name__)
 
-        self._pyutClasses:    PyutClasses     = PyutClasses({})
         self._oglClassesDict: OglClassesDict  = OglClassesDict({})
         self._oglClasses:     OglClasses      = OglClasses([])
         self._oglLinks:       OglLinks        = OglLinks([])
 
+        self._cumulativePyutClasses:  PyutClasses     = PyutClasses({})
         self._cumulativeParents:      Parents       = Parents({})
         self._cumulativeAssociations: Associations  = Associations({})
 
@@ -101,13 +101,16 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
                 if tree is None:
                     continue
 
+                updatedCumulativePyutClasses: PyutClasses = self._do1stPassPegBasedParser(fileName=fqFileName, cumulativePyutClasses=self._cumulativePyutClasses)
+
+                self._cumulativePyutClasses = updatedCumulativePyutClasses
+
                 visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
 
+                visitor.pyutClasses  = self._cumulativePyutClasses
                 visitor.parents      = self._cumulativeParents
                 visitor.associations = self._cumulativeAssociations
                 visitor.visit(tree)
-
-                self._pyutClasses = PyutClasses(self._pyutClasses | visitor.pyutClasses)
 
                 self._cumulativeParents      = visitor.parents
                 self._cumulativeAssociations = visitor.associations
@@ -169,9 +172,9 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
 
     def _generateOglClasses(self):
 
-        for pyutClassName in self._pyutClasses:
+        for pyutClassName in self._cumulativePyutClasses:
             try:
-                pyutClass: PyutClass = self._pyutClasses[pyutClassName]
+                pyutClass: PyutClass = self._cumulativePyutClasses[pyutClassName]
                 oglClass:  OglClass  = OglClass(pyutClass)
 
                 self._oglClassesDict[pyutClassName] = oglClass
@@ -221,3 +224,13 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
             tree = cast(PythonParser.File_inputContext, None)
 
         return tree
+
+    def _do1stPassPegBasedParser(self, fileName: str, cumulativePyutClasses: PyutClasses) -> PyutClasses:
+
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser(fqFileName=fileName)
+        visitor: PyutPythonPegClassVisitor      = PyutPythonPegClassVisitor()
+
+        visitor.pyutClasses = cumulativePyutClasses
+        visitor.visit(tree)
+
+        return visitor.pyutClasses

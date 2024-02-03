@@ -22,6 +22,7 @@ from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from pyutplugins.ioplugins.python.pythonpegparser.PythonLexer import PythonLexer
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser
+from pyutplugins.ioplugins.python.visitor.ParserTypes import ParentName
 from pyutplugins.ioplugins.python.visitor.PyutPythonPegClassVisitor import PyutPythonPegClassVisitor
 
 from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import Associations
@@ -57,6 +58,53 @@ class TestPyutPythonPegVisitor(UnitTestBase):
 
     def tearDown(self):
         super().tearDown()
+
+    def testMultiClassFileWithInheritance(self):
+
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('Opie.py')
+        visitor: PyutPythonPegVisitor           = PyutPythonPegVisitor()
+
+        visitor.pyutClasses = self._do1stPassPegBasedParser('Opie.py')
+        visitor.visit(tree)
+
+        expectedParentName: str = 'Cat'
+        expectedChildName:  str = 'Opie'
+
+        self.assertTrue(expectedParentName in visitor.parents, 'Missing parent')
+
+        actualChildName: str = visitor.parents[ParentName(expectedParentName)][0]
+
+        self.assertEqual(expectedChildName, actualChildName, 'Missing child')
+
+    def testMultipleInheritanceClass(self):
+
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('MultipleInheritance.py')
+        visitor: PyutPythonPegVisitor           = PyutPythonPegVisitor()
+
+        visitor.pyutClasses = self._do1stPassPegBasedParser('MultipleInheritance.py')
+        visitor.visit(tree)
+
+        self.logger.info(f'{visitor.parents=}')
+
+        expectedParentName1: str = 'Car'
+        expectedParentName2: str = 'Flyable'
+
+        self.assertTrue(expectedParentName1 in visitor.parents, f'Missing parent: {expectedParentName1}')
+        self.assertTrue(expectedParentName2 in visitor.parents, f'Missing parent: {expectedParentName2}')
+
+    def testMultipleInheritanceWithMetaClass(self):
+
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('MultipleInheritanceWithMetaClass.py')
+        visitor: PyutPythonPegVisitor           = PyutPythonPegVisitor()
+
+        visitor.pyutClasses = self._do1stPassPegBasedParser('MultipleInheritanceWithMetaClass.py')
+        visitor.visit(tree)
+
+        expectedParentName1: str = 'BaseWxCommand'
+        expectedParentName2: str = 'MyMetaBaseWxCommand'
+
+        self.assertTrue(expectedParentName1 in visitor.parents, f'Missing parent: {expectedParentName1}')
+        self.assertTrue(expectedParentName2 in visitor.parents, f'Missing parent: {expectedParentName2}')
 
     def testClassMethods(self):
 

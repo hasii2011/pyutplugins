@@ -22,6 +22,7 @@ from pyutmodelv2.PyutType import PyutType
 from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser
+from pyutplugins.ioplugins.python.visitor.ParentsDictionaryHandler import ParentsDictionaryHandler
 from pyutplugins.ioplugins.python.visitor.ParserTypes import Associate
 from pyutplugins.ioplugins.python.visitor.ParserTypes import AssociateName
 from pyutplugins.ioplugins.python.visitor.ParserTypes import Associates
@@ -86,11 +87,12 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
         super().__init__()
         self.logger: Logger = getLogger(__name__)
 
-        self._parents:      Parents      = Parents({})
         self._associations: Associations = Associations({})
         self._pyutClasses:  PyutClasses  = PyutClasses({})
 
         self._propertyMap: PropertyMap = PropertyMap({})
+
+        self._parentsDictionaryHandler: ParentsDictionaryHandler = ParentsDictionaryHandler()
 
     def visit(self, tree: PythonParser.File_inputContext):
 
@@ -115,11 +117,11 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
 
     @property
     def parents(self) -> Parents:
-        return self._parents
+        return self._parentsDictionaryHandler.parents
 
     @parents.setter
-    def parents(self, newValue: Parents):
-        self._parents = newValue
+    def parents(self, parents: Parents):
+        self._parentsDictionaryHandler.parents = parents
 
     @property
     def associations(self) -> Associations:
@@ -128,6 +130,24 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
     @associations.setter
     def associations(self, newValue: Associations):
         self._associations = newValue
+
+    def visitClass_def(self, ctx: PythonParser.Class_defContext):
+        """
+        Visit a parse tree produced by PythonParser#class_def.
+
+        Args:
+            ctx:
+
+        """
+        className: PyutClassName = self._extractClassName(ctx=ctx)
+
+        self.logger.debug(f'visitClassdef: Visited class: {className}')
+
+        argumentsCtx: PythonParser.ArgumentsContext = self._findArgListContext(ctx)
+        if argumentsCtx is not None:
+            self._parentsDictionaryHandler.createParentChildEntry(argumentsCtx, className)
+
+        return self.visitChildren(ctx)
 
     def visitFunction_def(self, ctx: PythonParser.Function_defContext):
         """
@@ -235,6 +255,18 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
                         self._handleNoTypeSpecifiedField(className, ctx)
 
         return self.visitChildren(ctx)
+
+    def _findArgListContext(self, ctx: PythonParser.Class_defContext) -> PythonParser.ArgumentsContext:
+
+        argumentsCtx: PythonParser.ArgumentsContext = cast(PythonParser.ArgumentsContext, None)
+
+        classDefRawContext: PythonParser.Class_def_rawContext = ctx.class_def_raw()
+        for childCtx in classDefRawContext.children:
+            if isinstance(childCtx, PythonParser.ArgumentsContext):
+                argumentsCtx = childCtx
+                break
+
+        return argumentsCtx
 
     def _handleFullParameters(self, className: PyutClassName, methodName: MethodName, defaultContexts: List[PythonParser.Param_with_defaultContext]):
         """
