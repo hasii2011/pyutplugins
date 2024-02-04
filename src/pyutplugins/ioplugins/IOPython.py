@@ -25,6 +25,10 @@ from pyutmodelv2.PyutClass import PyutClass
 from ogl.OglClass import OglClass
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
+#
+# TODO: Don't worry about this internal type; Will be fixed when we your the model type
+#
+from pyutplugins.ioplugins.python.visitor.ParserTypes import PyutClasses
 
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
@@ -118,19 +122,16 @@ class IOPython(IOPluginInterface):
         status: bool = True
         try:
             self._readProgressDlg = ProgressDialog('Parsing Files', 'Starting', parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
-            oglClassesDict:  OglClassesDict          = OglClassesDict({})
             reverseEngineer: ReverseEngineerPythonV3 = ReverseEngineerPythonV3()
 
             self._readProgressDlg.SetRange(self._moduleCount)
 
-            for directory in self._importPackages:
-                importPackage: Package = cast(Package, directory)
+            pyutClasses: PyutClasses = self._collectPyutClassesInPass1(reverseEngineer=reverseEngineer)
+            pyutClasses              = self._enhancePyutClassesInPass2(reverseEngineer=reverseEngineer, pyutClasses=pyutClasses)
 
-                reverseEngineer.reversePython(directoryName=importPackage.packageName, files=importPackage.moduleToImport, progressCallback=self._readProgressCallback)
-                oglClassesDict.update(reverseEngineer.oglClasses)
-                self.logger.warning(f'Classes: {oglClassesDict}')
-
+            oglClassesDict: OglClassesDict = reverseEngineer.generateOglClasses(pyutClasses)
             reverseEngineer.generateLinks(oglClassesDict)
+
             self._layoutUmlClasses(oglClasses=OglClasses(list(oglClassesDict.values())))
             self._layoutLinks(oglLinks=reverseEngineer.oglLinks)
         except (ValueError, Exception, PythonParseException) as e:
@@ -190,6 +191,33 @@ class IOPython(IOPluginInterface):
             self._writeClassToFile(classCode, className, directoryName, generatedClassDoc)
 
         self.logger.info("IoPython done !")
+
+    def _collectPyutClassesInPass1(self, reverseEngineer: ReverseEngineerPythonV3) -> PyutClasses:
+
+        cumulativePyutClasses: PyutClasses = PyutClasses({})
+        for directory in self._importPackages:
+            importPackage: Package = cast(Package, directory)
+
+            currentPyutClasses: PyutClasses = reverseEngineer.doPass1(directoryName=importPackage.packageName,
+                                                                      files=importPackage.moduleToImport,
+                                                                      progressCallback=self._readProgressCallback)
+
+            cumulativePyutClasses = PyutClasses(cumulativePyutClasses | currentPyutClasses)
+
+        return cumulativePyutClasses
+
+    def _enhancePyutClassesInPass2(self, reverseEngineer: ReverseEngineerPythonV3, pyutClasses: PyutClasses) -> PyutClasses:
+
+        updatedPyutClasses: PyutClasses = PyutClasses({})
+        for directory in self._importPackages:
+            importPackage: Package = cast(Package, directory)
+
+            updatedPyutClasses = reverseEngineer.doPass2(directoryName=importPackage.packageName,
+                                                         files=importPackage.moduleToImport,
+                                                         pyutClasses=pyutClasses,
+                                                         progressCallback=self._readProgressCallback)
+
+        return updatedPyutClasses
 
     def _writeClassToFile(self, classCode, className, directory, generatedClassDoc):
 

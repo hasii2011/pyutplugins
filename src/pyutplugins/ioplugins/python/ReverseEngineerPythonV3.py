@@ -71,43 +71,66 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
 
         self.logger: Logger = getLogger(__name__)
 
-        self._oglClassesDict: OglClassesDict  = OglClassesDict({})
+        # self._oglClassesDict: OglClassesDict  = OglClassesDict({})
         self._oglClasses:     OglClasses      = OglClasses([])
         self._oglLinks:       OglLinks        = OglLinks([])
 
-        self._cumulativePyutClasses:  PyutClasses     = PyutClasses({})
         self._cumulativeParents:      Parents       = Parents({})
         self._cumulativeAssociations: Associations  = Associations({})
 
-    def reversePython(self,  directoryName: str, files: List[str], progressCallback: Callable):
+    def doPass1(self, directoryName: str, files: List[str], progressCallback: Callable) -> PyutClasses:
+
+        pyutClasses:      PyutClasses = PyutClasses({})
+        currentFileCount: int         = 0
+
+        for fileName in files:
+
+            try:
+                fqFileName: str = f'{directoryName}{osSep}{fileName}'
+                self.logger.info(f'1st pass Processing file: {fqFileName}')
+
+                progressCallback(currentFileCount, f'Pass 1 processing: {directoryName}\n {fileName}')
+
+                tree:    PythonParser.File_inputContext = self._setupPegBasedParser(fqFileName=fqFileName)
+                visitor: PyutPythonPegClassVisitor      = PyutPythonPegClassVisitor()
+
+                visitor.pyutClasses = pyutClasses
+                visitor.visit(tree)
+                pyutClasses = visitor.pyutClasses
+
+            except (ValueError, Exception) as e:
+                self.logger.error(e)
+                raise PythonParseException(e)
+
+        return pyutClasses
+
+    def doPass2(self, directoryName: str, files: List[str], pyutClasses: PyutClasses, progressCallback: Callable) -> PyutClasses:
         """
         Reverse engineering Python files to OglClass's
 
         Args:
             directoryName:  The directory name where the selected files reside
             files:          A list of files to parse
+            pyutClasses:  The full list of classes scanned during pass 1
             progressCallback: The method to call to report progress
         """
         currentFileCount: int = 0
+
         for fileName in files:
 
             try:
                 fqFileName: str = f'{directoryName}{osSep}{fileName}'
-                self.logger.info(f'Processing file: {fqFileName}')
+                self.logger.info(f'2nd pass processing file: {fqFileName}')
 
                 progressCallback(currentFileCount, f'Processing: {directoryName}\n {fileName}')
 
-                tree:    PythonParser.File_inputContext = self._setupPegBasedParser(fqFileName=fqFileName)
+                tree: PythonParser.File_inputContext = self._setupPegBasedParser(fqFileName=fqFileName)
                 if tree is None:
                     continue
 
-                updatedCumulativePyutClasses: PyutClasses = self._do1stPassPegBasedParser(fileName=fqFileName, cumulativePyutClasses=self._cumulativePyutClasses)
-
-                self._cumulativePyutClasses = updatedCumulativePyutClasses
-
                 visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
 
-                visitor.pyutClasses  = self._cumulativePyutClasses
+                visitor.pyutClasses  = pyutClasses
                 visitor.parents      = self._cumulativeParents
                 visitor.associations = self._cumulativeAssociations
                 visitor.visit(tree)
@@ -119,15 +142,26 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
                 self.logger.error(e)
                 raise PythonParseException(e)
 
-        self._generateOglClasses()
-
-    @property
-    def oglClasses(self) -> OglClassesDict:
-        return self._oglClassesDict
+        return pyutClasses
 
     @property
     def oglLinks(self) -> OglLinks:
         return self._oglLinks
+
+    def generateOglClasses(self, pyutClasses: PyutClasses) -> OglClassesDict:
+
+        oglClassesDict: OglClassesDict = OglClassesDict({})
+        for pyutClassName in pyutClasses:
+            try:
+                pyutClass: PyutClass = pyutClasses[pyutClassName]
+                oglClass:  OglClass  = OglClass(pyutClass)
+
+                oglClassesDict[pyutClassName] = oglClass
+
+            except (ValueError, Exception) as e:
+                self.logger.error(f"Error while creating class {pyutClassName},  {e}")
+
+        return oglClassesDict
 
     def generateLinks(self, oglClassesDict: OglClassesDict):
 
@@ -169,18 +203,6 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
                 oglLink: OglLink = self.createLink(src=sourceClass, dst=destinationClass, linkType=pyutLinkType)
 
                 self._oglLinks.append(oglLink)
-
-    def _generateOglClasses(self):
-
-        for pyutClassName in self._cumulativePyutClasses:
-            try:
-                pyutClass: PyutClass = self._cumulativePyutClasses[pyutClassName]
-                oglClass:  OglClass  = OglClass(pyutClass)
-
-                self._oglClassesDict[pyutClassName] = oglClass
-
-            except (ValueError, Exception) as e:
-                self.logger.error(f"Error while creating class {pyutClassName},  {e}")
 
     def _toPyutLinkType(self, associationType: AssociationType) -> PyutLinkType:
 
@@ -224,13 +246,3 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
             tree = cast(PythonParser.File_inputContext, None)
 
         return tree
-
-    def _do1stPassPegBasedParser(self, fileName: str, cumulativePyutClasses: PyutClasses) -> PyutClasses:
-
-        tree:    PythonParser.File_inputContext = self._setupPegBasedParser(fqFileName=fileName)
-        visitor: PyutPythonPegClassVisitor      = PyutPythonPegClassVisitor()
-
-        visitor.pyutClasses = cumulativePyutClasses
-        visitor.visit(tree)
-
-        return visitor.pyutClasses

@@ -3,7 +3,6 @@ from typing import cast
 from typing import Dict
 from typing import List
 from typing import NewType
-from typing import Union
 
 from logging import Logger
 from logging import getLogger
@@ -17,7 +16,6 @@ from pyutmodelv2.PyutClass import PyutClass
 from pyutmodelv2.PyutMethod import PyutMethod
 from pyutmodelv2.PyutMethod import PyutMethods
 from pyutmodelv2.PyutParameter import PyutParameter
-from pyutmodelv2.PyutField import PyutField
 from pyutmodelv2.PyutType import PyutType
 
 from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
