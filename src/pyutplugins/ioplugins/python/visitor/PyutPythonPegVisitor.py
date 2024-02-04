@@ -19,9 +19,11 @@ from pyutmodelv2.PyutMethod import PyutMethods
 from pyutmodelv2.PyutParameter import PyutParameter
 from pyutmodelv2.PyutField import PyutField
 from pyutmodelv2.PyutType import PyutType
+
 from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from pyutplugins.ioplugins.python.pythonpegparser.PythonParser import PythonParser
+
 from pyutplugins.ioplugins.python.visitor.ParentsDictionaryHandler import ParentsDictionaryHandler
 from pyutplugins.ioplugins.python.visitor.ParserTypes import Associate
 from pyutplugins.ioplugins.python.visitor.ParserTypes import AssociateName
@@ -35,6 +37,7 @@ from pyutplugins.ioplugins.python.visitor.ParserTypes import PropertyName
 from pyutplugins.ioplugins.python.visitor.ParserTypes import PropertyNames
 from pyutplugins.ioplugins.python.visitor.ParserTypes import PyutClassName
 from pyutplugins.ioplugins.python.visitor.ParserTypes import PyutClasses
+from pyutplugins.ioplugins.python.visitor.PyutBaseVisitor import NO_CLASS_DEF_CONTEXT
 
 from pyutplugins.ioplugins.python.visitor.PyutBaseVisitor import PyutBaseVisitor
 
@@ -50,8 +53,6 @@ CodeLines     = NewType('CodeLines',     List[CodeLine])
 MethodCode    = NewType('MethodCode',    Dict[MethodName,   CodeLines])
 
 NO_CLASS_NAME: PyutClassName = PyutClassName('')
-
-NO_CLASS_DEF_CONTEXT: PythonParser.Class_defContext = cast(PythonParser.Class_defContext, None)
 
 NO_METHOD_CTX: PythonParser.AssignmentContext = cast(PythonParser.AssignmentContext, None)
 
@@ -88,9 +89,7 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
         self.logger: Logger = getLogger(__name__)
 
         self._associations: Associations = Associations({})
-        self._pyutClasses:  PyutClasses  = PyutClasses({})
-
-        self._propertyMap: PropertyMap = PropertyMap({})
+        self._propertyMap:  PropertyMap = PropertyMap({})
 
         self._parentsDictionaryHandler: ParentsDictionaryHandler = ParentsDictionaryHandler()
 
@@ -256,18 +255,6 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
 
         return self.visitChildren(ctx)
 
-    def _findArgListContext(self, ctx: PythonParser.Class_defContext) -> PythonParser.ArgumentsContext:
-
-        argumentsCtx: PythonParser.ArgumentsContext = cast(PythonParser.ArgumentsContext, None)
-
-        classDefRawContext: PythonParser.Class_def_rawContext = ctx.class_def_raw()
-        for childCtx in classDefRawContext.children:
-            if isinstance(childCtx, PythonParser.ArgumentsContext):
-                argumentsCtx = childCtx
-                break
-
-        return argumentsCtx
-
     def _handleFullParameters(self, className: PyutClassName, methodName: MethodName, defaultContexts: List[PythonParser.Param_with_defaultContext]):
         """
         Handles these type:
@@ -296,21 +283,6 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
             pyutParameter: PyutParameter = PyutParameter(name=nameAndType.name, type=PyutType(nameAndType.typeName))
 
             self._updateModelMethodParameter(className=className, methodName=methodName, pyutParameter=pyutParameter)
-
-    def _extractClassDefContext(self, ctx: PythonParser.Function_defContext) -> PythonParser.Class_defContext:
-        """
-        Args:
-            ctx:
-
-        Returns:  Either a class definition context or the sentinel value NO_CLASS_DEF_CONTEXT
-        """
-        currentCtx: ParserRuleContext = ctx
-        while currentCtx.parentCtx:
-            if isinstance(currentCtx, PythonParser.Class_defContext):
-                return currentCtx
-            currentCtx = currentCtx.parentCtx
-
-        return NO_CLASS_DEF_CONTEXT
 
     def _checkIfContextBelongsToClass(self, ctx: ParserRuleContext) -> bool:
 
@@ -368,6 +340,8 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
 
     def _findClassContext(self, ctx: ParserRuleContext) -> PythonParser.Class_defContext:
         """
+        TODO:  This should be replaced by _extractClassDefContext
+
         May report no context if the statement/methods/etc are outside the scope of a
         Python class
 
@@ -386,21 +360,6 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
                 break
 
         return cast(PythonParser.Class_defContext, currentCtx)
-
-    def _findMethodContext(self, ctx: ParserRuleContext) -> PythonParser.Function_defContext:
-
-        currentCtx: ParserRuleContext = ctx
-
-        while isinstance(currentCtx, PythonParser.Function_defContext) is False:
-            currentCtx = currentCtx.parentCtx
-            if currentCtx is None:
-                break
-
-        if currentCtx is not None:
-            raw: PythonParser.Function_def_rawContext = cast(PythonParser.Function_defContext, currentCtx).function_def_raw()
-            self.logger.debug(f'Found method: {raw.NAME()}')
-
-        return cast(PythonParser.Function_defContext, currentCtx)
 
     def _findModelMethod(self, pyutClass: PyutClass, methodName: MethodName) -> PyutMethod:
 
@@ -491,20 +450,6 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
         self._makeFieldForClass(className=className, propertyName=fieldName, typeStr=typeStr, defaultValue=fieldValue)
         self._makeAssociationEntry(className=className, typeStr=typeStr)
 
-    def _makeFieldForClass(self, className: PyutClassName, propertyName: Union[PropertyName, str], typeStr: str, defaultValue: str):
-        """
-
-        Args:
-            className:
-            propertyName:
-            typeStr:
-            defaultValue:
-        """
-        pyutField: PyutField = PyutField(name=propertyName, type=PyutType(typeStr), visibility=PyutVisibility.PUBLIC, defaultValue=defaultValue)
-        pyutClass: PyutClass = self._pyutClasses[className]
-
-        pyutClass.fields.append(pyutField)
-
     def _makeAssociationEntry(self, className, typeStr):
         """
         Now check to see if this type is one of our known classes;  If so, then create
@@ -566,16 +511,6 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
                     # self.logger.info(f'{decorator.getText()=}')
                     ans = True
                     break
-        return ans
-
-    def _isThisAssignmentInsideAMethod(self, ctx: PythonParser.AssignmentContext) -> bool:
-
-        ans: bool = False
-
-        currentCtx: ParserRuleContext = self._findMethodContext(ctx=ctx)
-        if currentCtx is not None:
-            ans = True
-
         return ans
 
     def _extractReturnType(self, ctx: PythonParser.Function_defContext) -> str:

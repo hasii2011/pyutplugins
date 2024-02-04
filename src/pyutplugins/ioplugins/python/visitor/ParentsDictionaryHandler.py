@@ -78,4 +78,3 @@ class ParentsDictionaryHandler:
             children = [childName]
 
         self._parents[parentName] = children
-
