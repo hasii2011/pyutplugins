@@ -22,6 +22,10 @@ from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
+from wx import ICON_ERROR
+from wx import ICON_WARNING
+from wx import MessageBox
+from wx import OK
 
 from pyutplugins.ExternalTypes import OglClasses
 from pyutplugins.ExternalTypes import OglLinks
@@ -98,9 +102,18 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
                 visitor.visit(tree)
                 pyutClasses = visitor.pyutClasses
 
-            except (ValueError, Exception) as e:
-                self.logger.error(e)
-                raise PythonParseException(e)
+            except (ValueError, Exception, PythonParseException) as e:
+                if isinstance(e, PythonParseException):
+                    errorMsg: str = f'{fileName}\n{e}'
+                    self.logger.error(e)
+                    MessageBox(errorMsg, 'Error', OK | ICON_ERROR)
+                    pass
+                else:
+                    self.logger.error(f'Error in {directoryName}/{fileName}')
+                    raise e
+
+            if len(pyutClasses) == 0:
+                MessageBox('No classes processed', 'Warning', OK | ICON_WARNING)
 
         return pyutClasses
 
@@ -138,10 +151,14 @@ class ReverseEngineerPythonV3(LinkMakerMixin):
                 self._cumulativeParents      = visitor.parents
                 self._cumulativeAssociations = visitor.associations
 
-            except (ValueError, Exception) as e:
-                self.logger.error(e)
-                raise PythonParseException(e)
-
+            except (ValueError, Exception, PythonParseException) as e:
+                if isinstance(e, PythonParseException):
+                    errorMsg: str = f'{fileName}\n{e}'
+                    self.logger.error(e)
+                    MessageBox(errorMsg, 'Error', OK | ICON_ERROR)
+                    pass
+                else:
+                    raise e
         return pyutClasses
 
     @property

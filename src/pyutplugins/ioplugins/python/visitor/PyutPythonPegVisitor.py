@@ -93,8 +93,11 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
 
     def visit(self, tree: PythonParser.File_inputContext):
 
-        assert len(self._pyutClasses) != 0, 'Call must provide parsed classes from first pass'
-        super().visit(tree)
+        if len(self._pyutClasses) == 0:
+            # Stop the process
+            self.logger.warning(f'No classes to process')
+        else:
+            super().visit(tree)
 
     @property
     def pyutClasses(self) -> PyutClasses:
@@ -174,7 +177,7 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
             else:
                 self.logger.debug(f'visitFunction_def: {methodName=}')
                 if className not in self._pyutClasses:
-                    assert False, 'This should not happen'
+                    assert False, f'This should not happen missing class name for: {methodName}'
                 else:
                     pyutClass:  PyutClass  = self._pyutClasses[className]
                     pyutMethod: PyutMethod = PyutMethod(name=methodName, returnType=PyutType(returnTypeStr), visibility=pyutVisibility)
@@ -198,32 +201,35 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
 
         Returns:
         """
-        classCtx:  PythonParser.Class_defContext    = self._findClassContext(ctx)
-        methodCtx: PythonParser.Function_defContext = self._findMethodContext(ctx)
-
-        className:    PyutClassName    = self._extractClassName(ctx=classCtx)
-        propertyName: PropertyName = self._extractPropertyName(ctx=methodCtx.function_def_raw())
-        if self._isThisAParameterListForAProperty(className=className, propertyName=propertyName) is True:
-            pass
+        classCtx:  PythonParser.Class_defContext    = self._extractClassDefContext(ctx)
+        if classCtx == NO_CLASS_DEF_CONTEXT:
+            self.logger.warning('This set of parameters belong to a method outside of a class')
         else:
-            methodName: MethodName = self._extractMethodName(ctx=methodCtx.function_def_raw())
-            self.logger.debug(f'{className=} {methodName=}')
-            noDefaultContexts: List[PythonParser.Param_no_defaultContext]   = ctx.param_no_default()
-            defaultContexts:   List[PythonParser.Param_with_defaultContext] = ctx.param_with_default()
+            methodCtx: PythonParser.Function_defContext = self._findMethodContext(ctx)
 
-            ctx2 = ctx.slash_no_default()
-            ctx3 = ctx.slash_with_default()
+            className:    PyutClassName    = self._extractClassName(ctx=classCtx)
+            propertyName: PropertyName = self._extractPropertyName(ctx=methodCtx.function_def_raw())
+            if self._isThisAParameterListForAProperty(className=className, propertyName=propertyName) is True:
+                pass
+            else:
+                methodName: MethodName = self._extractMethodName(ctx=methodCtx.function_def_raw())
+                self.logger.debug(f'{className=} {methodName=}')
+                noDefaultContexts: List[PythonParser.Param_no_defaultContext]   = ctx.param_no_default()
+                defaultContexts:   List[PythonParser.Param_with_defaultContext] = ctx.param_with_default()
 
-            if len(defaultContexts) != 0:
-                self._handleFullParameters(className=className, methodName=methodName, defaultContexts=defaultContexts)
-            elif len(noDefaultContexts) != 0:
-                self._handleTypeAnnotated(className=className, methodName=methodName, noDefaultContexts=noDefaultContexts)
-            elif ctx2 is not None:
-                self.logger.error(f'{ctx2.getText()}')
-                assert False, f'Unhandled {ctx2.getText()}'
-            elif ctx3 is not None:
-                self.logger.error(f'{ctx3.getText()}')
-                assert False, f'Unhandled {ctx3.getText()}'
+                ctx2 = ctx.slash_no_default()
+                ctx3 = ctx.slash_with_default()
+
+                if len(defaultContexts) != 0:
+                    self._handleFullParameters(className=className, methodName=methodName, defaultContexts=defaultContexts)
+                elif len(noDefaultContexts) != 0:
+                    self._handleTypeAnnotated(className=className, methodName=methodName, noDefaultContexts=noDefaultContexts)
+                elif ctx2 is not None:
+                    self.logger.error(f'{ctx2.getText()}')
+                    assert False, f'Unhandled {ctx2.getText()}'
+                elif ctx3 is not None:
+                    self.logger.error(f'{ctx3.getText()}')
+                    assert False, f'Unhandled {ctx3.getText()}'
 
         return self.visitChildren(ctx)
 
@@ -234,9 +240,9 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
         Args:
             ctx:
         """
-        classDefContext: PythonParser.Class_defContext = self._findClassContext(ctx=ctx)
+        classDefContext: PythonParser.Class_defContext = self._extractClassDefContext(ctx=ctx)
 
-        if classDefContext is not None:
+        if classDefContext != NO_CLASS_DEF_CONTEXT:
 
             if self._isThisAnAssignmentForADataClass(ctx=classDefContext) is True and self._isThisAssignmentInsideAMethod(ctx=ctx) is False:
 
@@ -336,29 +342,6 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
 
         return ParameterNameAndType(name=paramName, typeName=typeStr)
 
-    def _findClassContext(self, ctx: ParserRuleContext) -> PythonParser.Class_defContext:
-        """
-        TODO:  This should be replaced by _extractClassDefContext
-
-        May report no context if the statement/methods/etc are outside the scope of a
-        Python class
-
-        Args:
-            ctx:  Any context starting point
-
-        Returns:  The enclosing class context;  May return None
-
-        """
-        currentCtx: ParserRuleContext = ctx
-
-        while isinstance(currentCtx, PythonParser.Class_defContext) is False:
-            currentCtx = currentCtx.parentCtx
-            if currentCtx is None:
-                self.logger.info(f'Construct outside of class scope')
-                break
-
-        return cast(PythonParser.Class_defContext, currentCtx)
-
     def _findModelMethod(self, pyutClass: PyutClass, methodName: MethodName) -> PyutMethod:
 
         foundMethod: PyutMethod = cast(PyutMethod, None)
@@ -390,7 +373,7 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
             ctx:
         """
 
-        classCtx:  PythonParser.Class_defContext    = self._findClassContext(ctx)
+        classCtx:  PythonParser.Class_defContext    = self._extractClassDefContext(ctx)
         methodCtx: PythonParser.Function_defContext = self._findMethodContext(ctx)
 
         className:    PyutClassName  = self._extractClassName(ctx=classCtx)
