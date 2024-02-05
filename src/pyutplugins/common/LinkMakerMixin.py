@@ -4,6 +4,7 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from ogl.OglAssociation import OglAssociation
 from ogl.OglClass import OglClass
 from ogl.OglInterface import OglInterface
 from ogl.OglLink import OglLink
@@ -45,6 +46,13 @@ class LinkMakerMixin:
         pyutLink: PyutLink = PyutLink("", linkType=linkType, source=sourceClass, destination=destinationClass)
 
         oglLink = self._oglLinkFactory.getOglLink(src, pyutLink, dst, linkType)
+        #
+        # TODO: Is this a hack?  I think it is
+        # duplicate from Pyut;   This should be done by the OglLinkFactory
+        #
+        if isinstance(oglLink, OglAssociation):
+            oglAssociation: OglAssociation = cast(OglAssociation, oglLink)
+            oglAssociation.createDefaultAssociationLabels()
 
         src.addLink(oglLink)
         dst.addLink(oglLink)
