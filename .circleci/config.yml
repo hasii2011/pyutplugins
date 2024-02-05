@@ -41,8 +41,8 @@ jobs:
             pip install codeallyadvanced==1.1.0
             pip install pyutmodelv2==2.1.5
             pip install ogl==2.1.17
-            pip install untanglepyut==2.1.5
-            pip install oglio==2.1.5
+            pip install untanglepyut==2.1.6
+            pip install oglio==2.1.6
             pip install buildlackey~=1.6.3
       - run:
             name: run tests

@@ -23,8 +23,8 @@ codeallyadvanced==1.1.0
 
 pyutmodelv2==2.1.5
 ogl==2.1.17
-untanglepyut==2.1.5
-oglio==2.1.5
+untanglepyut==2.1.6
+oglio==2.1.6
 
 buildlackey==1.6.3
 
