@@ -46,7 +46,7 @@ class BasePluginInterface:
     This is meant to provide base properties and methods for the Input/Output
     pyutplugins and the Tool Plugins
 
-    Implementations set the protected variables at class construction
+    Implementations set the protected variables during class construction
 
     There should be no implementations of this interface
     """
@@ -194,7 +194,7 @@ class BasePluginInterface:
 
     def askForFileToExport(self, defaultFileName: str = '') -> SingleFileRequestResponse:
         """
-        Called by a plugin to ask for the export file name
+        Called by a plugin to ask for the export filename
 
         Returns: The appropriate response object
         """

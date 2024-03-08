@@ -38,7 +38,8 @@ class ToolPluginInterface(BasePluginInterface, ABC):
         Prepare for the tool action
         This can be used to query the user for additional plugin options
 
-        Returns: If False, the import should be cancelled.  'True' to proceed
+        Returns: If False, the import should be canceled.
+        'True' to proceed
         """
         pass
 

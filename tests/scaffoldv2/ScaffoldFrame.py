@@ -100,7 +100,7 @@ class ScaffoldFrame(Frame):
         """
 
         Args:
-            fqFileName: full qualified file name
+            fqFileName: full qualified filename
         """
         self._loadXmlFile(fqFileName=fqFileName)
 

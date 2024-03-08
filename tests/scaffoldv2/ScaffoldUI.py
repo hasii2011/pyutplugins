@@ -106,7 +106,7 @@ NO_DIAGRAM_FRAME: UmlDiagramsFrame = cast(UmlDiagramsFrame, None)
 
 class ScaffoldUI:
     """
-    This class is a container class that create user interface components
+    This class is a container class that creates user interface components
     in the parent frame
     """
 
@@ -150,7 +150,7 @@ class ScaffoldUI:
 
     def _setEventEngine(self, eventEngine: EventEngine):
         """
-        Write only property used to inject the event engine
+        Write-only property used to inject the event engine
         Once we get the event engine we can register our listeners
 
         Args:
@@ -172,7 +172,8 @@ class ScaffoldUI:
 
         self._eventEngine.registerListener(EventType.RequestCurrentProject.pyEventBinder, self._onRequestCurrentProject)
 
-    eventEngine    = property(fset=_setEventEngine)
+    # noinspection PyTypeChecker
+    eventEngine = property(fget=None, fset=_setEventEngine)
 
     def createEmptyProject(self):
         self._onNewProject(cast(NewProjectEvent, None))
@@ -257,7 +258,7 @@ class ScaffoldUI:
 
     def _onLoadProject(self, loadProjectEvent: LoadProjectEvent):
         """
-        When we load a project the Project node will have a PyutProject associated with it.
+        When we load a project, the Project node will have a PyutProject associated with it.
         Document nodes will have a PyutDocument node associated with them
 
         Args:

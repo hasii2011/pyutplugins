@@ -35,7 +35,7 @@ class ToolArrangeLinks(ToolPluginInterface):
         This can be used to ask some questions to the user.
 
         Returns:
-            If `False`, the import is cancelled.
+            If `False`, the import is canceled.
         """
         return True
 
