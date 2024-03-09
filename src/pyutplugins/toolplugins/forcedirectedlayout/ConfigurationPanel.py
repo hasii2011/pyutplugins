@@ -6,13 +6,13 @@ from logging import getLogger
 
 from wx import DefaultPosition
 from wx import EVT_SPINCTRL
+from wx import EVT_SPINCTRLDOUBLE
 from wx import SP_VERTICAL
 from wx import SpinCtrl
+from wx import SpinCtrlDouble
+from wx import SpinDoubleEvent
 from wx import SpinEvent
-from wx.lib.agw.floatspin import EVT_FLOATSPIN
-from wx.lib.agw.floatspin import FS_LEFT
-from wx.lib.agw.floatspin import FloatSpin
-from wx.lib.agw.floatspin import FloatSpinEvent
+
 from wx.lib.sized_controls import SizedPanel
 from wx.lib.sized_controls import SizedStaticBox
 
@@ -130,14 +130,11 @@ class ConfigurationPanel:
         attractionPanel.SetSizerType('vertical')
         attractionPanel.SetSizerProps(proportion=0)
 
-        attractionForce: FloatSpin = FloatSpin(attractionPanel, min_val=0.1, max_val=1.0, increment=0.1, value=0.1,
-                                               pos=(-1, -1), size=(75, 50), agwStyle=FS_LEFT)
-        attractionForce.SetSizerProps(expand=True)
-        # noinspection PyArgumentList
+        attractionForce: SpinCtrlDouble = SpinCtrlDouble(attractionPanel, min=0.1, max=1.0, inc=0.1, pos=(-1, -1), size=(50, 35))
+        # attractionForce.SetSizerProps(expand=True)
         attractionForce.SetDigits(2)
-        # noinspection PyArgumentList
         attractionForce.SetValue(self._configuration.attractionForce)
-        attractionForce.Bind(EVT_FLOATSPIN, self._attractionForceChanged)
+        attractionForce.Bind(EVT_SPINCTRLDOUBLE, self._attractionForceChanged)
 
         repulsionPanel: SizedStaticBox = SizedStaticBox(algorithmFactorsPanel, label='Node Repulsion Force')
         repulsionPanel.SetSizerType('vertical')
@@ -174,9 +171,9 @@ class ConfigurationPanel:
     def _onMinMaxY(self, minMaxY: MinMax):
         self._configuration.minMaxY = minMaxY
 
-    def _attractionForceChanged(self, event: FloatSpinEvent):
+    def _attractionForceChanged(self, event: SpinDoubleEvent):
 
-        floatSpin: FloatSpin = event.GetEventObject()
+        floatSpin: SpinCtrlDouble = event.GetEventObject()
 
         self._configuration.attractionForce = floatSpin.GetValue()
 
