@@ -2,6 +2,9 @@
 from abc import ABC
 from abc import abstractmethod
 
+from wx import BeginBusyCursor
+from wx import EndBusyCursor
+
 from pyutplugins.plugininterfaces.BasePluginInterface import BasePluginInterface
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
@@ -21,12 +24,14 @@ class ToolPluginInterface(BasePluginInterface, ABC):
 
     def executeTool(self):
         """
-        This is used by Pyut to invoke the tool.  This should NOT
+        This is used by the Plugin Manger to invoke the tool.  This should NOT
         be overridden
         TODO: Check for active frame
         """
         if self.setOptions() is True:
+            BeginBusyCursor()
             self.doAction()
+            EndBusyCursor()
 
     @property
     def menuTitle(self) -> str:

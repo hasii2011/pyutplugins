@@ -10,8 +10,6 @@ from wx import OK
 
 from wx import MessageDialog
 from wx import NewIdRef
-from wx import BeginBusyCursor
-from wx import EndBusyCursor
 
 from wx import Yield as wxYield
 
@@ -169,13 +167,11 @@ class PluginManager(metaclass=SingletonV3):
         pluginInstance: ToolPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
 
         # Do plugin functionality
-        BeginBusyCursor()
         try:
             pluginInstance.executeTool()
             self.logger.debug(f"After tool plugin do action")
         except (ValueError, Exception) as e:
             self.logger.error(f'{e}')
-        EndBusyCursor()
 
     def doImport(self, wxId: int):
         """

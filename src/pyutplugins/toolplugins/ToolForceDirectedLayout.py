@@ -7,6 +7,7 @@ from logging import getLogger
 from wx import OK
 from wx import Window
 
+
 from pyutplugins.ExternalTypes import OglObjects
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
