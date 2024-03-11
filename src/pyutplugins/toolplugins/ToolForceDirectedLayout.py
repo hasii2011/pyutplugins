@@ -14,6 +14,8 @@ from wx import Window
 
 from wx import Yield as wxYield
 
+from pyutmodelv2.PyutSDInstance import PyutSDInstance
+from pyutmodelv2.PyutUseCase import PyutUseCase
 from pyutmodelv2.PyutLink import PyutLinks
 from pyutmodelv2.PyutLink import PyutLink
 from pyutmodelv2.PyutClass import PyutClass
@@ -84,7 +86,7 @@ class ToolForceDirectedLayout(ToolPluginInterface):
                     for link in links:
                         pyutLink: PyutLink = cast(PyutLink, link)
                         self.logger.info(f'{pyutLink}')
-                        childPyutClass: PyutClass = pyutLink.destination
+                        childPyutClass: PyutClass | PyutSDInstance | PyutUseCase = pyutLink.destination
                         childClassName: str       = childPyutClass.name
 
                         try:
