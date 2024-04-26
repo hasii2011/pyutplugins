@@ -41,6 +41,7 @@ from pyutplugins.ioplugins.IOAscii import IOAscii
 from pyutplugins.toolplugins.ToolForceDirectedLayout import ToolForceDirectedLayout
 from pyutplugins.toolplugins.ToolArrangeLinks import ToolArrangeLinks
 from pyutplugins.toolplugins.ToolOrthogonalLayoutV2 import ToolOrthogonalLayoutV2
+from pyutplugins.toolplugins.ToolSaveLayout import ToolSaveLayout
 from pyutplugins.toolplugins.ToolSugiyama import ToolSugiyama
 from pyutplugins.toolplugins.ToolTransforms import ToolTransforms
 
@@ -68,7 +69,7 @@ class PluginManager(metaclass=SingletonV3):
 
     """
     IO_PLUGINS:   PluginList = PluginList([IOMermaid, IODTD, IOGML, IOJava, IOPdf, IOPython, IOWxImage, IOXml, IOAscii])
-    TOOL_PLUGINS: PluginList = PluginList([ToolForceDirectedLayout, ToolArrangeLinks, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms])
+    TOOL_PLUGINS: PluginList = PluginList([ToolSaveLayout, ToolForceDirectedLayout, ToolArrangeLinks, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms])
 
     def __init__(self, **kwargs):
         """
