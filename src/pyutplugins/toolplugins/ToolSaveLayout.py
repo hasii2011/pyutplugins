@@ -1,14 +1,10 @@
 
-from typing import List
-from typing import NewType
 from typing import cast
 
 from logging import Logger
 from logging import getLogger
 
 from dataclasses import asdict
-from dataclasses import dataclass
-from dataclasses import field
 
 from json import dumps as jsonDumps
 
@@ -28,54 +24,19 @@ from pyutplugins.plugintypes.PluginDataTypes import PluginName
 
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 from pyutplugins.plugintypes.SingleFileRequestResponse import SingleFileRequestResponse
-
+from pyutplugins.toolplugins.savelayout.Layout import Layout
+from pyutplugins.toolplugins.savelayout.Layout import LayoutInformation
+from pyutplugins.toolplugins.savelayout.Layout import Layouts
+from pyutplugins.toolplugins.savelayout.Layout import OglName
+from pyutplugins.toolplugins.savelayout.Layout import Position
+from pyutplugins.toolplugins.savelayout.Layout import Size
+from pyutplugins.toolplugins.savelayout.Layout import layoutsFactory
 
 DEFAULT_FILE_NAME: str = 'DiagramLayout'     # TODO make a plugin option
 
 FORMAT_NAME:        FormatName        = FormatName('Layout File')
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('json')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Save Diagram Layout')
-
-NO_INTEGER = cast(int, None)
-
-
-@dataclass
-class Size:
-    width:  int = NO_INTEGER
-    height: int = NO_INTEGER
-
-
-@dataclass
-class Position:
-    x: int = NO_INTEGER
-    y: int = NO_INTEGER
-
-
-def positionFactory() -> Position:
-    return Position()
-
-
-def sizeFactory() -> Size:
-    return Size()
-
-
-@dataclass
-class Layout:
-    name:     str      = cast(str, None)
-    position: Position = field(default_factory=positionFactory)
-    size:     Size     = field(default_factory=sizeFactory)
-
-
-Layouts = NewType('Layouts', List[Layout])
-
-
-def layoutsFactory() -> Layouts:
-    return Layouts([])
-
-
-@dataclass
-class LayoutInformation:
-    layouts: Layouts = field(default_factory=layoutsFactory)
 
 
 class ToolSaveLayout(ToolPluginInterface):
@@ -127,21 +88,24 @@ class ToolSaveLayout(ToolPluginInterface):
                     pyutObject: PyutObject = oglObject.pyutObject
 
                     if pyutObject.name is None:
-                        name: str = f'id: {pyutObject.id}'
+                        name: OglName = OglName(f'id: {pyutObject.id}')
                     else:
-                        name = pyutObject.name
+                        name = OglName(pyutObject.name)
                     x, y = oglObject.GetPosition()
                     w, h = oglObject.GetSize()
                     position: Position = Position(x=x, y=y)
                     size:     Size     = Size(width=w, height=h)
                     layout: Layout = Layout(name=name, position=position, size=size)
 
-                    layouts.append(layout)
+                    layouts[name] = layout
 
                 except (AttributeError, TypeError) as e:
                     self.logger.error(f'{e} - {oglObject=}')
 
         layoutInformation: LayoutInformation = LayoutInformation(layouts=layouts)
+
         with open(self._outputFileName, 'w') as fd:
             jsonStr: str = jsonDumps(asdict(layoutInformation), indent=4)
             fd.write(jsonStr)
+
+        self._pluginAdapter.deselectAllOglObjects()

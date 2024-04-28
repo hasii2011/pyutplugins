@@ -1,0 +1,70 @@
+{
+    "layouts": {
+        "EventLoopParams": {
+            "name": "EventLoopParams",
+            "position": {
+                "x": 50,
+                "y": 50
+            },
+            "size": {
+                "width": 186,
+                "height": 182
+            }
+        },
+        "ASubclass": {
+            "name": "ASubclass",
+            "position": {
+                "x": 337,
+                "y": 353
+            },
+            "size": {
+                "width": 91,
+                "height": 40
+            }
+        },
+        "SubClass2": {
+            "name": "SubClass2",
+            "position": {
+                "x": 125,
+                "y": 550
+            },
+            "size": {
+                "width": 157,
+                "height": 60
+            }
+        },
+        "AggregatedClass": {
+            "name": "AggregatedClass",
+            "position": {
+                "x": 550,
+                "y": 500
+            },
+            "size": {
+                "width": 314,
+                "height": 103
+            }
+        },
+        "ComposedClass": {
+            "name": "ComposedClass",
+            "position": {
+                "x": 350,
+                "y": 550
+            },
+            "size": {
+                "width": 100,
+                "height": 100
+            }
+        },
+        "id: 6": {
+            "name": "id: 6",
+            "position": {
+                "x": 500,
+                "y": 50
+            },
+            "size": {
+                "width": 153,
+                "height": 84
+            }
+        }
+    }
+}

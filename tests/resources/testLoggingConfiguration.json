@@ -44,7 +44,7 @@
             "level":     "WARNING",
             "propagate": "False"
         },
-        "pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor": {
+        "pyutplugins.toolplugins.ToolLoadLayout": {
             "level":     "INFO",
             "propagate": "False"
         },

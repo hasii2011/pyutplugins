@@ -12,6 +12,7 @@ from wx import ComboBox
 from wx import CommandEvent
 from wx import DEFAULT_FRAME_STYLE
 from wx import EVT_COMBOBOX
+from wx import FRAME_FLOAT_ON_PARENT
 from wx import ID_ANY
 from wx import OK
 
@@ -62,7 +63,7 @@ class AppTestDialogs(App):
 
         TestBase.setUpLogging()
 
-        self._frame = SizedFrame(parent=None, id=ID_ANY, title="Test Plugin Dialogs", size=(300, 100), style=DEFAULT_FRAME_STYLE)
+        self._frame = SizedFrame(parent=None, id=ID_ANY, title="Test Plugin Dialogs", size=(300, 100), style=DEFAULT_FRAME_STYLE | FRAME_FLOAT_ON_PARENT)
 
         self._frame.Show(False)
         self.SetTopWindow(self._frame)
