@@ -77,7 +77,7 @@ class ToolLoadLayout(ToolPluginInterface):
                 oglObject:  OglObject  = cast(OglObject, o)
                 pyutObject: PyutObject = oglObject.pyutObject
                 name:       OglName    = OglName(pyutObject.name)
-                # TODO OglNotes not recognized
+
                 if name in keys:
                     layout:   Layout   = layouts[name]
                     size:     Size     = layout.size

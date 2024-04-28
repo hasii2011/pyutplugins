@@ -70,7 +70,11 @@ class PluginManager(metaclass=SingletonV3):
 
     """
     IO_PLUGINS:   PluginList = PluginList([IOMermaid, IODTD, IOGML, IOJava, IOPdf, IOPython, IOWxImage, IOXml, IOAscii])
-    TOOL_PLUGINS: PluginList = PluginList([ToolLoadLayout, ToolForceDirectedLayout, ToolArrangeLinks, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms, ToolSaveLayout])
+    TOOL_PLUGINS: PluginList = PluginList(
+        [
+            ToolForceDirectedLayout, ToolArrangeLinks, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms, ToolSaveLayout, ToolLoadLayout
+        ]
+    )
 
     def __init__(self, **kwargs):
         """
