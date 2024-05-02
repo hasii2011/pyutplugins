@@ -45,6 +45,7 @@ jobs:
             pip install oglio==2.1.7
             pip install buildlackey~=1.6.3
             pip install pyforcedirectedlayout>=0.80.2
+            pip install pyorthogonalrouting>=1.1.1
       - run:
             name: run tests
             command: | 

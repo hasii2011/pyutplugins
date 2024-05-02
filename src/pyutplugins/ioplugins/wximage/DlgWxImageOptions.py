@@ -81,7 +81,6 @@ class DlgWxImageOptions(BaseEditDialog):
         self.Bind(EVT_BUTTON, self._onOk, id=ID_OK)
         self.Bind(EVT_CLOSE, self._onClose, id=ID_CANCEL)
 
-
     def _fileSelectionMotion(self, event: MouseEvent):
 
         ctrl: TextCtrl = event.GetEventObject()

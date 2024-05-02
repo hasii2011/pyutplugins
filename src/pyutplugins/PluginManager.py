@@ -5,6 +5,10 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from sys import exc_info
+
+from traceback import extract_tb
+
 from wx import ICON_ERROR
 from wx import OK
 
@@ -42,6 +46,7 @@ from pyutplugins.toolplugins.ToolForceDirectedLayout import ToolForceDirectedLay
 from pyutplugins.toolplugins.ToolArrangeLinks import ToolArrangeLinks
 from pyutplugins.toolplugins.ToolLoadLayout import ToolLoadLayout
 from pyutplugins.toolplugins.ToolOrthogonalLayoutV2 import ToolOrthogonalLayoutV2
+from pyutplugins.toolplugins.ToolOrthogonalRouting import ToolOrthogonalRouting
 from pyutplugins.toolplugins.ToolSaveLayout import ToolSaveLayout
 from pyutplugins.toolplugins.ToolSugiyama import ToolSugiyama
 from pyutplugins.toolplugins.ToolTransforms import ToolTransforms
@@ -72,7 +77,8 @@ class PluginManager(metaclass=SingletonV3):
     IO_PLUGINS:   PluginList = PluginList([IOMermaid, IODTD, IOGML, IOJava, IOPdf, IOPython, IOWxImage, IOXml, IOAscii])
     TOOL_PLUGINS: PluginList = PluginList(
         [
-            ToolForceDirectedLayout, ToolArrangeLinks, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms, ToolSaveLayout, ToolLoadLayout
+            ToolOrthogonalRouting, ToolForceDirectedLayout, ToolArrangeLinks, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms,
+            ToolSaveLayout, ToolLoadLayout
         ]
     )
 
@@ -97,6 +103,27 @@ class PluginManager(metaclass=SingletonV3):
         self._outputPluginClasses: PluginList = cast(PluginList, None)
 
         self._pluginAdapter: IPluginAdapter = kwargs['pluginAdapter']
+
+    @classmethod
+    def getErrorInfo(cls) -> str:
+        """
+        TODO:
+        This needs to move to code ally basic
+
+        Returns:
+            System exception information as a formatted string
+        """
+        errMsg: str = ''
+        if exc_info()[0] is not None:
+            errMsg += f'Error : {exc_info()[0]}\n'
+        if exc_info()[1] is not None:
+            errMsg += f'Msg   : {exc_info()[1]}\n'
+        if exc_info()[2] is not None:
+            errMsg += 'Trace :\n'
+            for el in extract_tb(exc_info()[2]):
+                errMsg = errMsg + f'{str(el)}\n'
+
+        return errMsg
 
     @property
     def inputPlugins(self) -> PluginList:
@@ -178,6 +205,7 @@ class PluginManager(metaclass=SingletonV3):
             self.logger.debug(f"After tool plugin do action")
         except (ValueError, Exception) as e:
             self.logger.error(f'{e}')
+            self.logger.error(f'{PluginManager.getErrorInfo()}')
 
     def doImport(self, wxId: int):
         """
