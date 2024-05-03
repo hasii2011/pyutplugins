@@ -53,6 +53,8 @@ from pyutplugins.ExternalTypes import FrameInformationCallback
 from pyutplugins.ExternalTypes import FrameSize
 from pyutplugins.ExternalTypes import FrameSizeCallback
 from pyutplugins.ExternalTypes import HybridLinks
+from pyutplugins.ExternalTypes import ObjectBoundaries
+from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import OglLinks
 from pyutplugins.ExternalTypes import PluginDocument
 from pyutplugins.ExternalTypes import PluginDocumentTitle
@@ -67,6 +69,10 @@ from tests.scaffoldv2.PyutProject import UmlFrameType
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.Events import AddShapeEvent
+from tests.scaffoldv2.eventengine.Events import EVENT_GET_OBJECT_BOUNDARIES
+from tests.scaffoldv2.eventengine.Events import EVENT_LOAD_OGL_PROJECT
+from tests.scaffoldv2.eventengine.Events import EVENT_REQUEST_CURRENT_PROJECT
+from tests.scaffoldv2.eventengine.Events import GetObjectBoundariesEvent
 from tests.scaffoldv2.eventengine.Events import LoadOglProjectEvent
 from tests.scaffoldv2.eventengine.Events import RequestCurrentProjectEvent
 from tests.scaffoldv2.eventengine.Events import DeSelectAllShapesEvent
@@ -81,7 +87,6 @@ from tests.scaffoldv2.eventengine.Events import EVENT_SELECT_ALL_SHAPES
 from tests.scaffoldv2.eventengine.Events import EVENT_LOAD_PROJECT
 from tests.scaffoldv2.eventengine.Events import EVENT_NEW_PROJECT
 from tests.scaffoldv2.eventengine.Events import EVENT_SELECTED_OGL_OBJECTS
-from tests.scaffoldv2.eventengine.Events import EventType
 
 from tests.scaffoldv2.eventengine.Events import FrameSizeEvent
 from tests.scaffoldv2.eventengine.Events import FrameInformationEvent
@@ -94,6 +99,7 @@ from tests.scaffoldv2.eventengine.Events import SelectedOglObjectsEvent
 
 from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
 from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
+from tests.scaffoldv2.umlframes.UmlFrame import OglObjectBoundaries
 from tests.scaffoldv2.umlframes.UmlFrame import UmlFrame
 from tests.scaffoldv2.umlframes.UmlFrameShapeHandler import UmlFrameShapeHandler
 
@@ -168,9 +174,11 @@ class ScaffoldUI:
         self._eventEngine.registerListener(EVENT_FRAME_INFORMATION,    self._onFrameInformation)
         self._eventEngine.registerListener(EVENT_ADD_SHAPE,            self._onAddShape)
 
-        self._eventEngine.registerListener(EventType.LoadOglProject.pyEventBinder, self._onLoadOglProject)
+        self._eventEngine.registerListener(EVENT_GET_OBJECT_BOUNDARIES, self._onGetObjectBoundaries)
 
-        self._eventEngine.registerListener(EventType.RequestCurrentProject.pyEventBinder, self._onRequestCurrentProject)
+        self._eventEngine.registerListener(EVENT_LOAD_OGL_PROJECT, self._onLoadOglProject)
+
+        self._eventEngine.registerListener(EVENT_REQUEST_CURRENT_PROJECT, self._onRequestCurrentProject)
 
     # noinspection PyTypeChecker
     eventEngine = property(fget=None, fset=_setEventEngine)
@@ -420,6 +428,15 @@ class ScaffoldUI:
                 self._layoutOglSDMessage(diagram=umlFrame.getDiagram(), oglSDMessage=cast(OglSDMessage, shapeToAdd))
             case _:
                 self._layoutAnOglObject(umlFrame=umlFrame, oglObject=shapeToAdd)
+
+    # noinspection PyUnusedLocal
+    def _onGetObjectBoundaries(self, event: GetObjectBoundariesEvent):
+
+        bounds:   OglObjectBoundaries    = self._currentFrame.objectBoundaries
+        callback: ObjectBoundaryCallback = event.callback
+
+        objectBoundaries: ObjectBoundaries = ObjectBoundaries(minX=bounds.minX, minY=bounds.minY, maxX=bounds.maxX, maxY=bounds.maxY)
+        callback(objectBoundaries)
 
     def _onRequestCurrentProject(self, event: RequestCurrentProjectEvent):
         """

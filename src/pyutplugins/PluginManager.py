@@ -5,6 +5,8 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from os import linesep as osLineSep
+
 from sys import exc_info
 
 from traceback import extract_tb
@@ -108,20 +110,24 @@ class PluginManager(metaclass=SingletonV3):
     def getErrorInfo(cls) -> str:
         """
         TODO:
-        This needs to move to code ally basic
+        This needs to be moved to code ally basic
+        This version uses f strings
 
         Returns:
             System exception information as a formatted string
         """
         errMsg: str = ''
         if exc_info()[0] is not None:
-            errMsg += f'Error : {exc_info()[0]}\n'
+            errMsg = f'Error : {exc_info()[0]}{osLineSep}'
+
         if exc_info()[1] is not None:
-            errMsg += f'Msg   : {exc_info()[1]}\n'
+            errMsg = f'{errMsg}Msg   : {exc_info()[1]}{osLineSep}'
+
         if exc_info()[2] is not None:
-            errMsg += 'Trace :\n'
+            errMsg = f'{errMsg}Trace :{osLineSep}'
+
             for el in extract_tb(exc_info()[2]):
-                errMsg = errMsg + f'{str(el)}\n'
+                errMsg = f'{errMsg}{str(el)}{osLineSep}'
 
         return errMsg
 

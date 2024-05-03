@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<PyutProject version="11" CodePath="">
+    <PyutDocument type="CLASS_DIAGRAM" title="TestOrthogonal" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+        <OglClass width="79" height="20" x="450" y="350">
+            <PyutClass id="1" name="ManyLinks" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="61" height="20" x="250" y="175">
+            <PyutClass id="2" name="SuperClass" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="70" height="20" x="450" y="175">
+            <PyutClass id="3" name="Composed" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="74" height="20" x="675" y="175">
+            <PyutClass id="4" name="Aggregated" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="138" height="20" x="425" y="525">
+            <PyutClass id="5" name="GeneralAssociatedClass" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="108" height="55" x="75" y="175">
+            <PyutClass id="6" name="ClassInterface" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="138" height="60" x="50" y="325">
+            <PyutClass id="7" name="InterfaceImplementor" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglLink sourceAnchorX="450" sourceAnchorY="362" destinationAnchorX="294" destinationAnchorY="194" spline="False">
+            <PyutLink name="" type="INHERITANCE" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="1" destinationId="2" />
+        </OglLink>
+        <OglLink sourceAnchorX="488" sourceAnchorY="350" destinationAnchorX="489" destinationAnchorY="194" spline="False">
+            <LabelCenter x="494" y="500" />
+            <LabelSource x="494" y="500" />
+            <LabelDestination x="494" y="500" />
+            <PyutLink name="" type="COMPOSITION" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="1" destinationId="3" />
+        </OglLink>
+        <OglLink sourceAnchorX="528" sourceAnchorY="360" destinationAnchorX="716" destinationAnchorY="194" spline="False">
+            <LabelCenter x="494" y="500" />
+            <LabelSource x="494" y="500" />
+            <LabelDestination x="494" y="500" />
+            <PyutLink name="" type="AGGREGATION" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="1" destinationId="4" />
+        </OglLink>
+        <OglLink sourceAnchorX="489" sourceAnchorY="369" destinationAnchorX="489" destinationAnchorY="525" spline="False">
+            <LabelCenter x="494" y="500" />
+            <LabelSource x="494" y="500" />
+            <LabelDestination x="494" y="500" />
+            <PyutLink name="" type="ASSOCIATION" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="1" destinationId="5" />
+        </OglLink>
+        <OglLink sourceAnchorX="119" sourceAnchorY="325" destinationAnchorX="119" destinationAnchorY="229" spline="False">
+            <PyutLink name="Interface-16" type="INTERFACE" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="7" destinationId="6" />
+        </OglLink>
+        <OglLink sourceAnchorX="806" sourceAnchorY="449" destinationAnchorX="562" destinationAnchorY="535" spline="False">
+            <PyutLink name="Notelink-20" type="NOTELINK" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="8" destinationId="5" />
+        </OglLink>
+        <OglNote width="104" height="100" x="750" y="350">
+            <PyutNote id="8" content="This is the note text" fileName="" />
+        </OglNote>
+    </PyutDocument>
+</PyutProject>

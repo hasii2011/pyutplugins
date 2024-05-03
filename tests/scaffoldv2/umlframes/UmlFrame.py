@@ -2,9 +2,14 @@
 from typing import List
 from typing import NewType
 from typing import Union
+from typing import cast
 
 from logging import Logger
 from logging import getLogger
+
+from sys import maxsize
+
+from dataclasses import dataclass
 
 from wx import Window
 
@@ -25,6 +30,17 @@ from tests.scaffoldv2.umlframes.UmlFrameShapeHandler import UmlFrameShapeHandler
 
 UmlObject  = Union[OglClass, OglLink, OglNote, OglText, OglSDMessage, OglSDInstance, OglActor, OglUseCase, OglInterface2]
 UmlObjects = NewType('UmlObjects', List[UmlObject])
+
+
+NO_INTEGER: int = cast(int, None)
+
+
+@dataclass
+class OglObjectBoundaries:
+    minX: int = NO_INTEGER
+    minY: int = NO_INTEGER
+    maxX: int = NO_INTEGER
+    maxY: int = NO_INTEGER
 
 
 class UmlFrame(UmlFrameShapeHandler):
@@ -71,3 +87,32 @@ class UmlFrame(UmlFrameShapeHandler):
                 umlObjects.append(s)
 
         return umlObjects
+
+    @property
+    def objectBoundaries(self) -> OglObjectBoundaries:
+        """
+
+        Return object boundaries (coordinates)
+
+        """
+        minX: int = maxsize
+        maxX: int = -maxsize
+        minY: int = maxsize
+        maxY: int = -maxsize
+
+        # Get boundaries
+        for shapeObject in self._diagram.GetShapes():
+            # Get object limits
+            ox1, oy1 = shapeObject.GetPosition()
+            ox2, oy2 = shapeObject.GetSize()
+            ox2 += ox1
+            oy2 += oy1
+
+            # Update min-max
+            minX = min(minX, ox1)
+            maxX = max(maxX, ox2)
+            minY = min(minY, oy1)
+            maxY = max(maxY, oy2)
+
+        # Return values
+        return OglObjectBoundaries(minX=minX, minY=minY, maxX=maxX, maxY=maxY)

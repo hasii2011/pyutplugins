@@ -8,6 +8,7 @@ from wx import Frame
 
 from miniogl.DiagramFrame import DiagramFrame
 
+from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.IPluginAdapter import ScreenMetrics
 
@@ -76,6 +77,9 @@ class SampleIPluginAdapter(IPluginAdapter):
         pass
 
     def selectAllOglObjects(self):
+        pass
+
+    def getObjectBoundaries(self, callback: ObjectBoundaryCallback):
         pass
 
     def deselectAllOglObjects(self):

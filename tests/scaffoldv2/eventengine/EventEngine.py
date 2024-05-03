@@ -12,20 +12,25 @@ from wx import Window
 from oglio.Types import OglProject
 
 from pyutplugins.ExternalTypes import CurrentProjectCallback
+from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.eventengine.Events import AddShapeEvent
+from tests.scaffoldv2.eventengine.Events import DeSelectAllShapesEvent
 
 from tests.scaffoldv2.eventengine.Events import EventType
 from tests.scaffoldv2.eventengine.Events import FrameInformationEvent
 from tests.scaffoldv2.eventengine.Events import FrameSizeEvent
+from tests.scaffoldv2.eventengine.Events import GetObjectBoundariesEvent
 from tests.scaffoldv2.eventengine.Events import LoadOglProjectEvent
 from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
 from tests.scaffoldv2.eventengine.Events import NewDiagramEvent
 from tests.scaffoldv2.eventengine.Events import NewProjectEvent
+from tests.scaffoldv2.eventengine.Events import RefreshFrameEvent
 from tests.scaffoldv2.eventengine.Events import RequestCurrentProjectEvent
+from tests.scaffoldv2.eventengine.Events import SelectAllShapesEvent
 from tests.scaffoldv2.eventengine.Events import SelectedOglObjectsEvent
 from tests.scaffoldv2.eventengine.Events import UpdateTreeItemNameEvent
 
@@ -69,13 +74,13 @@ class EventEngine(IEventEngine):
             case EventType.NewDiagram:
                 self._sendNewDiagramEvent(**kwargs)
             case EventType.SelectAllShapes:
-                self._simpleSendEvent(eventType=eventType)
+                self._sendSelectShapesAllEvent()
             case EventType.DeSelectAllShapes:
-                self._simpleSendEvent(eventType=eventType)
+                self._sendDeSelectAllShapesEvent()
             case EventType.AddShape:
                 self._sendAddShapeEvent(**kwargs)
             case EventType.RefreshFrame:
-                self._simpleSendEvent(eventType=eventType)
+                self._sendRefreshFrameEvent()
             case EventType.SelectedOglObjects:
                 self._sendSelectedOglObjectsEvent(**kwargs)
             case EventType.FrameInformation:
@@ -86,6 +91,8 @@ class EventEngine(IEventEngine):
                 self._sendRequestCurrentProjectEvent(**kwargs)
             case EventType.LoadOglProject:
                 self._sendLoadOglProjectEvent(**kwargs)
+            case EventType.GetObjectBoundaries:
+                self._sendGetObjectBoundariesEvent(**kwargs)
             case EventType.IndicatePluginModifiedProject:
                 MessageBox("Project Modified", caption="")
             case _:
@@ -140,11 +147,25 @@ class EventEngine(IEventEngine):
         eventToPost: RequestCurrentProjectEvent = RequestCurrentProjectEvent(callback=callback)
         PostEvent(dest=self._listeningWindow, event=eventToPost)
 
-    def _simpleSendEvent(self, eventType: EventType):
-        eventToPost = eventType.commandEvent
-        PostEvent(dest=self._listeningWindow, event=eventToPost)
-
     def _sendLoadOglProjectEvent(self, **kwargs):
         oglProject:  OglProject          = kwargs[OGL_PROJECT_PARAMETER]
         eventToPost: LoadOglProjectEvent = LoadOglProjectEvent(oglProject=oglProject)
         PostEvent(dest=self._listeningWindow, event=eventToPost)
+
+    def _sendGetObjectBoundariesEvent(self, **kwargs):
+
+        callback:    ObjectBoundaryCallback   = kwargs[CALLBACK_PARAMETER]
+        eventToPost: GetObjectBoundariesEvent = GetObjectBoundariesEvent(callback=callback)
+        PostEvent(dest=self._listeningWindow, event=eventToPost)
+
+    def _sendSelectShapesAllEvent(self):
+        event: SelectAllShapesEvent = SelectAllShapesEvent()
+        PostEvent(dest=self._listeningWindow, event=event)
+
+    def _sendDeSelectAllShapesEvent(self):
+        event: DeSelectAllShapesEvent = DeSelectAllShapesEvent()
+        PostEvent(dest=self._listeningWindow, event=event)
+
+    def _sendRefreshFrameEvent(self):
+        event: RefreshFrameEvent = RefreshFrameEvent()
+        PostEvent(dest=self._listeningWindow, event=event)

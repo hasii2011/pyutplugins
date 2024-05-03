@@ -7,6 +7,7 @@ from logging import getLogger
 from wx import OK
 from wx import Window
 
+from pyutplugins.ExternalTypes import ObjectBoundaries
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
@@ -48,4 +49,9 @@ class ToolOrthogonalRouting(ToolPluginInterface):
                 return False
 
     def doAction(self):
-        pass
+
+        self._pluginAdapter.getObjectBoundaries(callback=self._doAction)
+
+    def _doAction(self, boundaries: ObjectBoundaries):
+
+        self.logger.info(f'{boundaries}')

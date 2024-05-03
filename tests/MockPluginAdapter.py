@@ -8,6 +8,7 @@ from miniogl.DiagramFrame import DiagramFrame
 from pyutplugins.ExternalTypes import CurrentProjectCallback
 from pyutplugins.ExternalTypes import FrameInformationCallback
 from pyutplugins.ExternalTypes import FrameSizeCallback
+from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import OglObjectType
 from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
@@ -87,6 +88,9 @@ class MockPluginAdapter(IPluginAdapter):
         pass
 
     def requestCurrentProject(self, callback: CurrentProjectCallback):
+        pass
+
+    def getObjectBoundaries(self, callback: ObjectBoundaryCallback):
         pass
 
     def indicatePluginModifiedProject(self):

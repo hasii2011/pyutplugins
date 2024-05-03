@@ -41,7 +41,6 @@ class UmlFrameShapeHandler(DiagramFrame):
         super().__init__(parent)
 
         self.logger:       Logger = getLogger(__name__)
-        # self._preferences: PyutPreferences = PyutPreferences()
 
     def createNewClass(self, x, y):
         """

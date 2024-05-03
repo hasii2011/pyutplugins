@@ -4,6 +4,7 @@ from logging import getLogger
 
 from wx import Yield as wxYield
 
+from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.IPluginAdapter import ScreenMetrics
 
@@ -55,6 +56,16 @@ class PluginAdapterV2(IPluginAdapter):
     def getSelectedOglObjects(self, callback: SelectedOglObjectsCallback):
         self._eventEngine.sendEvent(EventType.SelectedOglObjects, callback=callback)
 
+    def getObjectBoundaries(self, callback: ObjectBoundaryCallback):
+        """
+        Request the boundaries around all the UML objects
+        on the current frame
+
+        Args:
+            callback:  The callback that receives the boundaries
+        """
+        self._eventEngine.sendEvent(EventType.GetObjectBoundaries, callback=callback)
+
     def refreshFrame(self):
         self._eventEngine.sendEvent(EventType.RefreshFrame)
 
@@ -71,7 +82,7 @@ class PluginAdapterV2(IPluginAdapter):
 
     def loadProject(self, pluginProject: PluginProject):
         """
-        In the plugin scaffold test program we support only single document projects
+        In the plugin scaffold test program, we support only single document projects
 
         Args:
             pluginProject:

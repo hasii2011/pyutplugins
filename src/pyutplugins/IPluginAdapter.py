@@ -5,6 +5,7 @@ from abc import abstractmethod
 from dataclasses import dataclass
 
 from pyutplugins.ExternalTypes import CurrentProjectCallback
+from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import OglObjectType
 from pyutplugins.ExternalTypes import FrameInformationCallback
 from pyutplugins.ExternalTypes import FrameSizeCallback
@@ -71,6 +72,17 @@ class IPluginAdapter(ABC):
 
         Args:
             callback:  This method is invoked with a list of all the selected OglObjects
+        """
+        pass
+
+    @abstractmethod
+    def getObjectBoundaries(self, callback: ObjectBoundaryCallback):
+        """
+        Request the boundaries around all the UML objects
+        on the current frame
+
+        Args:
+            callback:  The callback that receives the boundaries
         """
         pass
 

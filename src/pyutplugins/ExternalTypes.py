@@ -93,6 +93,19 @@ class FrameInformation:
 FrameInformationCallback = Callable[[FrameInformation], None]
 FrameSizeCallback        = Callable[[FrameSize], None]
 
+NO_INTEGER: int = cast(int, None)
+
+
+@dataclass
+class ObjectBoundaries:
+    minX: int = NO_INTEGER
+    minY: int = NO_INTEGER
+    maxX: int = NO_INTEGER
+    maxY: int = NO_INTEGER
+
+
+ObjectBoundaryCallback = Callable[[ObjectBoundaries], None]
+
 
 def createPluginClassesFactory() -> OglClasses:
     """
