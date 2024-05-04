@@ -17,6 +17,7 @@ from wx import ID_ANY
 from wx import ID_CANCEL
 from wx import ID_OK
 from wx import OK
+from wx import RESIZE_BORDER
 from wx import Size
 from wx import SpinCtrl
 from wx import StaticText
@@ -27,10 +28,9 @@ from wx.lib.sized_controls import SizedDialog
 from wx.lib.sized_controls import SizedPanel
 from wx.lib.sized_controls import SizedStaticBox
 
-from codeallyadvanced.ui.widgets.DialSelector import DialSelector
-from codeallyadvanced.ui.widgets.DialSelector import DialSelectorParameters
-
 from pyorthogonalrouting.Configuration import Configuration
+
+from pyutplugins.toolplugins.orthogonalrouting.LabelledSlider import LabelledSlider
 
 
 @dataclass
@@ -54,7 +54,7 @@ class DlgConfiguration(SizedDialog):
 
     def __init__(self, parent: Window):
 
-        style:   int  = DEFAULT_DIALOG_STYLE
+        style:   int  = DEFAULT_DIALOG_STYLE | RESIZE_BORDER
         dlgSize: Size = Size(475, 300)
 
         super().__init__(parent, title='Orthogonal Connector Routing Configuration', size=dlgSize, style=style)
@@ -63,7 +63,6 @@ class DlgConfiguration(SizedDialog):
 
         sizedPanel: SizedPanel = self.GetContentsPane()
         sizedPanel.SetSizerType('horizontal')
-        sizedPanel.SetSizerProps(proportion=1)
 
         configuration: Configuration = Configuration()
 
@@ -99,42 +98,30 @@ class DlgConfiguration(SizedDialog):
     def _layoutControls(self, parent: SizedPanel):
 
         localPanel: SizedPanel = SizedPanel(parent)
-        localPanel.SetSizerType('horizontal')
+        localPanel.SetSizerType('vertical')
         localPanel.SetSizerProps(expand=True, proportion=2)
 
-        shapeMarginParameters: DialSelectorParameters = DialSelectorParameters(minValue=1, maxValue=100, dialLabel='Shape Margin',
-                                                                               formatValueCallback=self._formatShapeMargin,
-                                                                               valueChangedCallback=self._shapeChanged)
+        shapeMargin:        LabelledSlider = LabelledSlider(sizedPanel=localPanel, label='Shape Margin',         value=22, minValue=0, maxValue=100, size=Size(325, height=-1))
+        globalBoundsMargin: LabelledSlider = LabelledSlider(sizedPanel=localPanel, label='Global Bounds Margin', value=44, minValue=0, maxValue=100, size=Size(325, height=-1))
 
-        shapeMargin:           DialSelector = DialSelector(localPanel, parameters=shapeMarginParameters)
-        shapeMargin.tickFrequency = 50
-        shapeMargin.tickValue     = 2
-        shapeMargin.value         = self._configuration.shapeMargin
-
-        globalBoundsMarginParameters: DialSelectorParameters = DialSelectorParameters(minValue=1, maxValue=100, dialLabel='Global Bounds Margin',
-                                                                                      formatValueCallback=self._formatGlobalBoundsMargin,
-                                                                                      valueChangedCallback=self._globalBoundsMarginChanged)
-
-        globalBoundsMargin:           DialSelector = DialSelector(localPanel, parameters=globalBoundsMarginParameters)
-        globalBoundsMargin.tickFrequency = 50
-        globalBoundsMargin.tickValue     = 2
-        globalBoundsMargin.value         = self._configuration.globalBoundsMargin
+        shapeMargin.valueChangedHandler        = self._shapeMarginChanged
+        globalBoundsMargin.valueChangedHandler = self._globalBoundsMarginChanged
 
         self._layoutGlobalBounds(parent=parent)
 
     def _layoutGlobalBounds(self, parent: SizedPanel):
 
         labelBox: SizedStaticBox = SizedStaticBox(parent=parent, label='Global Bounds')
-        labelBox.SetSizerProps(expand=True, proportion=2)
+        labelBox.SetSizerProps(expand=True, proportion=1)
 
         localPanel: SizedPanel = SizedPanel(labelBox)
         localPanel.SetSizerType('form')
-        localPanel.SetSizerProps(expand=True, proportion=2)
+        localPanel.SetSizerProps(expand=True)
 
         for c in self._globalBoundsControls:
             control: GlobalBoundsControl = cast(GlobalBoundsControl, c)
             StaticText(parent=localPanel, label=control.label)
-            control.spinCtrl = SpinCtrl(localPanel, id=ID_ANY, size=(30, 25))
+            control.spinCtrl = SpinCtrl(localPanel, id=ID_ANY, size=(25, -1))
             control.spinCtrl.SetRange(MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND)
             control.spinCtrl.SetValue(control.value)
             control.spinCtrl.SetSizerProps(expand=True)
@@ -151,14 +138,8 @@ class DlgConfiguration(SizedDialog):
         """
         self.EndModal(CANCEL)
 
-    def _shapeChanged(self, newValue: int):
-        self._configuration.shapeMargin = newValue
+    def _shapeMarginChanged(self, event: CommandEvent):
+        self._configuration.shapeMargin = event.GetInt()
 
-    def _globalBoundsMarginChanged(self, newValue: int):
-        self._configuration.globalBoundsMargin = newValue
-
-    def _formatShapeMargin(self, valueToFormat: int):
-        return f'{valueToFormat}'
-
-    def _formatGlobalBoundsMargin(self, valueToFormat: int):
-        return f'{valueToFormat}'
+    def _globalBoundsMarginChanged(self, event: CommandEvent):
+        self._configuration.globalBoundsMargin = event.GetInt()

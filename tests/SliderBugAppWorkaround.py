@@ -35,7 +35,7 @@ class SliderBugApp(App):
         self._frameTop = SizedFrame(parent=None, id=ID_ANY, size=(WINDOW_WIDTH, WINDOW_HEIGHT), style=frameStyle, title=title)
 
         sizedPanel:   SizedPanel = self._frameTop.GetContentsPane()
-        sliderPanel: Panel      = Panel(sizedPanel)
+        sliderPanel:  Panel      = Panel(sizedPanel)
         sizer:        BoxSizer   = BoxSizer(VERTICAL)
 
         sliderStyle: int   = SL_HORIZONTAL | SL_AUTOTICKS | SL_LABELS
