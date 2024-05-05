@@ -36,13 +36,11 @@ class UmlClassDiagramsFrame(UmlDiagramsFrame):
         self.maxWidth:  int  = DEFAULT_WIDTH
         self.maxHeight: int = int(self.maxWidth / A4_FACTOR)  # 1.41 is for A4 support
 
-        print(f'{self.maxWidth=} {self.maxHeight=}')
         nbrUnitsX: int = int(self.maxWidth / PIXELS_PER_UNIT_X)
         nbrUnitsY: int = int(self.maxHeight / PIXELS_PER_UNIT_Y)
         initPosX:  int = 0
         initPosY:  int = 0
         self.SetScrollbars(PIXELS_PER_UNIT_X, PIXELS_PER_UNIT_Y, nbrUnitsX, nbrUnitsY, initPosX, initPosY, False)
-
 
     @property
     def eventEngine(self) -> OglEventEngine:

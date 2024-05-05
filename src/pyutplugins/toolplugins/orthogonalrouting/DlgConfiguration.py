@@ -1,13 +1,14 @@
 
 from typing import List
 from typing import NewType
+from typing import cast
 
 from logging import Logger
 from logging import getLogger
 
 from dataclasses import dataclass
-from typing import cast
 
+from wx import BORDER_DEFAULT
 from wx import CANCEL
 from wx import CommandEvent
 from wx import DEFAULT_DIALOG_STYLE
@@ -29,8 +30,12 @@ from wx.lib.sized_controls import SizedPanel
 from wx.lib.sized_controls import SizedStaticBox
 
 from pyorthogonalrouting.Configuration import Configuration
+from pyorthogonalrouting.Rect import Rect
 
+from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.toolplugins.orthogonalrouting.LabelledSlider import LabelledSlider
+
+from pyutplugins.ExternalTypes import ObjectBoundaries
 
 
 @dataclass
@@ -52,35 +57,54 @@ NO_SPIN_CTRL: SpinCtrl = cast(SpinCtrl, None)
 
 class DlgConfiguration(SizedDialog):
 
-    def __init__(self, parent: Window):
+    def __init__(self, parent: Window, pluginAdapter: IPluginAdapter):
+
+        self._pluginAdapter: IPluginAdapter = pluginAdapter
+        self._configuration: Configuration  = cast(Configuration, None)
 
         style:   int  = DEFAULT_DIALOG_STYLE | RESIZE_BORDER
         dlgSize: Size = Size(475, 300)
 
         super().__init__(parent, title='Orthogonal Connector Routing Configuration', size=dlgSize, style=style)
-
         self.logger: Logger = getLogger(__name__)
-
-        sizedPanel: SizedPanel = self.GetContentsPane()
-        sizedPanel.SetSizerType('horizontal')
-
-        configuration: Configuration = Configuration()
 
         self._left:   SpinCtrl = NO_SPIN_CTRL
         self._top:    SpinCtrl = NO_SPIN_CTRL
         self._width:  SpinCtrl = NO_SPIN_CTRL
         self._height: SpinCtrl = NO_SPIN_CTRL
 
-        self._globalBoundsControls: GlobalBoundsControls = GlobalBoundsControls(
-            [
-                GlobalBoundsControl('Left:',    self._left,   configuration.globalBounds.left,   MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND),
-                GlobalBoundsControl('Top: ',    self._top,    configuration.globalBounds.top,    MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND),
-                GlobalBoundsControl('Width:',   self._width,  configuration.globalBounds.width,  MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND),
-                GlobalBoundsControl('Height: ', self._height, configuration.globalBounds.height, MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND),
-            ]
-        )
-        self._configuration: Configuration = configuration
-        self._layoutControls(parent=sizedPanel)
+        self._sizedPanel: SizedPanel = self.GetContentsPane()
+        self._sizedPanel.SetSizerType('horizontal')
+
+        self._pluginAdapter.getObjectBoundaries(callback=self._objectBoundariesCallback)
+        #
+        # Doing this since that it appears that using the above callback messes
+        # with the layout
+        #
+        self.PostSizeEvent()
+
+    def _objectBoundariesCallback(self, objectBoundaries: ObjectBoundaries):
+        """
+        Get the updated object boundaries
+
+        Args:
+            objectBoundaries:
+
+        """
+        self._configuration = Configuration()
+
+        width:     int  = objectBoundaries.maxX - objectBoundaries.minX
+        height:    int  = objectBoundaries.maxY - objectBoundaries.minY
+        newBounds: Rect = Rect(top=objectBoundaries.minY, left=objectBoundaries.minX, width=width, height=height)
+
+        self._configuration.globalBounds = newBounds
+
+        self.logger.info(f'{self._configuration.globalBounds=}')
+        self._doLayout()
+
+    def _doLayout(self):
+
+        self._layoutControls(parent=self._sizedPanel)
         self._layoutStandardOkCancelButtonSizer()
 
     def _layoutStandardOkCancelButtonSizer(self):
@@ -97,7 +121,7 @@ class DlgConfiguration(SizedDialog):
 
     def _layoutControls(self, parent: SizedPanel):
 
-        localPanel: SizedPanel = SizedPanel(parent)
+        localPanel: SizedPanel = SizedPanel(parent, style=BORDER_DEFAULT)
         localPanel.SetSizerType('vertical')
         localPanel.SetSizerProps(expand=True, proportion=2)
 
@@ -111,6 +135,17 @@ class DlgConfiguration(SizedDialog):
 
     def _layoutGlobalBounds(self, parent: SizedPanel):
 
+        configuration: Configuration = self._configuration
+
+        globalBoundsControls: GlobalBoundsControls = GlobalBoundsControls(
+            [
+                GlobalBoundsControl('Left:',    self._left,   configuration.globalBounds.left,   MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND),
+                GlobalBoundsControl('Top: ',    self._top,    configuration.globalBounds.top,    MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND),
+                GlobalBoundsControl('Width:',   self._width,  configuration.globalBounds.width,  MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND),
+                GlobalBoundsControl('Height: ', self._height, configuration.globalBounds.height, MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND),
+            ]
+        )
+
         labelBox: SizedStaticBox = SizedStaticBox(parent=parent, label='Global Bounds')
         labelBox.SetSizerProps(expand=True, proportion=1)
 
@@ -118,7 +153,7 @@ class DlgConfiguration(SizedDialog):
         localPanel.SetSizerType('form')
         localPanel.SetSizerProps(expand=True)
 
-        for c in self._globalBoundsControls:
+        for c in globalBoundsControls:
             control: GlobalBoundsControl = cast(GlobalBoundsControl, c)
             StaticText(parent=localPanel, label=control.label)
             control.spinCtrl = SpinCtrl(localPanel, id=ID_ANY, size=(25, -1))
