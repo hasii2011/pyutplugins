@@ -1,11 +1,13 @@
-from abc import abstractmethod
+
+from typing import Any
+from typing import List
+from typing import cast
+
 from logging import Logger
 from logging import getLogger
 
 from abc import ABC
-from typing import Any
-from typing import List
-from typing import cast
+from abc import abstractmethod
 
 from wx import MouseEvent
 
@@ -81,7 +83,7 @@ class RectangleShape:
         self._resizable: bool = True
         self._selected:  bool = False
 
-        self._ox: int = 0   # This is done in Shape but Pycharm can't see this in the ShowSizer() code
+        self._ox: int = 0   # This is done in Shape, but Pycharm can't see this in the ShowSizer() code
 
     @property
     def selected(self) -> bool:

@@ -59,13 +59,13 @@ class TestMermaidWriter(TestBase):
             else:
                 cls.keep = False
         else:
-            cls.clsLogger.info(f'No need to keep data files')
+            cls.clsLogger.debug(f'No need to keep data files')
             cls.keep = False
 
     @classmethod
     def tearDownClass(cls):
         TestBase.tearDownClass()
-        cls.clsLogger.warning(f'tearDownClass {cls.keep=}')
+        cls.clsLogger.debug(f'tearDownClass {cls.keep=}')
         if cls.keep is False:
             for fileName in GENERATED_FILE_NAMES:
                 cls.cleanupGenerated(fileName=fileName)

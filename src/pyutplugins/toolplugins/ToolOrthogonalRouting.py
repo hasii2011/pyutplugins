@@ -7,6 +7,9 @@ from logging import getLogger
 from wx import OK
 from wx import Window
 
+from ogl.OglLink import OglLink
+
+from pyutplugins.ExternalTypes import OglObjects
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
@@ -17,6 +20,7 @@ from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
 from pyutplugins.plugintypes.PluginDataTypes import PluginName
 
 from pyutplugins.toolplugins.orthogonalrouting.DlgConfiguration import DlgConfiguration
+from pyutplugins.toolplugins.orthogonalrouting.OrthogonalConnectorAdapter import OrthogonalConnectorAdapter
 
 FORMAT_NAME:        FormatName        = FormatName('Orthogonal Configuration')
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('json')
@@ -48,4 +52,19 @@ class ToolOrthogonalRouting(ToolPluginInterface):
                 return False
 
     def doAction(self):
-        self.logger.info(f'doAction')
+        self._pluginAdapter.getSelectedOglObjects(callback=self._doAction)
+
+    def _doAction(self, oglObjects: OglObjects):
+
+        self.logger.info(f'_doAction')
+
+        adapter: OrthogonalConnectorAdapter = OrthogonalConnectorAdapter(pluginAdapter=self._pluginAdapter)
+        oglLink: OglLink = cast(OglLink, None)
+        for el in oglObjects:
+            if isinstance(el, OglLink):
+                try:
+                    oglLink = cast(OglLink, el)
+                    adapter.runConnector(oglLink=oglLink)
+
+                except (AttributeError, TypeError) as e:
+                    self.logger.error(f'{e} - {oglLink=}')
