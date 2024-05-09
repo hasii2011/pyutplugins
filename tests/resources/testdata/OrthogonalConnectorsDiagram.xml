@@ -16,10 +16,10 @@
         <OglClass width="138" height="20" x="425" y="525">
             <PyutClass id="5" name="GeneralAssociatedClass" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
         </OglClass>
-        <OglClass width="108" height="55" x="75" y="175">
+        <OglClass width="108" height="55" x="25" y="175">
             <PyutClass id="6" name="ClassInterface" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
         </OglClass>
-        <OglClass width="138" height="60" x="50" y="325">
+        <OglClass width="138" height="60" x="50" y="400">
             <PyutClass id="7" name="InterfaceImplementor" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
         </OglClass>
         <OglLink sourceAnchorX="450" sourceAnchorY="362" destinationAnchorX="294" destinationAnchorY="194" spline="False">
@@ -43,7 +43,7 @@
             <LabelDestination x="494" y="500" />
             <PyutLink name="" type="ASSOCIATION" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="1" destinationId="5" />
         </OglLink>
-        <OglLink sourceAnchorX="119" sourceAnchorY="325" destinationAnchorX="119" destinationAnchorY="229" spline="False">
+        <OglLink sourceAnchorX="176" sourceAnchorY="400" destinationAnchorX="69" destinationAnchorY="229" spline="False">
             <PyutLink name="Interface-16" type="INTERFACE" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="7" destinationId="6" />
         </OglLink>
         <OglLink sourceAnchorX="806" sourceAnchorY="449" destinationAnchorX="562" destinationAnchorY="535" spline="False">

@@ -4,13 +4,10 @@ from logging import getLogger
 
 from wx import Yield as wxYield
 
-from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
-
 from ogl.OglLink import OglLink
-from ogl.OglObject import OglObject
-from ogl.OglPosition import OglPositions
 
 from pyutplugins.ExternalTypes import CreatedLinkCallback
+from pyutplugins.ExternalTypes import LinkInformation
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.IPluginAdapter import ScreenMetrics
@@ -108,7 +105,5 @@ class PluginAdapterV2(IPluginAdapter):
     def deleteLink(self, oglLink: OglLink):
         self._eventEngine.sendEvent(EventType.DeleteLink, oglLink=oglLink)
 
-    def createLink(self, linkType: PyutLinkType, path: OglPositions, sourceShape: OglObject, destinationShape: OglObject, callback: CreatedLinkCallback):
-        self._eventEngine.sendEvent(EventType.CreateLink, linkType=linkType, path=path,
-                                    sourceShape=sourceShape, destinationShape=destinationShape,
-                                    callback=callback)
+    def createLink(self, linkInformation: LinkInformation, callback: CreatedLinkCallback):
+        self._eventEngine.sendEvent(EventType.CreateLink, linkInformation=linkInformation, callback=callback)

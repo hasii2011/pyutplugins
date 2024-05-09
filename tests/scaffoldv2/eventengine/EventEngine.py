@@ -3,10 +3,6 @@ from logging import Logger
 from logging import getLogger
 from typing import Callable
 
-from ogl.OglLink import OglLink
-from ogl.OglObject import OglObject
-from ogl.OglPosition import OglPositions
-from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 from wx import MessageBox
 from wx import PostEvent
 from wx import PyEventBinder
@@ -15,8 +11,11 @@ from wx import Window
 
 from oglio.Types import OglProject
 
+from ogl.OglLink import OglLink
+
 from pyutplugins.ExternalTypes import CreatedLinkCallback
 from pyutplugins.ExternalTypes import CurrentProjectCallback
+from pyutplugins.ExternalTypes import LinkInformation
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
@@ -55,6 +54,7 @@ LINK_TYPE_PARAMETER:         str = 'linkType'
 PATH_PARAMETER:              str = 'path'
 SOURCE_SHAPE_PARAMETER:      str = 'sourceShape'
 DESTINATION_SHAPE_PARAMETER: str = 'destinationShape'
+LINK_INFORMATION_PARAMETER:  str = 'linkInformation'
 
 
 class EventEngine(IEventEngine):
@@ -181,19 +181,10 @@ class EventEngine(IEventEngine):
         PostEvent(dest=self._listeningWindow, event=event)
 
     def _sendCreateLinkEvent(self, **kwargs):
-        linkType:         PyutLinkType        = kwargs[LINK_TYPE_PARAMETER]
-        path:             OglPositions        = kwargs[PATH_PARAMETER]
-        sourceShape:      OglObject           = kwargs[SOURCE_SHAPE_PARAMETER]
-        destinationShape: OglObject           = kwargs[DESTINATION_SHAPE_PARAMETER]
-        callback:         CreatedLinkCallback = kwargs[CALLBACK_PARAMETER]
+        linkInformation: LinkInformation     = kwargs[LINK_INFORMATION_PARAMETER]
+        callback:        CreatedLinkCallback = kwargs[CALLBACK_PARAMETER]
 
-        event: CreateLinkEvent = CreateLinkEvent(
-            linkType=linkType,
-            path=path,
-            sourceShape=sourceShape,
-            destinationShape=destinationShape,
-            callback=callback
-        )
+        event: CreateLinkEvent = CreateLinkEvent(linkInformation=linkInformation, callback=callback)
         PostEvent(dest=self._listeningWindow, event=event)
 
     def _sendSelectShapesAllEvent(self):

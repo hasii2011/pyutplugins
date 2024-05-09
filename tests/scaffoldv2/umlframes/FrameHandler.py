@@ -13,9 +13,9 @@ from miniogl.ShapeModel import ShapeModel
 
 from ogl.OglAssociation import OglAssociation
 from ogl.OglClass import OglClass
+from ogl.OglInterface import OglInterface
 from ogl.OglLink import OglLink
 from ogl.OglLinkFactory import getOglLinkFactory
-from ogl.OglObject import OglObject
 from ogl.OglPosition import OglPosition
 from ogl.OglPosition import OglPositions
 
@@ -24,6 +24,7 @@ from pyutmodelv2.PyutLink import PyutLink
 from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from pyutplugins.ExternalTypes import CreatedLinkCallback
+from pyutplugins.ExternalTypes import LinkInformation
 from tests.scaffoldv2.eventengine.Events import CreateLinkEvent
 from tests.scaffoldv2.eventengine.Events import DeleteLinkEvent
 from tests.scaffoldv2.eventengine.Events import EVENT_CREATE_LINK
@@ -38,10 +39,10 @@ class FrameHandler:
 
         self._eventEngine: IEventEngine = eventEngine
 
-        self._eventEngine.registerListener(EVENT_DELETE_LINK, self._deleteLink)
-        self._eventEngine.registerListener(EVENT_CREATE_LINK, self._createLink)
+        self._eventEngine.registerListener(EVENT_DELETE_LINK, self._onDeleteLink)
+        self._eventEngine.registerListener(EVENT_CREATE_LINK, self._onCreateLink)
 
-    def _deleteLink(self, event: DeleteLinkEvent):
+    def _onDeleteLink(self, event: DeleteLinkEvent):
 
         oglLink: OglLink = event.oglLink
 
@@ -53,33 +54,41 @@ class FrameHandler:
 
         oglLink.Detach()
 
-    def _createLink(self, event: CreateLinkEvent):
+    def _onCreateLink(self, event: CreateLinkEvent):
 
-        linkType:         PyutLinkType        = event.linkType
-        path:             OglPositions        = event.path
-        sourceShape:      OglObject           = event.sourceShape
-        destinationShape: OglObject           = event.destinationShape
-        callback:         CreatedLinkCallback = event.callback
+        linkInformation: LinkInformation     = event.linkInformation
+        callback:        CreatedLinkCallback = event.callback
 
         self.logger.info(f'In Frame Handler')
 
-        oglLink: OglLink = self._createOrthogonalLink(linkType=linkType, path=path, sourceShape=sourceShape, destinationShape=destinationShape)
+        oglLink: OglLink = self._createOrthogonalLink(linkInformation=linkInformation)
 
         callback(oglLink)
 
-    def _createOrthogonalLink(self, linkType: PyutLinkType, path: OglPositions, sourceShape: OglObject, destinationShape: OglObject):
+    def _createOrthogonalLink(self, linkInformation: LinkInformation):
 
-        if linkType == PyutLinkType.INHERITANCE:
-            srcClass: OglClass = cast(OglClass, sourceShape)
-            dstClass: OglClass = cast(OglClass, destinationShape)
+        linkType: PyutLinkType = linkInformation.linkType
+        srcClass: OglClass     = cast(OglClass, linkInformation.sourceShape)
+        dstClass: OglClass     = cast(OglClass, linkInformation.destinationShape)
 
-            oglLink: OglLink = self._createInheritanceLink(srcClass, dstClass, path=path)
+        if linkType == PyutLinkType.INHERITANCE or linkType == PyutLinkType.NOTELINK:
+            oglLink: OglLink = self._createGeneralLink(srcClass, dstClass, path=linkInformation.path, linkType=linkType)
+        elif linkType == PyutLinkType.INTERFACE:
+            oglLink = self._createGeneralLink(srcClass, dstClass, path=linkInformation.path, linkType=linkType)
+
+            oglInterface: OglInterface = cast(OglInterface, oglLink)
+
+            oglInterface.pyutObject.name = linkInformation.interfaceName
+            oglInterface.updateLabels()
+
+        elif linkType == PyutLinkType.AGGREGATION or linkType == PyutLinkType.ASSOCIATION or linkType == PyutLinkType.COMPOSITION:
+            oglLink = self._createAssociationLink(linkInformation=linkInformation)
         else:
-            assert False, 'Do nt know about that link type'
+            assert False, 'Do not know about that link type'
 
         return oglLink
 
-    def _createInheritanceLink(self, child: OglClass, parent: OglClass, path: OglPositions) -> OglLink:
+    def _createGeneralLink(self, child: OglClass, parent: OglClass, path: OglPositions, linkType: PyutLinkType) -> OglLink:
         """
         Add a parent link between the child and parent objects.
 
@@ -93,7 +102,7 @@ class FrameHandler:
         sourceClass:      PyutClass = cast(PyutClass, child.pyutObject)
         destinationClass: PyutClass = cast(PyutClass, parent.pyutObject)
         pyutLink:         PyutLink  = PyutLink("", linkType=PyutLinkType.INHERITANCE, source=sourceClass, destination=destinationClass)
-        oglLink:          OglLink   = getOglLinkFactory().getOglLink(child, pyutLink, parent, PyutLinkType.INHERITANCE)
+        oglLink:          OglLink   = getOglLinkFactory().getOglLink(child, pyutLink, parent, linkType)
 
         child.addLink(oglLink)
         parent.addLink(oglLink)
@@ -107,6 +116,35 @@ class FrameHandler:
         parentPyutClass: PyutClass = cast(PyutClass, parent.pyutObject)
 
         childPyutClass.addParent(parentPyutClass)
+
+        return oglLink
+
+    def _createAssociationLink(self, linkInformation: LinkInformation) -> OglLink:
+
+        srcClass: OglClass = cast(OglClass, linkInformation.sourceShape)
+        dstClass: OglClass = cast(OglClass, linkInformation.destinationShape)
+
+        linkType: PyutLinkType = linkInformation.linkType
+
+        pyutLink: PyutLink = PyutLink(name="", linkType=linkType, source=srcClass.pyutObject, destination=dstClass.pyutObject)
+
+        pyutLink.name                   = linkInformation.associationName
+        pyutLink.sourceCardinality      = linkInformation.sourceCardinality
+        pyutLink.destinationCardinality = linkInformation.destinationCardinality
+        # Call the factory to create OGL Link
+
+        oglLinkFactory = getOglLinkFactory()
+        oglLink: OglLink = oglLinkFactory.getOglLink(srcShape=srcClass, pyutLink=pyutLink, destShape=dstClass, linkType=linkType)
+
+        self._placeAnchorsInCorrectPosition(oglLink=oglLink, path=linkInformation.path)
+
+        controlPoints: ControlPoints = self._toControlPoints(path=linkInformation.path)
+
+        self._createNeededControlPoints(oglLink=oglLink, controlPoints=controlPoints)
+
+        srcClass.addLink(oglLink)  # add it to the source Ogl Linkable Object
+        dstClass.addLink(oglLink)  # add it to the destination Ogl Linkable Object
+        srcClass.pyutObject.addLink(pyutLink)  # add it to the source PyutClass
 
         return oglLink
 

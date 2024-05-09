@@ -5,13 +5,10 @@ from abc import abstractmethod
 from dataclasses import dataclass
 
 from ogl.OglLink import OglLink
-from ogl.OglObject import OglObject
-from ogl.OglPosition import OglPositions
-
-from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from pyutplugins.ExternalTypes import CreatedLinkCallback
 from pyutplugins.ExternalTypes import CurrentProjectCallback
+from pyutplugins.ExternalTypes import LinkInformation
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import OglObjectType
 from pyutplugins.ExternalTypes import FrameInformationCallback
@@ -155,5 +152,5 @@ class IPluginAdapter(ABC):
         pass
 
     @abstractmethod
-    def createLink(self, linkType: PyutLinkType, path: OglPositions, sourceShape: OglObject, destinationShape: OglObject, callback: CreatedLinkCallback):
+    def createLink(self, linkInformation: LinkInformation, callback: CreatedLinkCallback):
         pass

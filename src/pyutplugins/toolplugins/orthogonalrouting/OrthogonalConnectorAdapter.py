@@ -9,8 +9,8 @@ from codeallybasic.Position import Position
 
 from miniogl.AnchorPoint import AnchorPoint
 
-from ogl.OglObject import OglObject
 from ogl.OglLink import OglLink
+from ogl.OglObject import OglObject
 from ogl.OglPosition import OglPosition
 from ogl.OglPosition import OglPositions
 
@@ -25,6 +25,12 @@ from pyorthogonalrouting.OrthogonalConnectorOptions import OrthogonalConnectorOp
 from pyorthogonalrouting.enumerations.Side import Side
 
 from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
+
+from pyutplugins.ExternalTypes import AssociationName
+from pyutplugins.ExternalTypes import DestinationCardinality
+from pyutplugins.ExternalTypes import InterfaceName
+from pyutplugins.ExternalTypes import LinkInformation
+from pyutplugins.ExternalTypes import SourceCardinality
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
@@ -82,14 +88,8 @@ class OrthogonalConnectorAdapter:
 
         self.logger.info(f'{path}')
 
-        linkType:         PyutLinkType = oglLink.pyutObject.linkType
-        sourceShape:      OglObject    = oglLink.sourceShape
-        destinationShape: OglObject    = oglLink.destinationShape
-
         self._deleteTheOldLink(oglLink=oglLink)
-        self._createOrthogonalLink(linkType=linkType, path=path, sourceShape=sourceShape, destinationShape=destinationShape)
-
-        # umlFrame.Refresh()
+        self._createOrthogonalLink(oldLink=oglLink, path=path)
 
     def _shapeToRect(self, oglObject: OglObject) -> Rect:
 
@@ -128,12 +128,28 @@ class OrthogonalConnectorAdapter:
 
         self._pluginAdapter.deleteLink(oglLink=oglLink)
 
-    def _createOrthogonalLink(self, linkType: PyutLinkType, path: Points, sourceShape: OglObject, destinationShape: OglObject):
+    def _createOrthogonalLink(self, oldLink: OglLink, path: Points):
+
+        linkType:         PyutLinkType = oldLink.pyutObject.linkType
+        sourceShape:      OglObject    = oldLink.sourceShape
+        destinationShape: OglObject    = oldLink.destinationShape
 
         oglPositions: OglPositions = self._toOglPositions(path=path)
 
-        self._pluginAdapter.createLink(linkType=linkType, path=oglPositions,
-                                       sourceShape=sourceShape, destinationShape=destinationShape, callback=self._createLinkCallback)
+        linkInformation: LinkInformation = LinkInformation()
+        linkInformation.linkType         = linkType
+        linkInformation.path             = oglPositions
+        linkInformation.sourceShape      = sourceShape
+        linkInformation.destinationShape = destinationShape
+
+        if linkType == PyutLinkType.INTERFACE:
+            linkInformation.interfaceName = InterfaceName(oldLink.pyutObject.name)
+        elif linkType == PyutLinkType.ASSOCIATION or linkType == PyutLinkType.COMPOSITION or linkType == PyutLinkType.AGGREGATION:
+            linkInformation.associationName        = AssociationName(oldLink.pyutObject.name)
+            linkInformation.sourceCardinality      = SourceCardinality(oldLink.pyutObject.sourceCardinality)
+            linkInformation.destinationCardinality = DestinationCardinality(oldLink.pyutObject.destinationCardinality)
+
+        self._pluginAdapter.createLink(linkInformation=linkInformation, callback=self._createLinkCallback)
 
     def _createLinkCallback(self, newLink: OglLink):
 

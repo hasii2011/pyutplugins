@@ -13,6 +13,7 @@ from os import path as osPath
 
 from enum import Enum
 
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 from wx import ClientDC
 
 from pyutmodelv2.PyutLink import PyutLink
@@ -22,7 +23,8 @@ from ogl.OglLink import OglLink
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglNote import OglNote
 from ogl.OglText import OglText
-
+from ogl.OglObject import OglObject
+from ogl.OglPosition import OglPositions
 from ogl.OglUseCase import OglUseCase
 from ogl.OglActor import OglActor
 
@@ -47,8 +49,6 @@ OglObjects = NewType('OglObjects',  List[OglObjectType])
 PyutLinks  = NewType('PyutLinks',   List[PyutLink])
 
 SelectedOglObjectsCallback = Callable[[OglObjects], None]        # Todo: Figure out appropriate type for callback
-
-CreatedLinkCallback        = Callable[[OglLink], None]
 
 
 def createOglObjectsFactory() -> OglObjects:
@@ -107,6 +107,41 @@ class ObjectBoundaries:
 
 
 ObjectBoundaryCallback = Callable[[ObjectBoundaries], None]
+
+InterfaceName          = NewType('InterfaceName', str)
+AssociationName        = NewType('AssociationName', str)
+SourceCardinality      = NewType('SourceCardinality', str)
+DestinationCardinality = NewType('DestinationCardinality', str)
+
+
+def createOglPositionsFactory() -> OglPositions:
+    return OglPositions([])
+
+
+@dataclass
+class LinkInformation:
+    """
+    The field interfaceName is only valid when linkType is PyutLinkType.INTERFACE
+    The fields
+        associationName
+        sourceCardinality
+        destinationCardinality
+    are valid only when linkType is  one of
+        PyutLinkType.ASSOCIATION
+        PyutLinkType.COMPOSITION
+        PyutLinkType.AGGREGATION
+    """
+    linkType:               PyutLinkType            = cast(PyutLinkType, None)
+    path:                   OglPositions            = field(default_factory=createOglPositionsFactory)
+    sourceShape:            OglObject               = cast(OglObject, None)
+    destinationShape:       OglObject               = cast(OglObject, None)
+    interfaceName:          InterfaceName           = cast(InterfaceName, None)
+    associationName:        AssociationName         = cast(AssociationName, None)
+    sourceCardinality:      SourceCardinality       = cast(SourceCardinality, None)
+    destinationCardinality: DestinationCardinality  = cast(DestinationCardinality, None)
+
+
+CreatedLinkCallback = Callable[[OglLink], None]
 
 
 def createPluginClassesFactory() -> OglClasses:
