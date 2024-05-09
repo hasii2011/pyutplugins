@@ -3,6 +3,10 @@ from logging import Logger
 from logging import getLogger
 from typing import Callable
 
+from ogl.OglLink import OglLink
+from ogl.OglObject import OglObject
+from ogl.OglPosition import OglPositions
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 from wx import MessageBox
 from wx import PostEvent
 from wx import PyEventBinder
@@ -11,6 +15,7 @@ from wx import Window
 
 from oglio.Types import OglProject
 
+from pyutplugins.ExternalTypes import CreatedLinkCallback
 from pyutplugins.ExternalTypes import CurrentProjectCallback
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import PluginProject
@@ -18,7 +23,9 @@ from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.eventengine.Events import AddShapeEvent
+from tests.scaffoldv2.eventengine.Events import CreateLinkEvent
 from tests.scaffoldv2.eventengine.Events import DeSelectAllShapesEvent
+from tests.scaffoldv2.eventengine.Events import DeleteLinkEvent
 
 from tests.scaffoldv2.eventengine.Events import EventType
 from tests.scaffoldv2.eventengine.Events import FrameInformationEvent
@@ -36,13 +43,18 @@ from tests.scaffoldv2.eventengine.Events import UpdateTreeItemNameEvent
 
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 
-NEW_NAME_PARAMETER:       str = 'newName'
-TREE_ITEM_ID_PARAMETER:   str = 'treeItemId'
-PLUGIN_PROJECT_PARAMETER: str = 'pluginProject'
-OGL_PROJECT_PARAMETER:    str = 'oglProject'
-CALLBACK_PARAMETER:       str = 'callback'
-DIAGRAM_TYPE_PARAMETER:   str = 'diagramType'
-SHAPE_PARAMETER:          str = 'shapeToAdd'
+NEW_NAME_PARAMETER:          str = 'newName'
+TREE_ITEM_ID_PARAMETER:      str = 'treeItemId'
+PLUGIN_PROJECT_PARAMETER:    str = 'pluginProject'
+OGL_PROJECT_PARAMETER:       str = 'oglProject'
+CALLBACK_PARAMETER:          str = 'callback'
+DIAGRAM_TYPE_PARAMETER:      str = 'diagramType'
+SHAPE_PARAMETER:             str = 'shapeToAdd'
+OGL_LINK_PARAMETER:          str = 'oglLink'
+LINK_TYPE_PARAMETER:         str = 'linkType'
+PATH_PARAMETER:              str = 'path'
+SOURCE_SHAPE_PARAMETER:      str = 'sourceShape'
+DESTINATION_SHAPE_PARAMETER: str = 'destinationShape'
 
 
 class EventEngine(IEventEngine):
@@ -93,6 +105,10 @@ class EventEngine(IEventEngine):
                 self._sendLoadOglProjectEvent(**kwargs)
             case EventType.GetObjectBoundaries:
                 self._sendGetObjectBoundariesEvent(**kwargs)
+            case EventType.DeleteLink:
+                self._sendDeleteLinkEvent(**kwargs)
+            case EventType.CreateLink:
+                self._sendCreateLinkEvent(**kwargs)
             case EventType.IndicatePluginModifiedProject:
                 MessageBox("Project Modified", caption="")
             case _:
@@ -157,6 +173,28 @@ class EventEngine(IEventEngine):
         callback:    ObjectBoundaryCallback   = kwargs[CALLBACK_PARAMETER]
         eventToPost: GetObjectBoundariesEvent = GetObjectBoundariesEvent(callback=callback)
         PostEvent(dest=self._listeningWindow, event=eventToPost)
+
+    def _sendDeleteLinkEvent(self, **kwargs):
+
+        oglLink: OglLink         = kwargs[OGL_LINK_PARAMETER]
+        event:   DeleteLinkEvent = DeleteLinkEvent(oglLink=oglLink)
+        PostEvent(dest=self._listeningWindow, event=event)
+
+    def _sendCreateLinkEvent(self, **kwargs):
+        linkType:         PyutLinkType        = kwargs[LINK_TYPE_PARAMETER]
+        path:             OglPositions        = kwargs[PATH_PARAMETER]
+        sourceShape:      OglObject           = kwargs[SOURCE_SHAPE_PARAMETER]
+        destinationShape: OglObject           = kwargs[DESTINATION_SHAPE_PARAMETER]
+        callback:         CreatedLinkCallback = kwargs[CALLBACK_PARAMETER]
+
+        event: CreateLinkEvent = CreateLinkEvent(
+            linkType=linkType,
+            path=path,
+            sourceShape=sourceShape,
+            destinationShape=destinationShape,
+            callback=callback
+        )
+        PostEvent(dest=self._listeningWindow, event=event)
 
     def _sendSelectShapesAllEvent(self):
         event: SelectAllShapesEvent = SelectAllShapesEvent()

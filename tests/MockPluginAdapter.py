@@ -3,8 +3,15 @@ from typing import cast
 
 from unittest.mock import MagicMock
 
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
+
 from miniogl.DiagramFrame import DiagramFrame
 
+from ogl.OglLink import OglLink
+from ogl.OglObject import OglObject
+from ogl.OglPosition import OglPositions
+
+from pyutplugins.ExternalTypes import CreatedLinkCallback
 from pyutplugins.ExternalTypes import CurrentProjectCallback
 from pyutplugins.ExternalTypes import FrameInformationCallback
 from pyutplugins.ExternalTypes import FrameSizeCallback
@@ -91,6 +98,12 @@ class MockPluginAdapter(IPluginAdapter):
         pass
 
     def getObjectBoundaries(self, callback: ObjectBoundaryCallback):
+        pass
+
+    def deleteLink(self, oglLink: OglLink):
+        pass
+
+    def createLink(self, linkType: PyutLinkType, path: OglPositions, sourceShape: OglObject, destinationShape: OglObject, callback: CreatedLinkCallback):
         pass
 
     def indicatePluginModifiedProject(self):

@@ -21,6 +21,8 @@ FrameInformationEvent,   EVENT_FRAME_INFORMATION     = NewEvent()
 LoadOglProjectEvent,     EVENT_LOAD_OGL_PROJECT      = NewEvent()
 
 GetObjectBoundariesEvent, EVENT_GET_OBJECT_BOUNDARIES = NewEvent()
+DeleteLinkEvent,          EVENT_DELETE_LINK           = NewEvent()
+CreateLinkEvent,          EVENT_CREATE_LINK           = NewEvent()
 
 RequestCurrentProjectEvent,         EVENT_REQUEST_CURRENT_PROJECT          = NewEvent()
 IndicatePluginModifiedProjectEvent, EVENT_INDICATE_PLUGIN_MODIFIED_PROJECT = NewEvent()
@@ -40,6 +42,8 @@ class EventType(Enum):
     FrameSize          = 'FrameSize'
     FrameInformation   = 'FrameInformation'
     LoadOglProject     = 'LoadOglProject'
+    DeleteLink         = 'DeleteLink'
+    CreateLink         = 'CreateLink'
 
     GetObjectBoundaries = 'GetObjectBoundaries'
 

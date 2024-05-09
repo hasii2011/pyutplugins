@@ -48,6 +48,8 @@ PyutLinks  = NewType('PyutLinks',   List[PyutLink])
 
 SelectedOglObjectsCallback = Callable[[OglObjects], None]        # Todo: Figure out appropriate type for callback
 
+CreatedLinkCallback        = Callable[[OglLink], None]
+
 
 def createOglObjectsFactory() -> OglObjects:
     """

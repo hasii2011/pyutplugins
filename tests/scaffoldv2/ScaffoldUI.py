@@ -96,6 +96,7 @@ from tests.scaffoldv2.eventengine.Events import NewProjectEvent
 from tests.scaffoldv2.eventengine.Events import RefreshFrameEvent
 from tests.scaffoldv2.eventengine.Events import SelectAllShapesEvent
 from tests.scaffoldv2.eventengine.Events import SelectedOglObjectsEvent
+from tests.scaffoldv2.umlframes.FrameHandler import FrameHandler
 
 from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
 from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
@@ -121,9 +122,10 @@ class ScaffoldUI:
         self._topLevelFrame: Frame = topLevelFrame
         self.logger:         Logger = getLogger(__name__)
 
-        self._splitter:    SplitterWindow = cast(SplitterWindow, None)
-        self._projectTree: TreeCtrl       = cast(TreeCtrl, None)
-        self._notebook:    Notebook       = cast(Notebook, None)
+        self._splitter:     SplitterWindow = cast(SplitterWindow, None)
+        self._projectTree:  TreeCtrl       = cast(TreeCtrl, None)
+        self._notebook:     Notebook       = cast(Notebook, None)
+        self._frameHandler: FrameHandler   = cast(FrameHandler, None)
 
         self._projectsRoot: TreeItemId   = cast(TreeItemId, None)
         self._projects:     PyutProjects = PyutProjects([])
@@ -162,6 +164,10 @@ class ScaffoldUI:
         Args:
             eventEngine:
         """
+        self._frameHandler = FrameHandler(eventEngine=eventEngine)
+        #
+        # TODO: Eventually move these handler to the above
+        #
         self._eventEngine = eventEngine
         self._eventEngine.registerListener(EVENT_NEW_PROJECT,          self._onNewProject)
         self._eventEngine.registerListener(EVENT_NEW_DIAGRAM,          self._onNewDiagram)
@@ -226,13 +232,6 @@ class ScaffoldUI:
     # noinspection PyUnusedLocal
     def _onSelectAll(self, event: SelectAllShapesEvent):
         self._selectShapes(True)
-        # shapes = self._currentFrame.GetDiagram().GetShapes()
-        # for shape in shapes:
-        #     shape.SetSelected(True)
-        #     self._currentFrame.GetSelectedShapes()
-        #
-        # self._currentFrame.SetSelectedShapes(shapes)
-        # self._currentFrame.Refresh()
 
     def _selectShapes(self, selected: bool):
         """

@@ -4,6 +4,13 @@ from logging import getLogger
 
 from wx import Yield as wxYield
 
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
+
+from ogl.OglLink import OglLink
+from ogl.OglObject import OglObject
+from ogl.OglPosition import OglPositions
+
+from pyutplugins.ExternalTypes import CreatedLinkCallback
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.IPluginAdapter import ScreenMetrics
@@ -14,7 +21,6 @@ from pyutplugins.ExternalTypes import CurrentProjectCallback
 from pyutplugins.ExternalTypes import FrameInformationCallback
 from pyutplugins.ExternalTypes import FrameSizeCallback
 from pyutplugins.ExternalTypes import OglObjectType
-
 
 from tests.scaffoldv2.eventengine.Events import EventType
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
@@ -98,3 +104,11 @@ class PluginAdapterV2(IPluginAdapter):
 
     def indicatePluginModifiedProject(self):
         self._eventEngine.sendEvent(EventType.IndicatePluginModifiedProject)
+
+    def deleteLink(self, oglLink: OglLink):
+        self._eventEngine.sendEvent(EventType.DeleteLink, oglLink=oglLink)
+
+    def createLink(self, linkType: PyutLinkType, path: OglPositions, sourceShape: OglObject, destinationShape: OglObject, callback: CreatedLinkCallback):
+        self._eventEngine.sendEvent(EventType.CreateLink, linkType=linkType, path=path,
+                                    sourceShape=sourceShape, destinationShape=destinationShape,
+                                    callback=callback)

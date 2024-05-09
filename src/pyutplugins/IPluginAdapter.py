@@ -4,6 +4,13 @@ from abc import abstractmethod
 
 from dataclasses import dataclass
 
+from ogl.OglLink import OglLink
+from ogl.OglObject import OglObject
+from ogl.OglPosition import OglPositions
+
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
+
+from pyutplugins.ExternalTypes import CreatedLinkCallback
 from pyutplugins.ExternalTypes import CurrentProjectCallback
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import OglObjectType
@@ -141,4 +148,12 @@ class IPluginAdapter(ABC):
         """
         Plugins always work on the current frame or project
         """
+        pass
+
+    @abstractmethod
+    def deleteLink(self, oglLink: OglLink):
+        pass
+
+    @abstractmethod
+    def createLink(self, linkType: PyutLinkType, path: OglPositions, sourceShape: OglObject, destinationShape: OglObject, callback: CreatedLinkCallback):
         pass
