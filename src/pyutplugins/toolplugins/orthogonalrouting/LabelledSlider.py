@@ -37,7 +37,7 @@ class LabelledSlider:
     Since bare sliders always need labels, voila, here is the wrapper component
 
     """
-    def __init__(self, sizedPanel: SizedPanel, label: str, value: int, minValue: int, maxValue, size: Size = DefaultSize):
+    def __init__(self, sizedPanel: SizedPanel, label: str, value: int, minValue: int, maxValue, size: Size = DefaultSize, toolTip: str = ''):
         """
 
         Args:
@@ -47,6 +47,7 @@ class LabelledSlider:
             minValue:       The slider minimal value
             maxValue:       The slider maximum value
             size:           The Size of the component
+            toolTip:        A tool tip to display on a mouse over
         """
 
         self.logger: Logger = getLogger(__name__)
@@ -54,7 +55,7 @@ class LabelledSlider:
         self._slider:   Slider              = cast(Slider, None)
         self._callback: ValueChangedHandler = cast(ValueChangedHandler, None)
 
-        self._layoutComponent(sizedPanel, label, value=value, minValue=minValue, maxValue=maxValue, size=size)
+        self._layoutComponent(sizedPanel, label, value=value, minValue=minValue, maxValue=maxValue, size=size, toolTip=toolTip)
 
         sizedPanel.Bind(EVT_SLIDER, handler=self._onSliderChanged, source=self._slider)
 
@@ -64,7 +65,7 @@ class LabelledSlider:
     # noinspection PyTypeChecker
     valueChangedHandler = property(fget=None, fset=_valueChangedHandler, doc='This method called when slider value changes')
 
-    def _layoutComponent(self, parentPanel: SizedPanel, label: str, value: int, minValue: int, maxValue, size: Size):
+    def _layoutComponent(self, parentPanel: SizedPanel, label: str, value: int, minValue: int, maxValue, size: Size, toolTip: str):
 
         sizedStaticBox: SizedStaticBox = SizedStaticBox(parent=parentPanel, label=label)
         sizedStaticBox.SetSizerType('vertical')
@@ -82,10 +83,11 @@ class LabelledSlider:
 
         sliderPanel.Layout()
 
+        slider.SetToolTip(toolTip)
+
         self._slider = slider
 
     def _onSliderChanged(self, event: CommandEvent):
 
         assert self._callback is not None, 'Developer error.  You want to set the valueChangedHandler'
         self._callback(event)
-

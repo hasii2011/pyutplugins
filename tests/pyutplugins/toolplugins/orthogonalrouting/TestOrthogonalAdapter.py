@@ -62,7 +62,7 @@ class TestOrthogonalAdapter(UnitTestBase):
     def testRight(self):
 
         expectedSide:   Side     = Side.RIGHT
-        anchorPosition: Position = Position(x=50, y=15)
+        anchorPosition: Position = Position(x=49, y=15)
         actualSide:     Side     = OrthogonalConnectorAdapter.whichConnectorSide(shape=self._mockOglObject, anchorPosition=anchorPosition)
 
         self.assertEqual(expectedSide, actualSide, 'Right computation is incorrect')

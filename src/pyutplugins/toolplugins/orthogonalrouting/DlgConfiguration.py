@@ -14,6 +14,7 @@ from wx import CommandEvent
 from wx import DEFAULT_DIALOG_STYLE
 from wx import EVT_BUTTON
 from wx import EVT_CLOSE
+from wx import EVT_SPINCTRLDOUBLE
 from wx import ID_ANY
 from wx import ID_CANCEL
 from wx import ID_OK
@@ -21,6 +22,8 @@ from wx import OK
 from wx import RESIZE_BORDER
 from wx import Size
 from wx import SpinCtrl
+from wx import SpinCtrlDouble
+from wx import SpinDoubleEvent
 from wx import StaticText
 from wx import StdDialogButtonSizer
 from wx import Window
@@ -63,7 +66,7 @@ class DlgConfiguration(SizedDialog):
         self._configuration: Configuration  = cast(Configuration, None)
 
         style:   int  = DEFAULT_DIALOG_STYLE | RESIZE_BORDER
-        dlgSize: Size = Size(475, 300)
+        dlgSize: Size = Size(475, 350)
 
         super().__init__(parent, title='Orthogonal Connector Routing Configuration', size=dlgSize, style=style)
         self.logger: Logger = getLogger(__name__)
@@ -75,6 +78,9 @@ class DlgConfiguration(SizedDialog):
 
         self._sizedPanel: SizedPanel = self.GetContentsPane()
         self._sizedPanel.SetSizerType('horizontal')
+
+        self._sourceEdgeDistance:      SpinCtrlDouble = cast(SpinCtrlDouble, None)
+        self._destinationEdgeDistance: SpinCtrlDouble = cast(SpinCtrlDouble, None)
 
         self._pluginAdapter.getObjectBoundaries(callback=self._objectBoundariesCallback)
         #
@@ -125,13 +131,53 @@ class DlgConfiguration(SizedDialog):
         localPanel.SetSizerType('vertical')
         localPanel.SetSizerProps(expand=True, proportion=2)
 
-        shapeMargin:        LabelledSlider = LabelledSlider(sizedPanel=localPanel, label='Shape Margin',         value=22, minValue=0, maxValue=100, size=Size(325, height=-1))
-        globalBoundsMargin: LabelledSlider = LabelledSlider(sizedPanel=localPanel, label='Global Bounds Margin', value=44, minValue=0, maxValue=100, size=Size(325, height=-1))
+        shapeMargin:        LabelledSlider = LabelledSlider(sizedPanel=localPanel, label='Shape Margin',
+                                                            value=self._configuration.shapeMargin,
+                                                            minValue=0,
+                                                            maxValue=100,
+                                                            size=Size(325, height=-1),
+                                                            toolTip='The margin around shapes for routing')
+        globalBoundsMargin: LabelledSlider = LabelledSlider(sizedPanel=localPanel, label='Global Bounds Margin',
+                                                            value=self._configuration.globalBoundsMargin,
+                                                            minValue=0,
+                                                            maxValue=100,
+                                                            size=Size(325, height=-1),
+                                                            toolTip='The margin that routing expands')
 
         shapeMargin.valueChangedHandler        = self._shapeMarginChanged
         globalBoundsMargin.valueChangedHandler = self._globalBoundsMarginChanged
 
+        self._layoutConnectorEdgeDistance(parent=localPanel)
         self._layoutGlobalBounds(parent=parent)
+
+    def _layoutConnectorEdgeDistance(self, parent: SizedPanel):
+
+        sourceBox: SizedStaticBox = SizedStaticBox(parent=parent, label='Source connector distance')
+        sourceBox.SetSizerType('vertical')
+        sourceBox.SetSizerProps(proportion=1)
+
+        sourceEdgeDistance: SpinCtrlDouble = SpinCtrlDouble(sourceBox, id=ID_ANY,
+                                                            value=str(self._configuration.sourceEdgeDistance),
+                                                            min=0.0,
+                                                            max=1.0,
+                                                            inc=0.1
+                                                            )
+        sourceEdgeDistance.SetToolTip('Ratio of where to place connectors on source shape edge.')
+
+        destinationBox: SizedStaticBox = SizedStaticBox(parent=parent, label='Destination connector distance')
+        destinationBox.SetSizerType('vertical')
+        destinationBox.SetSizerProps(proportion=1)
+
+        destinationEdgeDistance: SpinCtrlDouble = SpinCtrlDouble(destinationBox, id=ID_ANY,
+                                                                 value=str(self._configuration.destinationEdgeDistance),
+                                                                 min=0.0,
+                                                                 max=1.0,
+                                                                 inc=0.1
+                                                                 )
+        destinationEdgeDistance.SetToolTip('Ratio of where to place connectors on destination shape edge.')
+
+        parent.Bind(EVT_SPINCTRLDOUBLE, handler=self._onSourceEdgeDistancedChanged,      source=sourceEdgeDistance)
+        parent.Bind(EVT_SPINCTRLDOUBLE, handler=self._onDestinationEdgeDistancedChanged, source=destinationEdgeDistance)
 
     def _layoutGlobalBounds(self, parent: SizedPanel):
 
@@ -148,6 +194,7 @@ class DlgConfiguration(SizedDialog):
 
         labelBox: SizedStaticBox = SizedStaticBox(parent=parent, label='Global Bounds')
         labelBox.SetSizerProps(expand=True, proportion=1)
+        labelBox.SetToolTip('Defines the routing confinement bounds')
 
         localPanel: SizedPanel = SizedPanel(labelBox)
         localPanel.SetSizerType('form')
@@ -178,3 +225,13 @@ class DlgConfiguration(SizedDialog):
 
     def _globalBoundsMarginChanged(self, event: CommandEvent):
         self._configuration.globalBoundsMargin = event.GetInt()
+
+    def _onSourceEdgeDistancedChanged(self, event: SpinDoubleEvent):
+
+        newValue: float = event.GetValue()
+        self._configuration.sourceEdgeDistance = newValue
+
+    def _onDestinationEdgeDistancedChanged(self, event: SpinDoubleEvent):
+
+        newValue: float = event.GetValue()
+        self._configuration.destinationEdgeDistance = newValue

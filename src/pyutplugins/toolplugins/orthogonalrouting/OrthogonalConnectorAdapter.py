@@ -34,6 +34,8 @@ from pyutplugins.ExternalTypes import SourceCardinality
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
+ANCHOR_POINT_ADJUSTMENT: int = 1    # because line end needs to look like it is right on the line
+
 
 class OrthogonalConnectorAdapter:
     def __init__(self, pluginAdapter: IPluginAdapter):
@@ -50,7 +52,7 @@ class OrthogonalConnectorAdapter:
         shapeWidth, shapeHeight  = shape.GetSize()
 
         minX: int = shapeX
-        maxX: int = shapeX + shapeWidth
+        maxX: int = shapeX + shapeWidth - ANCHOR_POINT_ADJUSTMENT
         minY: int = shapeY
 
         if anchorPosition.x == minX and anchorPosition.y >= minY:
@@ -73,7 +75,7 @@ class OrthogonalConnectorAdapter:
         sourceRect:      Rect = self._shapeToRect(oglLink.sourceShape)
         destinationRect: Rect = self._shapeToRect(oglLink.destinationShape)
 
-        sourceConnectorPoint:      ConnectorPoint = ConnectorPoint(shape=sourceRect,      side=sourceSide,      distance=0.5)
+        sourceConnectorPoint:      ConnectorPoint = ConnectorPoint(shape=sourceRect,      side=sourceSide,      distance=self._configuration.sourceEdgeDistance)
         destinationConnectorPoint: ConnectorPoint = ConnectorPoint(shape=destinationRect, side=destinationSide, distance=0.5)
 
         options: OrthogonalConnectorOptions = OrthogonalConnectorOptions()
