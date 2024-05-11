@@ -45,7 +45,7 @@ class IOMermaid(IOPluginInterface):
         # from super class
         self._name    = PluginName('Mermaid Writer')
         self._author  = 'Humberto A. Sanchez II'
-        self._version = '0.50'
+        self._version = MermaidWriter.VERSION
         self._inputFormat  = cast(InputFormat, None)
         self._outputFormat = OutputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 

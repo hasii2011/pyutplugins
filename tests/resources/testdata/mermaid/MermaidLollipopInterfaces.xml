@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<PyutProject version="11" CodePath="">
+    <PyutDocument type="CLASS_DIAGRAM" title="SampleIFace" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+        <OglClass width="93" height="60" x="500" y="60">
+            <PyutClass id="1" name="NameB" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="">
+                <PyutMethod name="MethodName" visibility="PUBLIC" returnType="">
+                    <SourceCode />
+                </PyutMethod>
+                <PyutField name="field1" visibility="PRIVATE" type="" defaultValue="" />
+            </PyutClass>
+        </OglClass>
+        <OglClass width="112" height="60" x="615" y="285">
+            <PyutClass id="2" name="NorthLollipopClass" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="">
+                <PyutMethod name="method" visibility="PROTECTED" returnType="">
+                    <SourceCode />
+                </PyutMethod>
+                <PyutField name="field" visibility="PUBLIC" type="" defaultValue="" />
+            </PyutClass>
+        </OglClass>
+        <OglClass width="66" height="60" x="120" y="60">
+            <PyutClass id="3" name="NameA" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="">
+                <PyutMethod name="method" visibility="PUBLIC" returnType="">
+                    <SourceCode />
+                </PyutMethod>
+                <PyutField name="field" visibility="PRIVATE" type="" defaultValue="" />
+            </PyutClass>
+        </OglClass>
+        <OglClass width="114" height="60" x="150" y="250">
+            <PyutClass id="4" name="SouthLollipopClass" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="">
+                <PyutMethod name="method" visibility="PUBLIC" returnType="">
+                    <SourceCode />
+                </PyutMethod>
+                <PyutField name="field" visibility="PRIVATE" type="" defaultValue="" />
+            </PyutClass>
+        </OglClass>
+        <OglClass width="110" height="60" x="450" y="375">
+            <PyutClass id="5" name="LongLollipopClass" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="">
+                <PyutMethod name="method" visibility="PRIVATE" returnType="">
+                    <SourceCode />
+                </PyutMethod>
+                <PyutField name="field" visibility="PUBLIC" type="" defaultValue="" />
+            </PyutClass>
+        </OglClass>
+        <OglClass width="71" height="38" x="708" y="500">
+            <PyutClass id="11" name="ClassName1" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglInterface2 attachmentPoint="EAST" x="593" y="90">
+            <PyutInterface id="6" name="IEast" description="">
+                <Implementor implementingClassName="NameB" />
+            </PyutInterface>
+        </OglInterface2>
+        <OglInterface2 attachmentPoint="NORTH" x="671" y="285">
+            <PyutInterface id="7" name="INorth" description="">
+                <Implementor implementingClassName="NorthLollipopClass" />
+            </PyutInterface>
+        </OglInterface2>
+        <OglInterface2 attachmentPoint="SOUTH" x="207" y="310">
+            <PyutInterface id="8" name="ISouth" description="">
+                <Implementor implementingClassName="SouthLollipopClass" />
+            </PyutInterface>
+        </OglInterface2>
+        <OglInterface2 attachmentPoint="WEST" x="120" y="90">
+            <PyutInterface id="9" name="IWest" description="">
+                <Implementor implementingClassName="NameA" />
+            </PyutInterface>
+        </OglInterface2>
+        <OglInterface2 attachmentPoint="WEST" x="450" y="405">
+            <PyutInterface id="10" name="IVeryLongWestInterface" description="">
+                <Implementor implementingClassName="LongLollipopClass" />
+            </PyutInterface>
+        </OglInterface2>
+        <OglInterface2 attachmentPoint="EAST" x="779" y="519">
+            <PyutInterface id="12" name="IClassInterface" description="">
+                <Implementor implementingClassName="ClassName1" />
+            </PyutInterface>
+        </OglInterface2>
+    </PyutDocument>
+</PyutProject>

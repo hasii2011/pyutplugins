@@ -16,6 +16,7 @@ from pathlib import Path
 
 from pyutmodelv2.PyutField import PyutField
 from pyutmodelv2.PyutField import PyutFields
+from pyutmodelv2.PyutInterface import PyutInterface
 from pyutmodelv2.PyutLink import LinkDestination
 from pyutmodelv2.PyutLink import LinkSource
 from pyutmodelv2.PyutLink import PyutLink
@@ -25,6 +26,7 @@ from pyutmodelv2.PyutType import PyutType
 from pyutmodelv2.PyutClass import PyutClass
 from pyutmodelv2.PyutMethod import PyutMethod
 from pyutmodelv2.PyutParameter import PyutParameter
+from pyutmodelv2.PyutModelTypes import Implementors
 
 from pyutmodelv2.enumerations.PyutStereotype import PyutStereotype
 from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
@@ -32,14 +34,14 @@ from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 from ogl.OglNote import OglNote
 from ogl.OglText import OglText
 from ogl.OglLink import OglLink
-from ogl.OglNoteLink import OglNoteLink
 from ogl.OglClass import OglClass
+from ogl.OglNoteLink import OglNoteLink
 from ogl.OglInterface2 import OglInterface2
+from ogl.OglInterface import OglInterface
 from ogl.OglAggregation import OglAggregation
 from ogl.OglInheritance import OglInheritance
 from ogl.OglComposition import OglComposition
 from ogl.OglAssociation import OglAssociation
-from ogl.OglInterface import OglInterface
 
 from pyutplugins.ExternalTypes import OglObjects
 from pyutplugins.ioplugins.mermaid.MermaidDirection import MermaidDirection
@@ -59,10 +61,11 @@ class MermaidArrow(Enum):
     COMPOSITION_LINK  = '*--'   #
     INTERFACE_LINK    = '..|>'  #
     ASSOCIATION_LINK  = '--'
+    LOLLIPOP_LINK     = '()--'  # left side is interface, right is implementor
 
 
 class MermaidWriter:
-    VERSION: str = '0.5'
+    VERSION: str = '0.7'
 
     def __init__(self, fqFileName: Path, writeCredits: bool = True):
         """
@@ -182,7 +185,8 @@ class MermaidWriter:
                     oglAssociation: OglAssociation = cast(OglAssociation, oglObject)
                     linkRefrain = self._getAssociationLinkRefrain(oglAssociation=oglAssociation, arrowType=MermaidArrow.ASSOCIATION_LINK)
                 case OglInterface2():
-                    self.logger.warning(f'OglInterface2 (lollipops) not supported in Mermaid')
+                    oglInterface2: OglInterface2 = cast(OglInterface2, oglObject)
+                    linkRefrain = self._generateLollipopRefrain(oglInterface2)
                 case _:
                     pass        # Ignore non links
             linksStanza += linkRefrain
@@ -274,6 +278,25 @@ class MermaidWriter:
         linkRefrain: str = (
             f'{indent1}note for {destObject.name} "{pyutNote.content}"{eol}'
         )
+        return linkRefrain
+
+    def _generateLollipopRefrain(self, oglInterface2: OglInterface2) -> str:
+        """
+        Interface1 ()-- Interface1Impl
+        Args:
+            oglInterface2:
+
+        Returns:
+        """
+
+        pyutInterface: PyutInterface = oglInterface2.pyutInterface
+        implementors:  Implementors = pyutInterface.implementors
+
+        linkRefrain: str = ''
+        for implementor in implementors:
+            lollipopRefrain: str = f'{indent1}{pyutInterface.name} {MermaidArrow.LOLLIPOP_LINK.value} {implementor} {eol}'
+            linkRefrain += lollipopRefrain
+
         return linkRefrain
 
     def _getCardinalityStrings(self, pyutLink) -> Tuple[str, str]:

@@ -29,6 +29,7 @@ SIMPLE:            str = 'MermaidSimpleClass'
 BASIC_ASSOCIATION: str = 'MermaidBasicAssociation'
 FIELDS:            str = 'MermaidFields'
 NOTES:             str = 'MermaidNotes'
+LOLLIPOPS:         str  = 'MermaidLollipopInterfaces'
 
 SUFFIX_MARKDOWN: str = '.md'
 SUFFIX_XML:      str = '.xml'
@@ -172,11 +173,23 @@ class TestMermaidWriter(TestBase):
         status: int = TestBase.runDiff(goldenPackageName=TestBase.GOLDEN_MERMAID_PACKAGE_NAME, baseFileName=baseFileName)
         self.assertEqual(0, status, 'Note Generation failed')
 
-    def _getTestObjects(self, baseXmlFileName: str, documentTitle: str) -> OglObjects:
+    def testLollipopInterfaces(self):
+        baseFileName:  str           = f'{LOLLIPOPS}{SUFFIX_MARKDOWN}'
+
+        fqFileName:    str           = TestBase.constructGeneratedName(baseFileName=baseFileName)
+        mermaidWriter: MermaidWriter = MermaidWriter(Path(fqFileName), writeCredits=False)
+
+        oglObjects: OglObjects = self._getTestObjects(baseXmlFileName=f'{LOLLIPOPS}{SUFFIX_XML}', documentTitle='SampleIFace', xmlVersion=XmlVersion.V11)
+        mermaidWriter.translate(oglObjects=oglObjects)
+
+        status: int = TestBase.runDiff(goldenPackageName=TestBase.GOLDEN_MERMAID_PACKAGE_NAME, baseFileName=baseFileName)
+        self.assertEqual(0, status, 'Lollipop Interface Generation failed')
+
+    def _getTestObjects(self, baseXmlFileName: str, documentTitle: str, xmlVersion: XmlVersion = XmlVersion.V10) -> OglObjects:
 
         fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_MERMAID_PACKAGE_NAME, baseXmlFileName)
 
-        untangler:  UnTangler = UnTangler(xmlVersion=XmlVersion.V10)
+        untangler:  UnTangler = UnTangler(xmlVersion=xmlVersion)
 
         untangler.untangleFile(fqFileName=fqFileName)
 
