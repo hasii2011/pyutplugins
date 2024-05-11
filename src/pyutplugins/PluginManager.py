@@ -209,9 +209,14 @@ class PluginManager(metaclass=SingletonV3):
         try:
             pluginInstance.executeTool()
             self.logger.debug(f"After tool plugin do action")
-        except (ValueError, Exception) as e:
+        except (ValueError, Exception, ) as e:
             self.logger.error(f'{e}')
-            self.logger.error(f'{PluginManager.getErrorInfo()}')
+            extendedMessage: str = PluginManager.getErrorInfo()
+            self.logger.error(f'{extendedMessage}')
+            booBoo: MessageDialog = MessageDialog(parent=None,
+                                                  message=f'{extendedMessage}',
+                                                  caption='Error!', style=OK | ICON_ERROR)
+            booBoo.ShowModal()
 
     def doImport(self, wxId: int):
         """
