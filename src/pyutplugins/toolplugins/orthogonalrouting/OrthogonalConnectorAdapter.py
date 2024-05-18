@@ -76,7 +76,7 @@ class OrthogonalConnectorAdapter:
         destinationRect: Rect = self._shapeToRect(oglLink.destinationShape)
 
         sourceConnectorPoint:      ConnectorPoint = ConnectorPoint(shape=sourceRect,      side=sourceSide,      distance=self._configuration.sourceEdgeDistance)
-        destinationConnectorPoint: ConnectorPoint = ConnectorPoint(shape=destinationRect, side=destinationSide, distance=0.5)
+        destinationConnectorPoint: ConnectorPoint = ConnectorPoint(shape=destinationRect, side=destinationSide, distance=self._configuration.destinationEdgeDistance)
 
         options: OrthogonalConnectorOptions = OrthogonalConnectorOptions()
         options.pointA = sourceConnectorPoint
