@@ -244,7 +244,7 @@ class ScaffoldUI:
         for shape in shapes:
             shape.selected = selected
 
-        self._currentFrame.SetSelectedShapes(shapes)
+        self._currentFrame.selectedShapes = shapes
         self._currentFrame.Refresh()
 
     # noinspection PyUnusedLocal
@@ -365,7 +365,7 @@ class ScaffoldUI:
 
     def _onSelectedOglObjects(self, event: SelectedOglObjectsEvent):
 
-        selectedObjects = self._currentFrame.GetSelectedShapes()
+        selectedObjects = self._currentFrame.selectedShapes
         callback: SelectedOglObjectsCallback = event.callback
 
         callback(selectedObjects)
@@ -396,7 +396,7 @@ class ScaffoldUI:
         else:
             frameInformation.frameActive = True
             frameInformation.clientDC          = ClientDC(self._currentFrame)
-            frameInformation.selectedOglObjects = self._currentFrame.GetSelectedShapes()
+            frameInformation.selectedOglObjects = self._currentFrame.selectedShapes
 
             treeItemId: TreeItemId = self._projectTree.GetFocusedItem()
             itemData = self._projectTree.GetItemData(treeItemId)

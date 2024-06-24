@@ -164,8 +164,8 @@ class FrameHandler:
         srcAnchor.SetPosition(x=srcX, y=srcY)
         dstAnchor.SetPosition(x=dstX, y=dstY)
 
-        srcModel: ShapeModel = srcAnchor.GetModel()
-        dstModel: ShapeModel = dstAnchor.GetModel()
+        srcModel: ShapeModel = srcAnchor.model
+        dstModel: ShapeModel = dstAnchor.model
 
         srcModel.SetPosition(x=srcX, y=srcY)
         dstModel.SetPosition(x=dstY, y=dstY)

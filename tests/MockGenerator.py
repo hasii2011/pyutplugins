@@ -8,6 +8,7 @@ from unittest.mock import MagicMock
 from unittest.mock import PropertyMock
 
 from miniogl.AnchorPoint import AnchorPoint
+from miniogl.LinePoint import LinePoint
 
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
@@ -55,11 +56,8 @@ class MockGenerator:
             mockPyutClass: PyutClass = self._createMockPyutClass(classId)
 
             mockOglClass: MagicMock                 = MagicMock(spec=OglClass)
-            # TODO: Should we continue to mock deprecated methods?
-            mockOglClass.GetID.return_value         = classId
             mockOglClass.GetPosition.return_value   = (mockX, mockY)
             mockOglClass.GetSize.return_value       = (mockWidth, mockHeight)
-            mockOglClass.getPyutObject.return_value = mockPyutClass
 
             type(mockOglClass).id                   = PropertyMock(return_value=classId)
             type(mockOglClass).pyutObject           = PropertyMock(return_value=mockPyutClass)
@@ -79,7 +77,7 @@ class MockGenerator:
             parentClass: MagicMock = oglClasses[currentIdx]
             childClass:  MagicMock = oglClasses[currentIdx + 1]
 
-            self.logger.debug(f'parentID: {parentClass.GetID()} childID: {childClass.GetID()}')
+            self.logger.debug(f'parentID: {parentClass.id} childID: {childClass.id}')
             self._createMockLink(parentClass, childClass)
             currentIdx += 2
             if currentIdx >= len(oglClasses):
@@ -120,29 +118,34 @@ class MockGenerator:
             Mocked OglLink
         """
         oglLink:  MagicMock = MagicMock(spec=OglLink)
+
         linkId = next(self._linkIDGenerator)
-        oglLink.GetID.return_value = linkId
+
+        type(oglLink).id = PropertyMock(return_value=linkId)
 
         mockSourceAnchor:      MagicMock = MagicMock(spec=AnchorPoint)
         mockDestinationAnchor: MagicMock = MagicMock(spec=AnchorPoint)
 
-        mockSourceAnchor.GetPosition.return_value = (22, 44)
-        mockDestinationAnchor.GetPosition.return_value = (1024, 450)
+        mockSourceAnchor.GetPosition.return_value      = [22, 44]
+        mockDestinationAnchor.GetPosition.return_value = [1024, 450]
 
-        oglLink.sourceAnchor.return_value      = mockSourceAnchor
-        oglLink.destinationAnchor.return_value = mockDestinationAnchor
+        mockLinePointMiddle: MagicMock = MagicMock(spec=LinePoint)
+        mockLinePointMiddle.GetPosition.return_value = [100, 100]
 
-        oglLink.getSourceShape.return_value      = src
-        oglLink.getDestinationShape.return_value = dst
+        oglLink.GetControlPoints.return_value  = [mockLinePointMiddle]
+        type(oglLink).sourceAnchor      = PropertyMock(return_value=mockSourceAnchor)
+        type(oglLink).destinationAnchor = PropertyMock(return_value=mockDestinationAnchor)
+
+        type(oglLink).sourceShape      = PropertyMock(return_value=src)
+        type(oglLink).destinationShape = PropertyMock(return_value=dst)
         #
         # PyutLink object simple enough so create real one
-        pyutLink: PyutLink = PyutLink("", linkType=PyutLinkType.INHERITANCE, source=src.getPyutObject(), destination=dst.getPyutObject())
+        pyutLink: PyutLink = PyutLink("", linkType=PyutLinkType.INHERITANCE, source=src.pyutObject, destination=dst.pyutObject)
 
-        src.getLinks.return_value  = [oglLink]
-        dst.getLinks.return_value = [oglLink]
+        type(src).links = PropertyMock(return_value=[oglLink])
+        type(dst).links = PropertyMock(return_value=[oglLink])
 
-        mockPyutClass = src.getPyutObject()
-        # mockPyutClass.getLinks.return_value = [pyutLink]
+        mockPyutClass = src.pyutObject
         type(mockPyutClass).links = PropertyMock(return_value=[pyutLink])
 
         return oglLink

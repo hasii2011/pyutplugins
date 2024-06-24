@@ -35,4 +35,30 @@ graph [
 			outline "#000000"
 		]
 	]
+	edge [
+		id 1024
+		source 10000
+		target 10010
+		graphics [
+			type "line"
+			arrow "last"
+			Line [
+				point [
+					x 22
+					y 44
+					z 0
+				]
+				point [
+					x 100
+					y 100
+					z 0
+				]
+				point [
+					x 1024
+					y 450
+					z 0
+				]
+			]
+		]
+	]
 ]
