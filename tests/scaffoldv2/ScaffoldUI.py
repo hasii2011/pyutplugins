@@ -240,7 +240,7 @@ class ScaffoldUI:
             selected: 'True' selects them all, 'False' deselects them
         """
 
-        shapes = self._currentFrame.diagram.GetShapes()
+        shapes = self._currentFrame.diagram.shapes
         for shape in shapes:
             shape.selected = selected
 

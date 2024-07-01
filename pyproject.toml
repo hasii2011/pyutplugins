@@ -25,7 +25,7 @@ dependencies = [
   'networkx==3.0',
   'orthogonal==1.2.0',
   'pyforcedirectedlayout>=0.80.2',
-  'pyorthogonalrouting>=1.2.0',
+  'pyorthogonalrouting>=1.2.1',
 ]
 [project.urls]
 Repository = 'https://github.com/hasii2011/pyutplugins'

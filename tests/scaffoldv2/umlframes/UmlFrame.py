@@ -81,7 +81,7 @@ class UmlFrame(UmlFrameShapeHandler):
         """
         umlObjects: UmlObjects = UmlObjects([])
 
-        for s in self._diagram.GetShapes():
+        for s in self._diagram.shapes:
             # This is a duplicate of the UmlObject, since I cannot use NewType
             if isinstance(s, (OglClass, OglLink, OglNote, OglText, OglSDMessage, OglSDInstance, OglActor, OglUseCase, OglInterface2)):
                 umlObjects.append(s)
@@ -101,7 +101,7 @@ class UmlFrame(UmlFrameShapeHandler):
         maxY: int = -maxsize
 
         # Get boundaries
-        for shapeObject in self._diagram.GetShapes():
+        for shapeObject in self._diagram.shapes:
             # Get object limits
             ox1, oy1 = shapeObject.GetPosition()
             ox2, oy2 = shapeObject.GetSize()

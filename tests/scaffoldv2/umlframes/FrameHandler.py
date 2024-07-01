@@ -6,10 +6,11 @@ from logging import getLogger
 
 from copy import deepcopy
 
+from miniogl.models.ShapeModel import ShapeModel
+
 from miniogl.AnchorPoint import AnchorPoint
 from miniogl.ControlPoint import ControlPoint
 from miniogl.LineShape import ControlPoints
-from miniogl.ShapeModel import ShapeModel
 
 from ogl.OglAssociation import OglAssociation
 from ogl.OglClass import OglClass
