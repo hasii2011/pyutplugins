@@ -1,11 +1,13 @@
 
 from typing import cast
-from typing import Dict
 from typing import List
 from typing import NewType
 
 from logging import Logger
 from logging import getLogger
+
+from re import search as regExSearch
+from re import Match as regExMatch
 
 from dataclasses import dataclass
 
@@ -15,6 +17,7 @@ from antlr4.tree.Tree import TerminalNodeImpl
 from pyutmodelv2.PyutClass import PyutClass
 from pyutmodelv2.PyutMethod import PyutMethod
 from pyutmodelv2.PyutMethod import PyutMethods
+from pyutmodelv2.PyutMethod import SourceCode
 from pyutmodelv2.PyutParameter import PyutParameter
 from pyutmodelv2.PyutType import PyutType
 
@@ -48,7 +51,7 @@ Methods       = NewType('Methods',       List[MethodNames])
 
 CodeLine      = NewType('CodeLine',      str)
 CodeLines     = NewType('CodeLines',     List[CodeLine])
-MethodCode    = NewType('MethodCode',    Dict[MethodName,   CodeLines])
+# MethodCode    = NewType('MethodCode',    Dict[MethodName,   CodeLines])
 
 NO_CLASS_NAME: PyutClassName = PyutClassName('')
 
@@ -73,6 +76,14 @@ PRIVATE_INDICATOR:   str = '__'
 PROPERTY_DECORATOR:  str = 'property'
 DATACLASS_DECORATOR: str = 'dataclass'
 
+"""
+    Find 
+        the 'def' 
+        skip over the method name until we find a '(' 
+        then skip until we find ');'
+"""
+METHOD_FIND_PATTERN: str = 'def(.*\(.*\):)'     # noqa
+
 
 @dataclass
 class ParameterNameAndType:
@@ -87,9 +98,11 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
         self.logger: Logger = getLogger(__name__)
 
         self._associations: Associations = Associations({})
-        self._propertyMap:  PropertyMap = PropertyMap({})
+        self._propertyMap:  PropertyMap  = PropertyMap({})
 
         self._parentsDictionaryHandler: ParentsDictionaryHandler = ParentsDictionaryHandler()
+
+        self._currentCode:               SourceCode    = cast(SourceCode, None)
 
     def visit(self, tree: PythonParser.File_inputContext):
 
@@ -141,7 +154,7 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
         """
         className: PyutClassName = self._extractClassName(ctx=ctx)
 
-        self.logger.debug(f'visitClassdef: Visited class: {className}')
+        self.logger.debug(f'{className=}')
 
         argumentsCtx: PythonParser.ArgumentsContext = self._findArgListContext(ctx)
         if argumentsCtx is not None:
@@ -157,6 +170,7 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
             ctx:
         """
         classCtx: PythonParser.Class_defContext = self._extractClassDefContext(ctx)
+
         if classCtx != NO_CLASS_DEF_CONTEXT:
 
             className:     PyutClassName = self._extractClassName(ctx=classCtx)
@@ -175,13 +189,19 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
                 self._makePropertyEntry(className=className, methodName=methodName)
                 self._handleField(ctx=ctx)
             else:
-                self.logger.debug(f'visitFunction_def: {methodName=}')
+                self.logger.debug(f'{methodName=}')
                 if className not in self._pyutClasses:
                     assert False, f'This should not happen missing class name for: {methodName}'
                 else:
                     pyutClass:  PyutClass  = self._pyutClasses[className]
                     pyutMethod: PyutMethod = PyutMethod(name=methodName, returnType=PyutType(returnTypeStr), visibility=pyutVisibility)
-                    pyutClass.methods.append(pyutMethod)
+
+                    try:
+                        pyutMethod.sourceCode = self._currentCode
+                        pyutClass.methods.append(pyutMethod)
+                    except Exception as e:
+                        self.logger.error(f'{e=}')
+                        self.logger.error(f'Missing source code for {className}.{methodName}')
 
         return self.visitChildren(ctx)
 
@@ -205,7 +225,7 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
         if classCtx == NO_CLASS_DEF_CONTEXT:
             self.logger.warning('This set of parameters belong to a method outside of a class')
         else:
-            methodCtx: PythonParser.Function_defContext = self._findMethodContext(ctx)
+            methodCtx: PythonParser.Function_defContext = self._extractMethodContext(ctx)
 
             className:    PyutClassName    = self._extractClassName(ctx=classCtx)
             propertyName: PropertyName = self._extractPropertyName(ctx=methodCtx.function_def_raw())
@@ -256,6 +276,35 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
                         self._handleNoDefaultValueField(className, ctx)
                     else:
                         self._handleNoTypeSpecifiedField(className, ctx)
+
+        return self.visitChildren(ctx)
+
+    def visitStatements(self, ctx: PythonParser.StatementsContext):
+
+        parentCtx = ctx.parentCtx
+
+        if isinstance(parentCtx, PythonParser.BlockContext):
+            blockContext: PythonParser.BlockContext      = cast(PythonParser.BlockContext, parentCtx)
+            statements:   PythonParser.StatementsContext = blockContext.statements()
+
+            for child in statements.children:
+
+                statement:     PythonParser.StatementContext = cast(PythonParser.StatementContext, child)
+                statementText: str = statement.start.getInputStream().getText(statement.start.start, statement.stop.stop)
+
+                match: regExMatch | None = regExSearch(METHOD_FIND_PATTERN, statementText)
+
+                if match is not None:
+
+                    self.logger.debug(f'statementText:\n{statementText}')
+
+                    splitStatements: List[str] = statementText.split('\n')
+
+                    sourceCode: SourceCode = SourceCode([])
+                    for s in splitStatements:
+                        s = s.removeprefix('    ')
+                        sourceCode.append(f'{s}')
+                    self._currentCode = sourceCode
 
         return self.visitChildren(ctx)
 
@@ -374,7 +423,7 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
         """
 
         classCtx:  PythonParser.Class_defContext    = self._extractClassDefContext(ctx)
-        methodCtx: PythonParser.Function_defContext = self._findMethodContext(ctx)
+        methodCtx: PythonParser.Function_defContext = self._extractMethodContext(ctx)
 
         className:    PyutClassName  = self._extractClassName(ctx=classCtx)
         propertyName: PropertyName   = self._extractPropertyName(ctx=methodCtx.function_def_raw())
@@ -504,3 +553,22 @@ class PyutPythonPegVisitor(PyutBaseVisitor):
             returnTypeStr = exprCtx.getText()
 
         return returnTypeStr
+
+    def _extractMethodNameFromText(self, methodText: str) -> str:
+        """
+        Cruddy way to get a method name from a bunch of code
+
+        Args:
+            methodText:
+
+        Returns:  The method name
+        """
+
+        splitMethod: List[str] = methodText.split('\n')
+        methodName:  str       = splitMethod[0]
+
+        methodName = methodName.lstrip('def ')
+        nameSplit  = methodName.split('(')
+        methodName = nameSplit[0]
+
+        return methodName
