@@ -74,7 +74,7 @@ class PyutBaseVisitor(PythonPegParserVisitor):
 
         return className
 
-    def _findMethodContext(self, ctx: ParserRuleContext) -> PythonParser.Function_defContext:
+    def _extractMethodContext(self, ctx: ParserRuleContext) -> PythonParser.Function_defContext:
 
         currentCtx: ParserRuleContext = ctx
 
@@ -93,7 +93,7 @@ class PyutBaseVisitor(PythonPegParserVisitor):
 
         ans: bool = False
 
-        currentCtx: ParserRuleContext = self._findMethodContext(ctx=ctx)
+        currentCtx: ParserRuleContext = self._extractMethodContext(ctx=ctx)
         if currentCtx is not None:
             ans = True
 

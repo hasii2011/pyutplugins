@@ -6,6 +6,11 @@ from typing import NewType
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from os import linesep as osLineSep
+
+from re import search as regExSearch
+from re import Match as regExMatch
+
 from antlr4 import CommonTokenStream
 from antlr4 import FileStream
 from antlr4.error.ErrorListener import ConsoleErrorListener
@@ -29,6 +34,8 @@ from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import Associatio
 from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutPythonPegVisitor
 from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutClassName
 from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutClasses
+
+from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import METHOD_FIND_PATTERN
 
 from tests.ProjectTestBase import TestBase
 
@@ -61,6 +68,32 @@ class TestPyutPythonPegVisitor(BaseTestPyutPythonPegVisitor):
 
     def tearDown(self):
         super().tearDown()
+
+    def testMethodFindRegEx(self):
+
+        defString: str = (
+            f'def __init__(self):{osLineSep}'
+            f'    self._age:           int   = 3{osLineSep}'
+            f'    self._publicEars:    float = 2{osLineSep}'
+            f'    self._protectedTail: bool  = True{osLineSep}'
+        )
+
+        match: regExMatch | None = regExSearch(METHOD_FIND_PATTERN, defString)
+
+        self.assertIsNotNone(match, 'We should find this')
+        self.logger.debug(f'{match}')
+
+    def testDecoratedMethodFindRegEx(self):
+        defString: str = (
+            '@abstractmethod'
+            'def GetDiagram(self):'
+            '   pass'
+        )
+
+        match: regExMatch | None = regExSearch(METHOD_FIND_PATTERN, defString)
+
+        self.assertIsNotNone(match, 'We should find this')
+        self.logger.debug(f'{match}')
 
     def testMultiClassFileWithInheritance(self):
 
@@ -211,6 +244,29 @@ class TestPyutPythonPegVisitor(BaseTestPyutPythonPegVisitor):
         self.assertEqual(PyutType('int'), noAssignmentField.type, 'Incorrect type')
         self.assertEqual('', noAssignmentField.defaultValue, 'Should not have a value')
 
+    def testExtractMethodCode(self):
+
+        tree:    PythonParser.File_inputContext = self._setupPegBasedParser('SimpleClassWithCode.py')
+        visitor: PyutPythonPegVisitor = PyutPythonPegVisitor()
+
+        visitor.pyutClasses = self._do1stPassPegBasedParser('SimpleClassWithCode.py')
+
+        visitor.visit(tree)
+
+        className:   PyutClassName = PyutClassName('SimpleClassWithCode')
+
+        pyutClasses: PyutClasses = visitor.pyutClasses
+
+        pyutClass:   PyutClass   = pyutClasses[className]
+        pyutMethods: PyutMethods = pyutClass.methods
+
+        pyutMethodInit: PyutMethod = pyutMethods[0]
+        self.assertEqual(6, len(pyutMethodInit.sourceCode), 'Mismatch of source code on __init__')
+
+        pyutMethodPublicMethod: PyutMethod = pyutMethods[1]
+
+        self.assertEqual(6, len(pyutMethodPublicMethod.sourceCode), 'Mismatch of source code on publicMethod')
+
     def _getSimpleDataClassFields(self) -> PyutFields:
 
         visitor:     PyutPythonPegVisitor = self._setupSimpleDataClassVisitor()
@@ -257,26 +313,6 @@ class TestPyutPythonPegVisitor(BaseTestPyutPythonPegVisitor):
 
         return visitor
 
-    # def testExtractMethodCode(self):
-    #     tree:    PythonParser.File_inputContext = self._setupVisitor('Vertex.py')
-    #     visitor: PyutPythonPegVisitor           = PyutPythonPegVisitor()
-    #
-    #     visitor.visit(tree)
-    #
-    #     parsedClasses: ParsedClasses = visitor.parsedClasses
-    #
-    #     className: PyutClassName = PyutClassName('Vertex')
-    #     self.assertIn('Vertex', parsedClasses, 'Yikes missed the entire class')
-    #
-    #     parsedClass: ParsedClass = parsedClasses[className]
-    #
-    #     self.assertEqual(3, len(parsedClass.methodNames), 'Mismatch on names')
-    #     self.assertEqual(3, len(parsedClass.methodCode),  'Mismatch on code')
-    #
-    #     codeLines: CodeLines = parsedClass.methodCode['surround_half_edges']
-    #
-    #     self.assertEqual(5, len(codeLines), 'Number of code lines mismatch')
-    #
     def _setupPegBasedParser(self, fileName: str) -> PythonParser.File_inputContext:
 
         fqFileName: str = UnitTestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_CLASSES_PACKAGE_NAME, fileName)

@@ -44,15 +44,7 @@
             "level":     "WARNING",
             "propagate": "False"
         },
-        "pyutplugins.toolplugins.OrthogonalConnectorAdapter": {
-            "level":     "INFO",
-            "propagate": "False"
-        },
-        "pyutplugins.toolplugins.orthogonalrouting.LabelledSlider": {
-            "level":     "INFO",
-            "propagate": "False"
-        },
-        "pyutplugins.toolplugins.orthogonalrouting.DlgConfiguration": {
+        "pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor": {
             "level":     "INFO",
             "propagate": "False"
         },
