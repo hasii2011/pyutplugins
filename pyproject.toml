@@ -13,19 +13,18 @@ maintainers = [{name = 'Humberto A. Sanchez II', email = 'Humbert.A.Sanchez.II@g
 keywords    = ['pyut', 'python', 'plugin']
 
 dependencies = [
-  'codeallybasic>=1.3.1',
-  'codeallyadvanced>=1.3.1',
-  'pyutmodelv2>=2.1.5',
-  'ogl>=2.1.33',
-  'untanglepyut>=2.2.0',
+  'codeallybasic>=1.7.0',
+  'codeallyadvanced>=1.3.2',
+  'pyutmodelv2>=2.2.0',
+  'ogl>=3.1.0',
+  'untanglepyut>=2.4.0',
   'oglio>=2.2.0',
-  'pyumldiagrams>=3.1.10',
-  'wxPython~=4.2.1',
+  'pyumldiagrams>=3.1.20',
+  'wxPython>=4.2.2',
   'antlr4-python3-runtime==4.13.1',
-  'networkx==3.0',
-  'orthogonal==1.2.0',
-  'pyforcedirectedlayout>=0.80.2',
-  'pyorthogonalrouting>=1.2.1',
+  'orthogonal>=1.3.1',
+  'pyforcedirectedlayout>=0.80.5',
+  'pyorthogonalrouting>=1.3.0',
 ]
 [project.urls]
 Repository = 'https://github.com/hasii2011/pyutplugins'
