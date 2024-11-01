@@ -24,7 +24,7 @@ from tests.pyutplugins.plugininterfaces.SamplePluginInterface import SamplePlugi
 
 from tests.pyutplugins.plugininterfaces.SampleIPluginAdapter import SampleIPluginAdapter
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 
 class TestSamplePluginInterface(App):
@@ -40,7 +40,7 @@ class TestSamplePluginInterface(App):
     def __init__(self):
         App.__init__(self, redirect=False)
 
-        TestBase.setUpLogging()
+        ProjectTestBase.setUpLogging()
         self.logger: Logger = getLogger(__name__)
 
         mediator: SampleIPluginAdapter = SampleIPluginAdapter()

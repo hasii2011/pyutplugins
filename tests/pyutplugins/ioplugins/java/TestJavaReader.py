@@ -13,7 +13,7 @@ from pyutplugins.ioplugins.java.JavaReader import InterfaceMap
 from pyutplugins.ioplugins.java.JavaReader import JavaReader
 from pyutplugins.ioplugins.java.JavaReader import ReversedClasses
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 TEST_BASE_CLASS_NAME:  str = 'BaseModel'
 TEST_INTERFACE_NAME_1: str = 'IModified'
@@ -21,7 +21,7 @@ TEST_INTERFACE_NAME_2: str = 'ICreated'
 TEST_INTERFACE_NAME_3: str = 'Tenancy'
 
 
-class TestJavaReader(TestBase):
+class TestJavaReader(ProjectTestBase):
     """
     """
     @classmethod
@@ -38,7 +38,7 @@ class TestJavaReader(TestBase):
 
         reverseJava: JavaReader = JavaReader()
 
-        basicClassPath: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME, 'Tenant.java')
+        basicClassPath: str = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME, 'Tenant.java')
 
         reverseJava.parseFile(basicClassPath)
 
@@ -111,7 +111,7 @@ class TestJavaReader(TestBase):
                                 ]
         javaReader: JavaReader = JavaReader()
         for fileName in fileNames:
-            testFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME, fileName)
+            testFileName: str = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME, fileName)
 
             javaReader.parseFile(testFileName)
 

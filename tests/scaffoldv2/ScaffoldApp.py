@@ -15,7 +15,7 @@ __version__ = "2.0.0"
 
 from codeallybasic.UnitTestBase import JSON_LOGGING_CONFIG_FILENAME
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 from tests.scaffoldv2.ScaffoldFrame import ScaffoldFrame
 
 
@@ -56,7 +56,7 @@ class ScaffoldApp(App):
     @classmethod
     def findLoggingConfig(cls) -> str:
 
-        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, JSON_LOGGING_CONFIG_FILENAME)
+        fqFileName: str = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.RESOURCES_PACKAGE_NAME, JSON_LOGGING_CONFIG_FILENAME)
 
         return fqFileName
 

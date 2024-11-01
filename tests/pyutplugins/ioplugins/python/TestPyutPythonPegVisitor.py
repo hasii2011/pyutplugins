@@ -37,7 +37,7 @@ from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import PyutClasse
 
 from pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor import METHOD_FIND_PATTERN
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 from tests.pyutplugins.ioplugins.python.BaseTestPyutPythonPegVisitor import BaseTestPyutPythonPegVisitor
 from tests.pyutplugins.ioplugins.python.BaseTestPyutPythonPegVisitor import PyutFieldHashIndex
@@ -315,7 +315,7 @@ class TestPyutPythonPegVisitor(BaseTestPyutPythonPegVisitor):
 
     def _setupPegBasedParser(self, fileName: str) -> PythonParser.File_inputContext:
 
-        fqFileName: str = UnitTestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_CLASSES_PACKAGE_NAME, fileName)
+        fqFileName: str = UnitTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.RESOURCES_TEST_CLASSES_PACKAGE_NAME, fileName)
 
         fileStream: FileStream  = FileStream(fqFileName)
         lexer:      PythonLexer = PythonLexer(fileStream)

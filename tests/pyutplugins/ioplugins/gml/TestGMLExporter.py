@@ -12,10 +12,10 @@ from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.ioplugins.gml.GMLExporter import GMLExporter
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 
-class TestGMLExporter(TestBase):
+class TestGMLExporter(ProjectTestBase):
 
     NUMBER_OF_MOCK_CLASSES:   int = 2
     MOCK_CLASS_NAME_PREFIX:   str = 'ClassName_'
@@ -53,11 +53,11 @@ class TestGMLExporter(TestBase):
         self.assertIsNotNone(gml, 'Generate Something!!')
         self.logger.debug(f'Generated GML:\n{gml}')
 
-        fqFileName: str = TestBase.constructGeneratedName(baseFileName=TestGMLExporter.UNIT_TEST_FILENAME)
+        fqFileName: str = ProjectTestBase.constructGeneratedName(baseFileName=TestGMLExporter.UNIT_TEST_FILENAME)
 
         self.exporter.write(fqFileName)
 
-        status: int = TestBase.runDiff(goldenPackageName=TestBase.GOLDEN_GML_PACKAGE_NAME, baseFileName=TestGMLExporter.UNIT_TEST_FILENAME)
+        status: int = ProjectTestBase.runDiff(goldenPackageName=ProjectTestBase.GOLDEN_GML_PACKAGE_NAME, baseFileName=TestGMLExporter.UNIT_TEST_FILENAME)
 
         self.assertEqual(0, status, 'Simple GML generation failed')
 

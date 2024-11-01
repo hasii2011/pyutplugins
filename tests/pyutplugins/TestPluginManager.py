@@ -14,10 +14,10 @@ from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 
-class TestPluginManager(TestBase):
+class TestPluginManager(ProjectTestBase):
     """
     Does not test any execution of the pyutplugins;  Only the interfaces needed by Pyut
     to set up menu times and test whether we actually dynamically loaded the pyutplugins

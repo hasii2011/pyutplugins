@@ -32,7 +32,7 @@ from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import DlgSelectMult
 from pyutplugins.toolplugins.orthogonal.DlgLayoutSize import DlgLayoutSize
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 from tests.scaffoldv2.ScaffoldPreferencesDialog import ScaffoldPreferencesDialog
 
 
@@ -50,7 +50,7 @@ class AppTestDialogs(App):
 
     def __init__(self, redirect: bool):
 
-        TestBase.setUpLogging()
+        ProjectTestBase.setUpLogging()
 
         self.logger:        Logger            = getLogger(__name__)
         self._preferences:  PluginPreferences = PluginPreferences()
@@ -61,7 +61,7 @@ class AppTestDialogs(App):
 
     def OnInit(self):
 
-        TestBase.setUpLogging()
+        ProjectTestBase.setUpLogging()
 
         self._frame = SizedFrame(parent=None, id=ID_ANY, title="Test Plugin Dialogs", size=(300, 100), style=DEFAULT_FRAME_STYLE | FRAME_FLOAT_ON_PARENT)
 

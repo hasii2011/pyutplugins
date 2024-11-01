@@ -10,10 +10,10 @@ from pyutmodelv2.PyutField import PyutField
 from pyutplugins.common.ElementTreeData import ElementTreeData
 from pyutplugins.ioplugins.dtd.DTDParser import DTDParser
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 
-class TestDTDParser(TestBase):
+class TestDTDParser(ProjectTestBase):
 
     EXPECTED_CLASS_COUNT: int = 17
     EXPECTED_LINK_COUNT:  int = 14
@@ -75,7 +75,7 @@ class TestDTDParser(TestBase):
     def _readDTD(self) -> DTDParser:
 
         dtdParser:  DTDParser = DTDParser()
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, 'AllElements.dtd')
+        fqFileName: str       = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, 'AllElements.dtd')
 
         dtdParser.open(fqFileName)
 

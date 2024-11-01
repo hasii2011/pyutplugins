@@ -8,17 +8,17 @@ from unittest import main as unitTestMain
 from pyutplugins.ExternalTypes import OglClasses
 from pyutplugins.ExternalTypes import OglObjects
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 from pyutplugins.ioplugins.java.JavaWriter import JavaWriter
 
 
-class TestJavaWriter(TestBase):
+class TestJavaWriter(ProjectTestBase):
     """
     """
     def setUp(self):
         super().setUp()
-        self._javaWriter: JavaWriter = JavaWriter(writeDirectory=f'{TestBase.getTemporaryDirectory()}')
+        self._javaWriter: JavaWriter = JavaWriter(writeDirectory=f'{ProjectTestBase.getTemporaryDirectory()}')
 
     def tearDown(self):
         super().tearDown()
@@ -28,10 +28,10 @@ class TestJavaWriter(TestBase):
         oglClasses: OglClasses = self._xmlFileToOglClasses(filename='SingleClass.xml', documentName='SingleClass')
         self._javaWriter.write(oglObjects=cast(OglObjects, oglClasses))
 
-        status: int = TestBase.runDiff(goldenPackageName=TestBase.GOLDEN_JAVA_PACKAGE_NAME, baseFileName='SingleClass.java')
+        status: int = ProjectTestBase.runDiff(goldenPackageName=ProjectTestBase.GOLDEN_JAVA_PACKAGE_NAME, baseFileName='SingleClass.java')
         self.assertEqual(0, status, 'Diff of single class failed;  Something changed')
 
-        TestBase.cleanupGenerated('SingleClass.java')
+        ProjectTestBase.cleanupGenerated('SingleClass.java')
 
     def testComplexClass(self):
         """
@@ -43,7 +43,7 @@ class TestJavaWriter(TestBase):
         self._javaWriter.write(oglObjects=cast(OglObjects, oglClasses))
 
         for generatedFileName in generatedFileNames:
-            status: int = TestBase.runDiff(goldenPackageName=TestBase.GOLDEN_JAVA_PACKAGE_NAME, baseFileName=generatedFileName)
+            status: int = ProjectTestBase.runDiff(goldenPackageName=ProjectTestBase.GOLDEN_JAVA_PACKAGE_NAME, baseFileName=generatedFileName)
             self.assertEqual(0, status, f'Diff of {generatedFileName} file failed;  Something changed')
 
         for generatedFileName in generatedFileNames:

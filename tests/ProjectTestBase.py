@@ -18,7 +18,7 @@ from pyutplugins.ExternalTypes import OglClasses
 from pyutplugins.ExternalTypes import OglObjects
 
 
-class TestBase(UnitTestBaseW):
+class ProjectTestBase(UnitTestBaseW):
 
     RESOURCES_TEST_CLASSES_PACKAGE_NAME:         str = f'{UnitTestBase.RESOURCES_PACKAGE_NAME}.testclasses'
     RESOURCES_TEST_DATA_PACKAGE_NAME:            str = f'{UnitTestBase.RESOURCES_PACKAGE_NAME}.testdata'
@@ -54,10 +54,10 @@ class TestBase(UnitTestBaseW):
 
         Returns:  The results of the difference
         """
-        goldenFileName:    str = TestBase.getFullyQualifiedResourceFileName(goldenPackageName, baseFileName)
+        goldenFileName:    str = ProjectTestBase.getFullyQualifiedResourceFileName(goldenPackageName, baseFileName)
         generatedFileName: str = cls.constructGeneratedName(baseFileName=baseFileName)
 
-        status: int = osSystem(f'{TestBase.EXTERNAL_DIFF} {goldenFileName} {generatedFileName}')
+        status: int = osSystem(f'{ProjectTestBase.EXTERNAL_DIFF} {goldenFileName} {generatedFileName}')
 
         return status
 
@@ -133,7 +133,7 @@ class TestBase(UnitTestBaseW):
         Returns:  The requested document;May return an XX exception if the document name does not match
 
         """
-        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, filename)
+        fqFileName: str = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, filename)
 
         untangler:  UnTangler = UnTangler(xmlVersion=XmlVersion.V10)
         untangler.untangleFile(fqFileName=fqFileName)
