@@ -92,7 +92,7 @@ class ProjectTestBase(UnitTestBaseW):
     def getTemporaryDirectory(cls) -> str:
         return f'{osSep}tmp{osSep}'
 
-    def _xmlFileToOglClasses(self, filename: str, documentName: str) -> OglClasses:
+    def _xmlFileToOglClasses(self, filename: str, documentName: str, xmlVersion: XmlVersion = XmlVersion.V10) -> OglClasses:
         """
         The input file name must be in the test data package
 
@@ -102,7 +102,7 @@ class ProjectTestBase(UnitTestBaseW):
 
         Returns:  The untangled Ogl Classes;  May return an XX exception if the document name does not match
         """
-        document: Document = self._getUntangledXmlDocument(filename=filename, documentName=documentName)
+        document: Document = self._getUntangledXmlDocument(filename=filename, documentName=documentName, xmlVersion=xmlVersion)
 
         return OglClasses(document.oglClasses)
 
@@ -123,7 +123,7 @@ class ProjectTestBase(UnitTestBaseW):
 
         return oglObjects
 
-    def _getUntangledXmlDocument(self, filename: str, documentName: str) -> Document:
+    def _getUntangledXmlDocument(self, filename: str, documentName: str,  xmlVersion: XmlVersion = XmlVersion.V10) -> Document:
         """
 
         Args:
@@ -135,7 +135,7 @@ class ProjectTestBase(UnitTestBaseW):
         """
         fqFileName: str = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.RESOURCES_TEST_DATA_PACKAGE_NAME, filename)
 
-        untangler:  UnTangler = UnTangler(xmlVersion=XmlVersion.V10)
+        untangler:  UnTangler = UnTangler(xmlVersion=xmlVersion)
         untangler.untangleFile(fqFileName=fqFileName)
 
         document: Document = untangler.documents[DocumentTitle(documentName)]

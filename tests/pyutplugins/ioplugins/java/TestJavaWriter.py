@@ -5,6 +5,8 @@ from typing import cast
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from untanglepyut.XmlVersion import XmlVersion
+
 from pyutplugins.ExternalTypes import OglClasses
 from pyutplugins.ExternalTypes import OglObjects
 
@@ -39,7 +41,7 @@ class TestJavaWriter(ProjectTestBase):
         """
         generatedFileNames: List[str] = ['Account.java', 'ATM.java', 'Bank.java', 'CheckingAccount.java', 'Customer.java', 'SavingsAccount.java']
 
-        oglClasses: OglClasses = self._xmlFileToOglClasses(filename='ATM-Model.xml', documentName='Class Diagram')
+        oglClasses: OglClasses = self._xmlFileToOglClasses(filename='ATM-Model.xml', documentName='Class Diagram', xmlVersion=XmlVersion.V11)
         self._javaWriter.write(oglObjects=cast(OglObjects, oglClasses))
 
         for generatedFileName in generatedFileNames:
