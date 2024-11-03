@@ -1,77 +1,64 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<PyutProject version="10" CodePath="">
-	<PyutDocument type="CLASS_DIAGRAM" title="WithMethods" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
-		<GraphicClass width="156" height="100" x="101" y="50">
-			<Class id="1" name="Vertex" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
-				<Method name="__init__" visibility="PRIVATE">
-					<Return type=""/>
-					<Param name="name" type=""/>
-					<SourceCode>
-						<Code>        super().__init__(name)</Code>
-						<Code>self.inc=None</Code>
-						<Code>self.x:int=0</Code>
-						<Code>self.y:int=0</Code>
-						<Code> </Code>
-					</SourceCode>
-				</Method>
-				<Method name="surround_faces" visibility="PUBLIC">
-					<Return type=""/>
-					<SourceCode>
-						<Code>        forheinself.surround_half_edges():</Code>
-						<Code>            yieldhe.inc</Code>
-						<Code>  </Code>
-					</SourceCode>
-				</Method>
-				<Method name="surround_half_edges" visibility="PUBLIC">
-					<Return type=""/>
-					<SourceCode>
-						<Code>        yieldself.inc</Code>
-						<Code>he=self.inc.pred.twin</Code>
-						<Code>whileheisnotself.inc:</Code>
-						<Code>            yieldhe</Code>
-						<Code>he=he.pred.twin</Code>
-						<Code></Code>
-						<Code></Code>
-						<Code></Code>
-					</SourceCode>
-				</Method>
-				<Field visibility="PRIVATE">
-					<Param name="inc" type="" defaultValue="None"/>
-				</Field>
-				<Field visibility="PUBLIC">
-					<Param name="x" type="int" defaultValue="0"/>
-				</Field>
-				<Field visibility="PUBLIC">
-					<Param name="y" type="int" defaultValue="0"/>
-				</Field>
-			</Class>
-		</GraphicClass>
-		<GraphicClass width="126" height="70" x="325" y="250">
-			<Class id="2" name="GraphElement" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
-				<Method name="__init__" visibility="PRIVATE">
-					<Return type=""/>
-					<Param name="name" type=""/>
-					<SourceCode>
-						<Code>        self.id=name</Code>
-						<Code> </Code>
-					</SourceCode>
-				</Method>
-				<Method name="__hash__" visibility="PRIVATE">
-					<Return type=""/>
-					<SourceCode>
-						<Code>        returnhash(self.id)</Code>
-						<Code></Code>
-						<Code></Code>
-					</SourceCode>
-				</Method>
-				<Field visibility="PRIVATE">
-					<Param name="id" type="" defaultValue="name"/>
-				</Field>
-			</Class>
-		</GraphicClass>
-		<GraphicLink srcX="256" srcY="100" dstX="374" dstY="250" spline="False">
-			<ControlPoint x="375" y="101"/>
-			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="2"/>
-		</GraphicLink>
-	</PyutDocument>
+<?xml version='1.0' encoding='iso-8859-1'?>
+<PyutProject version="11" CodePath="">
+    <PyutDocument type="CLASS_DIAGRAM" title="WithMethods" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+        <OglClass width="156" height="100" x="101" y="50">
+            <PyutClass id="1" name="Vertex" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="">
+                <PyutMethod name="__init__" visibility="PRIVATE" returnType="">
+                    <SourceCode>
+                        <Code>        super().__init__(name)</Code>
+                        <Code>self.inc=None</Code>
+                        <Code>self.x:int=0</Code>
+                        <Code>self.y:int=0</Code>
+                        <Code> </Code>
+                    </SourceCode>
+                    <PyutParameter name="name" type="" />
+                </PyutMethod>
+                <PyutMethod name="surround_faces" visibility="PUBLIC" returnType="">
+                    <SourceCode>
+                        <Code>        forheinself.surround_half_edges():</Code>
+                        <Code>            yieldhe.inc</Code>
+                        <Code>  </Code>
+                    </SourceCode>
+                </PyutMethod>
+                <PyutMethod name="surround_half_edges" visibility="PUBLIC" returnType="">
+                    <SourceCode>
+                        <Code>        yieldself.inc</Code>
+                        <Code>he=self.inc.pred.twin</Code>
+                        <Code>whileheisnotself.inc:</Code>
+                        <Code>            yieldhe</Code>
+                        <Code>he=he.pred.twin</Code>
+                        <Code />
+                        <Code />
+                        <Code />
+                    </SourceCode>
+                </PyutMethod>
+                <PyutField name="inc" visibility="PRIVATE" type="" defaultValue="None" />
+                <PyutField name="x" visibility="PUBLIC" type="int" defaultValue="0" />
+                <PyutField name="y" visibility="PUBLIC" type="int" defaultValue="0" />
+            </PyutClass>
+        </OglClass>
+        <OglClass width="126" height="70" x="325" y="250">
+            <PyutClass id="2" name="GraphElement" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="">
+                <PyutMethod name="__init__" visibility="PRIVATE" returnType="">
+                    <SourceCode>
+                        <Code>        self.id=name</Code>
+                        <Code> </Code>
+                    </SourceCode>
+                    <PyutParameter name="name" type="" />
+                </PyutMethod>
+                <PyutMethod name="__hash__" visibility="PRIVATE" returnType="">
+                    <SourceCode>
+                        <Code>        returnhash(self.id)</Code>
+                        <Code />
+                        <Code />
+                    </SourceCode>
+                </PyutMethod>
+                <PyutField name="id" visibility="PRIVATE" type="" defaultValue="name" />
+            </PyutClass>
+        </OglClass>
+        <OglLink sourceAnchorX="256" sourceAnchorY="100" destinationAnchorX="374" destinationAnchorY="250" spline="False">
+            <ControlPoint x="375" y="101" />
+            <PyutLink name="" type="INHERITANCE" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="1" destinationId="2" />
+        </OglLink>
+    </PyutDocument>
 </PyutProject>
