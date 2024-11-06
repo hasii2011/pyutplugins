@@ -20,9 +20,10 @@ python:
   - "3.12"
 
 install:
-  - pyenv global
-  - pyenv local
-  - pyenv global 3.12
+  - GLOBAL=`python --version`
+  - echo $GLOBAL
+  - PY_VERSION=${GLOBAL#* }
+  - pyenv global ${PY_VERSION}
   - pip install --upgrade pip
   - pip install wheel
   - pip install setuptools
