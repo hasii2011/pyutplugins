@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<PyutProject version="10" CodePath="">
-	<PyutDocument type="CLASS_DIAGRAM" title="Composition" scrollPositionX="1" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
-		<GraphicClass width="130" height="51" x="300" y="125">
-			<Class id="1" name="Composer" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
-		</GraphicClass>
-		<GraphicClass width="152" height="60" x="275" y="275">
-			<Class id="2" name="Composee" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
-		</GraphicClass>
-		<GraphicLink srcX="368" srcY="175" dstX="368" dstY="275" spline="False">
-			<LabelCenter x="373" y="250"/>
-			<LabelSrc x="373" y="250"/>
-			<LabelDst x="373" y="250"/>
-			<Link name="" type="COMPOSITION" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="2"/>
-		</GraphicLink>
-	</PyutDocument>
+<?xml version='1.0' encoding='iso-8859-1'?>
+<PyutProject version="11" CodePath="">
+    <PyutDocument type="CLASS_DIAGRAM" title="Composition" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+        <OglClass width="130" height="51" x="300" y="125">
+            <PyutClass id="1" name="Composer" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="152" height="60" x="275" y="275">
+            <PyutClass id="2" name="Composee" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglLink sourceAnchorX="368" sourceAnchorY="175" destinationAnchorX="368" destinationAnchorY="275" spline="False">
+            <LabelCenter x="373" y="250" />
+            <LabelSource x="373" y="250" />
+            <LabelDestination x="373" y="250" />
+            <PyutLink name="" type="COMPOSITION" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="1" destinationId="2" />
+        </OglLink>
+    </PyutDocument>
 </PyutProject>

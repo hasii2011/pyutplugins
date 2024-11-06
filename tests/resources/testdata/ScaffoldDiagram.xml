@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<PyutProject version="10" CodePath="/Users/humberto.a.sanchez.ii/PycharmProjects/PyUt/src">
-    <PyutDocument type="CLASS_DIAGRAM" title="UnitTest" scrollPositionX="100" scrollPositionY="100" pixelsPerUnitX="1" pixelsPerUnitY="1">
-        <GraphicClass width="150" height="0" x="175" y="100">
-            <Class id="1" name="ClassName0" stereotype="MyStereoType" filename="/Users/humberto.a.sanchez.ii/PycharmProjects/PyUt/src/UnitTest.py" description="Simple Scaffold Test" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
-                <Method name="OzzeeElGatoDiablo" visibility="PUBLIC">
-                    <Modifier name="static"/>
-                    <Modifier name="bogus"/>
-                    <Return type="str"/>
+<?xml version='1.0' encoding='iso-8859-1'?>
+<PyutProject version="11" CodePath="">
+    <PyutDocument type="CLASS_DIAGRAM" title="UnitTest" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+        <OglClass width="150" height="75" x="175" y="100">
+            <PyutClass id="1" name="ClassName0" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="/Users/humberto.a.sanchez.ii/PycharmProjects/PyUt/src/UnitTest.py" description="Simple Scaffold Test">
+                <PyutMethod name="OzzeeElGatoDiablo" visibility="PUBLIC" returnType="str">
+                    <Modifier name="static" />
+                    <Modifier name="bogus" />
                     <SourceCode>
                         <Code>weLeft:           bool = True</Code>
                         <Code>isOzzeeAGoodGato: bool = False</Code>
@@ -14,8 +13,8 @@
                         <Code>    isOzzeeAGoodGato = True</Code>
                         <Code>return isOzzeeAGoodGato</Code>
                     </SourceCode>
-                </Method>
-            </Class>
-        </GraphicClass>
+                </PyutMethod>
+            </PyutClass>
+        </OglClass>
     </PyutDocument>
 </PyutProject>

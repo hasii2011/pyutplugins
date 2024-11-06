@@ -17,7 +17,7 @@ services:
   - xvfb
 
 python:
-  - "3.11"
+  - "3.12"
 
 install:
   - sudo apt update
