@@ -106,7 +106,7 @@ class ProjectTestBase(UnitTestBaseW):
 
         return OglClasses(document.oglClasses)
 
-    def _xmlFileToOglObjects(self, filename: str, documentName: str) -> OglObjects:
+    def _xmlFileToOglObjects(self, filename: str, documentName: str, xmlVersion: XmlVersion = XmlVersion.V10) -> OglObjects:
         """
         The input file name must be in the test data package;  This returns all the
         Ogl objects in the document
@@ -117,7 +117,7 @@ class ProjectTestBase(UnitTestBaseW):
 
         Returns:  The untangled Ogl Objects;  May return an XX exception if the document name does not match
         """
-        document: Document = self._getUntangledXmlDocument(filename=filename, documentName=documentName)
+        document: Document = self._getUntangledXmlDocument(filename=filename, documentName=documentName, xmlVersion=xmlVersion)
 
         oglObjects: OglObjects = [item for lists in [document.oglClasses, document.oglLinks] for item in lists]  # type: ignore
 

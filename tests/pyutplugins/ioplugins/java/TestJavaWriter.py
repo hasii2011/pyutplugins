@@ -27,7 +27,7 @@ class TestJavaWriter(ProjectTestBase):
 
     def testOneClassWrite(self):
 
-        oglClasses: OglClasses = self._xmlFileToOglClasses(filename='SingleClass.xml', documentName='SingleClass')
+        oglClasses: OglClasses = self._xmlFileToOglClasses(filename='SingleClass.xml', documentName='SingleClass', xmlVersion=XmlVersion.V11)
         self._javaWriter.write(oglObjects=cast(OglObjects, oglClasses))
 
         status: int = ProjectTestBase.runDiff(goldenPackageName=ProjectTestBase.GOLDEN_JAVA_PACKAGE_NAME, baseFileName='SingleClass.java')

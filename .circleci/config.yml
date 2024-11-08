@@ -49,4 +49,4 @@ jobs:
       - run:
             name: run tests
             command: | 
-              runtests
+              unittests

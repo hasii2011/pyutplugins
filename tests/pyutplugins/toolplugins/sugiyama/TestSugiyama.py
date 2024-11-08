@@ -4,6 +4,8 @@ from typing import Dict
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from untanglepyut.XmlVersion import XmlVersion
+
 from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.toolplugins.sugiyama.RealSugiyamaNode import RealSugiyamaNode
@@ -25,7 +27,7 @@ class TestSugiyama(ProjectTestBase):
         mockPluginAdapter: MockPluginAdapter = MockPluginAdapter()
         self._sugiyama: Sugiyama = Sugiyama(pluginAdapter=mockPluginAdapter)
 
-        self._oglObjects: OglObjects = self._xmlFileToOglObjects(filename='SugiyamaTest.xml', documentName='Sugiyama')
+        self._oglObjects: OglObjects = self._xmlFileToOglObjects(filename='SugiyamaTest.xml', documentName='Sugiyama', xmlVersion=XmlVersion.V11)
 
     def tearDown(self):
         super().tearDown()
