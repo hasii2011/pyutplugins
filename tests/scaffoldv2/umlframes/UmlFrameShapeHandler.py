@@ -28,6 +28,8 @@ from ogl.OglAssociationLabel import OglAssociationLabel
 from ogl.OglLink import OglLink
 from ogl.OglTextFontFamily import OglTextFontFamily
 
+from ogl.sd.OglSDInstance import OglSDInstance
+
 
 class UmlFrameShapeHandler(DiagramFrame):
 
@@ -131,7 +133,7 @@ class UmlFrameShapeHandler(DiagramFrame):
         self.Refresh()
         return pyutUseCase
 
-    def addShape(self, shape: Union[OglObject, OglLink, OglInterface2, SelectAnchorPoint, OglAssociationLabel],
+    def addShape(self, shape: Union[OglObject, OglLink, OglInterface2, SelectAnchorPoint, OglAssociationLabel, OglSDInstance],
                  x: int, y: int,
                  pen: Pen = None,
                  brush: Brush = None,

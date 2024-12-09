@@ -475,7 +475,7 @@ class ScaffoldUI:
                         pluginDocument.oglLinks.append(oglInterface2)
                     case OglSDInstance():
                         oglSDInstance: OglSDInstance = cast(OglSDInstance, umlObject)
-                        pluginDocument.oglSDInstances[oglSDInstance.pyutObject.id] = oglSDInstance
+                        pluginDocument.oglSDInstances[oglSDInstance.pyutSDInstance.id] = oglSDInstance
                     case OglSDMessage():
                         oglSDMessage: OglSDMessage = cast(OglSDMessage, umlObject)
                         pluginDocument.oglSDMessages[oglSDMessage.pyutObject.id] = oglSDMessage
@@ -723,6 +723,6 @@ class ScaffoldUI:
     def _layoutOglSDMessage(self, diagram: Diagram, oglSDMessage: OglSDMessage):
         diagram.AddShape(oglSDMessage)
 
-    def _layoutAnOglObject(self, umlFrame: UmlFrameShapeHandler, oglObject: Union[OglObject, OglInterface2, SelectAnchorPoint, OglLink]):
+    def _layoutAnOglObject(self, umlFrame: UmlFrameShapeHandler, oglObject: Union[OglObject, OglInterface2, SelectAnchorPoint, OglLink, OglSDInstance]):
         x, y = oglObject.GetPosition()
         umlFrame.addShape(oglObject, x, y)
