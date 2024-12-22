@@ -19,7 +19,7 @@ This project uses [buildlackey](https://github.com/hasii2011/buildlackey) for da
 
 ___
 
-Written by <a href="mailto:email@humberto.a.sanchez.ii@gmail.com?subject=Hello Humberto">Humberto A. Sanchez II</a>  (C) 2023
+Written by <a href="mailto:email@humberto.a.sanchez.ii@gmail.com?subject=Hello Humberto">Humberto A. Sanchez II</a>  (C) 2025
 
 ___
 
