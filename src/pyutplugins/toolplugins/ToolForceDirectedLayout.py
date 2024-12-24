@@ -123,6 +123,9 @@ class ToolForceDirectedLayout(ToolPluginInterface):
 
     def _layoutStatusCallBack(self, status: LayoutStatus):
 
+        # noinspection PyProtectedMember
+        from wx._core import wxAssertionError
+
         if self._layoutProgressDialog is None:
             self._layoutProgressDialog = ProgressDialog('Arranging', 'Starting', parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
             self._layoutProgressDialog.SetRange(status.maxIterations)
@@ -132,7 +135,14 @@ class ToolForceDirectedLayout(ToolPluginInterface):
             f'iterations: {status.iterations}\n'
             f'stopCount: {status.stopCount}\n'
         )
-        self._layoutProgressDialog.Update(status.iterations, statusMsg)
+        try:
+            self._layoutProgressDialog.Update(status.iterations, statusMsg)
+        except RuntimeError as re:
+            self.logger.error(f'wxPython error: {re}')
+            self._layoutProgressDialog = ProgressDialog('Arranging', 'Starting', parent=None, style=PD_APP_MODAL | PD_ELAPSED_TIME)
+            self._layoutProgressDialog.SetRange(status.maxIterations)
+        except wxAssertionError as ae:
+            self.logger.error(f'{status.iterations=} {ae}')
 
         self._pluginAdapter.refreshFrame()
 
