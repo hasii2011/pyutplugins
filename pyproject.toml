@@ -13,7 +13,7 @@ maintainers = [{name = 'Humberto A. Sanchez II', email = 'Humbert.A.Sanchez.II@g
 keywords    = ['pyut', 'python', 'plugin']
 
 dependencies = [
-  'codeallybasic>=1.8.0',
+  'codeallybasic>=1.8.1',
   'codeallyadvanced>=1.3.3',
   'pyutmodelv2>=2.2.2',
   'ogl>=3.6.1',

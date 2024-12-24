@@ -98,6 +98,9 @@ class ToolForceDirectedLayout(ToolPluginInterface):
 
             self._fdl.arrange(statusCallback=self._layoutStatusCallBack)
             self._reArrangeLinks(oglObjects=oglObjects)
+
+            self._layoutProgressDialog.Destroy()
+            self._layoutProgressDialog = NO_PROGRESS_DIALOG
             self._pluginAdapter.refreshFrame()
             self._pluginAdapter.indicatePluginModifiedProject()
 
