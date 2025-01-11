@@ -17,6 +17,28 @@
 ## Developer Notes
 This project uses [buildlackey](https://github.com/hasii2011/buildlackey) for day to day development builds
 
+Also notice that this project does not include a `requirements.txt` file.  All dependencies are listed in the `pyproject.toml` file.
+
+#### Install the main project dependencies
+
+```bash
+pip install .
+```
+
+#### Install the test dependencies
+
+```bash
+pip install .[test]
+```
+
+#### Install the deploy dependencies
+
+```bash
+pip install .[deploy]
+```
+
+Normally, not needed because the project uses a GitHub workflow that automatically deploys releases
+
 ___
 
 Written by <a href="mailto:email@humberto.a.sanchez.ii@gmail.com?subject=Hello Humberto">Humberto A. Sanchez II</a>  (C) 2025

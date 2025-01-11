@@ -96,13 +96,12 @@ from tests.scaffoldv2.eventengine.Events import NewProjectEvent
 from tests.scaffoldv2.eventengine.Events import RefreshFrameEvent
 from tests.scaffoldv2.eventengine.Events import SelectAllShapesEvent
 from tests.scaffoldv2.eventengine.Events import SelectedOglObjectsEvent
-from tests.scaffoldv2.umlframes.FrameHandler import FrameHandler
 
+from tests.scaffoldv2.umlframes.FrameHandler import FrameHandler
 from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
 from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
-from tests.scaffoldv2.umlframes.UmlFrame import OglObjectBoundaries
-from tests.scaffoldv2.umlframes.UmlFrame import UmlFrame
 from tests.scaffoldv2.umlframes.UmlFrameShapeHandler import UmlFrameShapeHandler
+from tests.scaffoldv2.umlframes.UmlFrame import UmlFrame
 
 PyutProjects = NewType('PyutProjects', List[PyutProject])
 
@@ -428,14 +427,13 @@ class ScaffoldUI:
             case _:
                 self._layoutAnOglObject(umlFrame=umlFrame, oglObject=shapeToAdd)
 
-    # noinspection PyUnusedLocal
     def _onGetObjectBoundaries(self, event: GetObjectBoundariesEvent):
 
-        bounds:   OglObjectBoundaries    = self._currentFrame.objectBoundaries
+        bounds:   ObjectBoundaries       = cast(ObjectBoundaries, self._currentFrame.objectBoundaries)
         callback: ObjectBoundaryCallback = event.callback
 
-        objectBoundaries: ObjectBoundaries = ObjectBoundaries(minX=bounds.minX, minY=bounds.minY, maxX=bounds.maxX, maxY=bounds.maxY)
-        callback(objectBoundaries)
+        # objectBoundaries: ObjectBoundaries = ObjectBoundaries(minX=bounds.minX, minY=bounds.minY, maxX=bounds.maxX, maxY=bounds.maxY)
+        callback(bounds)
 
     def _onRequestCurrentProject(self, event: RequestCurrentProjectEvent):
         """

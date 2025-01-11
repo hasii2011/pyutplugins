@@ -159,7 +159,7 @@ class TestMermaidWriter(ProjectTestBase):
         mermaidWriter.translate(oglObjects=oglObjects)
 
         status: int = ProjectTestBase.runDiff(goldenPackageName=ProjectTestBase.GOLDEN_MERMAID_PACKAGE_NAME, baseFileName=baseFileName)
-        self.assertEqual(0, status, 'Simple Association failed')
+        self.assertEqual(0, status, 'Basic Association failed')
 
     def testNotes(self):
         baseFileName:  str           = f'{NOTES}{SUFFIX_MARKDOWN}'

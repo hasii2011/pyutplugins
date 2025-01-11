@@ -192,7 +192,7 @@ class BasePluginInterface:
 
         return response
 
-    def askForFileToExport(self, defaultFileName: str = '') -> SingleFileRequestResponse:
+    def askForFileToExport(self, defaultFileName: str = '', defaultPath: str = '') -> SingleFileRequestResponse:
         """
         Called by a plugin to ask for the export filename
 
@@ -204,6 +204,7 @@ class BasePluginInterface:
 
         wildCard:    str = f'{outputFormat.formatName} (*.{outputFormat.extension}) |*.{outputFormat.extension}'
         fileName:    str = FileSelector("Choose export file name",
+                                        default_path=defaultPath,
                                         default_filename=defaultFileName,
                                         wildcard=wildCard,
                                         flags=FD_SAVE | FD_OVERWRITE_PROMPT | FD_CHANGE_DIR)

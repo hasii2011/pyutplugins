@@ -13,6 +13,7 @@ from codeallybasic.SecureConversions import SecureConversions
 from codeallybasic.SingletonV3 import SingletonV3
 
 from pyutplugins.ioplugins.mermaid.MermaidDirection import MermaidDirection
+
 from pyutplugins.toolplugins.orthogonal.LayoutAreaSize import LayoutAreaSize
 
 MODULE_NAME:          str = 'pyutplugins'
@@ -24,11 +25,13 @@ DEFAULT_ORTHOGONAL_LAYOUT_SIZE_STR: str              = DEFAULT_ORTHOGONAL_LAYOUT
 DEFAULT_MERMAID_DIRECTION:          MermaidDirection = MermaidDirection.RightToLeft
 
 
+# TODO:  Remove pdfExportFilename when we stop using PyUmlDiagrams
+
 SECTION_PYUT_PLUGINS: ValueDescriptions = ValueDescriptions(
     {
         KeyName('orthogonalLayoutSize'):   ValueDescription(defaultValue=DEFAULT_ORTHOGONAL_LAYOUT_SIZE_STR, deserializer=LayoutAreaSize.deSerialize),
-        KeyName('wxImageFilename'):        ValueDescription(defaultValue='WxImageDump'),
-        KeyName('pdfExportFilename'):      ValueDescription(defaultValue='PyutExport.pdf'),
+        KeyName('wxImageFileName'):        ValueDescription(defaultValue='WxImageDump'),
+        KeyName('pdfExportFileName'):      ValueDescription(defaultValue='PyutExport.pdf'),
         KeyName('sugiyamaStepByStep'):     ValueDescription(defaultValue='False',                                      deserializer=SecureConversions.secureBoolean),
         KeyName('mermaidLayoutDirection'): ValueDescription(defaultValue=DEFAULT_MERMAID_DIRECTION, enumUseValue=True, deserializer=MermaidDirection.toEnum),
     }

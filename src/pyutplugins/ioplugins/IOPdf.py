@@ -4,19 +4,18 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from time import localtime
 from time import strftime
 
-from pyumldiagrams.BaseDiagram import BaseDiagram
-from pyumldiagrams.Definitions import ClassDefinitions
-from pyumldiagrams.Definitions import DisplayMethodParameters
-from pyumldiagrams.Definitions import UmlLineDefinitions
-from pyumldiagrams.Definitions import UmlLollipopDefinitions
-from pyumldiagrams.Definitions import UmlNoteDefinitions
-from pyumldiagrams.image.ImageDiagram import ImageDiagram
-from pyumldiagrams.pdf.PdfDiagram import PdfDiagram
-from wx import Yield as wxYield
+from pathlib import Path
 
+from tempfile import NamedTemporaryFile
+
+from wx import MessageBox
+from wx import OK
+
+from pyutplugins.ExternalTypes import FrameInformation
+
+from pyutplugins.common.Common import createScreenImageFile
 
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
@@ -33,15 +32,15 @@ from pyutplugins.plugintypes.PluginDataTypes import FormatName
 from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
 from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
 
-from pyutplugins.ioplugins.pdf.ImageFormat import ImageFormat
-from pyutplugins.ioplugins.pdf.ImageOptions import ImageOptions
-from pyutplugins.ioplugins.pdf.PyUmlDefinitionAdapter import PyUmlDefinitionAdapter
+from pyimage2pdf.Preferences import Preferences
+from pyimage2pdf.PyImage2Pdf import PdfInformation
+from pyimage2pdf.PyImage2Pdf import PyImage2Pdf
 
 FORMAT_NAME:        FormatName        = FormatName('PDF')
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('pdf')
-PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('A simple PDF for UML diagrams')
+PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Generate a simple PDF for visible UML diagram')
 
-PLUGIN_VERSION: str = '1.4'
+PLUGIN_VERSION: str = '2.0'
 
 
 class IOPdf(IOPluginInterface):
@@ -70,9 +69,9 @@ class IOPdf(IOPluginInterface):
         self._inputFormat  = cast(InputFormat, None)
         self._outputFormat = OutputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 
-        self._imageOptions: ImageOptions = ImageOptions()
+        self._image2pdfPreferences: Preferences = Preferences()
 
-        self._imageOptions.imageFormat = ImageFormat.PDF
+        self._exportFileName: Path = cast(Path, None)
 
         self._autoSelectAll = True     # we are taking a picture of the entire diagram
 
@@ -86,12 +85,13 @@ class IOPdf(IOPluginInterface):
         Returns:
             if False, the export is cancelled.
         """
-        self._exportResponse = self.askForFileToExport(defaultFileName=self._pluginPreferences.pdfExportFileName)
+        self._exportResponse = self.askForFileToExport(defaultPath=str(self._image2pdfPreferences.outputPath),
+                                                       defaultFileName=str(self._pluginPreferences.pdfExportFileName))
 
         if self._exportResponse.cancelled is True:
             return False
         else:
-            self._imageOptions.outputFileName = self._exportResponse.fileName
+            self._exportFileName = Path(self._exportResponse.fileName)
             return True
 
     def read(self) -> bool:
@@ -106,68 +106,22 @@ class IOPdf(IOPluginInterface):
             oglObjects:  list of exported objects
 
         """
-        self.logger.info(f'export file name: {self._imageOptions.outputFileName}')
-        wxYield()
+        frameInformation: FrameInformation = self._frameInformation
+        pluginAdapter:    IPluginAdapter   = self._pluginAdapter
+        pluginAdapter.deselectAllOglObjects()
 
-        oglToPdf: PyUmlDefinitionAdapter = PyUmlDefinitionAdapter()
+        tempFile        = NamedTemporaryFile(dir='/tmp', suffix='.png')
+        imagePath: Path = Path(tempFile.name)
 
-        oglToPdf.toDefinitions(oglObjects=oglObjects)
-
-        self._createTheImage(oglToPdf)
-
-    def _createTheImage(self, oglToPdf: PyUmlDefinitionAdapter):
-        """
-        Loop through the definitions to create the UML Diagram
-
-        Args:
-            oglToPdf: The UML definitions
-        """
-
-        diagram: BaseDiagram = self._getCorrectDiagramGenerator()
-
-        umlClassDefinitions: ClassDefinitions = oglToPdf.umlClassDefinitions
-        for classDefinition in umlClassDefinitions:
-            diagram.drawClass(classDefinition=classDefinition)
-
-        umlLineDefinitions: UmlLineDefinitions = oglToPdf.umlLineDefinitions
-        for lineDefinition in umlLineDefinitions:
-            diagram.drawUmlLine(lineDefinition=lineDefinition)
-
-        lollipopDefinitions: UmlLollipopDefinitions = oglToPdf.umlLollipopDefinitions
-        for lollipopDefinition in lollipopDefinitions:
-            diagram.drawUmlLollipop(umlLollipopDefinition=lollipopDefinition)
-
-        umlNoteDefinitions: UmlNoteDefinitions = oglToPdf.umlNoteDefinitions
-        for umlNoteDefinition in umlNoteDefinitions:
-            diagram.drawNote(umlNoteDefinition)
-
-        diagram.write()
-
-    def _getCorrectDiagramGenerator(self) -> BaseDiagram:
-
-        dpi:   int = self._pluginAdapter.screenMetrics.dpiX
-        today: str = strftime("%d %b %Y %H:%M:%S", localtime())
-
-        headerText: str = f'Pyut Version {self._pluginAdapter.pyutVersion} Plugin Version {self.version} - {today}'
-        imageOptions = self._imageOptions
-
-        fqFileName:  str         = imageOptions.outputFileName
-        imageFormat: ImageFormat = imageOptions.imageFormat
-        #
-        # TODO use plugin preferences
-        #
-        # imageLibShowParameters: DisplayMethodParameters = self.__toImageLibraryEnum(self._prefs.showParameters)
-        imageLibShowParameters: DisplayMethodParameters = self._toImageLibraryEnum(True)
-        if imageFormat == ImageFormat.PDF:
-            diagram: BaseDiagram = PdfDiagram(fileName=fqFileName, dpi=dpi, headerText=headerText, docDisplayMethodParameters=imageLibShowParameters)
+        success: bool = createScreenImageFile(frameInformation=frameInformation, imagePath=imagePath)
+        if success is False:
+            msg: str = f'Error on image write to {imagePath}'
+            MessageBox(message=msg, caption='Error', style=OK)
         else:
-            diagram = ImageDiagram(fileName=fqFileName, headerText=headerText)   # TODO use image size from new method signature)
+            image2Pdf: PyImage2Pdf = PyImage2Pdf()
 
-        return diagram
+            pdfInformation: PdfInformation = PdfInformation()
+            creationDate:   str = strftime(self._pluginPreferences.dateFormat)
+            annotationText: str = f'{self._pluginPreferences.title} - {creationDate}'
 
-    def _toImageLibraryEnum(self, showParameters: bool) -> DisplayMethodParameters:
-
-        if showParameters is True:
-            return DisplayMethodParameters.DISPLAY
-        else:
-            return DisplayMethodParameters.DO_NOT_DISPLAY
+            image2Pdf.convert(imagePath=imagePath, pdfPath=self._exportFileName)
