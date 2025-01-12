@@ -2,21 +2,10 @@
 from enum import Enum
 
 
-class MermaidDirection(str, Enum):
+class MermaidDirection(Enum):
 
-    diagramValue: str
-    userValue:    str
-
-    def __new__(cls, title: str, diagramValue: str) -> 'MermaidDirection':
-        obj = str.__new__(cls, title)
-        obj._value_ = title
-
-        obj.diagramValue = diagramValue
-
-        return obj
-
-    RightToLeft = ('Right To Left', 'direction RL')
-    LeftToRight = ('Left To Right', 'direction LR')
+    RightToLeft = 'direction RL'
+    LeftToRight = 'direction LR'
 
     @classmethod
     def toEnum(cls, enumStr: str) -> 'MermaidDirection':

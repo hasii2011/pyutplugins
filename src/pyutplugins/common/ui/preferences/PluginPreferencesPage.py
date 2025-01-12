@@ -79,7 +79,7 @@ class PluginPreferencesPage(SizedPanel):
 
     def _layoutMermaidPreferences(self, parent):
 
-        directions: List[str] = [s for s in MermaidDirection]
+        directions: List[str] = [s.value for s in MermaidDirection]
 
         ssb: SizedStaticBox = SizedStaticBox(parent, label='Mermaid Diagram Layout Direction')
         ssb.SetSizerProps(proportion=2, expand=False)

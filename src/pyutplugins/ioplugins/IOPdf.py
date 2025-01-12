@@ -32,9 +32,11 @@ from pyutplugins.plugintypes.PluginDataTypes import FormatName
 from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
 from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
 
-from pyimage2pdf.Preferences import Preferences
-from pyimage2pdf.PyImage2Pdf import PdfInformation
+from pyimage2pdf.PyImage2Pdf import PdfOptions
 from pyimage2pdf.PyImage2Pdf import PyImage2Pdf
+from pyimage2pdf.PyImage2Pdf import KeyWordList
+from pyimage2pdf.PyImage2Pdf import PdfMetaData
+
 
 FORMAT_NAME:        FormatName        = FormatName('PDF')
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('pdf')
@@ -69,8 +71,6 @@ class IOPdf(IOPluginInterface):
         self._inputFormat  = cast(InputFormat, None)
         self._outputFormat = OutputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
 
-        self._image2pdfPreferences: Preferences = Preferences()
-
         self._exportFileName: Path = cast(Path, None)
 
         self._autoSelectAll = True     # we are taking a picture of the entire diagram
@@ -85,10 +85,11 @@ class IOPdf(IOPluginInterface):
         Returns:
             if False, the export is cancelled.
         """
-        self._exportResponse = self.askForFileToExport(defaultPath=str(self._image2pdfPreferences.outputPath),
-                                                       defaultFileName=str(self._pluginPreferences.pdfExportFileName))
+        self._exportResponse = self.askForFileToExport(defaultPath=str(self._pluginPreferences.outputPath),
+                                                       defaultFileName=str(self._pluginPreferences.exportFileName))
 
         if self._exportResponse.cancelled is True:
+            self._pluginAdapter.deselectAllOglObjects()
             return False
         else:
             self._exportFileName = Path(self._exportResponse.fileName)
@@ -120,8 +121,24 @@ class IOPdf(IOPluginInterface):
         else:
             image2Pdf: PyImage2Pdf = PyImage2Pdf()
 
-            pdfInformation: PdfInformation = PdfInformation()
+            pdfOptions:     PdfOptions = PdfOptions()
             creationDate:   str = strftime(self._pluginPreferences.dateFormat)
             annotationText: str = f'{self._pluginPreferences.title} - {creationDate}'
 
-            image2Pdf.convert(imagePath=imagePath, pdfPath=self._exportFileName)
+            pdfOptions.annotationText      = annotationText
+            pdfOptions.annotationLeft      = self._pluginPreferences.annotationLeft
+            pdfOptions.annotationWidth     = self._pluginPreferences.annotationWidth
+            pdfOptions.annotationTopOffset = self._pluginPreferences.annotationTopOffset
+            pdfOptions.annotationHeight    = self._pluginPreferences.annotationHeight
+
+            pdfMetaData: PdfMetaData = PdfMetaData()
+
+            pdfMetaData.author   = self._pluginPreferences.author
+            pdfMetaData.producer = f'IOPdf Plugin {PLUGIN_VERSION}'
+            pdfMetaData.title    = self._pluginPreferences.title
+            pdfMetaData.subject  = self._pluginPreferences.subject
+            keyWordList: KeyWordList = KeyWordList([])
+            pdfMetaData.keywords = keyWordList
+
+            pdfOptions.pdfMetaData = pdfMetaData
+            image2Pdf.convert(imagePath=imagePath, pdfPath=self._exportFileName, pdfOptions=pdfOptions)

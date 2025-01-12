@@ -14,10 +14,12 @@ from untanglepyut.XmlVersion import XmlVersion
 from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.ioplugins.mermaid.MermaidWriter import MermaidWriter
+from pyutplugins.ioplugins.mermaid.MermaidDirection import MermaidDirection
 
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from pyutplugins.preferences.PluginPreferences import PluginPreferences
 from tests.ProjectTestBase import ProjectTestBase
 
 # The base file names
@@ -73,9 +75,17 @@ class TestMermaidWriter(ProjectTestBase):
 
     def setUp(self):
         super().setUp()
+        pluginPreferences: PluginPreferences = PluginPreferences()
+
+        self._saveLayoutDirection: MermaidDirection = pluginPreferences.mermaidLayoutDirection
+
+        pluginPreferences.mermaidLayoutDirection = MermaidDirection.RightToLeft
 
     def tearDown(self):
         super().tearDown()
+        pluginPreferences: PluginPreferences = PluginPreferences()
+
+        pluginPreferences.mermaidLayoutDirection = self._saveLayoutDirection
 
     def testSimpleClass(self):
         baseFileName: str           = f'{SIMPLE}{SUFFIX_MARKDOWN}'

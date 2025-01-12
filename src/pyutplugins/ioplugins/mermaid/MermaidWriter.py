@@ -87,7 +87,7 @@ class MermaidWriter:
 
         mermaidString: str              = f'```mermaid{eol}'
         direction:     MermaidDirection = self._preferences.mermaidLayoutDirection
-        mermaidString = f'{mermaidString}classDiagram{eol}{indent1}{direction.diagramValue}{eol}'
+        mermaidString = f'{mermaidString}classDiagram{eol}{indent1}{direction.value}{eol}'
 
         linksStanza: str = self._generateLinksStanza(oglObjects=oglObjects)
 
