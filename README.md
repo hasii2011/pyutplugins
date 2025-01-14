@@ -8,7 +8,7 @@
 
 
 # Introduction
-**TBD**
+This module houses the plugins that enhance the capabilities of [Pyut](https://github.com/hasii2011/pyut).  This separate module allows external developers to write plugins external to Pyut.  This module includes a "Scaffold Application" that allows developers to test drive their plugins prior to integrating them into Pyut.
 
 # Overview
 
