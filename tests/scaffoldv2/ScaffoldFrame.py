@@ -39,6 +39,7 @@ from wx import NewIdRef
 from oglio.Reader import Reader
 from oglio.Types import OglProject
 
+from pyutplugins.PluginManager import PluginDetails
 from pyutplugins.PluginManager import PluginManager
 
 from pyutplugins.plugintypes.PluginDataTypes import InputPluginMap
@@ -227,23 +228,21 @@ class ScaffoldFrame(Frame):
 
     def _onTools(self, event: CommandEvent):
 
-        wxId: int = event.GetId()
-        self.logger.debug(f'{wxId=}')
-
-        self._pluginManager.doToolAction(wxId=wxId)
+        wxId:          int           = event.GetId()
+        pluginDetails: PluginDetails = self._pluginManager.doToolAction(wxId=wxId)
+        self.logger.info(f'Tools: {pluginDetails=}')
 
     def _onImport(self, event: CommandEvent):
 
-        wxId: int = event.GetId()
-        self.logger.info(f'Import: {wxId=}')
-
-        self._pluginManager.doImport(wxId=wxId)
+        wxId:          int           = event.GetId()
+        pluginDetails: PluginDetails = self._pluginManager.doImport(wxId=wxId)
+        self.logger.info(f'Import: {pluginDetails=}')
 
     def _onExport(self, event: CommandEvent):
 
-        wxId: int = event.GetId()
-        self.logger.info(f'Export: {wxId=}')
-        self._pluginManager.doExport(wxId=wxId)
+        wxId:          int           = event.GetId()
+        pluginDetails: PluginDetails = self._pluginManager.doExport(wxId=wxId)
+        self.logger.info(f'Export: {pluginDetails=}')
 
     # noinspection PyUnusedLocal
     def _onLoadXmlFile(self, event: CommandEvent):

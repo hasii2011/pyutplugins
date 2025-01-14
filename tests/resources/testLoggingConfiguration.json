@@ -10,11 +10,15 @@
         },
         "functionNames": {
             "format": "%(asctime)s %(levelname)s %(module)s.%(funcName)s() %(message)s",
-            "datefmt" : "%H:%M:%S"
+            "datefmt": "%H:%M:%S"
         },
         "favoriteTime": {
             "format": "%(asctime)s.%(msecs)03d %(levelname)s %(module)s: %(message)s",
             "datefmt": "%0H%0M%0S"
+        },
+        "bestFormat": {
+            "format": "%(asctime)s.%(msecs)03d %(levelname)-6s %(name)-15s %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S"
         }
     },
     "handlers": {
@@ -27,17 +31,25 @@
             "class": "logging.StreamHandler",
             "formatter": "functionNames",
             "stream": "ext://sys.stdout"
+        },
+        "consoleHandlerBestFormat": {
+            "class": "logging.StreamHandler",
+            "formatter": "bestFormat",
+            "stream": "ext://sys.stdout"
         }
-
     },
     "loggers": {
         "root": {
             "level": "WARNING",
-            "handlers": ["consoleHandlerFunctionNames"],
+            "handlers": ["consoleHandlerBestFormat"],
             "propagate": "False"
         },
         "__main__": {
             "level": "INFO",
+            "propagate": "False"
+        },
+        "tests": {
+            "level":     "WARNING",
             "propagate": "False"
         },
         "pyutplugins": {
@@ -45,15 +57,11 @@
             "propagate": "False"
         },
         "pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor": {
-            "level":     "INFO",
+            "level":     "WARNING",
             "propagate": "False"
         },
         "codeallybasic.UnitTestBase": {
             "level":     "WARNING",
-            "propagate": "False"
-        },
-        "tests": {
-            "level": "WARNING",
             "propagate": "False"
         }
     }

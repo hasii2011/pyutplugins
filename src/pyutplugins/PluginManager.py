@@ -5,6 +5,8 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from dataclasses import dataclass
+
 from os import linesep as osLineSep
 
 from sys import exc_info
@@ -17,10 +19,9 @@ from wx import OK
 from wx import MessageDialog
 from wx import NewIdRef
 
-from wx import Yield as wxYield
-
 from codeallybasic.SingletonV3 import SingletonV3
 
+from pyutplugins.plugintypes.PluginDataTypes import PluginName
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
@@ -57,6 +58,21 @@ from pyutplugins.toolplugins.ToolTransforms import ToolTransforms
 TOOL_PLUGIN_NAME_PREFIX: str = 'Tool'
 IO_PLUGIN_NAME_PREFIX:   str = 'IO'
 
+IO_PLUGINS: PluginList = PluginList([IOMermaid, IODTD, IOGML, IOJava, IOPdf, IOPython, IOWxImage, IOXml, IOAscii])
+
+TOOL_PLUGINS: PluginList = PluginList(
+    [
+        ToolOrthogonalRouting, ToolForceDirectedLayout, ToolArrangeLinks, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms, ToolSaveLayout, ToolLoadLayout
+    ]
+)
+
+
+@dataclass
+class PluginDetails:
+    name:    PluginName = PluginName('')
+    author:  str = ''
+    version: str = ''
+
 
 class PluginManager(metaclass=SingletonV3):
     """
@@ -76,13 +92,6 @@ class PluginManager(metaclass=SingletonV3):
     By convention prefix the plugin I/O module with the characters 'IO'
 
     """
-    IO_PLUGINS:   PluginList = PluginList([IOMermaid, IODTD, IOGML, IOJava, IOPdf, IOPython, IOWxImage, IOXml, IOAscii])
-    TOOL_PLUGINS: PluginList = PluginList(
-        [
-            ToolOrthogonalRouting, ToolForceDirectedLayout, ToolArrangeLinks, ToolOrthogonalLayoutV2, ToolSugiyama, ToolTransforms,
-            ToolSaveLayout, ToolLoadLayout
-        ]
-    )
 
     def __init__(self, **kwargs):
         """
@@ -134,51 +143,51 @@ class PluginManager(metaclass=SingletonV3):
     @property
     def inputPlugins(self) -> PluginList:
         """
-        Get the input pyutplugins.
+        Get the input Plugins.
 
-        Returns:  A list of classes (the pyutplugins classes).
+        Returns:  A copy of the list of classes (the PyutPlugin classes).
         """
         if self._inputPluginClasses is None:
-            # noinspection PyAttributeOutsideInit
+
             self._inputPluginClasses = PluginList([])
-            for plugin in PluginManager.IO_PLUGINS:
+            for plugin in IO_PLUGINS:
                 pluginClass = cast(type, plugin)
                 classInstance = pluginClass(None)
                 if classInstance.inputFormat is not None:
                     self._inputPluginClasses.append(plugin)
-        return self._inputPluginClasses
+        return PluginList(self._inputPluginClasses[:])
 
     @property
     def outputPlugins(self) -> PluginList:
         """
-        Get the output pyutplugins.
+        Get the output Plugins.
 
-        Returns:  A list of classes (the pyutplugins classes).
+        Returns:  A copy of the list of classes (the PyutPlugin classes).
         """
         if self._outputPluginClasses is None:
-            # noinspection PyAttributeOutsideInit
+
             self._outputPluginClasses = PluginList([])
-            for plugin in PluginManager.IO_PLUGINS:
+            for plugin in IO_PLUGINS:
                 pluginClass = cast(type, plugin)
                 classInstance = pluginClass(None)
                 if classInstance.outputFormat is not None:
                     self._outputPluginClasses.append(plugin)
 
-        return self._outputPluginClasses
+        return PluginList(self._outputPluginClasses[:])
 
     @property
     def toolPlugins(self) -> PluginList:
         """
-        Get the tool pyutplugins.
+        Get the tool Plugins.
 
-        Returns:    A list of classes (the pyutplugins classes).
+        Returns:    A copy of the list of classes (the PyutPlugin classes).
         """
-        return PluginManager.TOOL_PLUGINS
+        return PluginList(TOOL_PLUGINS[:])
 
     @property
     def toolPluginsMap(self) -> ToolsPluginMap:
         if len(self._toolPluginsMap.pluginIdMap) == 0:
-            self._toolPluginsMap.pluginIdMap = self.__mapWxIdsToPlugins(PluginManager.TOOL_PLUGINS)
+            self._toolPluginsMap.pluginIdMap = self.__mapWxIdsToPlugins(TOOL_PLUGINS)
         return self._toolPluginsMap
 
     @property
@@ -193,7 +202,7 @@ class PluginManager(metaclass=SingletonV3):
             self._outputPluginsMap.pluginIdMap = self.__mapWxIdsToPlugins(self.outputPlugins)
         return self._outputPluginsMap
 
-    def doToolAction(self, wxId: int):
+    def doToolAction(self, wxId: int) -> PluginDetails:
         """
         Args:
             wxId:   The ID ref of the menu item
@@ -217,26 +226,30 @@ class PluginManager(metaclass=SingletonV3):
                                                   message=f'{extendedMessage}',
                                                   caption='Error!', style=OK | ICON_ERROR)
             booBoo.ShowModal()
+        return PluginDetails(name=pluginInstance.name, version=pluginInstance.version, author=pluginInstance.version)
 
-    def doImport(self, wxId: int):
+    def doImport(self, wxId: int) -> PluginDetails:
         """
         Args:
             wxId:       The ID ref of the menu item
         """
-        idMap:        PluginIDMap    = self.inputPluginsMap.pluginIdMap
-        clazz:        type              = idMap[wxId]
-        plugInstance: IOPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
-        self._doIOAction(methodToCall=plugInstance.executeImport)
+        idMap:          PluginIDMap       = self.inputPluginsMap.pluginIdMap
+        clazz:          type              = idMap[wxId]
+        pluginInstance: IOPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
+        self._doIOAction(methodToCall=pluginInstance.executeImport)
+        return PluginDetails(name=pluginInstance.name, version=pluginInstance.version, author=pluginInstance.version)
 
-    def doExport(self, wxId: int):
+    def doExport(self, wxId: int) -> PluginDetails:
         """
         Args:
             wxId:       The ID ref of the menu item
         """
-        idMap:        PluginIDMap  = self.outputPluginsMap.pluginIdMap
-        clazz:        type              = idMap[wxId]
-        plugInstance: IOPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
-        self._doIOAction(methodToCall=plugInstance.executeExport)
+        idMap:          PluginIDMap       = self.outputPluginsMap.pluginIdMap
+        clazz:          type              = idMap[wxId]
+        pluginInstance: IOPluginInterface = clazz(pluginAdapter=self._pluginAdapter)
+        self._doIOAction(methodToCall=pluginInstance.executeExport)
+
+        return PluginDetails(name=pluginInstance.name, version=pluginInstance.version, author=pluginInstance.version)
 
     def _doIOAction(self, methodToCall: Callable):
         """
@@ -245,7 +258,6 @@ class PluginManager(metaclass=SingletonV3):
         """
 
         try:
-            wxYield()
             methodToCall()
         except (ValueError, Exception) as e:
             self.logger.error(f'{e}')
@@ -256,7 +268,7 @@ class PluginManager(metaclass=SingletonV3):
 
     def __mapWxIdsToPlugins(self, pluginList: PluginList) -> PluginIDMap:
 
-        pluginMap: PluginIDMap = cast(PluginIDMap, {})
+        pluginMap: PluginIDMap = PluginIDMap({})
 
         nb: int = len(pluginList)
 
