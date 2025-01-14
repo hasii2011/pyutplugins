@@ -109,7 +109,7 @@ class DlgWxImageOptions(BaseEditDialog):
 
             self._selectedFile.SetValue(fileName)       # for simple viewing
             self._selectedFile.SetModified(True)
-            self._outputFileName = path                 # for actual us
+            self._outputFileName = path                 # for actual use
 
         dlg.Destroy()
 

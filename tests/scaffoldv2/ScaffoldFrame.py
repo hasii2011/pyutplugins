@@ -16,6 +16,7 @@ from wx import FD_FILE_MUST_EXIST
 from wx import FD_OPEN
 from wx import FRAME_FLOAT_ON_PARENT
 from wx import ID_OK
+from wx import ID_PREFERENCES
 from wx import OK
 from wx import ICON_ERROR
 from wx import ID_EXIT
@@ -50,6 +51,7 @@ from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 
 from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
+from tests.scaffoldv2.ScaffoldPreferencesDialog import ScaffoldPreferencesDialog
 from tests.scaffoldv2.ScaffoldUI import ScaffoldUI
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.Events import EventType
@@ -140,7 +142,11 @@ class ScaffoldFrame(Frame):
         fileMenu.AppendSubMenu(newDiagramSubMenu, 'New')
         fileMenu.AppendSubMenu(importSubMenu, 'Import')
         fileMenu.AppendSubMenu(exportSubMenu, 'Export')
+
+        fileMenu.Append(ID_PREFERENCES, 'Preferences', 'Configure Me')
+
         self.Bind(EVT_MENU, self._onLoadXmlFile, id=self._loadXmlFileWxId)
+        self.Bind(EVT_MENU, self._onPreferences, id=ID_PREFERENCES)
 
         return fileMenu
 
@@ -313,3 +319,12 @@ class ScaffoldFrame(Frame):
         oglProject: OglProject = reader.readXmlFile(fqFileName=fqFileName)
 
         self._eventEngine.sendEvent(eventType=EventType.LoadOglProject, oglProject=oglProject)
+
+    # noinspection PyUnusedLocal
+    def _onPreferences(self, event: CommandEvent):
+
+        with ScaffoldPreferencesDialog(parent=self) as dlg:
+            if dlg.ShowModal() == OK:
+                self.logger.info(f'Ok')
+            else:
+                self.logger.info(f'Cancel')

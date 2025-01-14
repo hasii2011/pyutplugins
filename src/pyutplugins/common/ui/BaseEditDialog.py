@@ -4,6 +4,7 @@ from logging import getLogger
 
 from wx import CANCEL
 from wx import DEFAULT_DIALOG_STYLE
+from wx import DefaultSize
 from wx import EVT_BUTTON
 from wx import EVT_CLOSE
 from wx import ID_CANCEL
@@ -27,9 +28,9 @@ class BaseEditDialog(SizedDialog):
     Provides a common place to host duplicate code
     TODO:  This is a duplicate of Pyut's dialog of the same name
     """
-    def __init__(self, parent, title='', style: int = RESIZE_BORDER | STAY_ON_TOP | DEFAULT_DIALOG_STYLE):
+    def __init__(self, parent, title='', size=DefaultSize, style: int = RESIZE_BORDER | STAY_ON_TOP | DEFAULT_DIALOG_STYLE):
 
-        super().__init__(parent, title=title, style=style)
+        super().__init__(parent, title=title, size=size, style=style)
 
     def _layoutStandardOkCancelButtonSizer(self):
         """
