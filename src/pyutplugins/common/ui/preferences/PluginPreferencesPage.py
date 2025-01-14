@@ -5,23 +5,23 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from wx import Button
-from wx import DirSelector
 from wx import EVT_BUTTON
 from wx import EVT_CHECKBOX
 from wx import EVT_CHOICE
 from wx import EVT_SPINCTRLDOUBLE
 from wx import EVT_TEXT
 from wx import ID_ANY
-
-from wx import CommandEvent
 from wx import NB_FIXEDWIDTH
 from wx import NB_TOP
+from wx import TE_READONLY
+
+from wx import Button
+from wx import DirSelector
+from wx import CommandEvent
 from wx import Notebook
 from wx import Size
 from wx import SpinCtrlDouble
 from wx import StaticText
-from wx import TE_READONLY
 from wx import TextCtrl
 from wx import Window
 from wx import CheckBox
@@ -46,7 +46,16 @@ TEXT_CTRL_WIDTH:  int  = 125
 TEXT_CTRL_HEIGHT: int  = 25
 TEXT_CTRL_SIZE:   Size = Size(width=TEXT_CTRL_WIDTH, height=TEXT_CTRL_HEIGHT)
 
-PDF_FILENAME_TOOLTIP: str = 'The default pdf output file name'
+ANNOTATION_MIN_WIDTH:  float = 100.0
+ANNOTATION_MAX_WIDTH:  float = 600.0
+ANNOTATION_MIN_HEIGHT: float = 25.0
+ANNOTATION_MAX_HEIGHT: float = 100.0
+
+PDF_FILENAME_TOOLTIP:         str = 'The default pdf output file name'
+PDF_TITLE_TOOLTIP:            str = 'Used as the annotation title and the pdf metadata title'
+PDF_AUTHOR_TOOLTIP:           str = 'Used as the pdf metadata author'
+PDF_SUBJECT_TOOLTIP:          str = 'Used as the pdf metadata subject'
+PDF_ANNOTATION_WIDTH_TOOLTIP: str = 'The max width of the title '
 
 
 class PluginPreferencesPage(SizedPanel):
@@ -145,17 +154,27 @@ class PluginPreferencesPage(SizedPanel):
         self._selectedDirectory.SetToolTip('Fully qualified name, Use left/right arrows keys to view path')
 
         self._layoutTextInput(sizedForm, wxId=self._pdfFileNameWxId, textLabel='PDF Filename:', textValue=self._preferences.exportFileName, toolTip=PDF_FILENAME_TOOLTIP)
-        self._layoutTextInput(sizedForm, wxId=self._pdfTitleWxId,    textLabel='Title:',        textValue=self._preferences.title)
-        self._layoutTextInput(sizedForm, wxId=self._pdfAuthorWxId,   textLabel='Author:',       textValue=self._preferences.author)
-        self._layoutTextInput(sizedForm, wxId=self._pdfSubjectWxId,  textLabel='Subject:',      textValue=self._preferences.subject)
+        self._layoutTextInput(sizedForm, wxId=self._pdfTitleWxId,    textLabel='Title:',        textValue=self._preferences.title,          toolTip=PDF_TITLE_TOOLTIP)
+        self._layoutTextInput(sizedForm, wxId=self._pdfAuthorWxId,   textLabel='Author:',       textValue=self._preferences.author,         toolTip=PDF_AUTHOR_TOOLTIP)
+        self._layoutTextInput(sizedForm, wxId=self._pdfSubjectWxId,  textLabel='Subject:',      textValue=self._preferences.subject,        toolTip=PDF_SUBJECT_TOOLTIP)
 
         st = StaticText(sizedForm, ID_ANY, 'Annotation Width:')
         st.SetSizerProps(valign='center')
-        SpinCtrlDouble(sizedForm, id=self._pdfAnnotationWidthWxId, min=100.0, max=600.0, value=str(self._preferences.annotationWidth), inc=1.0)
+        SpinCtrlDouble(sizedForm,
+                       id=self._pdfAnnotationWidthWxId,
+                       min=ANNOTATION_MIN_WIDTH,
+                       max=ANNOTATION_MAX_WIDTH,
+                       value=str(self._preferences.annotationWidth),
+                       inc=1.0)
 
         st = StaticText(sizedForm, ID_ANY, 'Annotation Height:')
         st.SetSizerProps(valign='center')
-        SpinCtrlDouble(sizedForm, id=self._pdfAnnotationHeightWxId, min=25.0, max=100.0, value=str(self._preferences.annotationHeight), inc=1.0)
+        SpinCtrlDouble(sizedForm,
+                       id=self._pdfAnnotationHeightWxId,
+                       min=ANNOTATION_MIN_HEIGHT,
+                       max=ANNOTATION_MAX_HEIGHT,
+                       value=str(self._preferences.annotationHeight),
+                       inc=1.0)
 
     def _layoutMermaidPreferences(self, parent):
 
