@@ -44,17 +44,20 @@ class ToolTransforms(ToolPluginInterface):
 
         selectedObjects: OglObjects = frameInformation.selectedOglObjects
 
-        frameW: int = frameInformation.frameSize.width
-        frameH: int = frameInformation.frameSize.height
-        # (frameW, frameH) = self._pluginAdapter.umlFrame.GetSize()
-        self.logger.warning(f'frameW: {frameW} - frameH: {frameH}')
+        if len(selectedObjects) == 0:
+            self.displayNoSelectedOglObjects()
+        else:
+            frameW: int = frameInformation.frameSize.width
+            frameH: int = frameInformation.frameSize.height
 
-        for obj in selectedObjects:
-            oglObject: OglObject = cast(OglObject, obj)
-            x, y = oglObject.GetPosition()
-            newX: int = frameW - x
-            self.logger.info(f"x,y: {x},{y} - newX: {newX}")
-            oglObject.SetPosition(newX, y)
+            self.logger.info(f'frameW: {frameW} - frameH: {frameH}')
 
-        self._pluginAdapter.indicatePluginModifiedProject()
-        self._pluginAdapter.refreshFrame()
+            for obj in selectedObjects:
+                oglObject: OglObject = cast(OglObject, obj)
+                x, y = oglObject.GetPosition()
+                newX: int = frameW - x
+                self.logger.info(f"x,y: {x},{y} - newX: {newX}")
+                oglObject.SetPosition(newX, y)
+
+            self._pluginAdapter.indicatePluginModifiedProject()
+            self._pluginAdapter.refreshFrame()

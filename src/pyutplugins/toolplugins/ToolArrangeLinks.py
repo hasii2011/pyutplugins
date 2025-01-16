@@ -24,18 +24,18 @@ class ToolArrangeLinks(ToolPluginInterface):
         self.logger: Logger = getLogger(__name__)
 
         self._name      = PluginName('Arrange Links')
-        self._author    = 'Cedric DUTOIT <dutoitc@shimbawa.ch>'
+        self._author    = 'Cedric Dutoit <dutoitc@shimbawa.ch>'
         self._version   = '1.1'
 
         self._menuTitle = 'Arrange links'
 
     def setOptions(self) -> bool:
         """
-        Prepare the import.
-        This can be used to ask some questions to the user.
+        Prepare for the tool action
+        This can be used to query the user for additional plugin options
 
-        Returns:
-            If `False`, the import is canceled.
+        Returns: If False, the import should be canceled.
+        'True' to proceed
         """
         return True
 

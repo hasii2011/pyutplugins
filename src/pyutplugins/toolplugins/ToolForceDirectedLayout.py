@@ -68,7 +68,6 @@ class ToolForceDirectedLayout(ToolPluginInterface):
         self._pluginAdapter.getSelectedOglObjects(callback=self._doAction)
 
     def _doAction(self, oglObjects: OglObjects):
-        pass
 
         if len(oglObjects) == 0:
             self.displayNoSelectedOglObjects()

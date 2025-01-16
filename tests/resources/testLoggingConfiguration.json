@@ -56,8 +56,8 @@
             "level":     "WARNING",
             "propagate": "False"
         },
-        "pyutplugins.ioplugins.python.visitor.PyutPythonPegVisitor": {
-            "level":     "WARNING",
+        "pyutplugins.toolplugins.ToolTransforms": {
+            "level":     "INFO",
             "propagate": "False"
         },
         "codeallybasic.UnitTestBase": {
