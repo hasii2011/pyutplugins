@@ -1,6 +1,4 @@
 
-from typing import cast
-
 from abc import ABC
 from abc import abstractmethod
 
@@ -38,34 +36,6 @@ class IOPluginInterface(BasePluginInterface, ABC):
     def __init__(self, pluginAdapter: IPluginAdapter):
 
         super().__init__(pluginAdapter=pluginAdapter)
-
-        self._oglObjects:         OglObjects = cast(OglObjects, None)               # The imported Ogl Objects
-        self._selectedOglObjects: OglObjects = cast(OglObjects, None)               # The selected Ogl Objects requested by .executeExport()
-        self._frameInformation:   FrameInformation = cast(FrameInformation, None)   # The frame information requested by .executeExport()
-
-        #
-        # Input plugins that require an active frame or frame(s) should set this value to `True`
-        # Some output pyutplugins may create their own frame or their own project and frame.  These should set this value to `False`
-        # Plugins should set the value the need in their constructor
-        #
-        self._requireActiveFrame: bool = True
-        #
-        # Some Output plugins may offer the option of exporting only selected objects;  Others may just export
-        # the entire project or the current frame
-        #
-        # Plugins should set the value they need in their constructor
-        self._requireSelection:   bool = True
-        #
-        #
-        # prefs: PyutPreferences = PyutPreferences()
-        # if prefs.pyutIoPluginAutoSelectAll is True:       TODO:  Need plugin preferences
-        #     self._autoSelectAll: bool = True
-
-        #
-        # Some plugins may need to work with all the objects on the UML frame.  Set this
-        # to true to select them all
-        #
-        self._autoSelectAll: bool = False
 
     def executeImport(self):
         """

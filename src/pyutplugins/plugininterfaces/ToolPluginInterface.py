@@ -5,6 +5,9 @@ from abc import abstractmethod
 from wx import BeginBusyCursor
 from wx import EndBusyCursor
 
+from wx import Yield as wxYield
+
+from pyutplugins.ExternalTypes import FrameInformation
 from pyutplugins.plugininterfaces.BasePluginInterface import BasePluginInterface
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
@@ -26,12 +29,27 @@ class ToolPluginInterface(BasePluginInterface, ABC):
         """
         This is used by the Plugin Manger to invoke the tool.  This should NOT
         be overridden
-        TODO: Check for active frame
         """
         if self.setOptions() is True:
-            BeginBusyCursor()
-            self.doAction()
-            EndBusyCursor()
+
+            if self._autoSelectAll is True:
+                self._pluginAdapter.selectAllOglObjects()
+            self._pluginAdapter.getFrameInformation(callback=self._executeTool)
+
+    def _executeTool(self, frameInformation: FrameInformation):
+
+        if frameInformation.frameActive is False:
+            self.displayNoUmlFrame()
+        else:
+            self._selectedOglObjects = frameInformation.selectedOglObjects  # syntactic sugar
+
+            if len(self._selectedOglObjects) == 0 and self._requireSelection is True:
+                self.displayNoSelectedOglObjects()
+            else:
+                BeginBusyCursor()
+                wxYield()
+                self.doAction()
+                EndBusyCursor()
 
     @property
     def menuTitle(self) -> str:

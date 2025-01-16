@@ -1,5 +1,6 @@
 
 from typing import Optional
+from typing import cast
 
 from wx import DD_NEW_DIR_BUTTON
 from wx import FD_OPEN
@@ -18,6 +19,8 @@ from wx import FileSelector
 from wx import MessageDialog
 from wx import Yield as wxYield
 
+from pyutplugins.ExternalTypes import FrameInformation
+from pyutplugins.ExternalTypes import OglObjects
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
 
 from pyutplugins.ExternalTypes import OglClasses
@@ -70,6 +73,34 @@ class BasePluginInterface:
         self._version:      str = 'Implementor must provide the version'
         self._inputFormat:  InputFormat  = InputFormat(formatName=UNSPECIFIED_NAME, extension=UNSPECIFIED_EXTENSION, description=UNSPECIFIED_DESCRIPTION)
         self._outputFormat: OutputFormat = OutputFormat(formatName=UNSPECIFIED_NAME, extension=UNSPECIFIED_EXTENSION, description=UNSPECIFIED_DESCRIPTION)
+
+        self._oglObjects:         OglObjects       = cast(OglObjects, None)         # The imported Ogl Objects
+        self._selectedOglObjects: OglObjects       = cast(OglObjects, None)         # The selected Ogl Objects requested by .executeExport()
+        self._frameInformation:   FrameInformation = cast(FrameInformation, None)   # The frame information requested by .executeExport()
+
+        #
+        # Plugins that require an active frame or frame(s) should set this value to `True`
+        # Some output pyutplugins may create their own frame or their own project and frame.  These should set this value to `False`
+        # Plugins should set the value the need in their constructor
+        #
+        self._requireActiveFrame: bool = True
+        #
+        # Some Output plugins may offer the option of exporting only selected objects;  Others may just export
+        # the entire project or the current frame
+        #
+        # Plugins should set the value they need in their constructor
+        self._requireSelection:   bool = True
+        #
+        #
+        # prefs: PyutPreferences = PyutPreferences()
+        # if prefs.pyutIoPluginAutoSelectAll is True:       TODO:  Need plugin preferences
+        #     self._autoSelectAll: bool = True
+
+        #
+        # Some plugins may need to work with all the objects on the UML frame.  Set this
+        # to true to select them all
+        #
+        self._autoSelectAll: bool = False
 
     @property
     def name(self) -> PluginName:

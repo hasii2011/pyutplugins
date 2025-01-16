@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<PyutProject version="11" CodePath="">
+    <PyutDocument type="CLASS_DIAGRAM" title="Alternate" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+        <OglClass width="100" height="100" x="99" y="76">
+            <PyutClass id="3" name="Class0" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="100" height="100" x="307" y="67">
+            <PyutClass id="4" name="Class1" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="100" height="100" x="538" y="54">
+            <PyutClass id="5" name="Class2" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="100" height="100" x="155" y="401">
+            <PyutClass id="6" name="Class3" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="100" height="100" x="530" y="410">
+            <PyutClass id="7" name="Class4" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="100" height="100" x="737" y="253">
+            <PyutClass id="8" name="Class5" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="100" height="100" x="852" y="93">
+            <PyutClass id="9" name="Class6" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="100" height="100" x="946" y="416">
+            <PyutClass id="10" name="Class7" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="100" height="100" x="803" y="423">
+            <PyutClass id="11" name="Class8" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="100" height="100" x="679" y="543">
+            <PyutClass id="12" name="Class9" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglLink sourceAnchorX="205" sourceAnchorY="401" destinationAnchorX="149" destinationAnchorY="175" spline="False">
+            <PyutLink name="PyutObject_00005" type="INHERITANCE" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="6" destinationId="3" />
+        </OglLink>
+        <OglLink sourceAnchorX="406" sourceAnchorY="117" destinationAnchorX="538" destinationAnchorY="104" spline="False">
+            <LabelCenter x="771" y="242" />
+            <LabelSource x="771" y="242" />
+            <LabelDestination x="771" y="242" />
+            <PyutLink name="" type="AGGREGATION" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="4" destinationId="5" />
+        </OglLink>
+        <OglLink sourceAnchorX="357" sourceAnchorY="166" destinationAnchorX="580" destinationAnchorY="410" spline="False">
+            <LabelCenter x="771" y="242" />
+            <LabelSource x="771" y="242" />
+            <LabelDestination x="771" y="242" />
+            <PyutLink name="" type="COMPOSITION" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="4" destinationId="7" />
+        </OglLink>
+        <OglLink sourceAnchorX="307" sourceAnchorY="117" destinationAnchorX="198" destinationAnchorY="126" spline="False">
+            <PyutLink name="PyutObject_00011" type="INHERITANCE" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="4" destinationId="3" />
+        </OglLink>
+        <OglLink sourceAnchorX="588" sourceAnchorY="153" destinationAnchorX="787" destinationAnchorY="253" spline="False">
+            <LabelCenter x="771" y="242" />
+            <LabelSource x="771" y="242" />
+            <LabelDestination x="771" y="242" />
+            <PyutLink name="" type="AGGREGATION" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="5" destinationId="8" />
+        </OglLink>
+        <OglLink sourceAnchorX="852" sourceAnchorY="143" destinationAnchorX="637" destinationAnchorY="104" spline="False">
+            <PyutLink name="PyutObject_00044" type="INHERITANCE" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="9" destinationId="5" />
+        </OglLink>
+        <OglLink sourceAnchorX="729" sourceAnchorY="543" destinationAnchorX="787" destinationAnchorY="352" spline="False">
+            <PyutLink name="PyutObject_00048" type="INHERITANCE" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="12" destinationId="8" />
+        </OglLink>
+        <OglLink sourceAnchorX="853" sourceAnchorY="423" destinationAnchorX="787" destinationAnchorY="352" spline="False">
+            <PyutLink name="PyutObject_00049" type="INHERITANCE" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="11" destinationId="8" />
+        </OglLink>
+        <OglLink sourceAnchorX="946" sourceAnchorY="466" destinationAnchorX="836" destinationAnchorY="303" spline="False">
+            <PyutLink name="PyutObject_00050" type="INHERITANCE" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="10" destinationId="8" />
+        </OglLink>
+    </PyutDocument>
+</PyutProject>

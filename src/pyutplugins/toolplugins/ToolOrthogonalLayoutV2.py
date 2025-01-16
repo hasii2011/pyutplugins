@@ -56,6 +56,8 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
 
         self._menuTitle = 'Orthogonal Layout V2'
 
+        self._requireSelection = True
+
     def setOptions(self) -> bool:
 
         with DlgLayoutSize(None) as dlg:
@@ -64,10 +66,12 @@ class ToolOrthogonalLayoutV2(ToolPluginInterface):
                 self.logger.warning(f'Retrieved data: layoutWidth: {dlgLayoutSize.layoutWidth} layoutHeight: {dlgLayoutSize.layoutHeight}')
                 self._layoutWidth  = dlgLayoutSize.layoutWidth
                 self._layoutHeight = dlgLayoutSize.layoutHeight
+                proceed: bool = True
             else:
-                self.logger.warning(f'Cancelled')
+                self.logger.info(f'Cancelled')
+                proceed = False
 
-        return True
+        return proceed
 
     def doAction(self):
         self._pluginAdapter.getSelectedOglObjects(callback=self._doAction)

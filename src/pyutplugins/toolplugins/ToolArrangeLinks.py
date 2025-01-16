@@ -29,6 +29,8 @@ class ToolArrangeLinks(ToolPluginInterface):
 
         self._menuTitle = 'Arrange links'
 
+        self._requireSelection = False
+
     def setOptions(self) -> bool:
         """
         Prepare for the tool action
@@ -57,5 +59,6 @@ class ToolArrangeLinks(ToolPluginInterface):
                 self.logger.debug(f"No line optimizing for: {oglObject}")
 
         if modified is True:
+            self._pluginAdapter.deselectAllOglObjects()
             self._pluginAdapter.refreshFrame()
             self._pluginAdapter.indicatePluginModifiedProject()
