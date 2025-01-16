@@ -5,12 +5,12 @@ from logging import Logger
 from logging import getLogger
 
 from wx import OK
-from wx import Window
 
 from ogl.OglLink import OglLink
 
 from pyutplugins.ExternalTypes import OglObjects
 from pyutplugins.IPluginAdapter import IPluginAdapter
+from pyutplugins.common.Common import NO_PARENT_WINDOW
 
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 
@@ -25,8 +25,6 @@ from pyutplugins.toolplugins.orthogonalrouting.OrthogonalConnectorAdapter import
 FORMAT_NAME:        FormatName        = FormatName('Orthogonal Configuration')
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('json')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Save Configuration')
-
-NO_PARENT_WINDOW:    Window         = cast(Window, None)
 
 
 class ToolOrthogonalRouting(ToolPluginInterface):

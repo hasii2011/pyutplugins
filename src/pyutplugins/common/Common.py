@@ -1,4 +1,6 @@
 
+from typing import cast
+
 from pathlib import Path
 
 from wx import BITMAP_TYPE_PNG
@@ -7,11 +9,14 @@ from wx import ClientDC
 from wx import Image
 from wx import MemoryDC
 from wx import NullBitmap
+from wx import Window
 
 # noinspection PyProtectedMember
 from wx._core import BitmapType
 
 from pyutplugins.ExternalTypes import FrameInformation
+
+NO_PARENT_WINDOW:    Window         = cast(Window, None)
 
 
 def createScreenImageFile(frameInformation: FrameInformation, imagePath: Path) -> bool:
