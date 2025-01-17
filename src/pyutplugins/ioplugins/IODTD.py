@@ -20,7 +20,7 @@ from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
 from pyutplugins.ioplugins.dtd.DTDParser import DTDParser
 
-FORMAT_NAME:        FormatName        = FormatName("DTD")
+FORMAT_NAME:        FormatName        = FormatName('DTD')
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('dtd')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('W3C DTD 1.0 file format')
 
@@ -32,7 +32,7 @@ class IODTD(IOPluginInterface):
 
         # from super class
         self._name    = PluginName('IoDTD')
-        self._author  = "C.Dutoit <dutoitc@hotmail.com>"
+        self._author  = 'C.Dutoit <dutoitc@hotmail.com>'
         self._version = '1.0'
         self._inputFormat  = InputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
         self._outputFormat = cast(OutputFormat, None)

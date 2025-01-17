@@ -63,7 +63,7 @@ class DTDParser(LinkMakerMixin):
         # noinspection SpellCheckingInspection
         """
         Due to limitations in the Expat library used by pyexpat, the xmlparser instance returned can
-        only be used to parse a single XML document.Call ParserCreate for each document to provide unique
+        only be used to parse a single XML document.  Call ParserCreate for each document to provide unique
         parser instances.
         """
         self._dtdParser: XMLParserType = ParserCreate()
