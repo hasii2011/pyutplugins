@@ -4,37 +4,37 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from pathlib import Path
+
 from wx import MessageBox
 # noinspection PyProtectedMember
 from wx._core import BitmapType
 
-from wx import Bitmap
-from wx import ClientDC
-from wx import Image
-from wx import MemoryDC
-from wx import NullBitmap
 from wx import OK
+
+from pyutplugins.common.Common import createScreenImageFile
 
 from pyutplugins.plugintypes.PluginDataTypes import FormatName
 from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
 from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
 from pyutplugins.plugintypes.PluginDataTypes import PluginName
+from pyutplugins.plugintypes.InputFormat import InputFormat
+from pyutplugins.plugintypes.OutputFormat import OutputFormat
 
 from pyutplugins.ExternalTypes import FrameInformation
 from pyutplugins.ExternalTypes import OglObjects
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
+
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
-from pyutplugins.plugintypes.InputFormat import InputFormat
-from pyutplugins.plugintypes.OutputFormat import OutputFormat
 
 from pyutplugins.ioplugins.wximage.DlgWxImageOptions import DlgWxImageOptions
 from pyutplugins.ioplugins.wximage.WxImageFormat import WxImageFormat
 
 FORMAT_NAME:        FormatName        = FormatName('Wx Image')
 PLUGIN_EXTENSION:   PluginExtension   = PluginExtension('png')
-PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('png, bmp, gif, or jpg')
+PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('png, bmp, tiff, or jpg')
 
 
 class IOWxImage(IOPluginInterface):
@@ -43,7 +43,7 @@ class IOWxImage(IOPluginInterface):
         """
 
         Args:
-            pluginAdapter:   A class that implements IMediator
+            pluginAdapter:  A class that implements IPluginAdapter
         """
         super().__init__(pluginAdapter=pluginAdapter)
 
@@ -51,7 +51,7 @@ class IOWxImage(IOPluginInterface):
 
         self._name    = PluginName('Wx Image')
         self._author  = 'Humberto A. Sanchez II'
-        self._version = '0.9c'
+        self._version = '0.90'
 
         self._inputFormat  = cast(InputFormat, None)
         self._outputFormat = OutputFormat(formatName=FORMAT_NAME, extension=PLUGIN_EXTENSION, description=PLUGIN_DESCRIPTION)
@@ -97,24 +97,13 @@ class IOWxImage(IOPluginInterface):
         frameInformation: FrameInformation = self._frameInformation
         pluginAdapter.deselectAllOglObjects()
 
-        imageType: BitmapType     = WxImageFormat.toWxBitMapType(self._imageFormat)
+        imageType: BitmapType = WxImageFormat.toWxBitMapType(self._imageFormat)
+        extension: str        = self._imageFormat.__str__()
+        filename:  str        = f'{self._outputFileName}.{extension}'
 
-        context:   ClientDC       = frameInformation.clientDC
-        memory:    MemoryDC       = MemoryDC()
-
-        x: int = frameInformation.frameSize.width
-        y: int = frameInformation.frameSize.height
-        emptyBitmap: Bitmap = Bitmap(x, y, -1)
-
-        memory.SelectObject(emptyBitmap)
-        memory.Blit(source=context, xsrc=0, height=y, xdest=0, ydest=0, ysrc=0, width=x)
-        memory.SelectObject(NullBitmap)
-
-        img:       Image = emptyBitmap.ConvertToImage()
-        extension: str   = self._imageFormat.__str__()
-
-        filename: str   = f'{self._outputFileName}.{extension}'
-        status:   bool  = img.SaveFile(filename, imageType)
+        status: bool = createScreenImageFile(frameInformation=frameInformation,
+                                             imagePath=Path(filename),
+                                             imageType=imageType)
         if status is False:
             msg: str = f'Error on image write to {filename}'
             self.logger.error(msg)

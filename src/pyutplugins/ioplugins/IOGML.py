@@ -20,8 +20,8 @@ from pyutplugins.ExternalTypes import OglObjects
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 
-FORMAT_NAME:        FormatName = FormatName('GML')
-PLUGIN_EXTENSION:   PluginExtension = PluginExtension('gml')
+FORMAT_NAME:        FormatName         = FormatName('GML')
+PLUGIN_EXTENSION:   PluginExtension    = PluginExtension('gml')
 PLUGIN_DESCRIPTION: PluginDescription = PluginDescription('Graph Modeling Language - Portable Format for Graphs')
 
 

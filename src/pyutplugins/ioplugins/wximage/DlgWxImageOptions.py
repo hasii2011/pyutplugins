@@ -134,6 +134,8 @@ class DlgWxImageOptions(BaseEditDialog):
         sizedPanel.SetSizerType('horizontal')
 
         self._fileSelectBtn = Button(sizedPanel, label="&Select",)
+        self._fileSelectBtn.SetSizerProps(valign='center')
+
         self._selectedFile  = TextCtrl(sizedPanel, value=currentFile, style=TE_READONLY)
 
         self._selectedFile.SetToolTip(currentFile)

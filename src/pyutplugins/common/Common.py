@@ -19,18 +19,18 @@ from pyutplugins.ExternalTypes import FrameInformation
 NO_PARENT_WINDOW:    Window         = cast(Window, None)
 
 
-def createScreenImageFile(frameInformation: FrameInformation, imagePath: Path) -> bool:
+def createScreenImageFile(frameInformation: FrameInformation, imagePath: Path, imageType: BitmapType = BITMAP_TYPE_PNG) -> bool:
     """
     Create a screen image file
     Args:
         frameInformation:   Plugin frame information
         imagePath:          Where to write the image file to
+        imageType:          Defaults to png
 
     Returns: 'True' for a successful creation else 'False'
 
     """
 
-    imageType: BitmapType = BITMAP_TYPE_PNG
     context:   ClientDC   = frameInformation.clientDC
     memory:    MemoryDC   = MemoryDC()
 
