@@ -10,11 +10,12 @@
 # Introduction
 This module houses the plugins that enhance the capabilities of [Pyut](https://github.com/hasii2011/pyut).  This separate module allows external developers to write plugins external to Pyut.  This module includes a "Scaffold Application" that allows developers to test drive their plugins prior to integrating them into Pyut.
 
-# Overview
+# Plugin Development
 
-**TBD**
+See the following [document](https://github.com/hasii2011/pyutplugins/wiki/Pyut-Plugin-Development) for additional details on how to develop Pyut plugins
 
 ## Developer Notes
+
 This project uses [buildlackey](https://github.com/hasii2011/buildlackey) for day to day development builds
 
 Also notice that this project does not include a `requirements.txt` file.  All dependencies are listed in the `pyproject.toml` file.
@@ -53,12 +54,8 @@ I urge you to read about the
 [Give up GitHub](https://GiveUpGitHub.org) campaign from
 [the Software Freedom Conservancy](https://sfconservancy.org).
 
-While I do not advocate for all the issues listed there I do not like that
-a company like Microsoft may profit from open source projects.
+While I do not advocate for all the issues listed there I do not like that a company like Microsoft may profit from open source projects.
 
-I continue to use GitHub because it offers the services I need for free.  But, I continue
-to monitor their terms of service.
+I continue to use GitHub because it offers the services I need for free.  But, I continue to monitor their terms of service.
 
-Any use of this project's code by GitHub Copilot, past or present, is done
-without my permission.  I do not consent to GitHub's use of this project's
-code in Copilot.
+Any use of this project's code by GitHub Copilot, past or present, is done without my permission.  I do not consent to GitHub's use of this project's code in Copilot.
