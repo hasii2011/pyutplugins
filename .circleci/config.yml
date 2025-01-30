@@ -35,11 +35,11 @@ jobs:
             pip install wxPython
             pip install antlr4-python3-runtime==4.13.1
             pip install networkx==3.0
-            pip install codeallybasic==1.8.5
+            pip install codeallybasic==1.9.0
             pip install codeallyadvanced==1.3.3
-            pip install pyutmodelv2==2.2.2
-            pip install ogl==3.6.2
-            pip install oglio==2.3.4
+            pip install pyutmodelv2==2.2.3
+            pip install ogl==3.6.7
+            pip install oglio==2.3.5
             pip install buildlackey~=1.7.0
             pip install orthogonal==1.3.1
             pip install pyimage2pdf==1.0.3
