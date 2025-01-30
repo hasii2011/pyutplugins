@@ -64,9 +64,6 @@ class PluginPreferencesPage(SizedPanel):
         self.logger: Logger = getLogger(__name__)
 
         super().__init__(parent)
-        self.SetSizerType('vertical')
-        # noinspection PyUnresolvedReferences
-        self.SetSizerProps(expand=True, proportion=1)
 
         self._preferences: PluginPreferences = PluginPreferences()
         self._imageFileNameWxId: int = wxNewIdRef()
