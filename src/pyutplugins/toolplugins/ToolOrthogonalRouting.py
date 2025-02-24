@@ -21,7 +21,7 @@ from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
 from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
 from pyutplugins.plugintypes.PluginDataTypes import PluginName
 
-from pyutplugins.toolplugins.orthogonalrouting.DlgConfiguration import DlgConfiguration
+from pyutplugins.toolplugins.orthogonalrouting.DlgOrthoRoutingConfig import DlgOrthoRoutingConfig
 from pyutplugins.toolplugins.orthogonalrouting.OrthogonalConnectorAdapter import OrthogonalConnectorAdapter
 
 FORMAT_NAME:        FormatName        = FormatName('Orthogonal Configuration')
@@ -44,7 +44,7 @@ class ToolOrthogonalRouting(ToolPluginInterface):
         self._menuTitle = 'Orthogonal Routing'
 
     def setOptions(self) -> bool:
-        with DlgConfiguration(NO_PARENT_WINDOW, pluginAdapter=self._pluginAdapter) as dlg:
+        with DlgOrthoRoutingConfig(NO_PARENT_WINDOW, pluginAdapter=self._pluginAdapter) as dlg:
             if dlg.ShowModal() == OK:
                 return True
             else:

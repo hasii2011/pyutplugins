@@ -58,7 +58,7 @@ GlobalBoundsControls = NewType('GlobalBoundsControls', List[GlobalBoundsControl]
 NO_SPIN_CTRL: SpinCtrl = cast(SpinCtrl, None)
 
 
-class DlgConfiguration(SizedDialog):
+class DlgOrthoRoutingConfig(SizedDialog):
 
     def __init__(self, parent: Window, pluginAdapter: IPluginAdapter):
 
