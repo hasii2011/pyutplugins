@@ -66,7 +66,7 @@ class DlgConfiguration(SizedDialog):
         self._configuration: Configuration  = cast(Configuration, None)
 
         style:   int  = DEFAULT_DIALOG_STYLE | RESIZE_BORDER
-        dlgSize: Size = Size(475, 350)
+        dlgSize: Size = Size(475, 400)
 
         super().__init__(parent, title='Orthogonal Connector Routing Configuration', size=dlgSize, style=style)
         self.logger: Logger = getLogger(__name__)

@@ -432,7 +432,6 @@ class ScaffoldUI:
         bounds:   ObjectBoundaries       = cast(ObjectBoundaries, self._currentFrame.objectBoundaries)
         callback: ObjectBoundaryCallback = event.callback
 
-        # objectBoundaries: ObjectBoundaries = ObjectBoundaries(minX=bounds.minX, minY=bounds.minY, maxX=bounds.maxX, maxY=bounds.maxY)
         callback(bounds)
 
     def _onRequestCurrentProject(self, event: RequestCurrentProjectEvent):
@@ -503,7 +502,7 @@ class ScaffoldUI:
             # for document in project.getDocuments():
             for document in project.documents:
                 diagramTitle: str = document.title
-                # shortName:    str = self.__shortenNotebookPageFileName(diagramTitle)
+
                 shortName:    str = diagramTitle
                 self._notebook.AddPage(page=document.diagramFrame, text=shortName)
 
@@ -512,7 +511,7 @@ class ScaffoldUI:
 
             self._updateTreeNotebookIfPossible(project=project)
         except (ValueError, Exception) as e:
-            # PyutUtils.displayError(_(f"An error occurred while adding the project to the notebook {e}"))
+
             booBoo: MessageDialog = MessageDialog(parent=None, caption='Try Again!',
                                                   message=f'An error occurred while adding the project to the notebook {e}',
                                                   style=OK | ICON_ERROR)

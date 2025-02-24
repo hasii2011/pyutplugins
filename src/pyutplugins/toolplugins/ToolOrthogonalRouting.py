@@ -4,6 +4,8 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from wx import ICON_ERROR
+from wx import MessageDialog
 from wx import OK
 
 from ogl.OglLink import OglLink
@@ -62,7 +64,11 @@ class ToolOrthogonalRouting(ToolPluginInterface):
             if isinstance(el, OglLink):
                 try:
                     oglLink = cast(OglLink, el)
-                    adapter.runConnector(oglLink=oglLink)
+                    success: bool = adapter.runConnector(oglLink=oglLink)
+                    if success is False:
+                        message: str = f'Could not find an orthogonal route for link: {oglLink}'
+                        booBoo: MessageDialog = MessageDialog(parent=None, message=message, caption='Fail', style=OK | ICON_ERROR)
+                        booBoo.ShowModal()
 
                 except (AttributeError, TypeError) as e:
                     self.logger.error(f'{e} - {oglLink=}')

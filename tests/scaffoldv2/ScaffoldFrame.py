@@ -196,7 +196,7 @@ class ScaffoldFrame(Frame):
 
         return self._makeIOSubMenu(pluginMap=pluginMap)
 
-    def _makeIOSubMenu(self, pluginMap: Union[InputPluginMap, OutputPluginMap]) -> Menu:
+    def _makeIOSubMenu(self, pluginMap: Union[InputPluginMap, OutputPluginMap]) -> Menu | None:
 
         subMenu: Menu = Menu()
 

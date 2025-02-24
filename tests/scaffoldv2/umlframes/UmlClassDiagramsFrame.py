@@ -1,3 +1,6 @@
+
+from wx import PaintEvent
+
 from ogl.events.OglEventEngine import OglEventEngine
 
 from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
@@ -17,8 +20,6 @@ class UmlClassDiagramsFrame(UmlDiagramsFrame):
     UmlClassDiagramsFrame : a UML class diagram frame.
 
     This class is the instance of one UML class diagram structure.
-    It derives its functionality from UmlDiagramsFrame, but
-    it knows the structure of a class diagram and it can load class diagram data.
     """
     def __init__(self, parent):
         """
@@ -29,7 +30,7 @@ class UmlClassDiagramsFrame(UmlDiagramsFrame):
         UmlClassDiagramsFrame.cdfDebugId += 1
 
         super().__init__(parent)
-        self.clearDiagram()     # Used to be .newDiagram
+        self.clearDiagram()
 
         self._oglEventEngine: OglEventEngine = OglEventEngine(listeningWindow=self)
 
@@ -45,3 +46,6 @@ class UmlClassDiagramsFrame(UmlDiagramsFrame):
     @property
     def eventEngine(self) -> OglEventEngine:
         return self._oglEventEngine
+
+    def OnPaint(self, event: PaintEvent):
+        super().OnPaint(event=event)

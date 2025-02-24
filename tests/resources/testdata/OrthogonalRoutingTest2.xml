@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<PyutProject version="11" CodePath="">
+    <PyutDocument type="CLASS_DIAGRAM" title="Class Diagram" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+        <OglClass width="150" height="75" x="150" y="150">
+            <PyutClass id="62" name="ClassName3" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglClass width="150" height="75" x="500" y="375">
+            <PyutClass id="63" name="ClassName4" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="" />
+        </OglClass>
+        <OglLink sourceAnchorX="255" sourceAnchorY="224" destinationAnchorX="566" destinationAnchorY="449" spline="False">
+            <LabelCenter x="0" y="0" />
+            <LabelSource x="-100" y="-112" />
+            <LabelDestination x="90" y="94" />
+            <PyutLink name="Composition-64" type="COMPOSITION" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="62" destinationId="63" />
+        </OglLink>
+    </PyutDocument>
+</PyutProject>

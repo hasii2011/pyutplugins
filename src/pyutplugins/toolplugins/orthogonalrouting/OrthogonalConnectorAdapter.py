@@ -14,6 +14,8 @@ from ogl.OglObject import OglObject
 from ogl.OglPosition import OglPosition
 from ogl.OglPosition import OglPositions
 
+from pyorthogonalrouting.OrthogonalConnectorByProduct import OrthogonalConnectorByProduct
+
 from pyorthogonalrouting.Point import Point
 from pyorthogonalrouting.Point import Points
 from pyorthogonalrouting.Rect import Rect
@@ -45,6 +47,13 @@ class OrthogonalConnectorAdapter:
         self._pluginAdapter: IPluginAdapter = pluginAdapter
         self._configuration: Configuration  = Configuration()
 
+        self._byProducts:   OrthogonalConnectorByProduct = cast(OrthogonalConnectorByProduct, None)
+
+    @property
+    def referencePoints(self) -> Points:
+        return self._byProducts.spots
+
+    # noinspection PyTypeChecker
     @classmethod
     def whichConnectorSide(cls, shape: OglObject, anchorPosition: Position) -> Side:
 
@@ -68,7 +77,14 @@ class OrthogonalConnectorAdapter:
 
         return side
 
-    def runConnector(self, oglLink: OglLink):
+    def runConnector(self, oglLink: OglLink) -> bool:
+        """
+
+        Args:
+            oglLink:
+
+        Returns:  `True` the algorithm found a route, else `False`
+        """
 
         sourceSide, destinationSide = self._determineAttachmentSide(oglLink=oglLink)
 
@@ -90,8 +106,12 @@ class OrthogonalConnectorAdapter:
 
         self.logger.info(f'{path}')
 
-        self._deleteTheOldLink(oglLink=oglLink)
-        self._createOrthogonalLink(oldLink=oglLink, path=path)
+        if len(path) == 0:
+            return False
+        else:
+            self._deleteTheOldLink(oglLink=oglLink)
+            self._createOrthogonalLink(oldLink=oglLink, path=path)
+            return True
 
     def _shapeToRect(self, oglObject: OglObject) -> Rect:
 
