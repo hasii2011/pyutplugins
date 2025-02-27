@@ -24,7 +24,7 @@ from tests.scaffoldv2.eventengine.Events import EventType
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 
 
-class PluginAdapterV2(IPluginAdapter):
+class PluginAdapter(IPluginAdapter):
     """
 
     """

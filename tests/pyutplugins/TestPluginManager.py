@@ -10,7 +10,7 @@ from pyutplugins.PluginManager import PluginManager
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
-from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
+from tests.scaffoldv2.PluginAdapter import PluginAdapter
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
 
@@ -26,7 +26,7 @@ class TestPluginManager(ProjectTestBase):
         super().setUp()
 
         eventEngine:   IEventEngine   = EventEngine(listeningWindow=cast(Window, None))       # don't use these in these tests
-        pluginAdapter: IPluginAdapter = PluginAdapterV2(eventEngine=eventEngine)
+        pluginAdapter: IPluginAdapter = PluginAdapter(eventEngine=eventEngine)
 
         self.pluginManager: PluginManager = PluginManager(pluginAdapter=pluginAdapter)
 

@@ -50,7 +50,7 @@ from pyutplugins.plugintypes.PluginDataTypes import PluginMapType
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 
-from tests.scaffoldv2.PluginAdapterV2 import PluginAdapterV2
+from tests.scaffoldv2.PluginAdapter import PluginAdapter
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
 from tests.scaffoldv2.ScaffoldPreferencesDialog import ScaffoldPreferencesDialog
 from tests.scaffoldv2.ScaffoldUI import ScaffoldUI
@@ -85,7 +85,7 @@ class ScaffoldFrame(Frame):
 
         self._scaffoldUI.eventEngine = self._eventEngine
 
-        self._pluginAdapter: PluginAdapterV2 = PluginAdapterV2(eventEngine=self._eventEngine)
+        self._pluginAdapter: PluginAdapter = PluginAdapter(eventEngine=self._eventEngine)
         #
         # The plugin manager needs this to allow the pyutplugins to send us messages
         #
