@@ -3,6 +3,7 @@ from typing import Callable
 from typing import Dict
 from typing import List
 from typing import NewType
+from typing import Tuple
 from typing import Union
 from typing import cast
 
@@ -196,6 +197,7 @@ class PluginDocumentType(Enum):
     USECASE_DIAGRAM  = 'USECASE_DIAGRAM'
     UNKNOWN_DIAGRAM  = 'UNKNOWN_DIAGRAM'
 
+    # noinspection PyTypeChecker
     @classmethod
     def toEnum(cls, enumStr: str) -> 'PluginDocumentType':
 
@@ -276,3 +278,39 @@ class PluginProject:
 
 
 CurrentProjectCallback     = Callable[[PluginProject], None]
+
+
+@dataclass(eq=True)
+class Point:
+    """
+    A point in space.
+    """
+    x: int = NO_INTEGER
+    y: int = NO_INTEGER
+
+    def toTuple(self) -> Tuple[int, int]:
+        return self.x, self.y
+
+    def __hash__(self) -> int:
+        return hash((self.x, self.y))
+
+
+@dataclass
+class Rectangle:
+    left:   int = 0
+    top:    int = 0
+    width:  int = 0
+    height: int = 0
+
+
+IntegerList = NewType('IntegerList', List[int])
+Points      = NewType('Points',      List[Point])
+
+
+@dataclass
+class DiagnosticInformation:
+
+    # hRulers:     IntegerList
+    # vRulers:     IntegerList
+    # routeGrid:   Rectangle
+    spots:       Points

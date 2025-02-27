@@ -60,6 +60,7 @@ from pyutplugins.ExternalTypes import PluginDocument
 from pyutplugins.ExternalTypes import PluginDocumentTitle
 from pyutplugins.ExternalTypes import PluginDocumentType
 from pyutplugins.ExternalTypes import PluginProject
+from pyutplugins.ExternalTypes import Points
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
@@ -69,6 +70,8 @@ from tests.scaffoldv2.PyutProject import UmlFrameType
 
 from tests.scaffoldv2.eventengine.EventEngine import EventEngine
 from tests.scaffoldv2.eventengine.Events import AddShapeEvent
+from tests.scaffoldv2.eventengine.Events import DrawOrthogonalRoutingPointsEvent
+from tests.scaffoldv2.eventengine.Events import EVENT_DRAW_ORTHOGONAL_ROUTING_POINTS
 from tests.scaffoldv2.eventengine.Events import EVENT_GET_OBJECT_BOUNDARIES
 from tests.scaffoldv2.eventengine.Events import EVENT_LOAD_OGL_PROJECT
 from tests.scaffoldv2.eventengine.Events import EVENT_REQUEST_CURRENT_PROJECT
@@ -185,11 +188,39 @@ class ScaffoldUI:
 
         self._eventEngine.registerListener(EVENT_REQUEST_CURRENT_PROJECT, self._onRequestCurrentProject)
 
+        self._eventEngine.registerListener(EVENT_DRAW_ORTHOGONAL_ROUTING_POINTS, self._onDrawRoutingPoints)
+
     # noinspection PyTypeChecker
     eventEngine = property(fget=None, fset=_setEventEngine)
 
     def createEmptyProject(self):
         self._onNewProject(cast(NewProjectEvent, None))
+
+    def _onDrawRoutingPoints(self, event: DrawOrthogonalRoutingPointsEvent):
+
+        from wx import Point as WxPoint
+        from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import Points as WxPythonPoints
+
+        def toWxPythonPoints(pts: Points):
+            wxPythonPoints: WxPythonPoints = WxPythonPoints([])
+
+            for pt in pts:
+                wxPoint: WxPoint = WxPoint(x=pt.x, y=pt.y)
+                wxPythonPoints.append(wxPoint)
+
+            return wxPythonPoints
+
+        points: Points = event.points
+
+        self.logger.info(f'{self._currentFrame=}')
+        if isinstance(self._currentFrame, UmlClassDiagramsFrame):
+            umlClassDiagramsFrame: UmlClassDiagramsFrame = cast(UmlClassDiagramsFrame, self._currentFrame)
+            if event.show is True:
+                umlClassDiagramsFrame.referencePoints     = toWxPythonPoints(pts=points)
+                umlClassDiagramsFrame.showReferencePoints = True
+            else:
+                umlClassDiagramsFrame.showReferencePoints = False
+                umlClassDiagramsFrame.referencePoints     = cast(WxPythonPoints, None)
 
     def _onProjectTreeSelectionChanged(self, event: TreeEvent):
         """
@@ -394,7 +425,7 @@ class ScaffoldUI:
             frameInformation.frameActive = False
         else:
             frameInformation.frameActive = True
-            frameInformation.clientDC          = ClientDC(self._currentFrame)
+            frameInformation.clientDC           = ClientDC(self._currentFrame)
             frameInformation.selectedOglObjects = self._currentFrame.selectedShapes
 
             treeItemId: TreeItemId = self._projectTree.GetFocusedItem()

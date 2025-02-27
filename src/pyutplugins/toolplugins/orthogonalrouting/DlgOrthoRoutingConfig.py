@@ -14,6 +14,7 @@ from wx import CommandEvent
 from wx import DEFAULT_DIALOG_STYLE
 from wx import EVT_BUTTON
 from wx import EVT_CLOSE
+from wx import EVT_SPINCTRL
 from wx import EVT_SPINCTRLDOUBLE
 from wx import ID_ANY
 from wx import ID_CANCEL
@@ -27,6 +28,8 @@ from wx import SpinDoubleEvent
 from wx import StaticText
 from wx import StdDialogButtonSizer
 from wx import Window
+
+from wx import NewIdRef as wxNewIdRef
 
 from wx.lib.sized_controls import SizedDialog
 from wx.lib.sized_controls import SizedPanel
@@ -48,6 +51,7 @@ class GlobalBoundsControl:
     value:        int
     minValue:     int
     maxValue:     int
+    id:           int
 
 
 MIN_GLOBAL_BOUND: int = 0
@@ -70,6 +74,11 @@ class DlgOrthoRoutingConfig(SizedDialog):
 
         super().__init__(parent, title='Orthogonal Connector Routing Configuration', size=dlgSize, style=style)
         self.logger: Logger = getLogger(__name__)
+
+        self._leftId:   int = wxNewIdRef()
+        self._topId:    int = wxNewIdRef()
+        self._widthId:  int = wxNewIdRef()
+        self._heightId: int = wxNewIdRef()
 
         self._left:   SpinCtrl = NO_SPIN_CTRL
         self._top:    SpinCtrl = NO_SPIN_CTRL
@@ -185,10 +194,10 @@ class DlgOrthoRoutingConfig(SizedDialog):
 
         globalBoundsControls: GlobalBoundsControls = GlobalBoundsControls(
             [
-                GlobalBoundsControl('Left:',    self._left,   configuration.globalBounds.left,   MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND),
-                GlobalBoundsControl('Top: ',    self._top,    configuration.globalBounds.top,    MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND),
-                GlobalBoundsControl('Width:',   self._width,  configuration.globalBounds.width,  MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND),
-                GlobalBoundsControl('Height: ', self._height, configuration.globalBounds.height, MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND),
+                GlobalBoundsControl('Left:',    self._left,   configuration.globalBounds.left,   MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND, id=self._leftId),
+                GlobalBoundsControl('Top: ',    self._top,    configuration.globalBounds.top,    MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND, id=self._topId),
+                GlobalBoundsControl('Width:',   self._width,  configuration.globalBounds.width,  MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND, id=self._widthId),
+                GlobalBoundsControl('Height: ', self._height, configuration.globalBounds.height, MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND, id=self._heightId),
             ]
         )
 
@@ -203,10 +212,13 @@ class DlgOrthoRoutingConfig(SizedDialog):
         for c in globalBoundsControls:
             control: GlobalBoundsControl = cast(GlobalBoundsControl, c)
             StaticText(parent=localPanel, label=control.label)
-            control.spinCtrl = SpinCtrl(localPanel, id=ID_ANY, size=(25, -1))
+
+            control.spinCtrl = SpinCtrl(localPanel, id=control.id, size=(25, -1))
             control.spinCtrl.SetRange(MIN_GLOBAL_BOUND, MAX_GLOBAL_BOUND)
             control.spinCtrl.SetValue(control.value)
             control.spinCtrl.SetSizerProps(expand=True)
+
+            self.Bind(EVT_SPINCTRL, handler=self._onGlobalBoundChanged, source=control.spinCtrl)
 
     # noinspection PyUnusedLocal
     def _onOk(self, event: CommandEvent):
@@ -225,6 +237,24 @@ class DlgOrthoRoutingConfig(SizedDialog):
 
     def _globalBoundsMarginChanged(self, event: CommandEvent):
         self._configuration.globalBoundsMargin = event.GetInt()
+
+    def _onGlobalBoundChanged(self, event: CommandEvent):
+
+        bounds:   Rect = self._configuration.globalBounds
+        newValue: int  = event.GetInt()
+        match event.GetId():
+            case self._leftId:
+                bounds.left = newValue
+            case self._topId:
+                bounds.top = newValue
+            case self._widthId:
+                bounds.width = newValue
+            case self._heightId:
+                bounds.height = newValue
+            case _:
+                self.logger.error(f'Unknown control id')
+
+        self._configuration.globalBounds = bounds
 
     def _onSourceEdgeDistancedChanged(self, event: SpinDoubleEvent):
 

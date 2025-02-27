@@ -67,6 +67,7 @@ SECTION_DEBUG: ValueDescriptions = ValueDescriptions(
 
 SECTION_FEATURES: ValueDescriptions = ValueDescriptions(
     {
+        KeyName('diagnoseOrthogonalRouter'): ValueDescription(defaultValue='True', deserializer=SecureConversions.secureBoolean),
     }
 )
 

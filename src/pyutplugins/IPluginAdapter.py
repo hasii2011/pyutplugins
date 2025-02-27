@@ -15,6 +15,7 @@ from pyutplugins.ExternalTypes import FrameInformationCallback
 from pyutplugins.ExternalTypes import FrameSizeCallback
 from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
+from pyutplugins.ExternalTypes import Points
 
 
 @dataclass
@@ -30,7 +31,7 @@ class IPluginAdapter(ABC):
     """
     This the interface specification that allows the pyutplugins to manipulate the Pyut UML Frame
     The Pyut application must implement this and override the appropriate methods and/or
-    set appropriate protected variables after call this class
+    set appropriate protected variables after calling the class
     constructor
 
     """
@@ -153,4 +154,8 @@ class IPluginAdapter(ABC):
 
     @abstractmethod
     def createLink(self, linkInformation: LinkInformation, callback: CreatedLinkCallback):
+        pass
+
+    @abstractmethod
+    def showOrthogonalRoutingPoints(self, show: bool, spots: Points):
         pass

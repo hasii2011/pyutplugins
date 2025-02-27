@@ -9,6 +9,7 @@ from ogl.OglLink import OglLink
 from pyutplugins.ExternalTypes import CreatedLinkCallback
 from pyutplugins.ExternalTypes import LinkInformation
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
+from pyutplugins.ExternalTypes import Points
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.IPluginAdapter import ScreenMetrics
 
@@ -107,3 +108,16 @@ class PluginAdapterV2(IPluginAdapter):
 
     def createLink(self, linkInformation: LinkInformation, callback: CreatedLinkCallback):
         self._eventEngine.sendEvent(EventType.CreateLink, linkInformation=linkInformation, callback=callback)
+
+    def showOrthogonalRoutingPoints(self, show: bool, spots: Points):
+        """
+        This is currently only a debug entry point.  I am not
+        sure if I should keep this.  I am going to go fast and break
+        things and correct them later.  Go DOGE
+
+        Args:
+            show:   Show or not
+            spots:  What the Orthogonal Line router calls these (only valid whe
+            `show` is True
+        """
+        self._eventEngine.sendEvent(EventType.DrawOrthogonalRoutingPointsEvent, show=show, points=spots)

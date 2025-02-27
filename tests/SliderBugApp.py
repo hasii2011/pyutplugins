@@ -39,6 +39,8 @@ class SliderBugApp(App):
         return True
 
 
-testApp = SliderBugApp()
+if __name__ == '__main__':
 
-testApp.MainLoop()
+    testApp = SliderBugApp()
+
+    testApp.MainLoop()

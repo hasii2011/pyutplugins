@@ -21,6 +21,9 @@ from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
 from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
 from pyutplugins.plugintypes.PluginDataTypes import PluginName
 
+from pyutplugins.toolplugins.orthogonalrouting.DlgDiagnoseLayout import DiagnosticInformation
+from pyutplugins.toolplugins.orthogonalrouting.DlgDiagnoseLayout import DlgDiagnoseLayout
+
 from pyutplugins.toolplugins.orthogonalrouting.DlgOrthoRoutingConfig import DlgOrthoRoutingConfig
 from pyutplugins.toolplugins.orthogonalrouting.OrthogonalConnectorAdapter import OrthogonalConnectorAdapter
 
@@ -69,6 +72,40 @@ class ToolOrthogonalRouting(ToolPluginInterface):
                         message: str = f'Could not find an orthogonal route for link: {oglLink}'
                         booBoo: MessageDialog = MessageDialog(parent=None, message=message, caption='Fail', style=OK | ICON_ERROR)
                         booBoo.ShowModal()
+                        if self._pluginPreferences.diagnoseOrthogonalRouter is True:
+
+                            dlg: DlgDiagnoseLayout     = DlgDiagnoseLayout(parent=None)
+                            dlg.pluginAdapter         = self._pluginAdapter
+                            dlg.diagnosticInformation = self._getDiagnosticInformation(adapter=adapter)
+                            dlg.Show(True)
+                            # with dlg:
+                            #     if dlg.ShowModal() == OK:
+                            #         self.logger.info('Ok')
 
                 except (AttributeError, TypeError) as e:
                     self.logger.error(f'{e} - {oglLink=}')
+
+    def _getDiagnosticInformation(self, adapter: OrthogonalConnectorAdapter) -> DiagnosticInformation:
+
+        from pyorthogonalrouting.Point import Point
+        from pyorthogonalrouting.Point import Points
+
+        from pyutplugins.ExternalTypes import Point as DiagnosticPoint
+        from pyutplugins.ExternalTypes import Points as DiagnosticPoints
+
+        referencePoints:  Points           = adapter.referencePoints
+        diagnosticPoints: DiagnosticPoints = DiagnosticPoints([])
+
+        for pt in referencePoints:
+
+            point: Point = cast(Point, pt)
+            self.logger.info(f'{point=}')
+
+            diagnosticPoint: DiagnosticPoint = DiagnosticPoint(x=point.x, y=point.y)
+            diagnosticPoints.append(diagnosticPoint)
+
+        diagnosticInformation: DiagnosticInformation = DiagnosticInformation(
+            spots=diagnosticPoints
+        )
+
+        return diagnosticInformation

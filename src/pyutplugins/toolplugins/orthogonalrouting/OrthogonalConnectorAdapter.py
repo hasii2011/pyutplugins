@@ -102,7 +102,9 @@ class OrthogonalConnectorAdapter:
         options.globalBoundsMargin = self._configuration.globalBoundsMargin
         options.globalBounds       = self._configuration.globalBounds
 
-        path: Points    = OrthogonalConnector.route(options=options)
+        path: Points     = OrthogonalConnector.route(options=options)
+
+        self._byProducts = OrthogonalConnector.byProduct
 
         self.logger.info(f'{path}')
 

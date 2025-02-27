@@ -18,6 +18,7 @@ from pyutplugins.ExternalTypes import CurrentProjectCallback
 from pyutplugins.ExternalTypes import LinkInformation
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import PluginProject
+from pyutplugins.ExternalTypes import Points
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
 from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
@@ -25,6 +26,7 @@ from tests.scaffoldv2.eventengine.Events import AddShapeEvent
 from tests.scaffoldv2.eventengine.Events import CreateLinkEvent
 from tests.scaffoldv2.eventengine.Events import DeSelectAllShapesEvent
 from tests.scaffoldv2.eventengine.Events import DeleteLinkEvent
+from tests.scaffoldv2.eventengine.Events import DrawOrthogonalRoutingPointsEvent
 
 from tests.scaffoldv2.eventengine.Events import EventType
 from tests.scaffoldv2.eventengine.Events import FrameInformationEvent
@@ -55,6 +57,8 @@ PATH_PARAMETER:              str = 'path'
 SOURCE_SHAPE_PARAMETER:      str = 'sourceShape'
 DESTINATION_SHAPE_PARAMETER: str = 'destinationShape'
 LINK_INFORMATION_PARAMETER:  str = 'linkInformation'
+POINTS_PARAMETER:            str = 'points'
+SHOW_PARAMETER:              str = 'show'
 
 
 class EventEngine(IEventEngine):
@@ -111,6 +115,8 @@ class EventEngine(IEventEngine):
                 self._sendCreateLinkEvent(**kwargs)
             case EventType.IndicatePluginModifiedProject:
                 MessageBox("Project Modified", caption="")
+            case EventType.DrawOrthogonalRoutingPointsEvent:
+                self._sendDrawOrthogonalRoutingPointsEvent(**kwargs)
             case _:
                 assert False, f'Unknown event type: `{eventType}`'
 
@@ -197,4 +203,13 @@ class EventEngine(IEventEngine):
 
     def _sendRefreshFrameEvent(self):
         event: RefreshFrameEvent = RefreshFrameEvent()
+        PostEvent(dest=self._listeningWindow, event=event)
+
+    def _sendDrawOrthogonalRoutingPointsEvent(self, **kwargs):
+
+        points: Points = kwargs[POINTS_PARAMETER]
+        show:   bool   = kwargs[SHOW_PARAMETER]
+
+        event:  DrawOrthogonalRoutingPointsEvent = DrawOrthogonalRoutingPointsEvent(points=points, show=show)
+
         PostEvent(dest=self._listeningWindow, event=event)

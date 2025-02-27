@@ -31,6 +31,7 @@ from pyutplugins.ioplugins.python.DlgSelectMultiplePackages import DlgSelectMult
 
 from pyutplugins.toolplugins.orthogonal.DlgLayoutSize import DlgLayoutSize
 from pyutplugins.preferences.PluginPreferences import PluginPreferences
+from pyutplugins.toolplugins.orthogonalrouting.DlgDiagnoseLayout import DlgDiagnoseLayout
 from pyutplugins.toolplugins.transforms.DlgTransforms import DlgTransforms
 
 from tests.ProjectTestBase import ProjectTestBase
@@ -39,6 +40,7 @@ from tests.scaffoldv2.ScaffoldPreferencesDialog import ScaffoldPreferencesDialog
 
 class DialogNamesEnum(Enum):
 
+    DLG_DIAGNOSE_LAYOUT          = 'DlgDiagnoseLayout'
     DLG_TRANSFORMS               = 'DlgTransforms'
     DLG_LAYOUT_SIZE              = 'DlgLayoutSize'
     DLG_WXIMAGE_OPTIONS          = 'DlgWxImageOptions'
@@ -108,6 +110,11 @@ class AppTestDialogs(App):
         self.logger.warning(f'Selected dialog: {dlgNamesEnum}')
 
         match dlgNamesEnum:
+            case DialogNamesEnum.DLG_DIAGNOSE_LAYOUT:
+                with DlgDiagnoseLayout(parent=self._frame) as dlg:
+                    if dlg.ShowModal() == OK:
+                        self.logger.info('Ok')
+
             case DialogNamesEnum.DLG_TRANSFORMS:
                 with DlgTransforms(parent=self._frame) as dlg:
                     if dlg.ShowModal() == OK:
