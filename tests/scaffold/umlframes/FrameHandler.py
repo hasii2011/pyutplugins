@@ -26,11 +26,11 @@ from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from pyutplugins.ExternalTypes import CreatedLinkCallback
 from pyutplugins.ExternalTypes import LinkInformation
-from tests.scaffoldv2.eventengine.Events import CreateLinkEvent
-from tests.scaffoldv2.eventengine.Events import DeleteLinkEvent
-from tests.scaffoldv2.eventengine.Events import EVENT_CREATE_LINK
-from tests.scaffoldv2.eventengine.Events import EVENT_DELETE_LINK
-from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
+from tests.scaffold.eventengine.Events import CreateLinkEvent
+from tests.scaffold.eventengine.Events import DeleteLinkEvent
+from tests.scaffold.eventengine.Events import EVENT_CREATE_LINK
+from tests.scaffold.eventengine.Events import EVENT_DELETE_LINK
+from tests.scaffold.eventengine.IEventEngine import IEventEngine
 
 
 class FrameHandler:

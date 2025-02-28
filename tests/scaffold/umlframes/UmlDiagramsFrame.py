@@ -3,7 +3,7 @@ from logging import getLogger
 
 from wx import Notebook
 
-from tests.scaffoldv2.umlframes.UmlFrame import UmlFrame
+from tests.scaffold.umlframes.UmlFrame import UmlFrame
 
 
 class UmlDiagramsFrame(UmlFrame):
@@ -23,4 +23,4 @@ class UmlDiagramsFrame(UmlFrame):
         """
         self.umlDiagramFrameLogger: Logger = getLogger(__name__)
 
-        super().__init__(parent) 
+        super().__init__(parent)

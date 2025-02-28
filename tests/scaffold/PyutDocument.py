@@ -4,8 +4,8 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
-from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
+from tests.scaffold.PyutDiagramType import PyutDiagramType
+from tests.scaffold.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
 
 
 class PyutDocument:

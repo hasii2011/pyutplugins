@@ -25,7 +25,7 @@ from pyutplugins.ExternalTypes import OglObjects
 from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
-from tests.scaffoldv2.eventengine.EventEngine import EventEngine
+from tests.scaffold.eventengine.EventEngine import EventEngine
 
 
 class SampleIPluginAdapter(IPluginAdapter):

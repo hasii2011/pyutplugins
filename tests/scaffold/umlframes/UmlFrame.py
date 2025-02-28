@@ -25,7 +25,7 @@ from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage
 
 
-from tests.scaffoldv2.umlframes.UmlFrameShapeHandler import UmlFrameShapeHandler
+from tests.scaffold.umlframes.UmlFrameShapeHandler import UmlFrameShapeHandler
 
 
 UmlObject  = Union[OglClass, OglLink, OglNote, OglText, OglSDMessage, OglSDInstance, OglActor, OglUseCase, OglInterface2]

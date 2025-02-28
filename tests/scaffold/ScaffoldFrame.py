@@ -50,12 +50,12 @@ from pyutplugins.plugintypes.PluginDataTypes import PluginMapType
 from pyutplugins.plugininterfaces.IOPluginInterface import IOPluginInterface
 from pyutplugins.plugininterfaces.ToolPluginInterface import ToolPluginInterface
 
-from tests.scaffoldv2.PluginAdapter import PluginAdapter
-from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
-from tests.scaffoldv2.ScaffoldPreferencesDialog import ScaffoldPreferencesDialog
-from tests.scaffoldv2.ScaffoldUI import ScaffoldUI
-from tests.scaffoldv2.eventengine.EventEngine import EventEngine
-from tests.scaffoldv2.eventengine.Events import EventType
+from tests.scaffold.PluginAdapter import PluginAdapter
+from tests.scaffold.PyutDiagramType import PyutDiagramType
+from tests.scaffold.ScaffoldPreferencesDialog import ScaffoldPreferencesDialog
+from tests.scaffold.ScaffoldUI import ScaffoldUI
+from tests.scaffold.eventengine.EventEngine import EventEngine
+from tests.scaffold.eventengine.Events import EventType
 
 
 @dataclass

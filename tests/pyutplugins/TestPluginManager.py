@@ -10,9 +10,9 @@ from pyutplugins.PluginManager import PluginManager
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
-from tests.scaffoldv2.PluginAdapter import PluginAdapter
-from tests.scaffoldv2.eventengine.EventEngine import EventEngine
-from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
+from tests.scaffold.PluginAdapter import PluginAdapter
+from tests.scaffold.eventengine.EventEngine import EventEngine
+from tests.scaffold.eventengine.IEventEngine import IEventEngine
 
 from tests.ProjectTestBase import ProjectTestBase
 

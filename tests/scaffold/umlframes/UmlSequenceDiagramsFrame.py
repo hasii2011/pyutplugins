@@ -1,4 +1,4 @@
-from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
+from tests.scaffold.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
 
 
 class UmlSequenceDiagramsFrame(UmlDiagramsFrame):

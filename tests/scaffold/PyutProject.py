@@ -11,9 +11,9 @@ from os import path as osPath
 
 from wx import TreeItemId
 
-from tests.scaffoldv2.PyutDocument import PyutDocument
-from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
-from tests.scaffoldv2.umlframes.UmlSequenceDiagramsFrame import UmlSequenceDiagramsFrame
+from tests.scaffold.PyutDocument import PyutDocument
+from tests.scaffold.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
+from tests.scaffold.umlframes.UmlSequenceDiagramsFrame import UmlSequenceDiagramsFrame
 
 PyutDocuments = NewType('PyutDocuments', List[PyutDocument])
 

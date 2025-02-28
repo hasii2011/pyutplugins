@@ -21,28 +21,28 @@ from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import Points
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
-from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
-from tests.scaffoldv2.eventengine.Events import AddShapeEvent
-from tests.scaffoldv2.eventengine.Events import CreateLinkEvent
-from tests.scaffoldv2.eventengine.Events import DeSelectAllShapesEvent
-from tests.scaffoldv2.eventengine.Events import DeleteLinkEvent
-from tests.scaffoldv2.eventengine.Events import DrawOrthogonalRoutingPointsEvent
+from tests.scaffold.PyutDiagramType import PyutDiagramType
+from tests.scaffold.eventengine.Events import AddShapeEvent
+from tests.scaffold.eventengine.Events import CreateLinkEvent
+from tests.scaffold.eventengine.Events import DeSelectAllShapesEvent
+from tests.scaffold.eventengine.Events import DeleteLinkEvent
+from tests.scaffold.eventengine.Events import DrawOrthogonalRoutingPointsEvent
 
-from tests.scaffoldv2.eventengine.Events import EventType
-from tests.scaffoldv2.eventengine.Events import FrameInformationEvent
-from tests.scaffoldv2.eventengine.Events import FrameSizeEvent
-from tests.scaffoldv2.eventengine.Events import GetObjectBoundariesEvent
-from tests.scaffoldv2.eventengine.Events import LoadOglProjectEvent
-from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
-from tests.scaffoldv2.eventengine.Events import NewDiagramEvent
-from tests.scaffoldv2.eventengine.Events import NewProjectEvent
-from tests.scaffoldv2.eventengine.Events import RefreshFrameEvent
-from tests.scaffoldv2.eventengine.Events import RequestCurrentProjectEvent
-from tests.scaffoldv2.eventengine.Events import SelectAllShapesEvent
-from tests.scaffoldv2.eventengine.Events import SelectedOglObjectsEvent
-from tests.scaffoldv2.eventengine.Events import UpdateTreeItemNameEvent
+from tests.scaffold.eventengine.Events import EventType
+from tests.scaffold.eventengine.Events import FrameInformationEvent
+from tests.scaffold.eventengine.Events import FrameSizeEvent
+from tests.scaffold.eventengine.Events import GetObjectBoundariesEvent
+from tests.scaffold.eventengine.Events import LoadOglProjectEvent
+from tests.scaffold.eventengine.Events import LoadProjectEvent
+from tests.scaffold.eventengine.Events import NewDiagramEvent
+from tests.scaffold.eventengine.Events import NewProjectEvent
+from tests.scaffold.eventengine.Events import RefreshFrameEvent
+from tests.scaffold.eventengine.Events import RequestCurrentProjectEvent
+from tests.scaffold.eventengine.Events import SelectAllShapesEvent
+from tests.scaffold.eventengine.Events import SelectedOglObjectsEvent
+from tests.scaffold.eventengine.Events import UpdateTreeItemNameEvent
 
-from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
+from tests.scaffold.eventengine.IEventEngine import IEventEngine
 
 NEW_NAME_PARAMETER:          str = 'newName'
 TREE_ITEM_ID_PARAMETER:      str = 'treeItemId'

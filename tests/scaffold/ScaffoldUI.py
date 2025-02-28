@@ -63,48 +63,48 @@ from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import Points
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
-from tests.scaffoldv2.PyutDiagramType import PyutDiagramType
-from tests.scaffoldv2.PyutDocument import PyutDocument
-from tests.scaffoldv2.PyutProject import PyutProject
-from tests.scaffoldv2.PyutProject import UmlFrameType
+from tests.scaffold.PyutDiagramType import PyutDiagramType
+from tests.scaffold.PyutDocument import PyutDocument
+from tests.scaffold.PyutProject import PyutProject
+from tests.scaffold.PyutProject import UmlFrameType
 
-from tests.scaffoldv2.eventengine.EventEngine import EventEngine
-from tests.scaffoldv2.eventengine.Events import AddShapeEvent
-from tests.scaffoldv2.eventengine.Events import DrawOrthogonalRoutingPointsEvent
-from tests.scaffoldv2.eventengine.Events import EVENT_DRAW_ORTHOGONAL_ROUTING_POINTS
-from tests.scaffoldv2.eventengine.Events import EVENT_GET_OBJECT_BOUNDARIES
-from tests.scaffoldv2.eventengine.Events import EVENT_LOAD_OGL_PROJECT
-from tests.scaffoldv2.eventengine.Events import EVENT_REQUEST_CURRENT_PROJECT
-from tests.scaffoldv2.eventengine.Events import GetObjectBoundariesEvent
-from tests.scaffoldv2.eventengine.Events import LoadOglProjectEvent
-from tests.scaffoldv2.eventengine.Events import RequestCurrentProjectEvent
-from tests.scaffoldv2.eventengine.Events import DeSelectAllShapesEvent
-from tests.scaffoldv2.eventengine.Events import EVENT_ADD_SHAPE
+from tests.scaffold.eventengine.EventEngine import EventEngine
+from tests.scaffold.eventengine.Events import AddShapeEvent
+from tests.scaffold.eventengine.Events import DrawOrthogonalRoutingPointsEvent
+from tests.scaffold.eventengine.Events import EVENT_DRAW_ORTHOGONAL_ROUTING_POINTS
+from tests.scaffold.eventengine.Events import EVENT_GET_OBJECT_BOUNDARIES
+from tests.scaffold.eventengine.Events import EVENT_LOAD_OGL_PROJECT
+from tests.scaffold.eventengine.Events import EVENT_REQUEST_CURRENT_PROJECT
+from tests.scaffold.eventengine.Events import GetObjectBoundariesEvent
+from tests.scaffold.eventengine.Events import LoadOglProjectEvent
+from tests.scaffold.eventengine.Events import RequestCurrentProjectEvent
+from tests.scaffold.eventengine.Events import DeSelectAllShapesEvent
+from tests.scaffold.eventengine.Events import EVENT_ADD_SHAPE
 
-from tests.scaffoldv2.eventengine.Events import EVENT_DESELECT_ALL_SHAPES
-from tests.scaffoldv2.eventengine.Events import EVENT_FRAME_INFORMATION
-from tests.scaffoldv2.eventengine.Events import EVENT_FRAME_SIZE
-from tests.scaffoldv2.eventengine.Events import EVENT_NEW_DIAGRAM
-from tests.scaffoldv2.eventengine.Events import EVENT_REFRESH_FRAME
-from tests.scaffoldv2.eventengine.Events import EVENT_SELECT_ALL_SHAPES
-from tests.scaffoldv2.eventengine.Events import EVENT_LOAD_PROJECT
-from tests.scaffoldv2.eventengine.Events import EVENT_NEW_PROJECT
-from tests.scaffoldv2.eventengine.Events import EVENT_SELECTED_OGL_OBJECTS
+from tests.scaffold.eventengine.Events import EVENT_DESELECT_ALL_SHAPES
+from tests.scaffold.eventengine.Events import EVENT_FRAME_INFORMATION
+from tests.scaffold.eventengine.Events import EVENT_FRAME_SIZE
+from tests.scaffold.eventengine.Events import EVENT_NEW_DIAGRAM
+from tests.scaffold.eventengine.Events import EVENT_REFRESH_FRAME
+from tests.scaffold.eventengine.Events import EVENT_SELECT_ALL_SHAPES
+from tests.scaffold.eventengine.Events import EVENT_LOAD_PROJECT
+from tests.scaffold.eventengine.Events import EVENT_NEW_PROJECT
+from tests.scaffold.eventengine.Events import EVENT_SELECTED_OGL_OBJECTS
 
-from tests.scaffoldv2.eventengine.Events import FrameSizeEvent
-from tests.scaffoldv2.eventengine.Events import FrameInformationEvent
-from tests.scaffoldv2.eventengine.Events import LoadProjectEvent
-from tests.scaffoldv2.eventengine.Events import NewDiagramEvent
-from tests.scaffoldv2.eventengine.Events import NewProjectEvent
-from tests.scaffoldv2.eventengine.Events import RefreshFrameEvent
-from tests.scaffoldv2.eventengine.Events import SelectAllShapesEvent
-from tests.scaffoldv2.eventengine.Events import SelectedOglObjectsEvent
+from tests.scaffold.eventengine.Events import FrameSizeEvent
+from tests.scaffold.eventengine.Events import FrameInformationEvent
+from tests.scaffold.eventengine.Events import LoadProjectEvent
+from tests.scaffold.eventengine.Events import NewDiagramEvent
+from tests.scaffold.eventengine.Events import NewProjectEvent
+from tests.scaffold.eventengine.Events import RefreshFrameEvent
+from tests.scaffold.eventengine.Events import SelectAllShapesEvent
+from tests.scaffold.eventengine.Events import SelectedOglObjectsEvent
 
-from tests.scaffoldv2.umlframes.FrameHandler import FrameHandler
-from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
-from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
-from tests.scaffoldv2.umlframes.UmlFrameShapeHandler import UmlFrameShapeHandler
-from tests.scaffoldv2.umlframes.UmlFrame import UmlFrame
+from tests.scaffold.umlframes.FrameHandler import FrameHandler
+from tests.scaffold.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
+from tests.scaffold.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
+from tests.scaffold.umlframes.UmlFrameShapeHandler import UmlFrameShapeHandler
+from tests.scaffold.umlframes.UmlFrame import UmlFrame
 
 PyutProjects = NewType('PyutProjects', List[PyutProject])
 
@@ -199,7 +199,7 @@ class ScaffoldUI:
     def _onDrawRoutingPoints(self, event: DrawOrthogonalRoutingPointsEvent):
 
         from wx import Point as WxPoint
-        from tests.scaffoldv2.umlframes.UmlClassDiagramsFrame import Points as WxPythonPoints
+        from tests.scaffold.umlframes.UmlClassDiagramsFrame import Points as WxPythonPoints
 
         def toWxPythonPoints(pts: Points):
             wxPythonPoints: WxPythonPoints = WxPythonPoints([])

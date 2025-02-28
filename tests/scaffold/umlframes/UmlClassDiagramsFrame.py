@@ -17,7 +17,7 @@ from miniogl.MiniOglColorEnum import MiniOglColorEnum
 
 from ogl.events.OglEventEngine import OglEventEngine
 
-from tests.scaffoldv2.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
+from tests.scaffold.umlframes.UmlDiagramsFrame import UmlDiagramsFrame
 
 DEFAULT_WIDTH = 16000
 A4_FACTOR:    float = 1.41

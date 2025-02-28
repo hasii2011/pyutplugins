@@ -35,7 +35,7 @@ from pyutplugins.toolplugins.orthogonalrouting.DlgDiagnoseLayout import DlgDiagn
 from pyutplugins.toolplugins.transforms.DlgTransforms import DlgTransforms
 
 from tests.ProjectTestBase import ProjectTestBase
-from tests.scaffoldv2.ScaffoldPreferencesDialog import ScaffoldPreferencesDialog
+from tests.scaffold.ScaffoldPreferencesDialog import ScaffoldPreferencesDialog
 
 
 class DialogNamesEnum(Enum):

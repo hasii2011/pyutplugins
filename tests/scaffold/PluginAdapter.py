@@ -20,8 +20,8 @@ from pyutplugins.ExternalTypes import FrameInformationCallback
 from pyutplugins.ExternalTypes import FrameSizeCallback
 from pyutplugins.ExternalTypes import OglObjectType
 
-from tests.scaffoldv2.eventengine.Events import EventType
-from tests.scaffoldv2.eventengine.IEventEngine import IEventEngine
+from tests.scaffold.eventengine.Events import EventType
+from tests.scaffold.eventengine.IEventEngine import IEventEngine
 
 
 class PluginAdapter(IPluginAdapter):
