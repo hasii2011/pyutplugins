@@ -310,7 +310,7 @@ Points      = NewType('Points',      List[Point])
 @dataclass
 class DiagnosticInformation:
 
-    # hRulers:     IntegerList
-    # vRulers:     IntegerList
-    # routeGrid:   Rectangle
-    spots:       Points
+    horizontalRulers: IntegerList
+    verticalRulers:   IntegerList
+    diagramBounds:    Rectangle
+    spots:            Points

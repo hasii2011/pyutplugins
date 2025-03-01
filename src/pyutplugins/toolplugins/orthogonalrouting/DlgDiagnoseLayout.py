@@ -29,7 +29,9 @@ from wx.lib.sized_controls import SizedDialog
 from wx.lib.sized_controls import SizedPanel
 
 from pyutplugins.ExternalTypes import DiagnosticInformation
+from pyutplugins.ExternalTypes import IntegerList
 from pyutplugins.ExternalTypes import Points
+from pyutplugins.ExternalTypes import Rectangle
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
@@ -107,35 +109,60 @@ class DlgDiagnoseLayout(SizedDialog):
     # noinspection PyUnusedLocal
     def _onOk(self, event: CommandEvent):
         """
+        Typically shown non modal
         """
-        self.EndModal(OK)
+        if self.IsModal() is True:
+            self.EndModal(OK)
+        else:
+            self.Destroy()
 
     # noinspection PyUnusedLocal
     def _onClose(self, event: CommandEvent):
         """
-        """
-        self.EndModal(CANCEL)
+        Typically shown non modal
+1        """
+        if self.IsModal() is True:
+            self.EndModal(CANCEL)
+        else:
+            self.Destroy()
 
     def _onShowRulers(self, event: CommandEvent):
 
-        newValue: bool = event.IsChecked()
-        self.logger.debug(f'showRulers - {newValue=}')
-        # self._eventEngine.sendEvent(DemoEventType.SHOW_RULERS, showRulers=newValue)
+        self._ensureSetupOk()
+
+        if event.IsChecked() is True:
+            self._pluginAdapter.showRulers(show=True,
+                                           horizontalRulers=self._diagnosticInformation.horizontalRulers,
+                                           verticalRulers=self._diagnosticInformation.verticalRulers,
+                                           diagramBounds=self._diagnosticInformation.diagramBounds)
+        else:
+            self._pluginAdapter.showRulers(show=False,
+                                           verticalRulers=cast(IntegerList, None),
+                                           horizontalRulers=cast(IntegerList, None),
+                                           diagramBounds=cast(Rectangle, None)
+                                           )
 
     def _onShowReferencePoints(self, event: CommandEvent):
 
-        newValue: bool = event.IsChecked()
-        self.logger.debug(f'showReferencePoints - {newValue=}')
-        assert self._pluginAdapter is not None, 'Developer error.  Forgot to inject the manager'
-        assert self._diagnosticInformation is not None, 'Developer error.  Forgot to inject diagnostic information'
+        self._ensureSetupOk()
 
-        if newValue is True:
+        if event.IsChecked() is True:
             self._pluginAdapter.showOrthogonalRoutingPoints(show=True, spots=self._diagnosticInformation.spots)
         else:
             self._pluginAdapter.showOrthogonalRoutingPoints(show=False, spots=cast(Points, None))
 
     def _onShowRouteGrid(self, event: CommandEvent):
 
-        newValue: bool = event.IsChecked()
-        self.logger.debug(f'showRouteGrid - {newValue=}')
-        # self._eventEngine.sendEvent(DemoEventType.SHOW_ROUTE_GRID, showRouteGrid=newValue)
+        self._ensureSetupOk()
+        if event.IsChecked() is True:
+            pass
+        else:
+            pass
+
+    def _ensureSetupOk(self):
+        """
+        I know, I know this does nothing when assertions are off;  But this is
+        a developer demo and they will be on
+        """
+        assert self._pluginAdapter is not None, 'Developer error.  Forgot to inject the manager'
+        assert self._diagnosticInformation is not None, 'Developer error.  Forgot to inject diagnostic information'

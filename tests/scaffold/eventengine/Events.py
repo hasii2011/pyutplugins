@@ -27,7 +27,8 @@ CreateLinkEvent,          EVENT_CREATE_LINK           = NewEvent()
 RequestCurrentProjectEvent,         EVENT_REQUEST_CURRENT_PROJECT          = NewEvent()
 IndicatePluginModifiedProjectEvent, EVENT_INDICATE_PLUGIN_MODIFIED_PROJECT = NewEvent()
 
-DrawOrthogonalRoutingPointsEvent, EVENT_DRAW_ORTHOGONAL_ROUTING_POINTS = NewEvent()
+ShowOrthogonalRoutingPointsEvent, EVENT_SHOW_ORTHOGONAL_ROUTING_POINTS = NewEvent()
+ShowRulersEvent,                  EVENT_SHOW_RULERS                    = NewEvent()
 
 
 class EventType(Enum):
@@ -52,4 +53,5 @@ class EventType(Enum):
     RequestCurrentProject         = 'RequestCurrentProject'
     IndicatePluginModifiedProject = 'IndicatePluginModifiedProject'
 
-    DrawOrthogonalRoutingPointsEvent = 'DrawOrthogonalRoutingPointsEvent'
+    ShowOrthogonalRoutingPointsEvent = 'ShowOrthogonalRoutingPointsEvent'
+    ShowRulersEvent                  = 'ShowRulersEvent'

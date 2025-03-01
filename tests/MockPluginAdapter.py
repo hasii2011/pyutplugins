@@ -11,11 +11,13 @@ from pyutplugins.ExternalTypes import CreatedLinkCallback
 from pyutplugins.ExternalTypes import CurrentProjectCallback
 from pyutplugins.ExternalTypes import FrameInformationCallback
 from pyutplugins.ExternalTypes import FrameSizeCallback
+from pyutplugins.ExternalTypes import IntegerList
 from pyutplugins.ExternalTypes import LinkInformation
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import OglObjectType
 from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import Points
+from pyutplugins.ExternalTypes import Rectangle
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
@@ -108,4 +110,7 @@ class MockPluginAdapter(IPluginAdapter):
         pass
 
     def showOrthogonalRoutingPoints(self, show: bool, spots: Points):
+        pass
+
+    def showRulers(self, show: bool, horizontalRulers: IntegerList, verticalRulers: IntegerList, diagramBounds: Rectangle):
         pass

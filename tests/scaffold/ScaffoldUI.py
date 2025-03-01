@@ -53,6 +53,7 @@ from pyutplugins.ExternalTypes import FrameInformationCallback
 from pyutplugins.ExternalTypes import FrameSize
 from pyutplugins.ExternalTypes import FrameSizeCallback
 from pyutplugins.ExternalTypes import HybridLinks
+from pyutplugins.ExternalTypes import IntegerList
 from pyutplugins.ExternalTypes import ObjectBoundaries
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import OglLinks
@@ -61,6 +62,7 @@ from pyutplugins.ExternalTypes import PluginDocumentTitle
 from pyutplugins.ExternalTypes import PluginDocumentType
 from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import Points
+from pyutplugins.ExternalTypes import Rectangle
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
 from tests.scaffold.PyutDiagramType import PyutDiagramType
@@ -70,8 +72,9 @@ from tests.scaffold.PyutProject import UmlFrameType
 
 from tests.scaffold.eventengine.EventEngine import EventEngine
 from tests.scaffold.eventengine.Events import AddShapeEvent
-from tests.scaffold.eventengine.Events import DrawOrthogonalRoutingPointsEvent
-from tests.scaffold.eventengine.Events import EVENT_DRAW_ORTHOGONAL_ROUTING_POINTS
+from tests.scaffold.eventengine.Events import EVENT_SHOW_RULERS
+from tests.scaffold.eventengine.Events import ShowOrthogonalRoutingPointsEvent
+from tests.scaffold.eventengine.Events import EVENT_SHOW_ORTHOGONAL_ROUTING_POINTS
 from tests.scaffold.eventengine.Events import EVENT_GET_OBJECT_BOUNDARIES
 from tests.scaffold.eventengine.Events import EVENT_LOAD_OGL_PROJECT
 from tests.scaffold.eventengine.Events import EVENT_REQUEST_CURRENT_PROJECT
@@ -99,6 +102,7 @@ from tests.scaffold.eventengine.Events import NewProjectEvent
 from tests.scaffold.eventengine.Events import RefreshFrameEvent
 from tests.scaffold.eventengine.Events import SelectAllShapesEvent
 from tests.scaffold.eventengine.Events import SelectedOglObjectsEvent
+from tests.scaffold.eventengine.Events import ShowRulersEvent
 
 from tests.scaffold.umlframes.FrameHandler import FrameHandler
 from tests.scaffold.umlframes.UmlClassDiagramsFrame import UmlClassDiagramsFrame
@@ -188,7 +192,8 @@ class ScaffoldUI:
 
         self._eventEngine.registerListener(EVENT_REQUEST_CURRENT_PROJECT, self._onRequestCurrentProject)
 
-        self._eventEngine.registerListener(EVENT_DRAW_ORTHOGONAL_ROUTING_POINTS, self._onDrawRoutingPoints)
+        self._eventEngine.registerListener(EVENT_SHOW_ORTHOGONAL_ROUTING_POINTS, self._onShowRoutingPoints)
+        self._eventEngine.registerListener(EVENT_SHOW_RULERS,                    self._onShowRulers)
 
     # noinspection PyTypeChecker
     eventEngine = property(fget=None, fset=_setEventEngine)
@@ -196,7 +201,7 @@ class ScaffoldUI:
     def createEmptyProject(self):
         self._onNewProject(cast(NewProjectEvent, None))
 
-    def _onDrawRoutingPoints(self, event: DrawOrthogonalRoutingPointsEvent):
+    def _onShowRoutingPoints(self, event: ShowOrthogonalRoutingPointsEvent):
 
         from wx import Point as WxPoint
         from tests.scaffold.umlframes.UmlClassDiagramsFrame import Points as WxPythonPoints
@@ -212,7 +217,6 @@ class ScaffoldUI:
 
         points: Points = event.points
 
-        self.logger.info(f'{self._currentFrame=}')
         if isinstance(self._currentFrame, UmlClassDiagramsFrame):
             umlClassDiagramsFrame: UmlClassDiagramsFrame = cast(UmlClassDiagramsFrame, self._currentFrame)
             if event.show is True:
@@ -221,6 +225,39 @@ class ScaffoldUI:
             else:
                 umlClassDiagramsFrame.showReferencePoints = False
                 umlClassDiagramsFrame.referencePoints     = cast(WxPythonPoints, None)
+
+    def _onShowRulers(self, event: ShowRulersEvent):
+
+        from tests.scaffold.umlframes.UmlClassDiagramsFrame import IntegerList as WxIntegerList
+        from tests.scaffold.umlframes.UmlClassDiagramsFrame import Rectangle as WxRectangle
+
+        def toWxIntegerList(ruler: IntegerList) -> WxIntegerList:
+            wxIntegerList: WxIntegerList = WxIntegerList([])
+            for integer in ruler:
+                wxIntegerList.append(integer)
+
+            return wxIntegerList
+
+        def toWxRectangle(rectangle: Rectangle) -> WxRectangle:
+            return WxRectangle(
+                left=rectangle.left,
+                top=rectangle.top,
+                height=rectangle.height,
+                width=rectangle.width
+            )
+
+        umlClassDiagramsFrame: UmlClassDiagramsFrame = cast(UmlClassDiagramsFrame, self._currentFrame)
+
+        if event.show is True:
+            umlClassDiagramsFrame.showRulers       = True
+            umlClassDiagramsFrame.horizontalRulers = toWxIntegerList(event.horizontalRulers)
+            umlClassDiagramsFrame.verticalRulers   = toWxIntegerList(event.verticalRulers)
+            umlClassDiagramsFrame.diagramBounds    = toWxRectangle(event.diagramBounds)
+        else:
+            umlClassDiagramsFrame.showRulers = False
+            umlClassDiagramsFrame.horizontalRulers = cast(WxIntegerList, None)
+            umlClassDiagramsFrame.verticalRulers   = cast(WxIntegerList, None)
+            umlClassDiagramsFrame.diagramBounds    = cast(WxRectangle, None)
 
     def _onProjectTreeSelectionChanged(self, event: TreeEvent):
         """

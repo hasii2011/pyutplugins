@@ -11,9 +11,11 @@ from miniogl.DiagramFrame import DiagramFrame
 from ogl.OglLink import OglLink
 
 from pyutplugins.ExternalTypes import CreatedLinkCallback
+from pyutplugins.ExternalTypes import IntegerList
 from pyutplugins.ExternalTypes import LinkInformation
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import Points
+from pyutplugins.ExternalTypes import Rectangle
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.IPluginAdapter import ScreenMetrics
 
@@ -109,4 +111,7 @@ class SampleIPluginAdapter(IPluginAdapter):
         pass
 
     def showOrthogonalRoutingPoints(self, show: bool, spots: Points):
+        pass
+
+    def showRulers(self, show: bool, horizontalRulers: IntegerList, verticalRulers: IntegerList, diagramBounds: Rectangle):
         pass

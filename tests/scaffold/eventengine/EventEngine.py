@@ -15,10 +15,12 @@ from ogl.OglLink import OglLink
 
 from pyutplugins.ExternalTypes import CreatedLinkCallback
 from pyutplugins.ExternalTypes import CurrentProjectCallback
+from pyutplugins.ExternalTypes import IntegerList
 from pyutplugins.ExternalTypes import LinkInformation
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import Points
+from pyutplugins.ExternalTypes import Rectangle
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
 from tests.scaffold.PyutDiagramType import PyutDiagramType
@@ -26,7 +28,7 @@ from tests.scaffold.eventengine.Events import AddShapeEvent
 from tests.scaffold.eventengine.Events import CreateLinkEvent
 from tests.scaffold.eventengine.Events import DeSelectAllShapesEvent
 from tests.scaffold.eventengine.Events import DeleteLinkEvent
-from tests.scaffold.eventengine.Events import DrawOrthogonalRoutingPointsEvent
+from tests.scaffold.eventengine.Events import ShowOrthogonalRoutingPointsEvent
 
 from tests.scaffold.eventengine.Events import EventType
 from tests.scaffold.eventengine.Events import FrameInformationEvent
@@ -40,6 +42,7 @@ from tests.scaffold.eventengine.Events import RefreshFrameEvent
 from tests.scaffold.eventengine.Events import RequestCurrentProjectEvent
 from tests.scaffold.eventengine.Events import SelectAllShapesEvent
 from tests.scaffold.eventengine.Events import SelectedOglObjectsEvent
+from tests.scaffold.eventengine.Events import ShowRulersEvent
 from tests.scaffold.eventengine.Events import UpdateTreeItemNameEvent
 
 from tests.scaffold.eventengine.IEventEngine import IEventEngine
@@ -59,6 +62,9 @@ DESTINATION_SHAPE_PARAMETER: str = 'destinationShape'
 LINK_INFORMATION_PARAMETER:  str = 'linkInformation'
 POINTS_PARAMETER:            str = 'points'
 SHOW_PARAMETER:              str = 'show'
+HORIZONTAL_RULERS_PARAMETER: str = 'horizontalRulers'
+VERTICAL_RULERS_PARAMETER:   str = 'verticalRulers'
+DIAGRAM_BOUNDS_PARAMETER:    str = 'diagramBounds'
 
 
 class EventEngine(IEventEngine):
@@ -115,8 +121,10 @@ class EventEngine(IEventEngine):
                 self._sendCreateLinkEvent(**kwargs)
             case EventType.IndicatePluginModifiedProject:
                 MessageBox("Project Modified", caption="")
-            case EventType.DrawOrthogonalRoutingPointsEvent:
-                self._sendDrawOrthogonalRoutingPointsEvent(**kwargs)
+            case EventType.ShowOrthogonalRoutingPointsEvent:
+                self._sendShowOrthogonalRoutingPointsEvent(**kwargs)
+            case EventType.ShowRulersEvent:
+                self._sendShowRulersEvent(**kwargs)
             case _:
                 assert False, f'Unknown event type: `{eventType}`'
 
@@ -205,11 +213,25 @@ class EventEngine(IEventEngine):
         event: RefreshFrameEvent = RefreshFrameEvent()
         PostEvent(dest=self._listeningWindow, event=event)
 
-    def _sendDrawOrthogonalRoutingPointsEvent(self, **kwargs):
+    def _sendShowOrthogonalRoutingPointsEvent(self, **kwargs):
 
         points: Points = kwargs[POINTS_PARAMETER]
         show:   bool   = kwargs[SHOW_PARAMETER]
 
-        event:  DrawOrthogonalRoutingPointsEvent = DrawOrthogonalRoutingPointsEvent(points=points, show=show)
+        event:  ShowOrthogonalRoutingPointsEvent = ShowOrthogonalRoutingPointsEvent(points=points, show=show)
+
+        PostEvent(dest=self._listeningWindow, event=event)
+
+    def _sendShowRulersEvent(self, **kwargs):
+
+        horizontalRulers: IntegerList = kwargs[HORIZONTAL_RULERS_PARAMETER]
+        verticalRulers:   IntegerList = kwargs[VERTICAL_RULERS_PARAMETER]
+        diagramBounds:    Rectangle   = kwargs[DIAGRAM_BOUNDS_PARAMETER]
+        show:             bool        = kwargs[SHOW_PARAMETER]
+
+        event:  ShowRulersEvent = ShowRulersEvent(horizontalRulers=horizontalRulers,
+                                                  verticalRulers=verticalRulers,
+                                                  diagramBounds=diagramBounds,
+                                                  show=show)
 
         PostEvent(dest=self._listeningWindow, event=event)

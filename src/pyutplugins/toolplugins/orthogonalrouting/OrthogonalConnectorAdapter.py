@@ -16,8 +16,11 @@ from ogl.OglPosition import OglPositions
 
 from pyorthogonalrouting.OrthogonalConnectorByProduct import OrthogonalConnectorByProduct
 
+from pyorthogonalrouting.Common import Integers
+
 from pyorthogonalrouting.Point import Point
 from pyorthogonalrouting.Point import Points
+from pyorthogonalrouting.Rectangle import Rectangle
 from pyorthogonalrouting.Rect import Rect
 from pyorthogonalrouting.Configuration import Configuration
 from pyorthogonalrouting.ConnectorPoint import ConnectorPoint
@@ -30,6 +33,7 @@ from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from pyutplugins.ExternalTypes import AssociationName
 from pyutplugins.ExternalTypes import DestinationCardinality
+from pyutplugins.ExternalTypes import DiagnosticInformation
 from pyutplugins.ExternalTypes import InterfaceName
 from pyutplugins.ExternalTypes import LinkInformation
 from pyutplugins.ExternalTypes import SourceCardinality
@@ -40,6 +44,12 @@ ANCHOR_POINT_ADJUSTMENT: int = 1    # because line end needs to look like it is 
 
 
 class OrthogonalConnectorAdapter:
+    """
+    TODO:  This adapter leaks some of the OrthogonalConnector data types.  Fix this before
+    merging to the master branch
+    Create a single property call diagnosticInformation
+
+    """
     def __init__(self, pluginAdapter: IPluginAdapter):
 
         self.logger: Logger = getLogger(__name__)
@@ -50,8 +60,8 @@ class OrthogonalConnectorAdapter:
         self._byProducts:   OrthogonalConnectorByProduct = cast(OrthogonalConnectorByProduct, None)
 
     @property
-    def referencePoints(self) -> Points:
-        return self._byProducts.spots
+    def diagnosticInformation(self) -> DiagnosticInformation:
+        return self._getDiagnosticInformation()
 
     # noinspection PyTypeChecker
     @classmethod
@@ -191,3 +201,60 @@ class OrthogonalConnectorAdapter:
             oglPositions.append(oglPosition)
 
         return oglPositions
+
+    def _getDiagnosticInformation(self) -> DiagnosticInformation:
+        """
+        Don't leak OrthogonalConnector data types
+
+        Returns:  Information that can be used to display why connection failed
+        """
+
+        from pyorthogonalrouting.Point import Point
+        from pyorthogonalrouting.Point import Points
+
+        from pyutplugins.ExternalTypes import Point as DiagnosticPoint
+        from pyutplugins.ExternalTypes import Points as DiagnosticPoints
+        from pyutplugins.ExternalTypes import Rectangle as DiagnosticRectangle
+        from pyutplugins.ExternalTypes import IntegerList
+
+        def toDiagnosticPoints(refPoints:  Points) -> DiagnosticPoints:
+
+            diagnosticPts: DiagnosticPoints = DiagnosticPoints([])
+
+            for pt in refPoints:
+                point: Point = cast(Point, pt)
+                self.logger.info(f'{point=}')
+
+                diagnosticPoint: DiagnosticPoint = DiagnosticPoint(x=point.x, y=point.y)
+                diagnosticPts.append(diagnosticPoint)
+
+            return diagnosticPts
+
+        def toDiagnosticRectangle(rectangle: Rectangle) -> DiagnosticRectangle:
+
+            return DiagnosticRectangle(
+                left=rectangle.left,
+                top=rectangle.top,
+                width=rectangle.width,
+                height=rectangle.height
+            )
+
+        def toIntegerList(integers: Integers) -> IntegerList:
+
+            integerList: IntegerList = IntegerList([])
+            for integer in integers:
+                integerList.append(integer)
+
+            return integerList
+
+        referencePoints:  Points           = self._byProducts.spots
+        diagnosticPoints: DiagnosticPoints = toDiagnosticPoints(refPoints=referencePoints)
+
+        diagnosticInformation: DiagnosticInformation = DiagnosticInformation(
+            spots=diagnosticPoints,
+            horizontalRulers=toIntegerList(self._byProducts.hRulers),
+            verticalRulers=toIntegerList(self._byProducts.vRulers),
+            diagramBounds=toDiagnosticRectangle(self._byProducts.diagramBounds),
+        )
+
+        return diagnosticInformation

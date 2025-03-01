@@ -4,6 +4,9 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from os import linesep as osLineSep
+
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 from wx import ICON_ERROR
 from wx import MessageDialog
 from wx import OK
@@ -21,7 +24,6 @@ from pyutplugins.plugintypes.PluginDataTypes import PluginDescription
 from pyutplugins.plugintypes.PluginDataTypes import PluginExtension
 from pyutplugins.plugintypes.PluginDataTypes import PluginName
 
-from pyutplugins.toolplugins.orthogonalrouting.DlgDiagnoseLayout import DiagnosticInformation
 from pyutplugins.toolplugins.orthogonalrouting.DlgDiagnoseLayout import DlgDiagnoseLayout
 
 from pyutplugins.toolplugins.orthogonalrouting.DlgOrthoRoutingConfig import DlgOrthoRoutingConfig
@@ -69,43 +71,28 @@ class ToolOrthogonalRouting(ToolPluginInterface):
                     oglLink = cast(OglLink, el)
                     success: bool = adapter.runConnector(oglLink=oglLink)
                     if success is False:
-                        message: str = f'Could not find an orthogonal route for link: {oglLink}'
-                        booBoo: MessageDialog = MessageDialog(parent=None, message=message, caption='Fail', style=OK | ICON_ERROR)
+                        message: str           = self._composeGoodErrorMessage(oglLink)
+                        booBoo:  MessageDialog = MessageDialog(parent=None, message=message, caption='No orthogonal route', style=OK | ICON_ERROR)
                         booBoo.ShowModal()
                         if self._pluginPreferences.diagnoseOrthogonalRouter is True:
 
-                            dlg: DlgDiagnoseLayout     = DlgDiagnoseLayout(parent=None)
+                            dlg: DlgDiagnoseLayout    = DlgDiagnoseLayout(parent=None)
                             dlg.pluginAdapter         = self._pluginAdapter
-                            dlg.diagnosticInformation = self._getDiagnosticInformation(adapter=adapter)
+                            dlg.diagnosticInformation = adapter.diagnosticInformation
                             dlg.Show(True)
-                            # with dlg:
-                            #     if dlg.ShowModal() == OK:
-                            #         self.logger.info('Ok')
 
                 except (AttributeError, TypeError) as e:
                     self.logger.error(f'{e} - {oglLink=}')
 
-    def _getDiagnosticInformation(self, adapter: OrthogonalConnectorAdapter) -> DiagnosticInformation:
+    def _composeGoodErrorMessage(self, oglLink: OglLink) -> str:
 
-        from pyorthogonalrouting.Point import Point
-        from pyorthogonalrouting.Point import Points
-
-        from pyutplugins.ExternalTypes import Point as DiagnosticPoint
-        from pyutplugins.ExternalTypes import Points as DiagnosticPoints
-
-        referencePoints:  Points           = adapter.referencePoints
-        diagnosticPoints: DiagnosticPoints = DiagnosticPoints([])
-
-        for pt in referencePoints:
-
-            point: Point = cast(Point, pt)
-            self.logger.info(f'{point=}')
-
-            diagnosticPoint: DiagnosticPoint = DiagnosticPoint(x=point.x, y=point.y)
-            diagnosticPoints.append(diagnosticPoint)
-
-        diagnosticInformation: DiagnosticInformation = DiagnosticInformation(
-            spots=diagnosticPoints
+        linkType: PyutLinkType = oglLink.pyutObject.linkType
+        message: str = (
+            f'Could not find an orthogonal route for link: {linkType}{osLineSep}'
+            f'from {osLineSep}'
+            f'{oglLink.sourceShape} {osLineSep}' 
+            f'to{osLineSep}'
+            f'{oglLink.destinationShape}'
         )
 
-        return diagnosticInformation
+        return message

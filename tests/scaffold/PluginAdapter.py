@@ -9,7 +9,10 @@ from ogl.OglLink import OglLink
 from pyutplugins.ExternalTypes import CreatedLinkCallback
 from pyutplugins.ExternalTypes import LinkInformation
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
+from pyutplugins.ExternalTypes import IntegerList
 from pyutplugins.ExternalTypes import Points
+from pyutplugins.ExternalTypes import Rectangle
+
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.IPluginAdapter import ScreenMetrics
 
@@ -120,4 +123,12 @@ class PluginAdapter(IPluginAdapter):
             spots:  What the Orthogonal Line router calls these (only valid whe
             `show` is True
         """
-        self._eventEngine.sendEvent(EventType.DrawOrthogonalRoutingPointsEvent, show=show, points=spots)
+        self._eventEngine.sendEvent(EventType.ShowOrthogonalRoutingPointsEvent, show=show, points=spots)
+
+    def showRulers(self, show: bool, horizontalRulers: IntegerList, verticalRulers: IntegerList, diagramBounds: Rectangle):
+        self._eventEngine.sendEvent(EventType.ShowRulersEvent,
+                                    show=show,
+                                    horizontalRulers=horizontalRulers,
+                                    verticalRulers=verticalRulers,
+                                    diagramBounds=diagramBounds
+                                    )
