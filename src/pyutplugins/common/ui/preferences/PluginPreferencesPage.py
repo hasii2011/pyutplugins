@@ -82,16 +82,23 @@ class PluginPreferencesPage(SizedPanel):
         self._stepSugiyama:           CheckBox          = cast(CheckBox, None)
         self._mermaidLayoutDirection: Choice            = cast(Choice, None)
 
+        self._diagnoseOrthogonalRouting: CheckBox       = cast(CheckBox, None)
+
+        self.SetSizerProps(expand=True, proportion=1)
         self._layoutTopLevel(self)
 
         self._setControlValues()
+        #
+        # I know, I know I am mixing using IDs and not using IDs
         parent.Bind(EVT_TEXT, self._onTextValueChange, id=self._pdfFileNameWxId)
         parent.Bind(EVT_TEXT, self._onTextValueChange, id=self._pdfTitleWxId)
         parent.Bind(EVT_TEXT, self._onTextValueChange, id=self._pdfAuthorWxId)
         parent.Bind(EVT_TEXT, self._onTextValueChange, id=self._pdfSubjectWxId)
 
         parent.Bind(EVT_CHECKBOX, self._onSugiyamaValueChanged,   self._stepSugiyama)
+        parent.Bind(EVT_CHECKBOX, self._onDiagnoseRoutingChanged, self._diagnoseOrthogonalRouting)
         parent.Bind(EVT_CHOICE,   self._onLayoutDirectionChanged, self._mermaidLayoutDirection)
+
         parent.Bind(EVT_SPINCTRLDOUBLE, self._onDoubleSpinnerChanged, id=self._pdfAnnotationWidthWxId)
         parent.Bind(EVT_SPINCTRLDOUBLE, self._onDoubleSpinnerChanged, id=self._pdfAnnotationHeightWxId)
 
@@ -108,19 +115,21 @@ class PluginPreferencesPage(SizedPanel):
             sizedParentPanel:
 
         """
-
         style: int = NB_TOP | NB_FIXEDWIDTH
         book: Notebook = Notebook(sizedParentPanel, style=style)
         book.SetSizerProps(expand=True, proportion=1)
 
         generalSizedPanel: SizedPanel = SizedPanel(book)
         pdfOptionsPanel:   SizedPanel = SizedPanel(book)
+        featuresPanel:     SizedPanel = SizedPanel(book)
 
         self._layoutGeneralPage(generalSizedPanel=generalSizedPanel)
         self._layoutPdfOptions(pdfOptionsPanel=pdfOptionsPanel)
+        self._layoutFeatureFlags(featuresPanel=featuresPanel)
 
-        book.AddPage(generalSizedPanel, text='General',     select=False)
-        book.AddPage(pdfOptionsPanel,   text='Pdf Options', select=True)
+        book.AddPage(generalSizedPanel, text='General',       select=True)
+        book.AddPage(pdfOptionsPanel,   text='Pdf Options',   select=False)
+        book.AddPage(featuresPanel,     text='Feature Flags', select=False)
 
     def _layoutGeneralPage(self, generalSizedPanel: SizedPanel):
 
@@ -173,6 +182,12 @@ class PluginPreferencesPage(SizedPanel):
                        value=str(self._preferences.annotationHeight),
                        inc=1.0)
 
+    def _layoutFeatureFlags(self, featuresPanel: SizedPanel):
+
+        toolTip: str = 'Enable this feature to allow diagnosing failed orthogonal routing.'
+        self._diagnoseOrthogonalRouting = CheckBox(featuresPanel, id=ID_ANY, label='Diagnose Routing Failure')
+        self._diagnoseOrthogonalRouting.SetToolTip(toolTip)
+
     def _layoutMermaidPreferences(self, parent):
 
         directions: List[str] = [s.value for s in MermaidDirection]
@@ -214,6 +229,7 @@ class PluginPreferencesPage(SizedPanel):
         self._layoutSizeControls.dimensions = layoutDimensions
 
         self._stepSugiyama.SetValue(self._preferences.sugiyamaStepByStep)
+        self._diagnoseOrthogonalRouting.SetValue(self._preferences.diagnoseOrthogonalRouter)
 
     def _onDoubleSpinnerChanged(self, event: CommandEvent):
 
@@ -262,6 +278,9 @@ class PluginPreferencesPage(SizedPanel):
 
         newValue: bool = event.IsChecked()
         self._preferences.sugiyamaStepByStep = newValue
+
+    def _onDiagnoseRoutingChanged(self, event: CommandEvent):
+        self._preferences.diagnoseOrthogonalRouter = event.IsChecked()
 
     # noinspection PyUnusedLocal
     def _onLayoutDirectionChanged(self, event: CommandEvent):

@@ -1,3 +1,4 @@
+
 from wx import Size
 from wx.lib.sized_controls import SizedPanel
 
