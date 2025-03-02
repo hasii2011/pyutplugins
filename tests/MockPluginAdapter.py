@@ -18,6 +18,7 @@ from pyutplugins.ExternalTypes import OglObjectType
 from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import Points
 from pyutplugins.ExternalTypes import Rectangle
+from pyutplugins.ExternalTypes import Rectangles
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
@@ -113,4 +114,7 @@ class MockPluginAdapter(IPluginAdapter):
         pass
 
     def showRulers(self, show: bool, horizontalRulers: IntegerList, verticalRulers: IntegerList, diagramBounds: Rectangle):
+        pass
+
+    def showRouteGrid(self, show: bool, routeGrid: Rectangles):
         pass

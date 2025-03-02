@@ -32,6 +32,7 @@ from pyutplugins.ExternalTypes import DiagnosticInformation
 from pyutplugins.ExternalTypes import IntegerList
 from pyutplugins.ExternalTypes import Points
 from pyutplugins.ExternalTypes import Rectangle
+from pyutplugins.ExternalTypes import Rectangles
 
 from pyutplugins.IPluginAdapter import IPluginAdapter
 
@@ -155,9 +156,9 @@ class DlgDiagnoseLayout(SizedDialog):
 
         self._ensureSetupOk()
         if event.IsChecked() is True:
-            pass
+            self._pluginAdapter.showRouteGrid(show=True, routeGrid=self._diagnosticInformation.routeGrid)
         else:
-            pass
+            self._pluginAdapter.showRouteGrid(show=False, routeGrid=cast(Rectangles, None))
 
     def _ensureSetupOk(self):
         """

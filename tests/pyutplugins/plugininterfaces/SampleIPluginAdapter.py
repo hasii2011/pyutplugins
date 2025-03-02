@@ -16,6 +16,7 @@ from pyutplugins.ExternalTypes import LinkInformation
 from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import Points
 from pyutplugins.ExternalTypes import Rectangle
+from pyutplugins.ExternalTypes import Rectangles
 from pyutplugins.IPluginAdapter import IPluginAdapter
 from pyutplugins.IPluginAdapter import ScreenMetrics
 
@@ -114,4 +115,7 @@ class SampleIPluginAdapter(IPluginAdapter):
         pass
 
     def showRulers(self, show: bool, horizontalRulers: IntegerList, verticalRulers: IntegerList, diagramBounds: Rectangle):
+        pass
+
+    def showRouteGrid(self, show: bool, routeGrid: Rectangles):
         pass

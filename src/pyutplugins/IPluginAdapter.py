@@ -16,6 +16,7 @@ from pyutplugins.ExternalTypes import FrameInformationCallback
 from pyutplugins.ExternalTypes import FrameSizeCallback
 from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import Rectangle
+from pyutplugins.ExternalTypes import Rectangles
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 from pyutplugins.ExternalTypes import Points
 
@@ -164,4 +165,8 @@ class IPluginAdapter(ABC):
 
     @abstractmethod
     def showRulers(self, show: bool, horizontalRulers: IntegerList, verticalRulers: IntegerList, diagramBounds: Rectangle):
+        pass
+
+    @abstractmethod
+    def showRouteGrid(self, show: bool, routeGrid: Rectangles):
         pass

@@ -29,6 +29,7 @@ IndicatePluginModifiedProjectEvent, EVENT_INDICATE_PLUGIN_MODIFIED_PROJECT = New
 
 ShowOrthogonalRoutingPointsEvent, EVENT_SHOW_ORTHOGONAL_ROUTING_POINTS = NewEvent()
 ShowRulersEvent,                  EVENT_SHOW_RULERS                    = NewEvent()
+ShowRouteGridEvent,               EVENT_SHOW_ROUTE_GRID                = NewEvent()
 
 
 class EventType(Enum):
@@ -53,5 +54,6 @@ class EventType(Enum):
     RequestCurrentProject         = 'RequestCurrentProject'
     IndicatePluginModifiedProject = 'IndicatePluginModifiedProject'
 
-    ShowOrthogonalRoutingPointsEvent = 'ShowOrthogonalRoutingPointsEvent'
-    ShowRulersEvent                  = 'ShowRulersEvent'
+    ShowOrthogonalRoutingPoints = 'ShowOrthogonalRoutingPoints'
+    ShowRulers                  = 'ShowRulers'
+    ShowRouteGrid               = 'ShowRouteGrid'

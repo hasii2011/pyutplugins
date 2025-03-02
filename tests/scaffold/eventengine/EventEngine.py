@@ -21,6 +21,7 @@ from pyutplugins.ExternalTypes import ObjectBoundaryCallback
 from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import Points
 from pyutplugins.ExternalTypes import Rectangle
+from pyutplugins.ExternalTypes import Rectangles
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
 from tests.scaffold.PyutDiagramType import PyutDiagramType
@@ -42,6 +43,7 @@ from tests.scaffold.eventengine.Events import RefreshFrameEvent
 from tests.scaffold.eventengine.Events import RequestCurrentProjectEvent
 from tests.scaffold.eventengine.Events import SelectAllShapesEvent
 from tests.scaffold.eventengine.Events import SelectedOglObjectsEvent
+from tests.scaffold.eventengine.Events import ShowRouteGridEvent
 from tests.scaffold.eventengine.Events import ShowRulersEvent
 from tests.scaffold.eventengine.Events import UpdateTreeItemNameEvent
 
@@ -65,6 +67,7 @@ SHOW_PARAMETER:              str = 'show'
 HORIZONTAL_RULERS_PARAMETER: str = 'horizontalRulers'
 VERTICAL_RULERS_PARAMETER:   str = 'verticalRulers'
 DIAGRAM_BOUNDS_PARAMETER:    str = 'diagramBounds'
+ROUTE_GRID_PARAMETER:        str = 'routeGrid'
 
 
 class EventEngine(IEventEngine):
@@ -121,9 +124,11 @@ class EventEngine(IEventEngine):
                 self._sendCreateLinkEvent(**kwargs)
             case EventType.IndicatePluginModifiedProject:
                 MessageBox("Project Modified", caption="")
-            case EventType.ShowOrthogonalRoutingPointsEvent:
+            case EventType.ShowOrthogonalRoutingPoints:
                 self._sendShowOrthogonalRoutingPointsEvent(**kwargs)
-            case EventType.ShowRulersEvent:
+            case EventType.ShowRouteGrid:
+                self._sendShowRouteGridEvent(**kwargs)
+            case EventType.ShowRulers:
                 self._sendShowRulersEvent(**kwargs)
             case _:
                 assert False, f'Unknown event type: `{eventType}`'
@@ -233,5 +238,14 @@ class EventEngine(IEventEngine):
                                                   verticalRulers=verticalRulers,
                                                   diagramBounds=diagramBounds,
                                                   show=show)
+
+        PostEvent(dest=self._listeningWindow, event=event)
+
+    def _sendShowRouteGridEvent(self, **kwargs):
+
+        routeGrid: Rectangles = kwargs[ROUTE_GRID_PARAMETER]
+        show:      bool       = kwargs[SHOW_PARAMETER]
+
+        event: ShowRouteGridEvent = ShowRouteGridEvent(routeGrid=routeGrid, show=show)
 
         PostEvent(dest=self._listeningWindow, event=event)

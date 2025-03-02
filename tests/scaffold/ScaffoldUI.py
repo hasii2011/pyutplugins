@@ -63,6 +63,7 @@ from pyutplugins.ExternalTypes import PluginDocumentType
 from pyutplugins.ExternalTypes import PluginProject
 from pyutplugins.ExternalTypes import Points
 from pyutplugins.ExternalTypes import Rectangle
+from pyutplugins.ExternalTypes import Rectangles
 from pyutplugins.ExternalTypes import SelectedOglObjectsCallback
 
 from tests.scaffold.PyutDiagramType import PyutDiagramType
@@ -72,6 +73,7 @@ from tests.scaffold.PyutProject import UmlFrameType
 
 from tests.scaffold.eventengine.EventEngine import EventEngine
 from tests.scaffold.eventengine.Events import AddShapeEvent
+from tests.scaffold.eventengine.Events import EVENT_SHOW_ROUTE_GRID
 from tests.scaffold.eventengine.Events import EVENT_SHOW_RULERS
 from tests.scaffold.eventengine.Events import ShowOrthogonalRoutingPointsEvent
 from tests.scaffold.eventengine.Events import EVENT_SHOW_ORTHOGONAL_ROUTING_POINTS
@@ -102,6 +104,7 @@ from tests.scaffold.eventengine.Events import NewProjectEvent
 from tests.scaffold.eventengine.Events import RefreshFrameEvent
 from tests.scaffold.eventengine.Events import SelectAllShapesEvent
 from tests.scaffold.eventengine.Events import SelectedOglObjectsEvent
+from tests.scaffold.eventengine.Events import ShowRouteGridEvent
 from tests.scaffold.eventengine.Events import ShowRulersEvent
 
 from tests.scaffold.umlframes.FrameHandler import FrameHandler
@@ -172,7 +175,7 @@ class ScaffoldUI:
         """
         self._frameHandler = FrameHandler(eventEngine=eventEngine)
         #
-        # TODO: Eventually move these handler to the above
+        # TODO: Eventually move these to the above handler
         #
         self._eventEngine = eventEngine
         self._eventEngine.registerListener(EVENT_NEW_PROJECT,          self._onNewProject)
@@ -194,6 +197,7 @@ class ScaffoldUI:
 
         self._eventEngine.registerListener(EVENT_SHOW_ORTHOGONAL_ROUTING_POINTS, self._onShowRoutingPoints)
         self._eventEngine.registerListener(EVENT_SHOW_RULERS,                    self._onShowRulers)
+        self._eventEngine.registerListener(EVENT_SHOW_ROUTE_GRID,                self._onShowRouteGrid)
 
     # noinspection PyTypeChecker
     eventEngine = property(fget=None, fset=_setEventEngine)
@@ -258,6 +262,33 @@ class ScaffoldUI:
             umlClassDiagramsFrame.horizontalRulers = cast(WxIntegerList, None)
             umlClassDiagramsFrame.verticalRulers   = cast(WxIntegerList, None)
             umlClassDiagramsFrame.diagramBounds    = cast(WxRectangle, None)
+
+    def _onShowRouteGrid(self, event: ShowRouteGridEvent):
+
+        from tests.scaffold.umlframes.UmlClassDiagramsFrame import Rectangle as WxRectangle
+        from tests.scaffold.umlframes.UmlClassDiagramsFrame import Rectangles as WxRectangles
+
+        def toWxRectangles(rectangles: Rectangles) -> WxRectangles:
+            wxRectangles: WxRectangles = WxRectangles([])
+            for rectangle in rectangles:
+                wxRectangles.append(
+                    WxRectangle(
+                        left=rectangle.left,
+                        top=rectangle.top,
+                        height=rectangle.height,
+                        width=rectangle.width
+                    )
+                )
+            return wxRectangles
+
+        umlClassDiagramsFrame: UmlClassDiagramsFrame = cast(UmlClassDiagramsFrame, self._currentFrame)
+
+        if event.show is True:
+            umlClassDiagramsFrame.showRouteGrid = True
+            umlClassDiagramsFrame.routeGrid     = toWxRectangles(event.routeGrid)
+        else:
+            umlClassDiagramsFrame.showRouteGrid = False
+            umlClassDiagramsFrame.routeGrid     = cast(WxRectangles, None)
 
     def _onProjectTreeSelectionChanged(self, event: TreeEvent):
         """

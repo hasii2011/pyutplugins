@@ -206,15 +206,17 @@ class OrthogonalConnectorAdapter:
         """
         Don't leak OrthogonalConnector data types
 
-        Returns:  Information that can be used to display why connection failed
+        Returns:  Information that can be used to display why a routing connection failed
         """
 
         from pyorthogonalrouting.Point import Point
         from pyorthogonalrouting.Point import Points
+        from pyorthogonalrouting.Rectangle import Rectangles
 
         from pyutplugins.ExternalTypes import Point as DiagnosticPoint
         from pyutplugins.ExternalTypes import Points as DiagnosticPoints
         from pyutplugins.ExternalTypes import Rectangle as DiagnosticRectangle
+        from pyutplugins.ExternalTypes import Rectangles as DiagnosticRectangles
         from pyutplugins.ExternalTypes import IntegerList
 
         def toDiagnosticPoints(refPoints:  Points) -> DiagnosticPoints:
@@ -247,14 +249,21 @@ class OrthogonalConnectorAdapter:
 
             return integerList
 
-        referencePoints:  Points           = self._byProducts.spots
-        diagnosticPoints: DiagnosticPoints = toDiagnosticPoints(refPoints=referencePoints)
+        def toDiagnosticRectangles(rectangles: Rectangles) -> DiagnosticRectangles:
+
+            diagnosticRectangles: DiagnosticRectangles = DiagnosticRectangles([])
+            for r in rectangles:
+                diagnosticRectangle: DiagnosticRectangle = toDiagnosticRectangle(r)
+                diagnosticRectangles.append(diagnosticRectangle)
+
+            return diagnosticRectangles
 
         diagnosticInformation: DiagnosticInformation = DiagnosticInformation(
-            spots=diagnosticPoints,
+            spots=toDiagnosticPoints(refPoints=self._byProducts.spots),
             horizontalRulers=toIntegerList(self._byProducts.hRulers),
             verticalRulers=toIntegerList(self._byProducts.vRulers),
             diagramBounds=toDiagnosticRectangle(self._byProducts.diagramBounds),
+            routeGrid=toDiagnosticRectangles(self._byProducts.grid)
         )
 
         return diagnosticInformation

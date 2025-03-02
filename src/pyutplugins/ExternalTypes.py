@@ -15,6 +15,7 @@ from os import path as osPath
 from enum import Enum
 
 from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
+
 from wx import ClientDC
 
 from pyutmodelv2.PyutLink import PyutLink
@@ -303,6 +304,8 @@ class Rectangle:
     height: int = 0
 
 
+Rectangles = NewType('Rectangles', List[Rectangle])
+
 IntegerList = NewType('IntegerList', List[int])
 Points      = NewType('Points',      List[Point])
 
@@ -314,3 +317,4 @@ class DiagnosticInformation:
     verticalRulers:   IntegerList
     diagramBounds:    Rectangle
     spots:            Points
+    routeGrid:        Rectangles

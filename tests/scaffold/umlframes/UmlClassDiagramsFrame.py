@@ -46,6 +46,9 @@ class Rectangle:
     height: int = 0
 
 
+Rectangles = NewType('Rectangles', List[Rectangle])
+
+
 REFERENCE_POINT_RADIUS: int = 4
 
 
@@ -80,12 +83,15 @@ class UmlClassDiagramsFrame(UmlDiagramsFrame):
         initPosY:  int = 0
         self.SetScrollbars(PIXELS_PER_UNIT_X, PIXELS_PER_UNIT_Y, nbrUnitsX, nbrUnitsY, initPosX, initPosY, False)
 
-        self._showReferencePoints: bool        = False
-        self._showRulers:          bool        = False
+        self._showReferencePoints: bool = False
+        self._showRulers:          bool = False
+        self._showRouteGrid:       bool = False
+
         self._referencePoints:     Points      = cast(Points, None)
         self._horizontalRulers:    IntegerList = cast(IntegerList, None)
         self._verticalRulers:      IntegerList = cast(IntegerList, None)
         self._diagramBounds:       Rectangle   = cast(Rectangle, None)
+        self._routeGrid:           Rectangles  = cast(Rectangles, None)
 
     @property
     def eventEngine(self) -> OglEventEngine:
@@ -106,6 +112,14 @@ class UmlClassDiagramsFrame(UmlDiagramsFrame):
     @showRulers.setter
     def showRulers(self, value: bool):
         self._showRulers = value
+
+    @property
+    def showRouteGrid(self) -> bool:
+        return self._showRouteGrid
+
+    @showRouteGrid.setter
+    def showRouteGrid(self, showRouteGrid: bool):
+        self._showRouteGrid = showRouteGrid
 
     @property
     def referencePoints(self) -> Points:
@@ -139,6 +153,14 @@ class UmlClassDiagramsFrame(UmlDiagramsFrame):
     def diagramBounds(self, newBounds: Rectangle):
         self._diagramBounds = newBounds
 
+    @property
+    def routeGrid(self) -> Rectangles:
+        return self._routeGrid
+
+    @routeGrid.setter
+    def routeGrid(self, routeGrid: Rectangles):
+        self._routeGrid = routeGrid
+
     def OnPaint(self, event: PaintEvent):
 
         super().OnPaint(event=event)
@@ -155,6 +177,8 @@ class UmlClassDiagramsFrame(UmlDiagramsFrame):
                 self._drawReferencePoints(dc=mem)
             if self._showRulers is True:
                 self._drawRulers(dc=mem)
+            if self._showRouteGrid is True:
+                self._drawRouteGrid(dc=mem)
 
             paintDC: PaintDC = PaintDC(self)
             self.Redraw(mem)
@@ -198,11 +222,30 @@ class UmlClassDiagramsFrame(UmlDiagramsFrame):
         dc.SetPen(savePen)
         dc.SetBrush(saveBrush)
 
+    def _drawRouteGrid(self, dc: DC):
+        savePen:   Pen   = dc.GetPen()
+        saveBrush: Brush = dc.GetBrush()
+
+        dc.SetPen(self._getGridPen())
+        rectangles: Rectangles = self._routeGrid
+        for r in rectangles:
+            rectangle: Rectangle = cast(Rectangle, r)
+
+            x:      int = rectangle.left
+            y:      int = rectangle.top
+            width:  int = rectangle.width
+            height: int = rectangle.height
+
+            dc.DrawRectangle(x=x, y=y, width=width, height=height)
+
+        dc.SetPen(savePen)
+        dc.SetBrush(saveBrush)
+
     def _showDiagnostics(self) -> bool:
 
         show: bool = False
 
-        if self._showReferencePoints is True or self._showRulers is True:
+        if self._showReferencePoints is True or self._showRulers is True or self._showRouteGrid is True:
             show = True
 
         return show
