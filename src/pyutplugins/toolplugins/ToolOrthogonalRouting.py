@@ -80,6 +80,7 @@ class ToolOrthogonalRouting(ToolPluginInterface):
                             dlg.pluginAdapter         = self._pluginAdapter
                             dlg.diagnosticInformation = adapter.diagnosticInformation
                             dlg.Show(True)
+                        break
 
                 except (AttributeError, TypeError) as e:
                     self.logger.error(f'{e} - {oglLink=}')
